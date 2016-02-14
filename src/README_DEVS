@@ -1,0 +1,23 @@
+The basic structure here is the following:
+
+- refype_* files
+  These files consists of inclusions in data-containers, etc. which
+  are common for a variety of data-types.
+  Essentially these comprise common components.
+
+- *.F90
+  These files are the actual implementation modules.
+
+  They are typically only wrappers for the *.inc files
+  which contain the actual implementation.
+
+  They depend on refype_* and *.inc files.
+
+- *.inc files
+  These files are the included files that define most of the actual
+  implementation.
+
+  They provide the data-types, interfaces and important routines for
+  the corresponding data-types.
+
+  If one wishes to extend functionaly these files should be consolidated.
