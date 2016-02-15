@@ -162,8 +162,7 @@ contains
   !!
   !! @param[inout] this @rype that is initialized
   !!
-  !! @author Nick R. Papior
-  !! @date 2016, February
+  !! @author Nick R. Papior (2016, February)
   subroutine initialize_(this)
     type(_R_TYPE_NAME), intent(inout) :: this
 
@@ -197,8 +196,7 @@ contains
   !! @param[in] this checked @rype
   !! @param[out] init `.true.` if it is associated, else `.false.`
   !!
-  !! @author Nick R. Papior
-  !! @date 2016, February
+  !! @author Nick R. Papior (2016, February)
   pure subroutine initialized_(this, init)
     type(_R_TYPE_NAME), intent(in) :: this
     logical, intent(out) :: init
@@ -214,8 +212,7 @@ contains
   !! @param[in] this checked @rype
   !! @return `.true.` if it is associated, else `.false.`
   !!
-  !! @author Nick R. Papior
-  !! @date 2016, February
+  !! @author Nick R. Papior (2016, February)
   pure function is_initialized_(this) result(init)
     type(_R_TYPE_NAME), intent(in) :: this
 
@@ -238,8 +235,7 @@ contains
   !!
   !! @param[inout] this deleted @rype
   !!
-  !! @author Nick R. Papior
-  !! @date 2016, February
+  !! @author Nick R. Papior (2016, February)
   elemental subroutine delete_(this)
     type(_R_TYPE_NAME), intent(inout) :: this
 
@@ -290,8 +286,7 @@ contains
   !! @param[inout] lhs @rype that is assigned to
   !! @param[in] rhs @rype that is dublicated
   !!
-  !! @author Nick R. Papior
-  !! @date 2016, February
+  !! @author Nick R. Papior (2016, February)
   elemental subroutine assign_(lhs, rhs)
 
     ! No copying of data is involved, simply an increment of the
@@ -329,8 +324,7 @@ contains
   !! @param[in] rhs second @rype
   !! @param[out] same `.true.` if `lhs` and `rhs` point to the same data
   !!
-  !! @author Nick R. Papior
-  !! @date 2016, February
+  !! @author Nick R. Papior (2016, February)
   pure subroutine same_(lhs, rhs, same)
     type(_R_TYPE_NAME), intent(in) :: lhs, rhs
     logical, intent(out) :: same
@@ -352,8 +346,7 @@ contains
   !! @param[in] rhs second @rype
   !! @return `.true.` if `lhs` and `rhs` point to the same data
   !!
-  !! @author Nick R. Papior
-  !! @date 2016, February
+  !! @author Nick R. Papior (2016, February)
   pure function is_same_(lhs, rhs) result(same)
     type(_R_TYPE_NAME), intent(in) :: lhs, rhs
     logical :: same
@@ -368,8 +361,7 @@ contains
   !! @param[in] this @rype
   !! @param[out] refs number of times `this` has been referenced
   !!
-  !! @author Nick R. Papior
-  !! @date 2016, February
+  !! @author Nick R. Papior (2016, February)
   pure subroutine sub_references_(this, refs)
     type(_R_TYPE_NAME), intent(in) :: this
     integer, intent(out) :: refs
@@ -390,8 +382,7 @@ contains
   !! @param[in] this @rype
   !! @return refs number of times `this` has been referenced
   !!
-  !! @author Nick R. Papior
-  !! @date 2016, February
+  !! @author Nick R. Papior (2016, February)
   pure function func_references_(this) result(refs)
     type(_R_TYPE_NAME), intent(in) :: this
     

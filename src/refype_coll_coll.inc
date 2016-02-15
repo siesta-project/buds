@@ -13,8 +13,7 @@
 !! @param[inout] this @rype container
 !! @param[inout] item contains data collection upon exit (or null)
 !!
-!! @author Nick R. Papior
-!! @date 2016, February	
+!! @author Nick R. Papior (2016, February)
 subroutine _R_CC3(coll,_R_COLL_LETTER,_)(this, item)
   type(_R_TYPE_NAME), intent(inout) :: this
   type(_R_COLL_CURRENT), intent(inout) :: item
@@ -39,8 +38,7 @@ end subroutine
 !! @param[inout] this @rype container
 !! @param p pointer to element in collection (or null if non-initialized)
 !!
-!! @author Nick R. Papior
-!! @date 2016, February	
+!! @author Nick R. Papior (2016, February)
 subroutine _R_CC3(collp,_R_COLL_LETTER,_)(this, p)
   type(_R_TYPE_NAME), intent(inout) :: this
   type(_R_COLL_CURRENT), pointer :: p
@@ -61,8 +59,7 @@ end subroutine
 !! @param[inout] this data container
 !! @return pointer to element in collection (or null if non-initialized)
 !!
-!! @author Nick R. Papior
-!! @date 2016, February
+!! @author Nick R. Papior (2016, February)
 function _R_CC3(fcollp,_R_COLL_LETTER,_)(this) result(p)
   type(_R_TYPE_NAME), intent(inout) :: this
   type(_R_COLL_CURRENT), pointer :: p

@@ -199,8 +199,7 @@
   !! @param[inout] this Type that is initialized
   !! @param[in] nel maximum number of elements that may be contained
   !!
-  !! @author Nick R. Papior
-  !! @date 2016, February
+  !! @author Nick R. Papior (2016, February)
   subroutine new_(this, nel)
     type(_R_TYPE_NAME), intent(inout) :: this
     integer, intent(in) :: nel
@@ -230,8 +229,7 @@
   !! @param[inout] this @rype that is checked
   !! @param[out] nel number of currently stored elements
   !!
-  !! @author Nick R. Papior
-  !! @date 2016, February
+  !! @author Nick R. Papior (2016, February)
   elemental subroutine nelem_(this, nel)
     type(_R_TYPE_NAME), intent(in) :: this
     integer, intent(out) :: nel
@@ -246,8 +244,7 @@
   !! @param[inout] this @rype that is checked
   !! @return number of currently stored elements
   !!
-  !! @author Nick R. Papior
-  !! @date 2016, February
+  !! @author Nick R. Papior (2016, February)
   elemental function fnelem_(this) result (nel)
     type(_R_TYPE_NAME), intent(in) :: this
     integer :: nel
@@ -260,8 +257,7 @@
   !! @param[inout] this @rype that is checked
   !! @param[out] nel_max maximum number of allowed elements
   !!
-  !! @author Nick R. Papior
-  !! @date 2016, February
+  !! @author Nick R. Papior (2016, February)
   elemental subroutine nelem_max_(this, nel_max)
     type(_R_TYPE_NAME), intent(in) :: this
     integer, intent(out) :: nel_max
@@ -276,8 +272,7 @@
   !! @param[inout] this @rype that is checked
   !! @return maximum number of allowed elements
   !!
-  !! @author Nick R. Papior
-  !! @date 2016, February
+  !! @author Nick R. Papior (2016, February)
   elemental function fnelem_max_(this) result (nel_max)
     type(_R_TYPE_NAME), intent(in) :: this
     integer :: nel_max
@@ -293,8 +288,7 @@
   !! @param[inout] this @rype that is added to
   !! @param[in] item element added to the stack
   !!
-  !! @author Nick R. Papior
-  !! @date 2016, February
+  !! @author Nick R. Papior (2016, February)
   subroutine push_(this,item)
     type(_R_TYPE_NAME), intent(inout) :: this
     type(_R_STACK_TYPE), intent(in) :: item
@@ -338,8 +332,7 @@
   !! @param[inout] this @rype to pop from
   !! @param[inout] item returned element from the top of the stack
   !!
-  !! @author Nick R. Papior
-  !! @date 2016, February
+  !! @author Nick R. Papior (2016, February)
   subroutine pop_(this, item)
     type(_R_TYPE_NAME), intent(inout) :: this
     type(_R_STACK_TYPE), intent(inout) :: item
@@ -382,8 +375,7 @@
   !! @param[in] bot @opt=@null has precedence if `top` not supplied.
   !!                Pops `bot` elements from the bottom of the stack.
   !!
-  !! @author Nick R. Papior
-  !! @date 2016, February
+  !! @author Nick R. Papior (2016, February)
   subroutine pop_delete_(this, top, bot)
     type(_R_TYPE_NAME), intent(inout) :: this
     integer, intent(in), optional :: top, bot
@@ -466,8 +458,7 @@
   !! @param[in] bot @opt=@null number of elements kept from the bottom,
   !!                only used if `top` is not supplied.
   !!
-  !! @author Nick R. Papior
-  !! @date 2016, February
+  !! @author Nick R. Papior (2016, February)
   subroutine keep_(this, top, bot)
     type(_R_TYPE_NAME), intent(inout) :: this
     integer, intent(in), optional :: top, bot
@@ -514,8 +505,7 @@
   !! @param[in] iel index of element to return
   !! @param[inout] elem returned @rype stored in element `iel`
   !!
-  !! @author Nick R. Papior
-  !! @date 2016, February
+  !! @author Nick R. Papior (2016, February)
   subroutine elem_(this, iel, elem)
     type(_R_TYPE_NAME), intent(in) :: this
     integer, intent(in) :: iel
@@ -542,8 +532,7 @@
   !! @param[in] iel index of element to return
   !! @param p pointer to the element `iel`
   !!
-  !! @author Nick R. Papior
-  !! @date 2016, February
+  !! @author Nick R. Papior (2016, February)
   subroutine elemp_(this, iel, p)
     type(_R_TYPE_NAME), intent(in) :: this
     integer, intent(in) :: iel
@@ -571,8 +560,7 @@
   !! @param[in] info @opt=_R_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
   !!
-  !! @author Nick R. Papior
-  !! @author 2016, February
+  !! @author Nick R. Papior (2016, February)
   subroutine print_(this, info, indent)
     type(_R_TYPE_NAME), intent(in) :: this
     character(len=*), intent(in), optional :: info

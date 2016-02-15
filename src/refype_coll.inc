@@ -256,8 +256,7 @@
 #endif
 #endif
   !!
-  !! @author Nick R. Papior
-  !! @date 2016, February
+  !! @author Nick R. Papior (2016, February)
   subroutine new_(this, a, b &
 #ifdef _R_COLL_C
     , c &
@@ -311,8 +310,7 @@
   !! @param[in] info @opt=_R_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
   !!
-  !! @author Nick R. Papior
-  !! @author 2016, February
+  !! @author Nick R. Papior (2016, February)
   subroutine print_(this, info, indent)
     type(_R_TYPE_NAME), intent(in) :: this
     character(len=*), intent(in), optional :: info

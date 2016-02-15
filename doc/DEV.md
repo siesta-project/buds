@@ -24,6 +24,27 @@ In general the guide-lines for the code __must__ be followed:
   If you do not know how Doxygen works, please look in the documentation
   for a routine/function which you think replicates your routine the most
   and copy/paste the corresponding documentation.
+  - Do __not__ use the `\@date` marker as it clutters the documentation.
+    Instead add the date after your `\@author <author> <date>` statement.
+  - Use `\@opt` to denote optional arguments, for instance:
+
+~~~{.f90}
+		!! \@param[in] bar2 \@opt=\@null decide how `bar1` calculated.
+		subroutine foo(bar1, bar2)
+		 ..., intent(inout) :: bar1
+		 ..., intent(in), optional :: bar2 ! none default
+~~~
+
+	   
+  - Use `\@null` as replacement for non-supplied arguments in optional
+	arguments.
+  - To remove routines or hidden variables from the documentation you may
+    encompass part of the code with
+    ```fortran
+	  !> \@cond ALWAYS_SKIP
+       ... ! skipped documentation in doxygen
+      !> \@endcond ALWAYS_SKIP
+    ```
 
 ## Creation a new refype
 

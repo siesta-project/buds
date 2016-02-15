@@ -147,8 +147,7 @@
 #endif
   !! @param[in] val @opt=@null initial value of the array
   !!
-  !! @author Nick R. Papior
-  !! @date 2016, February
+  !! @author Nick R. Papior (2016, February)
   subroutine new_dim_(this, &
 #if _R_DIM == 1
     d1, &
@@ -204,8 +203,7 @@
   !! @param[inout] this @rype container
   !! @param[in] val array to dublicate in `this`
   !!
-  !! @author Nick R. Papior
-  !! @date 2016, February
+  !! @author Nick R. Papior (2016, February)
   subroutine new_copy_(this, val)
     type(_R_TYPE_NAME), intent(inout) :: this
 #ifdef _R_TYPE_VAR_PREC
@@ -252,8 +250,7 @@
   !! @param[in] this the containing @rype
   !! @return a pointer to the data
   !!
-  !! @author Nick R. Papior
-  !! @date 2016, February
+  !! @author Nick R. Papior (2016, February)
   function val_(this) result(p)
     type(_R_TYPE_NAME), intent(in) :: this
 #ifdef _R_TYPE_VAR_PREC
@@ -286,8 +283,7 @@
 #endif
   !! @return the value in the specific indexed location of the array
   !!
-  !! @author Nick R. Papior
-  !! @date 2016, February
+  !! @author Nick R. Papior (2016, February)
   pure function val_idx_(this, &
 #if _R_DIM == 1
     i1 &
@@ -333,8 +329,7 @@
   !! @param[in] dim @opt=@null along the specified dimension
   !! @return the size of the contained array
   !!
-  !! @author Nick R. Papior
-  !! @date 2016, February
+  !! @author Nick R. Papior (2016, February)
   pure function size_(this, dim) result(d)
     type(_R_TYPE_NAME), intent(in) :: this
     integer, intent(in), optional :: dim
@@ -357,8 +352,7 @@
   !! @param[in] this @rype containing the array
   !! @param[in] v value to set all elements equal to
   !!
-  !! @author Nick R. Papior
-  !! @author 2016, February
+  !! @author Nick R. Papior (2016, February)
   subroutine init_val_(this, v)
     type(_R_TYPE_NAME), intent(inout) :: this
 #ifdef _R_TYPE_VAR_PREC
@@ -389,8 +383,7 @@
   !! @param[in] info @opt=_R_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
   !!
-  !! @author Nick R. Papior
-  !! @author 2016, February
+  !! @author Nick R. Papior (2016, February)
   subroutine print_(this, info, indent)
     type(_R_TYPE_NAME), intent(in) :: this
     character(len=*), intent(in), optional :: info
