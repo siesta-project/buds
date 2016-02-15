@@ -20,10 +20,10 @@ end module
 !> @file _R_MOD_NAME
 module _R_MOD_NAME
   ! Requirement
-  use _R_CC3(_R_MOD,_C2_iArray1D)
+  use _R_CC3(_R_MOD,_C2_,iArray1D)
 # define _R_TYPE_NAME _R_CC3(_R_TYPE,_FS_C2_,iArray1D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_FS_C2_,iArray1D)
-# define _R_STACK_TYPE _R_CC3(_R_TYPE,_C2_iArray1D)
+# define _R_STACK_TYPE _R_CC3(_R_TYPE,_C2_,iArray1D)
 #include "refype_fstack.inc"
 end module
 
@@ -32,10 +32,10 @@ end module
 !> @file _R_MOD_NAME
 module _R_MOD_NAME
   ! Requirement
-  use _R_CC3(_R_MOD,_C2_lArray1D)
+  use _R_CC3(_R_MOD,_C2_,lArray1D)
 # define _R_TYPE_NAME _R_CC3(_R_TYPE,_FS_C2_,lArray1D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_FS_C2_,lArray1D)
-# define _R_STACK_TYPE _R_CC3(_R_TYPE,_C2_lArray1D)
+# define _R_STACK_TYPE _R_CC3(_R_TYPE,_C2_,lArray1D)
 #include "refype_fstack.inc"
 end module
 
@@ -44,10 +44,10 @@ end module
 !> @file _R_MOD_NAME
 module _R_MOD_NAME
   ! Requirement
-  use _R_CC3(_R_MOD,_C2_rArray1D)
+  use _R_CC3(_R_MOD,_C2_,rArray1D)
 # define _R_TYPE_NAME _R_CC3(_R_TYPE,_FS_C2_,rArray1D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_FS_C2_,rArray1D)
-# define _R_STACK_TYPE _R_CC3(_R_TYPE,_C2_rArray1D)
+# define _R_STACK_TYPE _R_CC3(_R_TYPE,_C2_,rArray1D)
 #include "refype_fstack.inc"
 end module
 
@@ -56,10 +56,10 @@ end module
 !> @file _R_MOD_NAME
 module _R_MOD_NAME
   ! Requirement
-  use _R_CC3(_R_MOD,_C2_dArray1D)
+  use _R_CC3(_R_MOD,_C2_,dArray1D)
 # define _R_TYPE_NAME _R_CC3(_R_TYPE,_FS_C2_,dArray1D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_FS_C2_,dArray1D)
-# define _R_STACK_TYPE _R_CC3(_R_TYPE,_C2_dArray1D)
+# define _R_STACK_TYPE _R_CC3(_R_TYPE,_C2_,dArray1D)
 #include "refype_fstack.inc"
 end module
 
@@ -68,10 +68,10 @@ end module
 !> @file _R_MOD_NAME
 module _R_MOD_NAME
   ! Requirement
-  use _R_CC3(_R_MOD,_C2_cArray1D)
+  use _R_CC3(_R_MOD,_C2_,cArray1D)
 # define _R_TYPE_NAME _R_CC3(_R_TYPE,_FS_C2_,cArray1D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_FS_C2_,cArray1D)
-# define _R_STACK_TYPE _R_CC3(_R_TYPE,_C2_cArray1D)
+# define _R_STACK_TYPE _R_CC3(_R_TYPE,_C2_,cArray1D)
 #include "refype_fstack.inc"
 end module
 
@@ -80,10 +80,10 @@ end module
 !> @file _R_MOD_NAME
 module _R_MOD_NAME
   ! Requirement
-  use _R_CC3(_R_MOD,_C2_zArray1D)
+  use _R_CC3(_R_MOD,_C2_,zArray1D)
 # define _R_TYPE_NAME _R_CC3(_R_TYPE,_FS_C2_,zArray1D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_FS_C2_,zArray1D)
-# define _R_STACK_TYPE _R_CC3(_R_TYPE,_C2_zArray1D)
+# define _R_STACK_TYPE _R_CC3(_R_TYPE,_C2_,zArray1D)
 #include "refype_fstack.inc"
 end module
 

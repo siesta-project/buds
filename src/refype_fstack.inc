@@ -3,6 +3,7 @@
   ! Include the common utilities
 #include "refype_utils.inc"
 
+#define _R_MOD_NAME_STR _R_XSTR(_R_MOD_NAME)
 #ifndef _R_TYPE_NAME_
 #  define _R_TYPE_NAME_ _R_CC2(_R_TYPE_NAME,_)
 #endif
@@ -65,7 +66,6 @@
 
   public :: new, _R_TYPE_NEW
   public :: print
-  public :: clear
   public :: push, pop
   ! For finite stacks one may pop from behind easily
   public :: keep 
@@ -118,10 +118,6 @@
     module procedure fnelem_max_
   end interface size_max
 
-  interface clear
-    module procedure clear_
-  end interface clear
-
   interface print
     module procedure print_
   end interface print
@@ -130,8 +126,8 @@
 # include "refype_common.inc"
   
 
-  subroutine delete_data(data)
-    type(_R_TYPE_NAME_) :: data
+  pure subroutine delete_data(data)
+    type(_R_TYPE_NAME_), intent(inout) :: data
     if ( associated(data%T) ) then
       ! Deallocate array
       call delete(data%T)
@@ -179,7 +175,7 @@
   end subroutine new_
 
 
-  pure subroutine nelem_(this, nel)
+  elemental subroutine nelem_(this, nel)
     type(_R_TYPE_NAME), intent(in) :: this
     integer, intent(out) :: nel
     if ( .not. is_initd(this) ) then
@@ -188,14 +184,14 @@
       nel = this%data%nel
     end if
   end subroutine nelem_
-  pure function fnelem_(this) result (nel)
+  elemental function fnelem_(this) result (nel)
     type(_R_TYPE_NAME), intent(in) :: this
     integer :: nel
     call nelem(this, nel)
   end function fnelem_
     
 
-  pure subroutine nelem_max_(this, nel_max)
+  elemental subroutine nelem_max_(this, nel_max)
     type(_R_TYPE_NAME), intent(in) :: this
     integer, intent(out) :: nel_max
     if ( .not. is_initd(this) ) then
@@ -204,10 +200,10 @@
       nel_max = this%data%nel_max
     end if
   end subroutine nelem_max_
-  pure function fnelem_max_(this) result (nel_max)
+  elemental function fnelem_max_(this) result (nel_max)
     type(_R_TYPE_NAME), intent(in) :: this
     integer :: nel_max
-    call nelem_max(this, nelem)
+    call nelem_max(this, nel_max)
   end function fnelem_max_
 
   
@@ -437,6 +433,20 @@
   end subroutine elemp_
 
   
+  !> Print, to std-out, some basic information of the data-container
+  !!
+  !! Print out XML-like information regarding the data-container.
+  !!
+  !! @wanted
+  !! Retrieval function of the string that represents the data.
+  !! This will enable the parent program to show it in the way it wants.
+  !!
+  !! @param[in] this data type
+  !! @param[in] info @opt=_R_TYPE_NAME_STR additional information printed
+  !! @param[in] indent @opt=1 possible indentation of printed statement
+  !!
+  !! @author Nick R. Papior
+  !! @author 2016, February
   subroutine print_(this, info, indent)
     type(_R_TYPE_NAME), intent(in) :: this
     character(len=*), intent(in), optional :: info

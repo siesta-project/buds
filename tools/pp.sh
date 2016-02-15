@@ -20,7 +20,9 @@ set_pp_cmd cpp -E -P -C -nostdinc
 function pre_process {
     local file=$1
     shift
-    $_PP $file > pp_$file
+    # re-create file with correct ending
+    local b=$(basename $file)
+    $_PP $file > pp_$b
 }
 
 while [ $# -gt 0 ]

@@ -3,6 +3,7 @@
   ! Include the common utilities
 #include "refype_utils.inc"
 
+#define _R_MOD_NAME_STR _R_XSTR(_R_MOD_NAME)
 #ifndef _R_TYPE_NAME_
 #  define _R_TYPE_NAME_ _R_CC2(_R_TYPE_NAME,_)
 #endif
@@ -155,8 +156,8 @@
   ! This routine takes care of deleting the 
   ! types storage
 
-  subroutine delete_data(data)
-    type(_R_TYPE_NAME_) :: data
+  pure subroutine delete_data(data)
+    type(_R_TYPE_NAME_), intent(inout) :: data
     call delete(data%a)
     call delete(data%b)
 #ifdef _R_COLL_C
@@ -234,7 +235,7 @@
   !!
   !! @param[in] this data type
   !! @param[in] info @opt=_R_TYPE_NAME_STR additional information printed
-  !! @param[in] indent $opt=0 possible indentation of printed statement
+  !! @param[in] indent $opt=1 possible indentation of printed statement
   !!
   !! @author Nick R. Papior
   !! @author 2016, February

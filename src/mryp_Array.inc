@@ -1,6 +1,10 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
 
+#include "refype_utils.inc"
+
+#define _R_MOD_NAME_STR _R_XSTR(_R_MOD_NAME)
 #define _R_TYPE_NAME_ _R_CC2(_R_TYPE_NAME,_)
+#define _R_TYPE_NAME_STR _R_XSTR(_R_TYPE_NAME)
   
   !> _R_MOD_NAME documentation
   !!
@@ -103,8 +107,8 @@
   !! This routine is only used internally to clean-up
   !! any data in the type.
   !! Should never be made public.
-  subroutine delete_data(this)
-    type(_R_TYPE_NAME_) :: this
+  pure subroutine delete_data(this)
+    type(_R_TYPE_NAME_), intent(inout) :: this
 
     ! Currently we do not allow external memory
     ! tracking.
@@ -230,7 +234,7 @@
   !! Returns a pointer to the data-array that resides in
   !! the data container.
   !!
-  !! @param[in] this The data type
+  !! @param[in] this the data type
   !! @return a pointer to the data
   !!
   !! @author Nick R. Papior
@@ -361,10 +365,11 @@
   !!
   !! @wanted
   !! Retrieval function of the string that represents the data.
+  !! This will enable the parent program to show it in the way it wants.
   !!
   !! @param[in] this data type
   !! @param[in] info @opt=_R_TYPE_NAME_STR additional information printed
-  !! @param[in] indent @opt=0 possible indentation of printed statement
+  !! @param[in] indent @opt=1 possible indentation of printed statement
   !!
   !! @author Nick R. Papior
   !! @author 2016, February

@@ -369,7 +369,7 @@ contains
 
   ! The remaining procedures are currently
   ! not used by refype
-  function id_(this) result(str)
+  pure function id_(this) result(str)
     type(_R_TYPE_NAME), intent(in) :: this
     
     character(len=RYP_ID_LEN) :: str
