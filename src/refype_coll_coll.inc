@@ -8,9 +8,9 @@
 !! and return the data in `item`.
 !!
 !! If `this` is not initialized, then `item` will be deleted
-!! and an un-initialized type will be returned.
+!! and an un-initialized @rype will be returned.
 !!
-!! @param[inout] this data container
+!! @param[inout] this @rype container
 !! @param[inout] item contains data collection upon exit (or null)
 !!
 !! @author Nick R. Papior
@@ -36,8 +36,8 @@ end subroutine
 !! If `this` is not initialized, then `item` will be deleted
 !! and an un-initialized type will be returned.
 !!
-!! @param[inout] this data container
-!! @param p contains data collection upon exit (or null)
+!! @param[inout] this @rype container
+!! @param p pointer to element in collection (or null if non-initialized)
 !!
 !! @author Nick R. Papior
 !! @date 2016, February	
@@ -54,12 +54,12 @@ subroutine _R_CC3(collp,_R_COLL_LETTER,_)(this, p)
 
 end subroutine
 
-!> Retrieve _R_COLL_LETTER @rype in _R_TYPE_NAME, function
+!> Retrieve _R_COLL_LETTER @rype in _R_TYPE_NAME (function)
 !!
 !! @iSee fcollp## _R_COLL_LETTER ## _
 !!
 !! @param[inout] this data container
-!! @return p the pointer of the data collection upon exit (or null)
+!! @return pointer to element in collection (or null if non-initialized)
 !!
 !! @author Nick R. Papior
 !! @date 2016, February

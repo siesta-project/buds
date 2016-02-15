@@ -1,5 +1,5 @@
 
 .PHONY: doc
 doc:
-	doxygen doc/Doxyfile
+	doc/make_doc.sh
 

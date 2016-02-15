@@ -2,11 +2,12 @@
 
   ! Simple type for inclusion in the type scopes.
   
-  ! Number of times referenced 
+  !> Reference counter for @rype
+  !! Tracks the number of times this data structure is referenced
   integer :: ryp_refs = 0
-  ! Hash ID
-  ! Currently this is not used, but it may prove useful
-  ! in later implementations.
+
+  !> Hash ID for the @rype (unique for different @rypes)
+  !! Enables a unique ID for any @rype of the same type.
   character(len=RYP_ID_LEN) :: ryp_id = "null_id"
   
 ! project-refype -- local file settings

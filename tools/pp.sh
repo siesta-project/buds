@@ -6,6 +6,11 @@
 # Variable containing the pre-processor command
 _PP=
 
+# File-name prefix
+PREFIX=${PREFIX:-pp_}
+# Remove white-space
+PREFIX=${PREFIX// /}
+
 function set_pp_cmd {
     _PP="$@"
 }
@@ -22,7 +27,7 @@ function pre_process {
     shift
     # re-create file with correct ending
     local b=$(basename $file)
-    $_PP $file > pp_$b
+    $_PP $file > $PREFIX$b
 }
 
 while [ $# -gt 0 ]

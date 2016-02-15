@@ -3,11 +3,11 @@
   ! Include the common utilities
 # include "refype_utils.inc"
 
-  !> @defgroup refype-common Common reference counted type functions
+  !> @defgroup refype-common Global functions for reference counted types
+  !! @brief
+  !! General considerations of reference counted types.
   !!
   !! @details
-  !! The common data structure routines listed here are available
-  !! in all reference counted types.
   !!
   !! The basic functionality of reference counting is performed
   !! in these few routines.
@@ -16,7 +16,7 @@
   !! A type need not have _all_ these routines available if so desired.
   !! This is internally controlled and is mentioned for the relevant types.
   !!
-  !! @dev-note
+  !! @dev_note
   !! For extensions of basic routines you _must_ make a wrapper interface
   !! to allow other routine names to have the same name for different
   !! interfaces.
@@ -28,6 +28,7 @@
   !! The following pre-processor variables are currently used when
   !! included:
   !!  - __R_TYPE_NAME, name of the resulting type
+  !!  - __R_TYPE_NAME_, contained data structure (as a pointer)
   !!
   !! @acknowledge
   !! These declarations are community inspired from the FLIBS
@@ -39,69 +40,92 @@
   !!> @addtogroup refype-common
   !!! @{
 
-
+  !> @cond ALWAYS_SKIP
+  
+  !> Name of the reference counted type (@rype)
   public :: _R_TYPE_NAME
-  public :: init, delete
+  
+  ! public data type
+  ! however, the actual data is contained in the sub-structure
+  type _R_TYPE_NAME
+    type(_R_TYPE_NAME_), pointer :: data => null()
+  end type _R_TYPE_NAME
+
+  !> Internal data structure (@rype)
+  private :: _R_TYPE_NAME_
+
+  !> @endcond ALWAYS_SKIP
+  
+  !> Initialization routine of the @rype
+  public :: init
+  !> Delete the @rype, stepping reference counter and clearing this type
+  public :: delete
+    
+  !> Return number of references to the object (routine)
+  public :: refs
+  !> Return number of references to the object (function)
+  public :: frefs
+
+  !> Check if two @rypes point to the same data (routine)
+  public :: same
+  !> Check if two @rypes point to the same data (function)
+  public :: is_same
+
+  !> Check if a @rype has been initialized (routine)
+  public :: initd
+  !> Check if a @rype has been initialized (function)
+  public :: is_initd
+
+  !> Overiding assignment to ensure correct reference counting
+  public :: assignment(=)
+
   ! We force `delete_data` to be private.
   ! This will prohibit a mistaken public designation of the
   ! routine.
+  !> Internal routine for clearing the data container in the @rype
   private :: delete_data
-  public :: refs
 
-  public :: same, is_same
-  public :: initd, is_initd
-
-  public :: assignment(=)
-
-  !> Interfaced assignment of types
+  !> Assign a @rype
   interface assignment(=)
     module procedure assign_
   end interface assignment(=)
 
-  !> Interfaced initialization of types
-  !! @iSee initialize_
+  !> Initialize @rype
   interface init
     module procedure initialize_
   end interface init
   
-  !> Interfaced checking of initialization
-  !! @iSee initialized_
+  !> Check for initialization (routine)
   interface initd
     module procedure initialized_
   end interface initd
-  !> Interfaced checking of initialization
-  !! @iSee is_initialized_
+  !> Check for initialization (function)
   interface is_initd
     module procedure is_initialized_
   end interface is_initd
 
-  !> Interfaced checking of comparison
-  !! @iSee same_
+  !> Check whether two @rypes data is the same (routine)
   interface same
     module procedure same_
   end interface same
-  !> Interfaced checking of comparison
-  !! @iSee is_same_
+  !> Check whether two @rypes data is the same (function)
   interface is_same
     module procedure is_same_
   end interface is_same
 
 #ifndef _R_NO_DELETE
-  !> Interfaced checking of comparison
-  !! @iSee delete_
+  !> Delete @rype
   interface delete
     module procedure delete_
   end interface delete
 #endif
 
-  !> Interfaced checking of comparison
-  !! @iSee sub_references__
+  !> Query number of references to @rype (routine)
   interface refs
     module procedure sub_references_
   end interface refs
 
-  !> Interfaced checking of comparison
-  !! @iSee func_references_
+  !> Query number of references to @rype (function)
   interface frefs
     module procedure func_references_
   end interface frefs
@@ -116,8 +140,10 @@
     end subroutine error
   end interface
 #else
-  ! Issue a COMPILER warning
-#  warning "REFYPE_ERROR not defined! Expect sudden crashes without warnings!"
+# ifndef _REFYPE_ERROR_H
+#   warning "REFYPE_ERROR not defined! Expect sudden crashes without warnings!"
+#   define _REFYPE_ERROR_H
+# endif
 #endif
 
 contains
@@ -127,14 +153,14 @@ contains
 
   !> Internal initialization of data container
   !!
-  !! Initializes the data handler to a new data handler.
+  !! Initializes the data handler.
   !!
   !! If called on a previously allocated data scope this
   !! will clear the reference (@isee delete).
   !! Subsequently the type container will be allocated
   !! and the reference counted data will be 1.
   !!
-  !! @param[inout] this Type that is initialized
+  !! @param[inout] this @rype that is initialized
   !!
   !! @author Nick R. Papior
   !! @date 2016, February
@@ -168,8 +194,8 @@ contains
   !!
   !! Check whether a type is associated to a container.
   !!
-  !! @param[in] this The data type.
-  !! @param[out] init true if it is associated
+  !! @param[in] this checked @rype
+  !! @param[out] init `.true.` if it is associated, else `.false.`
   !!
   !! @author Nick R. Papior
   !! @date 2016, February
@@ -185,8 +211,8 @@ contains
   !!
   !! @iSee initialized_
   !!
-  !! @param[in] this data type.
-  !! @return true if it is associated.
+  !! @param[in] this checked @rype
+  !! @return `.true.` if it is associated, else `.false.`
   !!
   !! @author Nick R. Papior
   !! @date 2016, February
@@ -201,17 +227,16 @@ contains
 
 #ifndef _R_NO_DELETE
   
-  !> Deletes the current type
+  !> Deletes the current @rype
   !!
-  !! Deletes the data type. The number of references will be
+  !! Deletes the @rype. The number of references will be
   !! decremented.
+  !!
   !! If the number of references of the associated data is 0
   !! after decremention, the data will be
-  !! deleted. Else only this type will be un-associated upon return.
+  !! deleted. Else this @rype will return an un-associated @rype.
   !!
-  !! This routine is elemental and may be called on arrays.
-  !!
-  !! @param[inout] this Type that is deleted
+  !! @param[inout] this deleted @rype
   !!
   !! @author Nick R. Papior
   !! @date 2016, February
@@ -249,19 +274,25 @@ contains
 
 #endif
   
-  !> Internal assignment of data container
+  !> Assignment of @rype with another @rype
   !!
   !! Method for assigning a data container with another
   !! data-container.
   !!
-  !! In case `rhs` is not initialized, so will `lhs`.
+  !! `lhs` is deleted before assignment.
   !!
-  !! @param[inout] lhs Type that is assigned to (deleted before assignment)
-  !! @param[in] rhs Type that is assigned
+  !! Make `lhs` contain the same data as in `rhs`.
+  !! Internally a pointer to the same data is created and the reference
+  !! counter will be incremented.
+  !!
+  !! `lhs` will be un-associated if `rhs` is un-associated.
+  !!
+  !! @param[inout] lhs @rype that is assigned to
+  !! @param[in] rhs @rype that is dublicated
   !!
   !! @author Nick R. Papior
   !! @date 2016, February
-  subroutine assign_(lhs, rhs)
+  elemental subroutine assign_(lhs, rhs)
 
     ! No copying of data is involved, simply an increment of the
     ! reference counter.
@@ -289,14 +320,14 @@ contains
   end subroutine assign_
 
 
-  !> Check whether two types are the same
+  !> Check whether two @rypes point to the same data (routine)
   !!
   !! Returns true if the two passed types are the same
   !! data.
   !!
-  !! @param[in] lhs type
-  !! @param[in] rhs type
-  !! @param[out] same True if `lhs` and `rhs` point to the same data
+  !! @param[in] lhs first @rype 
+  !! @param[in] rhs second @rype
+  !! @param[out] same `.true.` if `lhs` and `rhs` point to the same data
   !!
   !! @author Nick R. Papior
   !! @date 2016, February
@@ -311,13 +342,15 @@ contains
     same = associated(lhs%data, target=rhs%data)
   end subroutine same_
 
-  !> Check whether two types are the same
+  !> Check whether two @rypes point to the same data (function)
   !!
+  !! Same as same_
   !! Returns true if the two passed types are the same
   !! data.
   !!
-  !! @param[in] lhs type-1
-  !! @param[in] rhs type-2
+  !! @param[in] lhs first @rype 
+  !! @param[in] rhs second @rype
+  !! @return `.true.` if `lhs` and `rhs` point to the same data
   !!
   !! @author Nick R. Papior
   !! @date 2016, February
@@ -327,12 +360,12 @@ contains
     call same_(lhs, rhs, same)
   end function is_same_
 
-  !> Query number of references to the equivalent type
+  !> Query number of references to the @rype (routine)
   !!
-  !! Get number of times this data type has been replicated
+  !! Get number of times this @rype has been replicated
   !! in the reference counted object.
   !!
-  !! @param[in] this data type
+  !! @param[in] this @rype
   !! @param[out] refs number of times `this` has been referenced
   !!
   !! @author Nick R. Papior
@@ -349,12 +382,13 @@ contains
     
   end subroutine sub_references_
 
-  !> Query number of references to the equivalent type
+  !> Query number of references to the @rype (function)
   !!
-  !! @iSee @sub_references_
+  !! Get number of times this @rype has been replicated
+  !! in the reference counted object.
   !!
-  !! @param[in] this data type
-  !! @return number of times `this` has been referenced
+  !! @param[in] this @rype
+  !! @return refs number of times `this` has been referenced
   !!
   !! @author Nick R. Papior
   !! @date 2016, February
@@ -367,6 +401,8 @@ contains
     
   end function func_references_
 
+  !> @cond ALWAYS_SKIP
+  
   ! The remaining procedures are currently
   ! not used by refype
   pure function id_(this) result(str)
@@ -385,7 +421,9 @@ contains
     
   end subroutine tag_object_
 
-  !> @}
+  !> @endcond ALWAYS_SKIP
+
+  !!> @}
 
 ! project-refype -- local file settings
 !     Anything below this line may be overwritten by scripts

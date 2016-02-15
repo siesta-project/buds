@@ -14,7 +14,7 @@
   !! @note
   !! This documentation is duplicated in all types with different precision.
   !!
-  !! @dev-note
+  !! @dev_note
   !! The following pre-processor variables are currently used when
   !! included:
   !!  - __R_MOD_NAME of the module
@@ -45,52 +45,66 @@
 #else
 #  error "mryp_Array: Does not handle array sizes larger than 4"
 #endif
-    
+
+  !> @rype container for _R_TYPE_NAME
+  !!
+  !! Contains an array of _R_DIM dimensions.
+  !!
   type _R_TYPE_NAME_
     ! Consistent data in the reference counted object
 #   include "refype_common_type.inc"
-    
+
+    !> Array stored in the @rype
 #ifdef _R_TYPE_VAR_PREC
     _R_TYPE_VAR(_R_TYPE_VAR_PREC), pointer :: val _R_DIM_SPEC() => null()
 #else
     _R_TYPE_VAR, pointer :: val _R_DIM_SPEC() => null()
 #endif
+    
   end type _R_TYPE_NAME_
-
-  ! public data type
-  type _R_TYPE_NAME
-    type(_R_TYPE_NAME_), pointer :: data => null()
-  end type _R_TYPE_NAME
 
   ! Public data-type routines defined particularly for
   ! this type.
-  public :: new
-  public :: _R_TYPE_NEW
+  public :: new, _R_TYPE_NEW
   public :: val, init_val, size
   public :: print
   
+  !> Create new @rype instances
   interface new
     module procedure new_dim_
     module procedure new_copy_
   end interface new
+  !> Create new @rype instances
   interface _R_TYPE_NEW
     module procedure new_dim_
     module procedure new_copy_
   end interface _R_TYPE_NEW
-  
+
+  !> Retrieve pointer/vaule to/in the stored array
+  !!
+  !! With a `=>` a pointer to the stored array is returned.
+  !! With an indexed call the value in the specific array
+  !! at that index is returned.
+  !!
+  !! @note
+  !! For excessive access to the array one should retrieve
+  !! a pointer, and then access the elements in that array.
   interface val
     module procedure val_
     module procedure val_idx_
   end interface val
-  
+
+  !> Number of elements is the stored array (same as regular `size`)
   interface size
     module procedure size_
   end interface size
-  
+
+  !> Initialize all values in the array to a specific value
   interface init_val
     module procedure init_val_
   end interface init_val
 
+  !> Print information about the @rype
   interface print
     module procedure print_
   end interface print
@@ -103,7 +117,7 @@
   
   !> Internal routine for cleaning up the data container.
   !!
-  !! @dev-note
+  !! @dev_note
   !! This routine is only used internally to clean-up
   !! any data in the type.
   !! Should never be made public.
@@ -118,20 +132,20 @@
     
   end subroutine delete_data
 
-  !> Create new TYPE_NAME via dimension sizes.
+  !> Create new _R_TYPE_NAME via dimension sizes.
   !!
   !! Initializes a new type container from the specified
   !! size in the call.
   !!
-  !! @param[inout] this The data type.
+  !! @param[inout] this the @rype
   !! @param[in] d1 size of the internal reference counted array (dim=1)
 #if _R_DIM > 1
   !! @param[in] d2 size of the internal reference counted array (dim=2)
-#endif
 #if _R_DIM > 2
   !! @param[in] d3 size of the internal reference counted array (dim=3)
 #endif
-  !! @param[in] val @opt initial value of the array (@def: no-value)
+#endif
+  !! @param[in] val @opt=@null initial value of the array
   !!
   !! @author Nick R. Papior
   !! @date 2016, February
@@ -179,15 +193,16 @@
   end subroutine new_dim_
 
 
-  !> Create new _R_TYPE_NAME via other array.
+  !> Create new _R_TYPE_NAME by coping another array.
   !!
   !! Initializes a new type container from a copy of another
   !! array.
+  !!
   !! The output data container will have the same
   !! size as the value array.
   !!
-  !! @param[inout] this The data type.
-  !! @param[in] val initial value of the array
+  !! @param[inout] this @rype container
+  !! @param[in] val array to dublicate in `this`
   !!
   !! @author Nick R. Papior
   !! @date 2016, February
@@ -229,12 +244,12 @@
   end subroutine new_copy_
 
 
-  !> Retrieve pointer of data array in the container
+  !> Retrieve pointer to data array in @rype
   !!
   !! Returns a pointer to the data-array that resides in
-  !! the data container.
+  !! the @rype.
   !!
-  !! @param[in] this the data type
+  !! @param[in] this the containing @rype
   !! @return a pointer to the data
   !!
   !! @author Nick R. Papior
@@ -254,22 +269,22 @@
 
   !> Retrieve value in specific index of data array in the container
   !!
-  !! Returns a the value in the data container.
+  !! Returns a value in the data container from a specific index.
   !!
-  !! @dev-note
+  !! @dev_note
   !! This routine should be avoided for extensive retrieval
   !! of data is required.
-  !! It may do bound-check.
+  !! It may do bounds-check.
   !!
-  !! @param[in] this data type
+  !! @param[in] this the containing @rype
   !! @param[in] i1 index in the array
 #if _R_DIM > 1
   !! @param[in] i2 index in the array
-#endif
 #if _R_DIM > 2
   !! @param[in] i3 index in the array
 #endif
-  !! @return the value in `index` of the data
+#endif
+  !! @return the value in the specific indexed location of the array
   !!
   !! @author Nick R. Papior
   !! @date 2016, February
@@ -307,12 +322,15 @@
   end function val_idx_
 
 
-  !> Query size of data in data-container
+  !> Query size of array
   !!
-  !! Returns the size of the 1D array contained.
+  !! Returns the size of the array contained.
   !!
-  !! @param[in] this data type
-  !! @param[in] dim @opt along the specified dimension
+  !! @note
+  !! There is no checking of the dimension queried.
+  !!
+  !! @param[in] this @rype container
+  !! @param[in] dim @opt=@null along the specified dimension
   !! @return the size of the contained array
   !!
   !! @author Nick R. Papior
@@ -332,12 +350,12 @@
   end function size_
 
 
-  !> Initialize the contained data to the specified value.
+  !> Initialize the array in @rype to a specific value.
   !!
-  !! Set all array elements to the value given.
+  !! Set all array elements to a specific value.
   !!
-  !! @param[in] this data type
-  !! @param[in] val value of all elements in the array upon exit
+  !! @param[in] this @rype containing the array
+  !! @param[in] v value to set all elements equal to
   !!
   !! @author Nick R. Papior
   !! @author 2016, February

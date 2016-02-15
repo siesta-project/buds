@@ -20,6 +20,8 @@
   !  rd == double (8-byte)
   !  re == long double, currently not supported 
 
+  !> @cond ALWAYS_SKIP
+  
   integer, private, parameter :: rr_ = selected_real_kind(p=6) ! single (real*4)
   integer, private, parameter :: rd_ = selected_real_kind(p=15) ! double (real*8)
   !integer, private, parameter :: re_ = selected_real_kind(p=18)
@@ -28,14 +30,17 @@
   integer, private, parameter :: ii_ = selected_int_kind(9) ! int (integer*4)
   integer, private, parameter :: il_ = selected_int_kind(18) ! long (integer*8)
 
+  !> @endcond ALWAYS_SKIP
+  
   !> Size of ID parameter for refype data-containers
   integer, private, parameter :: RYP_ID_LEN = 36
 
-  !> Name of module "source"
+  !> Name of module
   ! Note // is often interpreted as a C-comment, hence we simply
   ! skip to a newline to make it expand in the preprocessor.
   character(len=*), parameter :: RYP_MOD_NAME = _R_XSTR(_R_CC2(_R_MOD,_)) // &
     _R_MOD_NAME_STR
+  !> Name of @rype in this module
   character(len=*), parameter :: RYP_TYPE_NAME = _R_TYPE_NAME_STR
   
 ! project-refype -- local file settings

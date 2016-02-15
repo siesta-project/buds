@@ -13,13 +13,13 @@
 
 #include "refype_common_declarations.inc"
 
-  !> @defgroup refype-fstack Reference type of a finite stack
+  !> @defgroup refype-fstack Finite stack with reference counting
   !!
   !! @details
   !! The finite stack implementation is an extension of the regular
   !! reference counted objects.
   !!
-  !! A stack is a "push-pop" sequence of values.
+  !! A stack is a "push-pop" sequence of @rypes.
   !! A finite stack pushes new values at the top, if the stack is
   !! full the oldest entry is deleted and removed from the stack.
   !! A pop of a value removes the entry from the top of the stack.
@@ -28,7 +28,7 @@
   !! A type need not have _all_ these routines available if so desired.
   !! This is internally controlled and is mentioned for the relevant types.
   !!
-  !! @dev-note
+  !! @dev_note
   !! The following pre-processor variables are currently used when
   !! included:
   !!  - __R_TYPE_NAME of the type
@@ -42,82 +42,127 @@
   !! project by Arjen Markus as well as the PyF95 project.
   !! The initial draft of this library has been created by Alberto Garcia.
 
+  !> @rype container for _R_TYPE_NAME
+  !!
+  !! @details
+  !! Container for the data in the @rype.
+  !!
+  !! This data container holds 3 variables,
+  !!  1. track maximum number of elements allowed in the finite stack
+  !!  2. track how many elements are currently stored
+  !!  3. An array of the stack of variables stored.
   type _R_TYPE_NAME_
     ! Consistent data in the reference counted object
 #   include "refype_common_type.inc"
-    
-    ! allowed size of the stack
+
+    !> Maximum number of elements that can be stored in this stack.
+    !!
+    !! @note
+    !! There is little to no memory overhead of maxing this excessively
+    !! large as all elements which have not been assigned are
+    !! allocations of data-pointers.
+    !!
+    !! Hence creating extreme stacks may still be memory efficient.
     integer :: nel_max
-    ! current number of values stored
+
+    !> Current number of elements in the stack. 
     integer :: nel
-    ! Stack 
+    
+    !> Array of elements (stack).
     type(_R_STACK_TYPE), pointer :: T(:) => null()
+    
   end type _R_TYPE_NAME_
 
-  ! public data type
-  type _R_TYPE_NAME
-    type(_R_TYPE_NAME_), pointer :: data => null()
-  end type _R_TYPE_NAME
 
   ! special counter for deleting all elements
   ! of a stack using:
   !   call pop(<this>, RYP_FSTACK_ALL)
+  !> Special parameter for popping all elements.
+  !!
+  !! Allows one to pop/delete all elements in the stack.
   integer, public, parameter :: RYP_FSTACK_ALL = 0
 
-  public :: new, _R_TYPE_NEW
+  public :: new
+  public :: _R_TYPE_NEW
   public :: print
+
   public :: push, pop
-  ! For finite stacks one may pop from behind easily
-  public :: keep 
+  public :: keep
+
   public :: elem, elemp
+
   public :: nelem, fnelem, size
   public :: nelem_max, fnelem_max, size_max
 
+  !> Create new @rype instances
   interface new
     module procedure new_
   end interface new
+  !> Create new @rype instances
   interface _R_TYPE_NEW
     module procedure new_
   end interface _R_TYPE_NEW
   
+  !> Push new elements to the stack
+  !!
+  !! @note
+  !! One cannot push elements in the middle of the stack.
   interface push
     module procedure push_
   end interface push
+  !> Pop, and possibly return elements from the stack
+  !!
+  !! One can return the top element or pop-delete elements
+  !! from the top or bottom.
+  !!
+  !! @note
+  !! One cannot pop and return elements from the middle of the
+  !! stack.
   interface pop
     module procedure pop_
     module procedure pop_delete_
   end interface pop
+  !> Keeps a fixed number of elements in the stack
   interface keep
     module procedure keep_
   end interface keep
 
+  !> Return an indexed element in the stack
   interface elem
     module procedure elem_
   end interface elem
+  !> Return a pointer to an indexed element in the stack
   interface elemp
     module procedure elemp_
   end interface elemp
 
+  !> Return number of elements in the stack
   interface nelem
     module procedure nelem_
   end interface nelem
+  !> Return number of elements in the stack (function)
   interface fnelem
     module procedure fnelem_
   end interface fnelem
+  !> Return number of elements in the stack (function)
   interface size
     module procedure fnelem_
   end interface size
   
+  !> Return maximum number of elements in the stack
   interface nelem_max
     module procedure nelem_max_
   end interface nelem_max
+  !> Return maximum number of elements in the stack (function)
   interface fnelem_max
     module procedure fnelem_max_
   end interface fnelem_max
+  !> Return maximum number of elements in the stack (function)
   interface size_max
     module procedure fnelem_max_
   end interface size_max
 
+  !> Print information about the @rype
   interface print
     module procedure print_
   end interface print
@@ -128,14 +173,19 @@
 
   pure subroutine delete_data(data)
     type(_R_TYPE_NAME_), intent(inout) :: data
+    
     if ( associated(data%T) ) then
+      
       ! Deallocate array
       call delete(data%T)
       deallocate(data%T)
       nullify(data%T)
+      
     end if
+    
     data%nel_max = 0
     data%nel = 0
+    
   end subroutine delete_data
 
 
@@ -175,6 +225,13 @@
   end subroutine new_
 
 
+  !> Query number of currently stored elements in this stack
+  !!
+  !! @param[inout] this @rype that is checked
+  !! @param[out] nel number of currently stored elements
+  !!
+  !! @author Nick R. Papior
+  !! @date 2016, February
   elemental subroutine nelem_(this, nel)
     type(_R_TYPE_NAME), intent(in) :: this
     integer, intent(out) :: nel
@@ -184,6 +241,13 @@
       nel = this%data%nel
     end if
   end subroutine nelem_
+  !> Query number of currently stored elements in this stack (function)
+  !!
+  !! @param[inout] this @rype that is checked
+  !! @return number of currently stored elements
+  !!
+  !! @author Nick R. Papior
+  !! @date 2016, February
   elemental function fnelem_(this) result (nel)
     type(_R_TYPE_NAME), intent(in) :: this
     integer :: nel
@@ -191,6 +255,13 @@
   end function fnelem_
     
 
+  !> Query maximum number of allowed elements in this stack
+  !!
+  !! @param[inout] this @rype that is checked
+  !! @param[out] nel_max maximum number of allowed elements
+  !!
+  !! @author Nick R. Papior
+  !! @date 2016, February
   elemental subroutine nelem_max_(this, nel_max)
     type(_R_TYPE_NAME), intent(in) :: this
     integer, intent(out) :: nel_max
@@ -200,6 +271,13 @@
       nel_max = this%data%nel_max
     end if
   end subroutine nelem_max_
+  !> Query maximum number of allowed elements in this stack (function)
+  !!
+  !! @param[inout] this @rype that is checked
+  !! @return maximum number of allowed elements
+  !!
+  !! @author Nick R. Papior
+  !! @date 2016, February
   elemental function fnelem_max_(this) result (nel_max)
     type(_R_TYPE_NAME), intent(in) :: this
     integer :: nel_max
@@ -207,6 +285,16 @@
   end function fnelem_max_
 
   
+  !> Adds new element to the stack
+  !!
+  !! Add new element to the stack. If the stack is full the oldest
+  !! element will be deleted.
+  !!
+  !! @param[inout] this @rype that is added to
+  !! @param[in] item element added to the stack
+  !!
+  !! @author Nick R. Papior
+  !! @date 2016, February
   subroutine push_(this,item)
     type(_R_TYPE_NAME), intent(inout) :: this
     type(_R_STACK_TYPE), intent(in) :: item
@@ -214,6 +302,9 @@
     integer :: el
 
     ! if this has not been initialised we immediately return
+    ! We _could_ initialize it, but we do not know how
+    ! many maximum elements that is allowed?
+    ! So we return
     if ( .not. is_initd(this) ) return
 
     el = size(this)
@@ -236,11 +327,16 @@
 
   !> Pop and return the latest item in the stack
   !!
-  !! The top item is returned in `item` and the saved stack
+  !! The top item is returned in `item` and the stack
   !! is decremented thus removing the returned item from the stack.
   !!
-  !! @param[inout] this Type that is initialized
-  !! @param[inout] item returned type from the top of the stack
+  !! If there are no elements the returned item will be un-initialized.
+  !!
+  !! @note
+  !! The returned item will thus not have its counted references changed.
+  !!
+  !! @param[inout] this @rype to pop from
+  !! @param[inout] item returned element from the top of the stack
   !!
   !! @author Nick R. Papior
   !! @date 2016, February
@@ -273,18 +369,18 @@
   end subroutine pop_
   
   
-  !> Pop the latest item(s) in the stack
+  !> Deletes the latest item(s) in the stack
   !!
-  !! Pops any _n_ items from the top of the stack without returning
-  !! any of them.
-  !! This defaults to only popping the top element.
+  !! Pops and deletes any _n_ items from the top of the stack.
   !!
-  !! @param[inout] this stack type from which elements are popped
-  !! @param[inout] top @opt=1 number of popped elements from top.
-  !!                   If RYP_FSTACK_ALL is issued it will
-  !!                   clear all elements.
-  !! @param[inout] bot @opt=<none> has precedence if `top` not supplied.
-  !!                   Pops `bot` elements from the bottom of the stack.
+  !! Defaults to popping(deleting) the top element.
+  !!
+  !! @param[inout] this @rype from which elements are popped
+  !! @param[in] top @opt=1 number of popped elements from top.
+  !!                If RYP_FSTACK_ALL is supplied it will
+  !!                clear all elements.
+  !! @param[in] bot @opt=@null has precedence if `top` not supplied.
+  !!                Pops `bot` elements from the bottom of the stack.
   !!
   !! @author Nick R. Papior
   !! @date 2016, February
@@ -294,7 +390,8 @@
 
     integer :: lnpop
     integer :: el
-    
+
+    ! it is already empty...
     if ( .not. is_initd(this) ) return
     
     ! number of elements
@@ -356,14 +453,18 @@
   !> Keeps a fixed number of elements in the stack
   !!
   !! Retains a number of elements from either the top or the
-  !! bottom of the stack (top has precedence).
+  !! bottom of the stack.
   !!
-  !! This defaults to only popping the bottom element.
+  !! If any of the counts are larger than the currently
+  !! number of stored elements, nothing will happen.
   !!
-  !! @param[inout] this stack type from which elements are popped
-  !! @param[inout] top @opt=1 number of elements kept from the top
-  !! @param[inout] bot @opt=<none> number of elements kept from the bottom,
-  !!                   only used if `top` is not supplied.
+  !! @note
+  !! Defaults to `top=fnelem(this)-1`
+  !!
+  !! @param[inout] this @rype to keep elements in
+  !! @param[in] top @opt=1 number of elements kept from the top
+  !! @param[in] bot @opt=@null number of elements kept from the bottom,
+  !!                only used if `top` is not supplied.
   !!
   !! @author Nick R. Papior
   !! @date 2016, February
@@ -404,30 +505,55 @@
     
   end subroutine keep_
 
-  subroutine elem_(this,el,val)
+  !> Retrieve specific element in the stack
+  !!
+  !! If the requested element is beyond the number of
+  !! stored elements `elem` will be un-initialized upon return.
+  !!
+  !! @param[in] this @rype to retrieve element from
+  !! @param[in] iel index of element to return
+  !! @param[inout] elem returned @rype stored in element `iel`
+  !!
+  !! @author Nick R. Papior
+  !! @date 2016, February
+  subroutine elem_(this, iel, elem)
     type(_R_TYPE_NAME), intent(in) :: this
-    integer, intent(in) :: el
-    type(_R_STACK_TYPE), intent(inout) :: val
+    integer, intent(in) :: iel
+    type(_R_STACK_TYPE), intent(inout) :: elem
 
-    call delete(val)
+    call delete(elem)
     if ( .not. is_initd(this) ) return
 
-    if ( el <= size(this) ) then
-      val = this%data%T(el)
+    if ( iel <= size(this) ) then
+      elem = this%data%T(iel)
     end if
     
   end subroutine elem_
 
-  subroutine elemp_(this,el,p)
+  !> Retrieve pointer to specific element in the stack
+  !!
+  !! Retrieving a pointer does not change the reference status
+  !! of the @rype.
+  !!
+  !! If the requested element is beyond the number of
+  !! stored elements `elem` will be null.
+  !!
+  !! @param[in] this @rype to retrieve pointer element from
+  !! @param[in] iel index of element to return
+  !! @param p pointer to the element `iel`
+  !!
+  !! @author Nick R. Papior
+  !! @date 2016, February
+  subroutine elemp_(this, iel, p)
     type(_R_TYPE_NAME), intent(in) :: this
-    integer, intent(in) :: el
+    integer, intent(in) :: iel
     type(_R_STACK_TYPE), pointer :: p
 
     nullify(p)
     if ( .not. is_initd(this) ) return
 
-    if ( el <= size(this) ) then
-      p => this%data%T(el)
+    if ( iel <= size(this) ) then
+      p => this%data%T(iel)
     end if
     
   end subroutine elemp_

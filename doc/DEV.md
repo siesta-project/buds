@@ -34,10 +34,9 @@ My recommendations is to follow that implementation to adhere to
 some sort of standard for the data structures.
 
 1. The first code present in the type _must_ be
-
-```
+   ```fortran
    #include "refype_common_declarations.inc"
-```
+   ```
 
 2. Define data structure.
    Define two types, one you _actual_ data structure name (tryp\_<Array1D>),
@@ -47,14 +46,14 @@ some sort of standard for the data structures.
    The data-type should _always_ look like this:
    ```fortran
    type <type>
-      type(<type>_), pointer :: data => null()
+     type(<type>_), pointer :: data => null()
    end type
    ```
    And the <type>\_ should _always_ have this header:
    ```fortran
    type <type>_
-   #   include "refype_type_common.inc"
-      <other contained data>
+   # include "refype_type_common.inc"
+     <other contained data>
    end type
    ```
 

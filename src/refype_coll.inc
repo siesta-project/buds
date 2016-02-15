@@ -18,14 +18,16 @@
   !!
   !! @details
   !! The implementation details of a collection of reference counted types.
-  !! This type implements a common container for N>1 @rype.
+  !! This type implements a common container for N>1 @rypes.
   !!
-  !! @dev-note
+  !! @dev_note
   !! For extensions of basic routines you _must_ make a wrapper interface
   !! to allow other routine names to have the same name for different
   !! interfaces.
   !!
-  !! Currently this collection only allows up to 4 @rype s contained.
+  !! One __cannot__ store non-@rype types in this collection.
+  !!
+  !! Currently this collection only allows up to 5 @rypes contained.
   !! This can easily be extended.
   !!
   !! The following pre-processor variables are currently used when
@@ -42,34 +44,68 @@
   !! These declarations are community inspired from the FLIBS
   !! project by Arjen Markus as well as the PyF95 project.
   !! The initial draft of this library has been created by Alberto Garcia.
-  
+
+  !> @rype container for _R_TYPE_NAME
+  !!
+  !! @details
+  !! Container for the data in the @rype.
+  !!
+  !! The container handles a collection up to 5 elements.
+  !! Each element is stored via alphabetic sequences
+  !! Hence the first item is `A`, second is `B` etc.
+  !!
+#ifndef _R_COLL_C
+  !! This @rype is a collection of 2 elements:
+#else
+#ifndef _R_COLL_D
+  !! This @rype is a collection of 3 elements:
+#else
+#ifndef _R_COLL_E
+  !! This @rype is a collection of 4 elements:
+#else
+  !! This @rype is a collection of 5 elements:
+#endif
+#endif
+#endif
+  !! 1. _R_COLL_A
+  !! 2. _R_COLL_B
+#ifdef _R_COLL_C
+  !! 3. _R_COLL_C
+#ifdef _R_COLL_D
+  !! 4. _R_COLL_D
+#ifdef _R_COLL_E
+  !! 5. _R_COLL_E
+#endif
+#endif
+#endif
   type _R_TYPE_NAME_
     ! Consistent data in the reference counted object
 #   include "refype_common_type.inc"
     
-    ! first entry
-    type(_R_COLL_A) :: a
+    !> First element of collection
+    type(_R_COLL_A) :: A
+    !> Second element of collection
     type(_R_COLL_B) :: B
 #ifdef _R_COLL_C
+    !> Third element of collection
     type(_R_COLL_C) :: C
 #ifdef _R_COLL_D
+    !> Fourth element of collection
     type(_R_COLL_D) :: D
 #ifdef _R_COLL_E
+    !> Fifth element of collection
     type(_R_COLL_E) :: E
 #endif
 #endif
 #endif
   end type _R_TYPE_NAME_
 
-  ! public data type
-  type _R_TYPE_NAME
-    type(_R_TYPE_NAME_), pointer :: data => null()
-  end type _R_TYPE_NAME
-
   ! Exported procedures and functions
   ! (in addition to init, delete, and assignment(=) )
   public :: new, _R_TYPE_NEW
+
   public :: print
+  
   public :: colla, collpa, fcollpa
   public :: collb, collpb, fcollpb
 #ifdef _R_COLL_C
@@ -82,23 +118,48 @@
 #endif
 #endif
 
+  !> Create a new @rype. This will be allocated with 1 reference.
   interface new
     module procedure new_
   end interface new
+  !> Create a new @rype. This will be allocated with 1 reference.
   interface _R_TYPE_NEW
     module procedure new_
   end interface _R_TYPE_NEW
 
+  !> Retrieve the first element of the collection (routine)
+  !!
+  !! Change the suffix letter `A` to `B`, ... to get the
+  !! corresponding element in the collection.
   interface colla
     module procedure colla_
   end interface colla
+  !> Point to the first element of the collection (routine)
+  !!
+  !! This routine does not step the reference counting as it
+  !! is a pointer.
+  !!
+  !! Change the suffix letter `A` to `B`, ... to get the
+  !! corresponding element in the collection.
   interface collpa
     module procedure collpa_
   end interface collpa
+  !> Point to the first element of the collection (function)
+  !!
+  !! This routine does not step the reference counting as it
+  !! is a pointer.
+  !!
+  !! Change the suffix letter `A` to `B`, ... to get the
+  !! corresponding element in the collection.
   interface fcollpa
     module procedure fcollpa_
   end interface fcollpa
 
+  !> @cond ALWAYS_SKIP
+
+  ! we do not document these sub-routines as they are encompassed
+  ! by colla etc.
+  
   interface collb
     module procedure collb_
   end interface collb
@@ -145,6 +206,9 @@
 #endif
 #endif
 
+  !> @endcond ALWAYS_SKIP
+
+  !> Print, to std-out, some basic information of the data-container
   interface print
     module procedure print_
   end interface print
@@ -152,7 +216,6 @@
   ! all default reference counted stuff
 # include "refype_common.inc"
   
-  !
   ! This routine takes care of deleting the 
   ! types storage
 
@@ -180,7 +243,18 @@
   !! Subsequently the type container will be allocated
   !! and the reference counted data will be 1.
   !!
-  !! @param[inout] this Type that is initialized
+  !! @param[inout] this initialized @rype
+  !! @param[in] A first element in the @rype
+  !! @param[in] B second element in the @rype
+#ifdef _R_COLL_C
+  !! @param[in] C third element in the @rype
+#ifdef _R_COLL_D
+  !! @param[in] D fourth element in the @rype
+#ifdef _R_COLL_E
+  !! @param[in] E fifth element in the @rype
+#endif
+#endif
+#endif
   !!
   !! @author Nick R. Papior
   !! @date 2016, February
@@ -235,7 +309,7 @@
   !!
   !! @param[in] this data type
   !! @param[in] info @opt=_R_TYPE_NAME_STR additional information printed
-  !! @param[in] indent $opt=1 possible indentation of printed statement
+  !! @param[in] indent @opt=1 possible indentation of printed statement
   !!
   !! @author Nick R. Papior
   !! @author 2016, February

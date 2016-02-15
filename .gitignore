@@ -1,5 +1,6 @@
 doc/html/**
 doc/latex/**
+final_doc
 *.mod
 *.MOD
 *.o
