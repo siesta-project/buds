@@ -106,14 +106,14 @@
 
   public :: print
   
-  public :: colla, collpa, fcollpa
-  public :: collb, collpb, fcollpb
+  public :: elema, elempa, felempa
+  public :: elemb, elempb, felempb
 #ifdef _R_COLL_C
-  public :: collc, collpc, fcollpc
+  public :: elemc, elempc, felempc
 #ifdef _R_COLL_D
-  public :: colld, collpd, fcollpd
+  public :: elemd, elempd, felempd
 #ifdef _R_COLL_E
-  public :: colle, collpe, fcollpe
+  public :: eleme, elempe, felempe
 #endif
 #endif
 #endif
@@ -131,9 +131,9 @@
   !!
   !! Change the suffix letter `A` to `B`, ... to get the
   !! corresponding element in the collection.
-  interface colla
-    module procedure colla_
-  end interface colla
+  interface elema
+    module procedure elema_
+  end interface elema
   !> Point to the first element of the collection (routine)
   !!
   !! This routine does not step the reference counting as it
@@ -141,9 +141,9 @@
   !!
   !! Change the suffix letter `A` to `B`, ... to get the
   !! corresponding element in the collection.
-  interface collpa
-    module procedure collpa_
-  end interface collpa
+  interface elempa
+    module procedure elempa_
+  end interface elempa
   !> Point to the first element of the collection (function)
   !!
   !! This routine does not step the reference counting as it
@@ -151,57 +151,57 @@
   !!
   !! Change the suffix letter `A` to `B`, ... to get the
   !! corresponding element in the collection.
-  interface fcollpa
-    module procedure fcollpa_
-  end interface fcollpa
+  interface felempa
+    module procedure felempa_
+  end interface felempa
 
   !> @cond ALWAYS_SKIP
 
   ! we do not document these sub-routines as they are encompassed
-  ! by colla etc.
+  ! by elema etc.
   
-  interface collb
-    module procedure collb_
-  end interface collb
-  interface collpb
-    module procedure collpb_
-  end interface collpb
-  interface fcollpb
-    module procedure fcollpb_
-  end interface fcollpb
+  interface elemb
+    module procedure elemb_
+  end interface elemb
+  interface elempb
+    module procedure elempb_
+  end interface elempb
+  interface felempb
+    module procedure felempb_
+  end interface felempb
 
 #ifdef _R_COLL_C
-  interface collc
-    module procedure collc_
-  end interface collc
-  interface collpc
-    module procedure collpc_
-  end interface collpc
-  interface fcollpc
-    module procedure fcollpc_
-  end interface fcollpc
+  interface elemc
+    module procedure elemc_
+  end interface elemc
+  interface elempc
+    module procedure elempc_
+  end interface elempc
+  interface felempc
+    module procedure felempc_
+  end interface felempc
   
 #ifdef _R_COLL_D
-  interface colld
-    module procedure colld_
-  end interface colld
-  interface collpd
-    module procedure collpd_
-  end interface collpd
-  interface fcollpd
-    module procedure fcollpd_
-  end interface fcollpd
+  interface elemd
+    module procedure elemd_
+  end interface elemd
+  interface elempd
+    module procedure elempd_
+  end interface elempd
+  interface felempd
+    module procedure felempd_
+  end interface felempd
 
 #ifdef _R_COLL_E
-  interface colle
-    module procedure colle_
-  end interface colle
-  interface collpe
-    module procedure collpe_
-  end interface collpe
-  interface fcollpe
-    module procedure fcollpe_
-  end interface fcollpe
+  interface eleme
+    module procedure eleme_
+  end interface eleme
+  interface elempe
+    module procedure elempe_
+  end interface elempe
+  interface felempe
+    module procedure felempe_
+  end interface felempe
 #endif
 #endif
 #endif
@@ -356,22 +356,22 @@
   ! Create data-retrieval routines
 # define _R_COLL_LETTER A
 # define _R_COLL_CURRENT _R_COLL_A
-# include "refype_coll_coll.inc"
+# include "refype_coll_elem.inc"
 # define _R_COLL_LETTER B
 # define _R_COLL_CURRENT _R_COLL_B
-# include "refype_coll_coll.inc"
+# include "refype_coll_elem.inc"
 #ifdef _R_COLL_C
 # define _R_COLL_LETTER C
 # define _R_COLL_CURRENT _R_COLL_C
-# include "refype_coll_coll.inc"
+# include "refype_coll_elem.inc"
 #ifdef _R_COLL_D
 # define _R_COLL_LETTER D
 # define _R_COLL_CURRENT _R_COLL_D
-# include "refype_coll_coll.inc"
+# include "refype_coll_elem.inc"
 #ifdef _R_COLL_E
 # define _R_COLL_LETTER E
 # define _R_COLL_CURRENT _R_COLL_E
-# include "refype_coll_coll.inc"
+# include "refype_coll_elem.inc"
 #endif
 #endif
 #endif
