@@ -57,11 +57,17 @@ mryp_FS_C2_Array2D.f90: FS_C2_Array2D.F90
 mryp_FS_C2_Array3D.f90: FS_C2_Array3D.F90
 	$(CPP) $(INC) $< > $@
 
+SM_OBJS = \
+	mryp_SM_CSR.o
+mryp_SM_CSR.f90: SM_CSR.F90
+	$(CPP) $(INC) $< > $@
+
 # Build list of objects
 OBJS  = $(ARRAY_OBJS)
 OBJS += $(C_ARRAY_OBJS)
 OBJS += $(FS_ARRAY_OBJS)
 OBJS += $(FS_C_ARRAY_OBJS)
+OBJS += $(SM_OBJS)
 
 .PHONY: static shared
 static: $(OBJS)
