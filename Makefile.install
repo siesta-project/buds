@@ -73,6 +73,18 @@ install_version: install_init_dir
 	@echo "#define REFYPE_VERSION_STR \"$(REFYPE_MAJOR).$(REFYPE_MINOR).$(REFYPE_MICRO)\"" >> $(REFYPE_VERSION_FILE)
 	@chmod $(_OCT_rw_r_r) $(REFYPE_VERSION_FILE)
 
+# Issuing uninstall will forcefully remove the installation directory
+.PHONY: uninstall
+.NOTPARALLEL: uninstall
+uninstall:
+	@echo ""
+	@echo "The installation tree:"
+	@echo "  $(PREFIX)"
+	@echo "will be completely deleted!"
+	@echo "You may abort the operation within 2 secs by pressing:"
+	@echo "  Ctrl+C or ^C"
+	@sleep 2
+	@rm -rf $(PREFIX)
 
 # Local Variables:
 #  mode: makefile-gmake
