@@ -1,0 +1,141 @@
+_INCLUDED_default = 1
+
+.SUFFIXES:
+.SUFFIXES: .f90 .F90 .c .o .a .so
+
+# Default compiler options
+# I am a bit split whether we should make a "default"
+# file for each vendor and pass variables to
+# a common variable space, then subsequently grabbing
+# those needed.
+
+# Generic compiler options
+CC ?= gcc
+CXX ?= g++
+FC ?= gfortran
+CFLAGS ?= 
+CXXFLAGS ?=
+FCFLAGS ?=
+
+# Default linker flags
+AR ?= ar
+ARFLAGS ?= -ru
+RANLIB ?= ranlib
+
+# Default pre-processor commands
+# (probably we should do a check to ensure
+#  it works)
+CPP = cpp -E -P -C -nostdinc
+
+# Only in the case of no fPIC should we not add it
+ifndef NO_PIC
+ override CFLAGS += -fPIC
+ override CXXFLAGS += -fPIC
+ override FCFLAGS += -fPIC
+endif
+
+# Default vendor setting
+ifndef VENDOR
+ VENDOR = gnu
+ $(info Defaults to the GNU C-compiler vendor)
+endif
+
+CC_VENDOR ?= $(VENDOR)
+CXX_VENDOR ?= $(VENDOR)
+FC_VENDOR ?= $(VENDOR)
+
+# Automatically decide on a single OPT flag
+# Instead of having "override" everywhere
+# we rely on a temporary variable
+_OPT = none
+ifdef OPT
+_OPT := $(OPT)
+endif
+
+# First perform wrap-arounds
+ifeq ($(_OPT), -1)
+  _OPT = debug
+endif
+ifeq ($(_OPT), DEBUG)
+  _OPT = debug
+endif
+ifeq ($(_OPT), 0)
+  _OPT = none
+endif
+ifeq ($(_OPT), NONE)
+  _OPT = none
+endif
+ifeq ($(_OPT), 1)
+  _OPT = weak
+endif
+ifeq ($(_OPT), WEAK)
+  _OPT = weak
+endif
+ifeq ($(_OPT), 2)
+  _OPT = medium
+endif
+ifeq ($(_OPT), MEDIUM)
+  _OPT = medium
+endif
+ifeq ($(_OPT), 3)
+  _OPT = hard
+endif
+ifeq ($(_OPT), HARD)
+  _OPT = hard
+endif
+override OPT = $(_OPT)
+
+# All opt-flags that we process to filter out
+_FILTER_OPT_FLAGS = -Ofast -Os -O0 -O1 -O2 -O3 -fast
+
+ifneq ($(OPT), none)
+  # Filter out all the optimizations as they will be
+  # re-inserted below
+  override CFLAGS := $(filter-out $(_FILTER_OPT_FLAGS),$(CFLAGS))
+  override CXXFLAGS := $(filter-out $(_FILTER_OPT_FLAGS),$(CXXFLAGS))
+  override FCFLAGS := $(filter-out $(_FILTER_OPT_FLAGS),$(FCFLAGS))
+
+  # Populate them
+  include vendor/$(CC_VENDOR).make
+  override CFLAGS += $(V_CFLAGS_$(OPT))
+
+  include vendor/$(CXX_VENDOR).make
+  override CXXFLAGS += $(V_CXXFLAGS_$(OPT))
+
+  include vendor/$(FC_VENDOR).make
+  override FCFLAGS += $(V_FCFLAGS_$(OPT))
+
+endif
+
+
+# Define the compilation options:
+.F90.o:
+	$(FC) -c $(FCFLAGS) $(INC) $< 
+.f90.o:
+	$(FC) -c $(FCFLAGS) $(INC) $< 
+.c.o:
+	$(CC) -c $(CFLAGS) $(INC) $< 
+.cpp.o:
+	$(CXX) -c $(CXXFLAGS) $(INC) $< 
+
+
+.PHONY: show
+.NOTPARALLEL: show
+show:
+	@echo ""
+	@echo "Used compilation options:"
+	@echo ""
+	@echo "C-compiler options:"
+	@echo "  CC = $(CC)"
+	@echo "  CFLAGS = $(CFLAGS)"
+	@echo "CXX-compiler options:"
+	@echo "  CXX = $(CXX)"
+	@echo "  CXXFLAGS = $(CXXFLAGS)"
+	@echo "Fortran-compiler options:"
+	@echo "  FC = $(FC)"
+	@echo "  FCFLAGS = $(FCFLAGS)"
+
+
+# Local Variables:
+#  mode: makefile-gmake
+# End:

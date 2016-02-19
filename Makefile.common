@@ -1,0 +1,13 @@
+_INCLUDED_common = 1
+
+# Define default library names
+REFYPE_LIB_STATIC ?= librefype.a
+REFYPE_LIB_SHARED ?= librefype.so
+
+# Define common variables
+_OCT_rw_r_r = 644
+_OCT_rwx_rx_rx = 755
+
+# Local Variables:
+#  mode: makefile-gmake
+# End:

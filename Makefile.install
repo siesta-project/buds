@@ -1,0 +1,79 @@
+# Include the generic setup for the makefiles
+-include setup.make
+
+# Common makefile stuff:
+ifndef _INCLUDED_common
+include Makefile.common
+endif
+
+ifndef _INCLUDED_default
+include Makefile.default
+endif
+
+# Here we define default abstractions of the variables
+# Currently the default installation directory is in
+#  HOME/refype
+PREFIX ?= $(HOME)/refype
+
+
+# Installation procedure
+# This target uses two levels of directories:
+#   DEST_PREFIX (the basic prefix)
+#   PREFIX (the actual installation prefix)
+# This two-level approach allows one to make
+# distro packages more easily.
+REFYPE_PREFIX = $(DEST_PREFIX)$(PREFIX)
+REFYPE_INC_DIR = $(REFYPE_PREFIX)/include
+REFYPE_VERSION_FILE = $(REFYPE_PREFIX)/include/refype_version.inc
+
+# Should we abstract to lib64?
+# There should be no difference between 32 and 64 bit.
+REFYPE_LIB_DIR = $(REFYPE_PREFIX)/lib
+# This is for later stuff
+REFYPE_BIN_DIR = $(REFYPE_PREFIX)/bin
+
+
+.PHONY: install
+.NOTPARALLEL: install
+install: install_init_dir install_version
+	@echo Installing generic include files: $(REFYPE_INC_DIR)
+	@install -pm$(_OCT_rw_r_r) -t $(REFYPE_INC_DIR) include/*
+
+	@if [ -e $(REFYPE_LIB_SHARED) ]; then \
+		echo Installing $(REFYPE_LIB_SHARED) library to: $(REFYPE_LIB_DIR) ; \
+		install -pm$(_OCT_rwx_rx_rx) -t $(REFYPE_LIB_DIR) $(REFYPE_LIB_SHARED) ; \
+	fi
+	@if [ -e $(REFYPE_LIB_STATIC) ]; then \
+		echo Installing $(REFYPE_LIB_STATIC) library to: $(REFYPE_LIB_DIR) ; \
+		install -pm$(_OCT_rwx_rx_rx) -t $(REFYPE_LIB_DIR) $(REFYPE_LIB_STATIC) ; \
+	fi
+
+
+##
+# Basic smallutilities that probably never should
+# be changed:
+##
+
+.PHONY: install_init_dir
+.NOTPARALLEL: install_init_dir
+install_init_dir:
+	@echo Creating installation directory: $(REFYPE_PREFIX)
+	@-mkdir -p $(REFYPE_INC_DIR)
+	@-mkdir -p $(REFYPE_LIB_DIR)
+	@-mkdir -p $(REFYPE_BIN_DIR)
+
+
+.PHONY: install_version
+.NOTPARALLEL: install_version
+install_version: install_init_dir
+	@echo Creating version file: $(REFYPE_VERSION_FILE)
+	@echo "#define REFYPE_MAJOR $(REFYPE_MAJOR)" > $(REFYPE_VERSION_FILE)
+	@echo "#define REFYPE_MINOR $(REFYPE_MINOR)" >> $(REFYPE_VERSION_FILE)
+	@echo "#define REFYPE_MICRO $(REFYPE_MICRO)" >> $(REFYPE_VERSION_FILE)
+	@echo "#define REFYPE_VERSION_STR \"$(REFYPE_MAJOR).$(REFYPE_MINOR).$(REFYPE_MICRO)\"" >> $(REFYPE_VERSION_FILE)
+	@chmod $(_OCT_rw_r_r) $(REFYPE_VERSION_FILE)
+
+
+# Local Variables:
+#  mode: makefile-gmake
+# End:

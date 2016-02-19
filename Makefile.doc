@@ -1,0 +1,18 @@
+# Common makefile stuff:
+ifndef _INCLUDED_common
+include Makefile.common
+endif
+
+ifndef _INCLUDED_default
+include Makefile.default
+endif
+
+.PHONY: doc
+.NOTPARALLEL: doc
+doc:
+	doc/make_doc.sh
+
+
+# Local Variables:
+#  mode: makefile-gmake
+# End:
