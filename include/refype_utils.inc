@@ -5,6 +5,8 @@
 
 ! Small check whether it already has been included.
 #ifndef _R_UTILS_H
+#define _R_UTILS_H
+
 
 ! function name for new routines
 ! Although all interfaces need not have explicit names
@@ -31,6 +33,5 @@
 #define _R_STR(x) #x
 
 
-! Handle several includes
-#define _R_UTILS_H
 #endif
+
