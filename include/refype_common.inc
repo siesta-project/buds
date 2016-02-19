@@ -287,7 +287,7 @@ contains
   !! @param[in] rhs @rype that is dublicated
   !!
   !! @author Nick R. Papior (2016, February)
-  elemental subroutine assign_(lhs, rhs)
+  subroutine assign_(lhs, rhs)
 
     ! No copying of data is involved, simply an increment of the
     ! reference counter.

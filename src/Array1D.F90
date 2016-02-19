@@ -15,7 +15,7 @@ module _R_MOD_NAME
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_,bArray1D)
 # define _R_TYPE_VAR logical
 #undef _R_TYPE_VAR_PREC
-#include "mryp_Array.inc"
+#include "Array.inc"
 end module
 
 ! Integer (short)
@@ -26,7 +26,7 @@ module _R_MOD_NAME
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_,sArray1D)
 # define _R_TYPE_VAR integer
 # define _R_TYPE_VAR_PREC is_
-#include "mryp_Array.inc"
+#include "Array.inc"
 end module
 
 ! Integer (int)
@@ -37,7 +37,7 @@ module _R_MOD_NAME
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_,iArray1D)
 # define _R_TYPE_VAR integer
 # define _R_TYPE_VAR_PREC ii_
-#include "mryp_Array.inc"
+#include "Array.inc"
 end module
 
 ! Integer (long)
@@ -48,7 +48,7 @@ module _R_MOD_NAME
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_,lArray1D)
 # define _R_TYPE_VAR integer
 # define _R_TYPE_VAR_PREC il_
-#include "mryp_Array.inc"
+#include "Array.inc"
 end module
 
 ! Real (single)
@@ -59,7 +59,7 @@ module _R_MOD_NAME
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_,rArray1D)
 # define _R_TYPE_VAR real
 # define _R_TYPE_VAR_PREC rr_
-#include "mryp_Array.inc"
+#include "Array.inc"
 end module
 
 ! Real (double)
@@ -70,7 +70,7 @@ module _R_MOD_NAME
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_,dArray1D)
 # define _R_TYPE_VAR real
 # define _R_TYPE_VAR_PREC rd_
-#include "mryp_Array.inc"
+#include "Array.inc"
 end module
 
 ! Complex (single)
@@ -81,7 +81,7 @@ module _R_MOD_NAME
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_,cArray1D)
 # define _R_TYPE_VAR complex
 # define _R_TYPE_VAR_PREC rr_
-#include "mryp_Array.inc"
+#include "Array.inc"
 end module
 
 ! Complex (double)
@@ -92,7 +92,7 @@ module _R_MOD_NAME
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_,zArray1D)
 # define _R_TYPE_VAR complex
 # define _R_TYPE_VAR_PREC rd_
-#include "mryp_Array.inc"
+#include "Array.inc"
 end module
 
 
