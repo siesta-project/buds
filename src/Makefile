@@ -20,6 +20,7 @@ ARRAY_OBJS = \
 	mryp_Array1D.o \
 	mryp_Array2D.o \
 	mryp_Array3D.o
+$(ARRAY_OBJS): Array.inc
 OBJS += $(ARRAY_OBJS)
 mryp_Array1D.f90: Array1D.F90
 	$(CPP) $(INC) $< > $@
@@ -69,6 +70,7 @@ mryp_FS_C2_Array3D.f90: FS_C2_Array3D.F90
 
 SM_OBJS = \
 	mryp_SM_CSR.o
+$(SM_OBJS): SM_CSR.inc
 OBJS += $(SM_OBJS)
 mryp_SM_CSR.f90: SM_CSR.F90
 	$(CPP) $(INC) $< > $@
@@ -77,6 +79,9 @@ mryp_SM_CSR.f90: SM_CSR.F90
 # For now everything depends on the utility program
 UTIL_OBJS = \
 	mryp_utils.o
+$(UTIL_OBJS): FIND_integer.inc
+$(UTIL_OBJS): SORT_integer.inc
+$(UTIL_OBJS): UNIQ_integer.inc
 $(OBJS): $(UTIL_OBJS)
 OBJS += $(UTIL_OBJS)
 mryp_utils.f90: utils.F90
