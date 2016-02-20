@@ -1,8 +1,13 @@
 
 # the default target
+.PHONY: default
+.NOTPARALLEL: default
+default: static
+
+# the default target
 .PHONY: all
 .NOTPARALLEL: all
-all: libs
+all: static shared
 
 # Include user-defined setup
 -include setup.make

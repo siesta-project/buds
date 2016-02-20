@@ -95,7 +95,6 @@ static: $(OBJS)
 
 shared: $(OBJS)
 	$(CC) $(CFLAGS) -shared -o ../$(REFYPE_LIB_SHARED) $^
-	$(RANLIB) ../$(REFYPE_LIB_STATIC)
 
 .PHONY: clean
 clean:
