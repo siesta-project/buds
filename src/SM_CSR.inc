@@ -20,7 +20,7 @@
   !!
   !! \code{.f90}
   !!   integer :: nr, nz, ir, idx
-  !!   integer, pointer :: rptr, col
+  !!   integer, pointer, contiguous :: rptr, col
   !!   call attach(this, nr=nr, nz=nz, rptr, col)
   !!
   !!   do ir = 1 , nr
@@ -55,8 +55,6 @@
   !! Contains the sparsity pattern for a CSR matrix.
   !! This sparse matrix *must* contain the diagonal
   !! elements.
-  !!
-  !! To access a specific element in
   type _R_TYPE_NAME_
     ! Consistent data in the reference counted object
 #   include "refype_common_type.inc"
@@ -68,12 +66,14 @@
     !! `nc` is number of columns in the matrix
     !!
     !! `nz` is the number of non-zero elements
+    !! although `rptr(nr+1)==nz` it should give certain
+    !! check-point advantages. 
     integer(_R_TYPE_VAR_PREC) :: nr, nc, nz
 
-    !> The column index of the equivalent sparse matrix (size `nz`)
-    integer(_R_TYPE_VAR_PREC), pointer, contiguous :: col(:) => null()
     !> Index of the equivalent row (size `nr+1`)
     integer(_R_TYPE_VAR_PREC), pointer, contiguous :: rptr(:) => null()
+    !> The column index of the equivalent sparse matrix (size `nz`)
+    integer(_R_TYPE_VAR_PREC), pointer, contiguous :: col(:) => null()
 
   end type _R_TYPE_NAME_
   
@@ -108,29 +108,38 @@
   !> Number of non-zero elements in the stored array (same as regular `size`)
   interface nnzs
     module procedure nnzs_
-  end interface nnzs
+  end interface 
 
   !> Number of rows in matrix
   interface rows
     module procedure rows_
-  end interface rows
+  end interface 
 
   !> Number of columns in matrix
   interface cols
     module procedure cols_
-  end interface cols
+  end interface 
 
   !> Wrap-around column indices to form a smaller matrix
   interface wrap
     module procedure wrap_
-  end interface wrap
+  end interface 
+
+  !> Query internal data structure elements via simple routine
+  interface attach
+    module procedure attach_
+  end interface 
+
+  !> Finalize and sort the column indices per row
+  interface finalize
+    module procedure finalize_
+  end interface 
 
 
   !> Print information about the @rype
   interface print
     module procedure print_
-  end interface print
-
+  end interface 
   
   ! Include common data routines
   ! Note that 'CONTAINS' is present in this include file.
@@ -190,13 +199,23 @@
     ! limiting ptr
     integer(_R_TYPE_VAR_PREC), intent(in) :: rptr(nr), col(nz)
 
+    ! Copy over information
+    ! It must be 1-based
+    if ( rptr(1) /= 1 ) then
+      call delete(this)
+      return
+    end if
 
     ! pre-allocate
     call new(this, nr, nc, nz)
 
-    ! Copy over information
+    ! Copy pointers
     this%data%rptr(1:nr) = rptr
-    this%data%rptr(nr+1) = nz
+    ! create last pointer (to one plus number of elements)
+    ! This ensures simple loops without taking care of
+    ! the last index
+    this%data%rptr(nr+1) = nz + 1
+    
     this%data%col = col
 
   end subroutine new_copy_
@@ -248,7 +267,7 @@
     ! wanted information.
     logical, intent(in), optional :: D
     integer(_R_TYPE_VAR_PREC), intent(out), optional :: nr, nc, nz
-    integer(_R_TYPE_VAR_PREC), intent(out), pointer, optional :: rptr(:), col(:)
+    integer(_R_TYPE_VAR_PREC), intent(out), pointer, contiguous, optional :: rptr(:), col(:)
 
     if ( present(nr) ) nr = this%data%nr
     if ( present(nc) ) nc = this%data%nc
@@ -258,10 +277,7 @@
 
   end subroutine attach_
 
-  ! We always allow both ii and il precision
-  ! for index retrieval
-#include "FIND.inc"
-  
+
   !> Get sparse index from double index
   !!
   !! This should only be used if one does scattered
@@ -274,28 +290,38 @@
   !! @param[in] ic the requested column
   !! @param[out] idx the index of `(ir,ic)`, <0 if non-existing
   pure subroutine index_(this, ir, ic, idx)
+    use _R_CC2(_R_MOD, _utils), only: find_bin
     type(_R_TYPE_NAME), intent(in) :: this
     integer(_R_TYPE_VAR_PREC), intent(in) :: ir, ic
     integer(_R_TYPE_VAR_PREC), intent(out) :: idx
     
-    call _R_CC2(binary_find_, _R_TYPE_VAR_PREC)( &
-      this%data%rptr(ir+1)-this%data%rptr(ir), &
+    call find_bin(this%data%rptr(ir+1)-this%data%rptr(ir), &
       this%data%col(this%data%rptr(ir:)), ic, idx)
     
     if ( idx > 0 ) idx = this%data%rptr(ir) + idx
 
   end subroutine index_
 
-#undef _R_FIND
 
   !> Wrap-around sparse matrix to form a smaller sparse matrix
+  !!
+  !! This reduces the column indices in a sparse pattern to
+  !! an equivalent column reduced matrix by converting column
+  !!  `c` to column `mod(c-1, nc) + 1`. Which in a 0-counted
+  !! array would simply be: `mod(c,nc)`.
+  !!
+  !! This can be usefull for transforming an `M(nr, 2*nr)`
+  !! matrix to `M(nr,nr)` square matrix.
   !!
   !! @param[in] from the originating sparse pattern
   !! @param[in] nc new number of columns in the sparse pattern
   !! @param[inout] to the resulting sparse pattern
   !! @param[in] unite @opt=.false. unites equivalent sparse
   !!                  elements to not have dublicate elements.
+  !! @author Nick R. Papior (2016, February)
   subroutine wrap_(from, nc, to, unite)
+    use _R_CC2(_R_MOD, _utils), only: sort_quick
+
     type(_R_TYPE_NAME), intent(in) :: from
     integer(_R_TYPE_VAR_PREC), intent(in) :: nc
     type(_R_TYPE_NAME), intent(inout) :: to
@@ -310,36 +336,106 @@
     integer(_R_TYPE_VAR_PREC) :: tnr, ti
     integer(_R_TYPE_VAR_PREC), pointer, contiguous :: tptr(:), tcol(:)
     
-    integer(_R_TYPE_VAR_PREC) :: ir
+    integer(_R_TYPE_VAR_PREC) :: ir, i
+    integer(_R_TYPE_VAR_PREC), pointer :: ind
+
+    integer(_R_TYPE_VAR_PREC), allocatable :: tmpcol(:)
 
     lunite = .false.
     if ( present(unite) ) lunite = unite
 
     ! Initialize
-    call attach_(from, nr=fnr, nz=fnz, rptr=fptr, col=fcol)
-
+    call attach(from, nr=fnr, nz=fnz, rptr=fptr, col=fcol)
+    
     ! Do simple case
     if ( .not. lunite ) then
       call new(to, fnr, nc, fnz)
 
-      call attach_(to, rptr=tptr, col=tcol)
+      call attach(to, rptr=tptr, col=tcol)
       tptr = fptr
-      do ir = 1 , fnz
-        tcol(ir) = mod(fcol(ir)-1, nc) + 1
+      do i = 1 , fnz
+        tcol(i) = mod(fcol(i)-1, nc) + 1
       end do
       
     else
 
       ! First calculate the size of the matrix
-      fnz = 0
+      nullify(tptr,tcol)
+      allocate(tptr(fnr+1),tcol(fnz))
+      tptr(1) = 1
       do ir = 1 , fnr
-        
+        ! ensure pivoting array long enough
+        call realloc_tmpcol(ir)
 
+        ! Create pivoting array
+        ! so that we may easily find the reduced
+        ! sparsity pattern
+        call sort_quick(fptr(ir+1)-fptr(ir), &
+          fcol(fptr(ir):), tmpcol(1:) )
+
+        ! first index of this row
+        ind => tptr(ir+1)
+        
+        ! initialize counter for the following row
+        ! (i.e. count number of entries)
+        ind = tptr(ir)
+        tcol(ind) = mod(fcol(tptr(ir)+tmpcol(1))-1, nc) + 1
+        do i = 2 , fptr(ir+1) - fptr(ir)
+          if ( fcol(tptr(ir)+tmpcol(i-1)) /= fcol(tptr(ir)+tmpcol(i)) ) then
+            ind = ind + 1
+            tcol(ind) = mod(fcol(tptr(ir)+tmpcol(i-1))-1, nc) + 1
+          end if
+        end do
+        
       end do
+
+      deallocate(tmpcol)
+
+      ! create the new sparsity pattern
+      call new(to, fnr, nc, tptr(fnr+1), tptr, tcol)
+      deallocate(tptr, tcol)
 
     end if
 
+  contains
+
+    ! Reallocate the temporary column indices in
+    ! a sorted array
+    subroutine realloc_tmpcol(ir)
+      integer(_R_TYPE_VAR_PREC), intent(in) :: ir
+      if ( .not. allocated(tmpcol) ) then
+        allocate(tmpcol(fptr(ir+1)-fptr(ir)))
+      else if ( fptr(ir+1)-fptr(ir) > size(tmpcol) ) then
+        deallocate(tmpcol)
+        allocate(tmpcol(fptr(ir+1)-fptr(ir)))
+      end if
+    end subroutine realloc_tmpcol
+
   end subroutine wrap_
+
+
+  !> Sorts the elements in the sparse pattern
+  !!
+  !! Sorts the sparse matrix such that the column
+  !! index is always increasing for each row.
+  subroutine finalize_(this)
+    use _R_CC2(_R_MOD, _utils), only: sort_quick
+
+    type(_R_TYPE_NAME), intent(inout) :: this
+
+    ! Local variables
+    integer(_R_TYPE_VAR_PREC) :: ir, nr
+    integer(_R_TYPE_VAR_PREC), pointer, contiguous :: rptr(:), col(:)
+
+    ! Get arrays
+    call attach(this, nr=nr, rptr=rptr, col=col)
+
+    do ir = 1 , nr
+      call sort_quick(rptr(ir+1)-rptr(ir), col(rptr(ir):))
+    end do
+    
+  end subroutine
+
 
   
   !> Print, to std-out, some basic information of the data-container

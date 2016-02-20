@@ -35,13 +35,18 @@
   !> Size of ID parameter for refype data-containers
   integer, private, parameter :: RYP_ID_LEN = 36
 
+#ifdef _R_MOD_NAME_STR
   !> Name of module
   ! Note // is often interpreted as a C-comment, hence we simply
   ! skip to a newline to make it expand in the preprocessor.
   character(len=*), parameter :: RYP_MOD_NAME = _R_XSTR(_R_CC2(_R_MOD,_)) // &
     _R_MOD_NAME_STR
+#endif
+  
+#ifdef _R_TYPE_NAME_STR
   !> Name of @rype in this module
   character(len=*), parameter :: RYP_TYPE_NAME = _R_TYPE_NAME_STR
+#endif
   
 ! project-refype -- local file settings
 !     Anything below this line may be overwritten by scripts

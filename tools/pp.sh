@@ -12,7 +12,8 @@ PREFIX=${PREFIX:-pp_}
 PREFIX=${PREFIX// /}
 
 function set_pp_cmd {
-    _PP="$@"
+    _PP="$@ -I../include"
+    
 }
 
 # Default to this command:

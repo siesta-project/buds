@@ -47,6 +47,8 @@ install: install_init_dir install_version
 		echo Installing $(REFYPE_LIB_STATIC) library to: $(REFYPE_LIB_DIR) ; \
 		install -pm$(_OCT_rwx_rx_rx) -t $(REFYPE_LIB_DIR) $(REFYPE_LIB_STATIC) ; \
 	fi
+	@echo Installing module files to: $(REFYPE_INC_DIR)
+	@install -pm$(_OCT_rw_r_r) -t $(REFYPE_INC_DIR) src/*.mod
 
 
 ##

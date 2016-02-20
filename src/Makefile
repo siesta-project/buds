@@ -13,10 +13,14 @@ endif
 # Include the top-dir include directory
 override INC += -I../include
 
+# Unset OBJS
+OBJS = 
+
 ARRAY_OBJS = \
 	mryp_Array1D.o \
 	mryp_Array2D.o \
 	mryp_Array3D.o
+OBJS += $(ARRAY_OBJS)
 mryp_Array1D.f90: Array1D.F90
 	$(CPP) $(INC) $< > $@
 mryp_Array2D.f90: Array2D.F90
@@ -28,6 +32,8 @@ C_ARRAY_OBJS = \
 	mryp_C2_Array1D.o \
 	mryp_C2_Array2D.o \
 	mryp_C2_Array3D.o
+$(C_ARRAY_OBJS): $(ARRAY_OBJS)
+OBJS += $(C_ARRAY_OBJS)
 mryp_C2_Array1D.f90: C2_Array1D.F90
 	$(CPP) $(INC) $< > $@
 mryp_C2_Array2D.f90: C2_Array2D.F90
@@ -39,6 +45,8 @@ FS_ARRAY_OBJS = \
 	mryp_FS_Array1D.o \
 	mryp_FS_Array2D.o \
 	mryp_FS_Array3D.o
+$(FS_ARRAY_OBJS): $(ARRAY_OBJS)
+OBJS += $(FS_ARRAY_OBJS)
 mryp_FS_Array1D.f90: FS_Array1D.F90
 	$(CPP) $(INC) $< > $@
 mryp_FS_Array2D.f90: FS_Array2D.F90
@@ -50,6 +58,8 @@ FS_C_ARRAY_OBJS = \
 	mryp_FS_C2_Array1D.o \
 	mryp_FS_C2_Array2D.o \
 	mryp_FS_C2_Array3D.o
+$(FS_C_ARRAY_OBJS): $(C_ARRAY_OBJS)
+OBJS += $(FS_C_ARRAY_OBJS)
 mryp_FS_C2_Array1D.f90: FS_C2_Array1D.F90
 	$(CPP) $(INC) $< > $@
 mryp_FS_C2_Array2D.f90: FS_C2_Array2D.F90
@@ -59,15 +69,19 @@ mryp_FS_C2_Array3D.f90: FS_C2_Array3D.F90
 
 SM_OBJS = \
 	mryp_SM_CSR.o
+OBJS += $(SM_OBJS)
 mryp_SM_CSR.f90: SM_CSR.F90
 	$(CPP) $(INC) $< > $@
 
-# Build list of objects
-OBJS  = $(ARRAY_OBJS)
-OBJS += $(C_ARRAY_OBJS)
-OBJS += $(FS_ARRAY_OBJS)
-OBJS += $(FS_C_ARRAY_OBJS)
-OBJS += $(SM_OBJS)
+
+# For now everything depends on the utility program
+UTIL_OBJS = \
+	mryp_utils.o
+$(OBJS): $(UTIL_OBJS)
+OBJS += $(UTIL_OBJS)
+mryp_utils.f90: utils.F90
+	$(CPP) $(INC) $< > $@
+
 
 .PHONY: static shared
 static: $(OBJS)
