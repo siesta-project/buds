@@ -133,7 +133,17 @@
   !> Finalize and sort the column indices per row
   interface finalize
     module procedure finalize_
-  end interface 
+  end interface
+
+  !> Retrieve a pointer to the internal row pointers
+  interface rptr
+    module procedure rptr_
+  end interface
+
+  !> Retrieve a pointer to the internal column indices
+  interface col
+    module procedure col_
+  end interface
 
 
   !> Print information about the @rype
@@ -418,6 +428,8 @@
   !!
   !! Sorts the sparse matrix such that the column
   !! index is always increasing for each row.
+  !!
+  !! @param[in] this @refype to finalize
   subroutine finalize_(this)
     use _R_CC2(_R_MOD, _utils), only: sort_quick
 
@@ -436,6 +448,30 @@
     
   end subroutine
 
+
+  !> Retrieve a pointer to the row pointers
+  !!
+  !! @param[in] this type to retrieve the pointer from
+  !! @return the pointer to the contained row-pointer segment
+  function rptr_(this) result(rptr)
+    type(_R_TYPE_NAME), intent(in) :: this
+    integer(_R_TYPE_VAR_PREC), pointer, contiguous :: rptr(:)
+
+    rptr => this%data%rptr
+    
+  end function rptr_
+
+  !> Retrieve a pointer to the column indices
+  !!
+  !! @param[in] this type to retrieve the pointer from
+  !! @return the pointer to the contained column indices segment
+  function col_(this) result(col)
+    type(_R_TYPE_NAME), intent(in) :: this
+    integer(_R_TYPE_VAR_PREC), pointer, contiguous :: col(:)
+
+    col => this%data%col
+    
+  end function col_
 
   
   !> Print, to std-out, some basic information of the data-container

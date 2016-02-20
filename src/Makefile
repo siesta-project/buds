@@ -20,6 +20,7 @@ ARRAY_OBJS = \
 	mryp_Array1D.o \
 	mryp_Array2D.o \
 	mryp_Array3D.o
+$(ARRAY_OBJS:.o=.f90): Array.inc
 $(ARRAY_OBJS): Array.inc
 OBJS += $(ARRAY_OBJS)
 mryp_Array1D.f90: Array1D.F90
@@ -70,6 +71,7 @@ mryp_FS_C2_Array3D.f90: FS_C2_Array3D.F90
 
 SM_OBJS = \
 	mryp_SM_CSR.o
+$(SM_OBJS:.o=.f90): SM_CSR.inc
 $(SM_OBJS): SM_CSR.inc
 OBJS += $(SM_OBJS)
 mryp_SM_CSR.f90: SM_CSR.F90
