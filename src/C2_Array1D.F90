@@ -9,10 +9,10 @@
 module _R_MOD_NAME
   ! Requirement
   use _R_CC3(_R_MOD,_,sArray1D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_C2_,sArray1D)
+# define _R_TYPE_NAME _R_CC3(_R_TYPE,C2_,sArray1D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_C2_,sArray1D)
-# define _R_COLL_A _R_CC3(_R_TYPE,_,sArray1D)
-# define _R_COLL_B _R_CC3(_R_TYPE,_,sArray1D)
+# define _R_COLL_A _R_CC2(_R_TYPE,sArray1D)
+# define _R_COLL_B _R_CC2(_R_TYPE,sArray1D)
 #include "refype_coll.inc"
 end module
 
@@ -22,10 +22,10 @@ end module
 module _R_MOD_NAME
   ! Requirement
   use _R_CC3(_R_MOD,_,iArray1D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_C2_,iArray1D)
+# define _R_TYPE_NAME _R_CC3(_R_TYPE,C2_,iArray1D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_C2_,iArray1D)
-# define _R_COLL_A _R_CC3(_R_TYPE,_,iArray1D)
-# define _R_COLL_B _R_CC3(_R_TYPE,_,iArray1D)
+# define _R_COLL_A _R_CC2(_R_TYPE,iArray1D)
+# define _R_COLL_B _R_CC2(_R_TYPE,iArray1D)
 #include "refype_coll.inc"
 end module
 
@@ -35,10 +35,10 @@ end module
 module _R_MOD_NAME
   ! Requirement
   use _R_CC3(_R_MOD,_,lArray1D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_C2_,lArray1D)
+# define _R_TYPE_NAME _R_CC3(_R_TYPE,C2_,lArray1D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_C2_,lArray1D)
-# define _R_COLL_A _R_CC3(_R_TYPE,_,lArray1D)
-# define _R_COLL_B _R_CC3(_R_TYPE,_,lArray1D)
+# define _R_COLL_A _R_CC2(_R_TYPE,lArray1D)
+# define _R_COLL_B _R_CC2(_R_TYPE,lArray1D)
 #include "refype_coll.inc"
 end module
 
@@ -48,10 +48,10 @@ end module
 module _R_MOD_NAME
   ! Requirement
   use _R_CC3(_R_MOD,_,rArray1D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_C2_,rArray1D)
+# define _R_TYPE_NAME _R_CC3(_R_TYPE,C2_,rArray1D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_C2_,rArray1D)
-# define _R_COLL_A _R_CC3(_R_TYPE,_,rArray1D)
-# define _R_COLL_B _R_CC3(_R_TYPE,_,rArray1D)
+# define _R_COLL_A _R_CC2(_R_TYPE,rArray1D)
+# define _R_COLL_B _R_CC2(_R_TYPE,rArray1D)
 #include "refype_coll.inc"
 end module
 
@@ -61,10 +61,10 @@ end module
 module _R_MOD_NAME
   ! Requirement
   use _R_CC3(_R_MOD,_,dArray1D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_C2_,dArray1D)
+# define _R_TYPE_NAME _R_CC3(_R_TYPE,C2_,dArray1D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_C2_,dArray1D)
-# define _R_COLL_A _R_CC3(_R_TYPE,_,dArray1D)
-# define _R_COLL_B _R_CC3(_R_TYPE,_,dArray1D)
+# define _R_COLL_A _R_CC2(_R_TYPE,dArray1D)
+# define _R_COLL_B _R_CC2(_R_TYPE,dArray1D)
 #include "refype_coll.inc"
 end module
 
@@ -74,10 +74,10 @@ end module
 module _R_MOD_NAME
   ! Requirement
   use _R_CC3(_R_MOD,_,cArray1D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_C2_,cArray1D)
+# define _R_TYPE_NAME _R_CC3(_R_TYPE,C2_,cArray1D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_C2_,cArray1D)
-# define _R_COLL_A _R_CC3(_R_TYPE,_,cArray1D)
-# define _R_COLL_B _R_CC3(_R_TYPE,_,cArray1D)
+# define _R_COLL_A _R_CC2(_R_TYPE,cArray1D)
+# define _R_COLL_B _R_CC2(_R_TYPE,cArray1D)
 #include "refype_coll.inc"
 end module
 
@@ -87,10 +87,10 @@ end module
 module _R_MOD_NAME
   ! Requirement
   use _R_CC3(_R_MOD,_,zArray1D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_C2_,zArray1D)
+# define _R_TYPE_NAME _R_CC3(_R_TYPE,C2_,zArray1D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_C2_,zArray1D)
-# define _R_COLL_A _R_CC3(_R_TYPE,_,zArray1D)
-# define _R_COLL_B _R_CC3(_R_TYPE,_,zArray1D)
+# define _R_COLL_A _R_CC2(_R_TYPE,zArray1D)
+# define _R_COLL_B _R_CC2(_R_TYPE,zArray1D)
 #include "refype_coll.inc"
 end module
 

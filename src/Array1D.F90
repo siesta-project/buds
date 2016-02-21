@@ -11,7 +11,7 @@
 # define _R_MOD_NAME _R_CC3(_R_MOD,_,bArray1D)
 !> @file _R_MOD_NAME
 module _R_MOD_NAME
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_,bArray1D)
+# define _R_TYPE_NAME _R_CC2(_R_TYPE,bArray1D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_,bArray1D)
 # define _R_TYPE_VAR logical
 #undef _R_TYPE_VAR_PREC
@@ -22,7 +22,7 @@ end module
 # define _R_MOD_NAME _R_CC3(_R_MOD,_,sArray1D)
 !> @file _R_MOD_NAME
 module _R_MOD_NAME
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_,sArray1D)
+# define _R_TYPE_NAME _R_CC2(_R_TYPE,sArray1D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_,sArray1D)
 # define _R_TYPE_VAR integer
 # define _R_TYPE_VAR_PREC is_
@@ -33,7 +33,7 @@ end module
 # define _R_MOD_NAME _R_CC3(_R_MOD,_,iArray1D)
 !> @file _R_MOD_NAME
 module _R_MOD_NAME
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_,iArray1D)
+# define _R_TYPE_NAME _R_CC2(_R_TYPE,iArray1D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_,iArray1D)
 # define _R_TYPE_VAR integer
 # define _R_TYPE_VAR_PREC ii_
@@ -44,7 +44,7 @@ end module
 # define _R_MOD_NAME _R_CC3(_R_MOD,_,lArray1D)
 !> @file _R_MOD_NAME
 module _R_MOD_NAME
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_,lArray1D)
+# define _R_TYPE_NAME _R_CC2(_R_TYPE,lArray1D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_,lArray1D)
 # define _R_TYPE_VAR integer
 # define _R_TYPE_VAR_PREC il_
@@ -55,7 +55,7 @@ end module
 # define _R_MOD_NAME _R_CC3(_R_MOD,_,rArray1D)
 !> @file _R_MOD_NAME
 module _R_MOD_NAME
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_,rArray1D)
+# define _R_TYPE_NAME _R_CC2(_R_TYPE,rArray1D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_,rArray1D)
 # define _R_TYPE_VAR real
 # define _R_TYPE_VAR_PREC rr_
@@ -66,7 +66,7 @@ end module
 # define _R_MOD_NAME _R_CC3(_R_MOD,_,dArray1D)
 !> @file _R_MOD_NAME
 module _R_MOD_NAME
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_,dArray1D)
+# define _R_TYPE_NAME _R_CC2(_R_TYPE,dArray1D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_,dArray1D)
 # define _R_TYPE_VAR real
 # define _R_TYPE_VAR_PREC rd_
@@ -77,7 +77,7 @@ end module
 # define _R_MOD_NAME _R_CC3(_R_MOD,_,cArray1D)
 !> @file _R_MOD_NAME
 module _R_MOD_NAME
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_,cArray1D)
+# define _R_TYPE_NAME _R_CC2(_R_TYPE,cArray1D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_,cArray1D)
 # define _R_TYPE_VAR complex
 # define _R_TYPE_VAR_PREC rr_
@@ -88,7 +88,7 @@ end module
 # define _R_MOD_NAME _R_CC3(_R_MOD,_,zArray1D)
 !> @file _R_MOD_NAME
 module _R_MOD_NAME
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_,zArray1D)
+# define _R_TYPE_NAME _R_CC2(_R_TYPE,zArray1D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_,zArray1D)
 # define _R_TYPE_VAR complex
 # define _R_TYPE_VAR_PREC rd_

@@ -1,5 +1,7 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
 
+!> @cond DOC_ALL
+
 ! Get default commands
 #include "refype_utils.inc"
 
@@ -9,9 +11,9 @@
 module _R_MOD_NAME
   ! Requirement
   use _R_CC3(_R_MOD,_,sArray2D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_FS_,sArray2D)
+# define _R_TYPE_NAME _R_CC3(_R_TYPE,FS_,sArray2D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_FS_,sArray2D)
-# define _R_STACK_TYPE _R_CC3(_R_TYPE,_,sArray2D)
+# define _R_STACK_TYPE _R_CC2(_R_TYPE,sArray2D)
 #include "refype_fstack.inc"
 end module
 
@@ -21,9 +23,9 @@ end module
 module _R_MOD_NAME
   ! Requirement
   use _R_CC3(_R_MOD,_,iArray2D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_FS_,iArray2D)
+# define _R_TYPE_NAME _R_CC3(_R_TYPE,FS_,iArray2D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_FS_,iArray2D)
-# define _R_STACK_TYPE _R_CC3(_R_TYPE,_,iArray2D)
+# define _R_STACK_TYPE _R_CC2(_R_TYPE,iArray2D)
 #include "refype_fstack.inc"
 end module
 
@@ -33,9 +35,9 @@ end module
 module _R_MOD_NAME
   ! Requirement
   use _R_CC3(_R_MOD,_,lArray2D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_FS_,lArray2D)
+# define _R_TYPE_NAME _R_CC3(_R_TYPE,FS_,lArray2D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_FS_,lArray2D)
-# define _R_STACK_TYPE _R_CC3(_R_TYPE,_,lArray2D)
+# define _R_STACK_TYPE _R_CC2(_R_TYPE,lArray2D)
 #include "refype_fstack.inc"
 end module
 
@@ -45,9 +47,9 @@ end module
 module _R_MOD_NAME
   ! Requirement
   use _R_CC3(_R_MOD,_,rArray2D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_FS_,rArray2D)
+# define _R_TYPE_NAME _R_CC3(_R_TYPE,FS_,rArray2D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_FS_,rArray2D)
-# define _R_STACK_TYPE _R_CC3(_R_TYPE,_,rArray2D)
+# define _R_STACK_TYPE _R_CC2(_R_TYPE,rArray2D)
 #include "refype_fstack.inc"
 end module
 
@@ -57,9 +59,9 @@ end module
 module _R_MOD_NAME
   ! Requirement
   use _R_CC3(_R_MOD,_,dArray2D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_FS_,dArray2D)
+# define _R_TYPE_NAME _R_CC3(_R_TYPE,FS_,dArray2D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_FS_,dArray2D)
-# define _R_STACK_TYPE _R_CC3(_R_TYPE,_,dArray2D)
+# define _R_STACK_TYPE _R_CC2(_R_TYPE,dArray2D)
 #include "refype_fstack.inc"
 end module
 
@@ -69,9 +71,9 @@ end module
 module _R_MOD_NAME
   ! Requirement
   use _R_CC3(_R_MOD,_,cArray2D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_FS_,cArray2D)
+# define _R_TYPE_NAME _R_CC3(_R_TYPE,FS_,cArray2D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_FS_,cArray2D)
-# define _R_STACK_TYPE _R_CC3(_R_TYPE,_,cArray2D)
+# define _R_STACK_TYPE _R_CC2(_R_TYPE,cArray2D)
 #include "refype_fstack.inc"
 end module
 
@@ -81,11 +83,13 @@ end module
 module _R_MOD_NAME
   ! Requirement
   use _R_CC3(_R_MOD,_,zArray2D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_FS_,zArray2D)
+# define _R_TYPE_NAME _R_CC3(_R_TYPE,FS_,zArray2D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_FS_,zArray2D)
-# define _R_STACK_TYPE _R_CC3(_R_TYPE,_,zArray2D)
+# define _R_STACK_TYPE _R_CC2(_R_TYPE,zArray2D)
 #include "refype_fstack.inc"
 end module
+
+!> @endcond DOC_ALL
 
 ! project-refype -- local file settings
 !     Anything below this line may be overwritten by scripts

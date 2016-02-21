@@ -14,7 +14,8 @@
 ! for clarity.
 #define _R_NEW new
 #define _R_MOD mryp
-#define _R_TYPE tryp
+!#define _R_TYPE tryp_
+#define _R_TYPE 
 
 
 ! Concatenation

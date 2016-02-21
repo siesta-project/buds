@@ -7,7 +7,7 @@
 # define _R_MOD_NAME _R_CC3(_R_MOD,_,iSM_CSR)
 !> @file _R_MOD_NAME
 module _R_MOD_NAME
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_,iSM_CSR)
+# define _R_TYPE_NAME _R_CC2(_R_TYPE,iSM_CSR)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_,iSM_CSR)
 # define _R_TYPE_VAR integer
 # define _R_TYPE_VAR_PREC ii_
@@ -18,7 +18,7 @@ end module
 # define _R_MOD_NAME _R_CC3(_R_MOD,_,lSM_CSR)
 !> @file _R_MOD_NAME
 module _R_MOD_NAME
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_,lSM_CSR)
+# define _R_TYPE_NAME _R_CC2(_R_TYPE,lSM_CSR)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_,lSM_CSR)
 # define _R_TYPE_VAR integer
 # define _R_TYPE_VAR_PREC il_

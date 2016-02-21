@@ -1,5 +1,7 @@
 ! @@LICENSE@@ see Copyright notice in the top-directory
 
+!> @cond DOC_ALL
+
 ! Get default commands
 #include "refype_utils.inc"
 
@@ -9,9 +11,9 @@
 module _R_MOD_NAME
   ! Requirement
   use _R_CC3(_R_MOD,_C2_,sArray3D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_FS_C2_,sArray3D)
+# define _R_TYPE_NAME _R_CC3(_R_TYPE,FS_C2_,sArray3D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_FS_C2_,sArray3D)
-# define _R_STACK_TYPE _R_CC3(_R_TYPE,_C2_,sArray3D)
+# define _R_STACK_TYPE _R_CC3(_R_TYPE,C2_,sArray3D)
 #include "refype_fstack.inc"
 end module
 
@@ -21,9 +23,9 @@ end module
 module _R_MOD_NAME
   ! Requirement
   use _R_CC3(_R_MOD,_C2_,iArray3D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_FS_C2_,iArray3D)
+# define _R_TYPE_NAME _R_CC3(_R_TYPE,FS_C2_,iArray3D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_FS_C2_,iArray3D)
-# define _R_STACK_TYPE _R_CC3(_R_TYPE,_C2_,iArray3D)
+# define _R_STACK_TYPE _R_CC3(_R_TYPE,C2_,iArray3D)
 #include "refype_fstack.inc"
 end module
 
@@ -33,9 +35,9 @@ end module
 module _R_MOD_NAME
   ! Requirement
   use _R_CC3(_R_MOD,_C2_,lArray3D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_FS_C2_,lArray3D)
+# define _R_TYPE_NAME _R_CC3(_R_TYPE,FS_C2_,lArray3D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_FS_C2_,lArray3D)
-# define _R_STACK_TYPE _R_CC3(_R_TYPE,_C2_,lArray3D)
+# define _R_STACK_TYPE _R_CC3(_R_TYPE,C2_,lArray3D)
 #include "refype_fstack.inc"
 end module
 
@@ -45,9 +47,9 @@ end module
 module _R_MOD_NAME
   ! Requirement
   use _R_CC3(_R_MOD,_C2_,rArray3D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_FS_C2_,rArray3D)
+# define _R_TYPE_NAME _R_CC3(_R_TYPE,FS_C2_,rArray3D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_FS_C2_,rArray3D)
-# define _R_STACK_TYPE _R_CC3(_R_TYPE,_C2_,rArray3D)
+# define _R_STACK_TYPE _R_CC3(_R_TYPE,C2_,rArray3D)
 #include "refype_fstack.inc"
 end module
 
@@ -57,9 +59,9 @@ end module
 module _R_MOD_NAME
   ! Requirement
   use _R_CC3(_R_MOD,_C2_,dArray3D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_FS_C2_,dArray3D)
+# define _R_TYPE_NAME _R_CC3(_R_TYPE,FS_C2_,dArray3D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_FS_C2_,dArray3D)
-# define _R_STACK_TYPE _R_CC3(_R_TYPE,_C2_,dArray3D)
+# define _R_STACK_TYPE _R_CC3(_R_TYPE,C2_,dArray3D)
 #include "refype_fstack.inc"
 end module
 
@@ -69,9 +71,9 @@ end module
 module _R_MOD_NAME
   ! Requirement
   use _R_CC3(_R_MOD,_C2_,cArray3D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_FS_C2_,cArray3D)
+# define _R_TYPE_NAME _R_CC3(_R_TYPE,FS_C2_,cArray3D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_FS_C2_,cArray3D)
-# define _R_STACK_TYPE _R_CC3(_R_TYPE,_C2_,cArray3D)
+# define _R_STACK_TYPE _R_CC3(_R_TYPE,C2_,cArray3D)
 #include "refype_fstack.inc"
 end module
 
@@ -81,11 +83,13 @@ end module
 module _R_MOD_NAME
   ! Requirement
   use _R_CC3(_R_MOD,_C2_,zArray3D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,_FS_C2_,zArray3D)
+# define _R_TYPE_NAME _R_CC3(_R_TYPE,FS_C2_,zArray3D)
 # define _R_TYPE_NEW _R_CC3(_R_NEW,_FS_C2_,zArray3D)
-# define _R_STACK_TYPE _R_CC3(_R_TYPE,_C2_,zArray3D)
+# define _R_STACK_TYPE _R_CC3(_R_TYPE,C2_,zArray3D)
 #include "refype_fstack.inc"
 end module
+
+!> @endcond DOC_ALL
 
 ! project-refype -- local file settings
 !     Anything below this line may be overwritten by scripts

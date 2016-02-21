@@ -330,7 +330,7 @@
   !!                  elements to not have dublicate elements.
   !! @author Nick R. Papior (2016, February)
   subroutine wrap_(from, nc, to, unite)
-    use _R_CC2(_R_MOD, _utils), only: sort_quick
+    use _R_CC2(_R_MOD, _utils), only: sort_quick, modp
 
     type(_R_TYPE_NAME), intent(in) :: from
     integer(_R_TYPE_VAR_PREC), intent(in) :: nc
@@ -364,7 +364,7 @@
       call attach(to, rptr=tptr, col=tcol)
       tptr = fptr
       do i = 1 , fnz
-        tcol(i) = mod(fcol(i)-1, nc) + 1
+        tcol(i) = modp(fcol(i), nc)
       end do
       
     else
@@ -389,11 +389,11 @@
         ! initialize counter for the following row
         ! (i.e. count number of entries)
         ind = tptr(ir)
-        tcol(ind) = mod(fcol(tptr(ir)+tmpcol(1))-1, nc) + 1
+        tcol(ind) = modp(fcol(tptr(ir)+tmpcol(1)), nc)
         do i = 2 , fptr(ir+1) - fptr(ir)
           if ( fcol(tptr(ir)+tmpcol(i-1)) /= fcol(tptr(ir)+tmpcol(i)) ) then
             ind = ind + 1
-            tcol(ind) = mod(fcol(tptr(ir)+tmpcol(i-1))-1, nc) + 1
+            tcol(ind) = modp(fcol(tptr(ir)+tmpcol(i-1)), nc)
           end if
         end do
         
@@ -424,30 +424,6 @@
   end subroutine wrap_
 
 
-  !> Sorts the elements in the sparse pattern
-  !!
-  !! Sorts the sparse matrix such that the column
-  !! index is always increasing for each row.
-  !!
-  !! @param[in] this @refype to finalize
-  subroutine finalize_(this)
-    use _R_CC2(_R_MOD, _utils), only: sort_quick
-
-    type(_R_TYPE_NAME), intent(inout) :: this
-
-    ! Local variables
-    integer(_R_TYPE_VAR_PREC) :: ir, nr
-    integer(_R_TYPE_VAR_PREC), pointer, contiguous :: rptr(:), col(:)
-
-    ! Get arrays
-    call attach(this, nr=nr, rptr=rptr, col=col)
-
-    do ir = 1 , nr
-      call sort_quick(rptr(ir+1)-rptr(ir), col(rptr(ir):))
-    end do
-    
-  end subroutine
-
 
   !> Retrieve a pointer to the row pointers
   !!
@@ -473,6 +449,32 @@
     
   end function col_
 
+  
+  !> Sorts the elements in the sparse pattern
+  !!
+  !! Sorts the sparse matrix such that the column
+  !! index is always increasing for each row.
+  !!
+  !! @param[in] this @refype to finalize
+  subroutine finalize_(this)
+    ! We use the quick-sort algorithm in this general finalization
+    ! algorithm.
+    use _R_CC2(_R_MOD, _utils), only: sort_quick
+
+    type(_R_TYPE_NAME), intent(inout) :: this
+
+    ! Local variables
+    integer(_R_TYPE_VAR_PREC) :: ir, nr
+    integer(_R_TYPE_VAR_PREC), pointer, contiguous :: rptr(:), col(:)
+
+    ! Get arrays
+    call attach(this, nr=nr, rptr=rptr, col=col)
+
+    do ir = 1 , nr
+      call sort_quick(rptr(ir+1)-rptr(ir), col(rptr(ir):))
+    end do
+    
+  end subroutine
   
   !> Print, to std-out, some basic information of the data-container
   !!

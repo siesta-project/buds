@@ -72,9 +72,46 @@ module _R_MOD_NAME
     module procedure _R_CC2(nuniq_pvt_,ii_)
     module procedure _R_CC2(nuniq_pvt_,il_)
   end interface 
+
   
+  public :: modp
+  !> 1-based modulo operator
+  interface modp
+    module procedure _R_CC2(modp_,ii_)
+    module procedure _R_CC2(modp_,il_)
+  end interface 
+
 contains
 
+  !> Return wrapped integer by modulo operation
+  !!
+  !! Routine for performing 1-index based modulo
+  !! operations.
+  !!
+  !! For any numbers `i` and `n` performing `modp(i,n)`
+  !! returns `n` if `mod(i,n) == 0`, otherwise it
+  !! returns `i`.
+  elemental function _R_CC2(modp_,ii_)(i,n) result(p)
+    integer(ii_), intent(in) :: i, n
+    integer(ii_) :: p
+    p = mod(i-1,n) + 1
+  end function
+
+  !> Return wrapped integer by modulo operation
+  !!
+  !! Routine for performing 1-index based modulo
+  !! operations.
+  !!
+  !! For any numbers `i` and `n` performing `modp(i,n)`
+  !! returns `n` if `mod(i,n) == 0`, otherwise it
+  !! returns `i`.
+  elemental function _R_CC2(modp_,il_)(i,n) result(p)
+    integer(il_), intent(in) :: i, n
+    integer(il_) :: p
+    p = mod(i-1,n) + 1
+  end function 
+
+  
 #undef _R_PREC
 #define _R_PREC ii_
 # include "SORT_integer.inc"
