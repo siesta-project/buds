@@ -578,7 +578,7 @@
     lindent = 1
     if ( present(indent) ) lindent = indent
 
-    write(fmt, '(a,i0,a)') '(t',indent,',2a)'
+    write(fmt, '(a,i0,a)') '(t',lindent,',2a)'
     
     if ( .not. is_initd(this) ) then
       write(*,fmt) trim(name), " not initialized."

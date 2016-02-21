@@ -456,23 +456,41 @@
   !! index is always increasing for each row.
   !!
   !! @param[in] this @refype to finalize
-  subroutine finalize_(this)
+  !! @param[out] pvt @opt=@none if requested the pivoting array for the finalized sparsity pattern
+  subroutine finalize_(this, pvt)
     ! We use the quick-sort algorithm in this general finalization
     ! algorithm.
     use _R_CC2(_R_MOD, _utils), only: sort_quick
 
     type(_R_TYPE_NAME), intent(inout) :: this
+    integer(_R_TYPE_VAR_PREC), intent(out), optional :: pvt(:)
 
     ! Local variables
-    integer(_R_TYPE_VAR_PREC) :: ir, nr
+    integer(_R_TYPE_VAR_PREC) :: ir, nr, nz
     integer(_R_TYPE_VAR_PREC), pointer, contiguous :: rptr(:), col(:)
 
     ! Get arrays
-    call attach(this, nr=nr, rptr=rptr, col=col)
+    call attach(this, nr=nr, nz=nz, rptr=rptr, col=col)
 
-    do ir = 1 , nr
-      call sort_quick(rptr(ir+1)-rptr(ir), col(rptr(ir):))
-    end do
+    if ( present(pvt) ) then
+      
+      if ( size(pvt) < nz ) then
+        pvt = -1
+        return
+      end if
+
+      do ir = 1 , nr
+        call sort_quick(rptr(ir+1)-rptr(ir), col(rptr(ir):), &
+          pvt(rptr(ir):))
+      end do
+
+    else
+      
+      do ir = 1 , nr
+        call sort_quick(rptr(ir+1)-rptr(ir), col(rptr(ir):))
+      end do
+      
+    end if
     
   end subroutine
   
@@ -506,7 +524,7 @@
     lindent = 1
     if ( present(indent) ) lindent = indent
 
-    write(fmt, '(a,i0,a)') '(t',indent,',2a)'
+    write(fmt, '(a,i0,a)') '(t',lindent,',2a)'
 
     if ( .not. is_initd(this) ) then
       write(*,fmt) trim(name), " not initialized."
