@@ -27,6 +27,9 @@ include Makefile.install
 # Add the documentation makefile
 include Makefile.doc
 
+# Add the distribution creation tool
+include Makefile.dist
+
 # Now create the actual compilation make file
 .PHONY: lib libs shared static
 #.NOTPARALLEL: lib libs shared static

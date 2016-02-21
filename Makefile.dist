@@ -1,0 +1,20 @@
+# Common makefile stuff:
+ifndef _INCLUDED_common
+ include Makefile.common
+endif
+
+ifndef _INCLUDED_default
+ include Makefile.default
+endif
+
+# This distribution forces the compilation of
+# the tool to enable storing the pre-processed
+# sources.
+.PHONY: dist
+.NOTPARALLEL: dist
+dist: libs
+	@tools/dist.sh
+
+# Local Variables:
+#  mode: makefile-gmake
+# End:
