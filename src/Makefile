@@ -25,10 +25,14 @@ $(ARRAY_OBJS): Array.inc
 OBJS += $(ARRAY_OBJS)
 mryp_Array1D.f90: Array1D.F90
 	$(CPP) $(INC) $< > $@
-mryp_Array2D.f90: Array2D.F90
-	$(CPP) $(INC) $< > $@
-mryp_Array3D.f90: Array3D.F90
-	$(CPP) $(INC) $< > $@
+mryp_Array2D.f90: Array1D.F90
+	@cp Array1D.F90 Array2D.F90
+	@sed -i -e 's/\(define _R_DIM\) 1/\1 2/g;s/Array1D/Array2D/g' Array2D.F90
+	$(CPP) $(INC) Array2D.F90 > $@
+mryp_Array3D.f90: Array1D.F90
+	@cp Array1D.F90 Array3D.F90
+	@sed -i -e 's/\(define _R_DIM\) 1/\1 2/g;s/Array1D/Array3D/g' Array3D.F90
+	$(CPP) $(INC) Array3D.F90 > $@
 
 C_ARRAY_OBJS = \
 	mryp_C2_Array1D.o \

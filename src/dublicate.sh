@@ -3,7 +3,7 @@
 # This small script dublicates certain files
 # in case small changes has been done.
 
-for dat in Array1D FS_Array1D C2_Array1D FS_C2_Array1D
+for dat in FS_Array1D C2_Array1D FS_C2_Array1D
 do
     # basic file
     f=mryp_${dat}.F90
