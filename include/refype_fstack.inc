@@ -8,7 +8,7 @@
 #  define _R_TYPE_NAME_ _R_CC2(_R_TYPE_NAME,_)
 #endif
 #ifndef _R_TYPE_NAME_STR
-#  define _R_TYPE_NAME_STR _R_STR(_R_TYPE_NAME)
+#  define _R_TYPE_NAME_STR _R_XSTR(_R_TYPE_NAME)
 #endif
 
 #include "refype_common_declarations.inc"
@@ -587,7 +587,7 @@
 
     write(fmt, '(a,i0,a)') '(t',lindent,',3a)'
     lindent = lindent + 2 ! step indentation
-    write(*,fmt) "<", trim(name), " stack:>"
+    write(*,fmt) "<", trim(name), " stack>"
     do i = 1 , size(this)
       call print(this%data%T(i), indent = lindent)
     end do
