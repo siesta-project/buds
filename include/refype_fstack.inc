@@ -587,13 +587,13 @@
 
     write(fmt, '(a,i0,a)') '(t',lindent,',3a)'
     lindent = lindent + 2 ! step indentation
-    write(*,fmt) "<", trim(name), " stack>"
+    write(*,fmt) "<<", trim(name), " stack>"
     do i = 1 , size(this)
       call print(this%data%T(i), indent = lindent)
     end do
     lindent = lindent - 2 ! go back to requested indentation
     write(fmt, '(a,i0,a)') '(t',lindent,',a,i0,a)'
-    write(*,fmt) " <stack-refs: ", frefs(this), ">"
+    write(*,fmt) " <stack-refs: ", frefs(this), ">>"
 
   end subroutine print_
 

@@ -8,7 +8,7 @@
 #  define _R_TYPE_NAME_ _R_CC2(_R_TYPE_NAME,_)
 #endif
 #ifndef _R_TYPE_NAME_STR
-#  define _R_TYPE_NAME_STR _R_STR(_R_TYPE_NAME)
+#  define _R_TYPE_NAME_STR _R_XSTR(_R_TYPE_NAME)
 #endif
 
 #include "refype_common_declarations.inc"
@@ -335,7 +335,7 @@
 
     write(fmt, '(a,i0,a)') '(t',lindent,',3a)'
     lindent = lindent + 2 ! step indentation
-    write(*,fmt) "<<", trim(name), ">"
+    write(*,fmt) "<<", trim(name), " coll>"
     call print(this%data%a, indent = lindent)
     call print(this%data%b, indent = lindent)
 #ifdef _R_COLL_C
@@ -349,7 +349,7 @@
 #endif
     lindent = lindent - 2 ! go back to requested indentation
     write(fmt, '(a,i0,a)') '(t',lindent,',a,i0,a)'
-    write(*,fmt) " < refs: ", frefs(this), ">>"
+    write(*,fmt) " <coll-refs: ", frefs(this), ">>"
 
   end subroutine print_
 

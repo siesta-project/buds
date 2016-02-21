@@ -63,6 +63,13 @@ shared:
 static:
 	$(MAKE) $(MFLAGS) -C src static
 
+.PHONY: test tests
+test: static
+	$(MAKE) $(MFLAGS) -C test test
+
+tests: test
+
 clean:
 	rm -f $(REFYPE_LIB_STATIC) $(REFYPE_LIB_SHARED)
 	$(MAKE) -C src clean
+	$(MAKE) -C test clean
