@@ -419,7 +419,7 @@
 #if _R_DIM > 1
     d2 = size_(this, 2)
 #endif
-#if _R_DIM > 3
+#if _R_DIM > 2
     d3 = size_(this, 3)
 #endif
     
