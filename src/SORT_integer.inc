@@ -374,7 +374,7 @@ recursive pure subroutine _R_CC2(sort_quick_,_R_PREC)(n, array)
 
   ! Retrieve the partition ID
   call partition(n, array, div)
-  call _R_CC2(sort_quick_,_R_PREC)(div-1, array(1))
+  call _R_CC2(sort_quick_,_R_PREC)(div-int(1,_R_PREC), array(1))
   call _R_CC2(sort_quick_,_R_PREC)(n-div, array(div))
   
 contains
@@ -487,7 +487,7 @@ contains
     
     ! Retrieve the partition ID
     call partition(n, array, m, pvt, div)
-    call _R_FIND_LOCAL (n, array(1), div-1, pvt(1))
+    call _R_FIND_LOCAL (n, array(1), div-int(1,_R_PREC), pvt(1))
     call _R_FIND_LOCAL (n, array(1), m-div, pvt(div))
     
   end subroutine _R_FIND_LOCAL

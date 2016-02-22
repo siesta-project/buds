@@ -75,8 +75,8 @@ mryp_FS_C2_Array3D.f90: FS_C2_Array3D.F90
 
 SM_OBJS = \
 	mryp_SM_CSR.o
-$(SM_OBJS:.o=.f90): SM_CSR.inc
-$(SM_OBJS): SM_CSR.inc
+$(SM_OBJS:.o=.f90): SM_common.inc SM_CSR.inc
+$(SM_OBJS): SM_common.inc SM_CSR.inc
 OBJS += $(SM_OBJS)
 mryp_SM_CSR.f90: SM_CSR.F90
 	$(CPP) $(INC) $< > $@

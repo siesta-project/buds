@@ -3,6 +3,17 @@
 ! Get default commands
 #include "refype_utils.inc"
 
+!!$! Integer (short)
+!!$# define _R_MOD_NAME _R_CC3(_R_MOD,_,sSM_CSR)
+!!$!> @file _R_MOD_NAME
+!!$module _R_MOD_NAME
+!!$# define _R_TYPE_NAME _R_CC2(_R_TYPE,sSM_CSR)
+!!$# define _R_TYPE_NEW _R_CC3(_R_NEW,_,sSM_CSR)
+!!$# define _R_TYPE_VAR integer
+!!$# define _R_TYPE_VAR_PREC is_
+!!$#include "SM_CSR.inc"
+!!$end module
+
 ! Integer (int)
 # define _R_MOD_NAME _R_CC3(_R_MOD,_,iSM_CSR)
 !> @file _R_MOD_NAME

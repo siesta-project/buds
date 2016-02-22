@@ -68,7 +68,7 @@
     !! `nz` is the number of non-zero elements
     !! although `rptr(nr+1)==nz` it should give certain
     !! check-point advantages. 
-    integer(_R_TYPE_VAR_PREC) :: nr, nc, nz
+    integer(_R_TYPE_VAR_PREC) :: nr = 0, nc = 0, nz = 0
 
     !> Index of the equivalent row (size `nr+1`)
     integer(_R_TYPE_VAR_PREC), pointer, contiguous :: rptr(:) => null()
@@ -149,7 +149,11 @@
   !> Print information about the @rype
   interface print
     module procedure print_
-  end interface 
+  end interface
+
+  ! Include the common elements of a sparsity method
+# include "SM_common.inc"
+  
   
   ! Include common data routines
   ! Note that 'CONTAINS' is present in this include file.
@@ -164,6 +168,10 @@
   !! Should never be made public.
   pure subroutine delete_data(this)
     type(_R_TYPE_NAME_), intent(inout) :: this
+
+    this%nr = 0
+    this%nc = 0
+    this%nz = 0
 
     ! Currently we do not allow external memory
     ! tracking.
@@ -372,6 +380,8 @@
       ! First calculate the size of the matrix
       nullify(tptr,tcol)
       allocate(tptr(fnr+1),tcol(fnz))
+      allocate(tmpcol(fptr(2)-fptr(1)))
+
       tptr(1) = 1
       do ir = 1 , fnr
         ! ensure pivoting array long enough
@@ -413,9 +423,7 @@
     ! a sorted array
     subroutine realloc_tmpcol(ir)
       integer(_R_TYPE_VAR_PREC), intent(in) :: ir
-      if ( .not. allocated(tmpcol) ) then
-        allocate(tmpcol(fptr(ir+1)-fptr(ir)))
-      else if ( fptr(ir+1)-fptr(ir) > size(tmpcol) ) then
+      if ( fptr(ir+1)-fptr(ir) > size(tmpcol) ) then
         deallocate(tmpcol)
         allocate(tmpcol(fptr(ir+1)-fptr(ir)))
       end if
@@ -456,38 +464,69 @@
   !! index is always increasing for each row.
   !!
   !! @param[in] this @refype to finalize
+  !! @param[out] err associated error message of the sparsity pattern
   !! @param[out] pvt @opt=@none if requested the pivoting array for the finalized sparsity pattern
-  subroutine finalize_(this, pvt)
+  subroutine finalize_(this, err, pvt)
     ! We use the quick-sort algorithm in this general finalization
     ! algorithm.
     use _R_CC2(_R_MOD, _utils), only: sort_quick
 
     type(_R_TYPE_NAME), intent(inout) :: this
+    integer(_R_TYPE_VAR_PREC), intent(out) :: err
     integer(_R_TYPE_VAR_PREC), intent(out), optional :: pvt(:)
 
     ! Local variables
-    integer(_R_TYPE_VAR_PREC) :: ir, nr, nz
+    integer(_R_TYPE_VAR_PREC) :: ir, i, nr, nc, nz
     integer(_R_TYPE_VAR_PREC), pointer, contiguous :: rptr(:), col(:)
 
+    ! Initialize error
+    err = 0
+    
     ! Get arrays
-    call attach(this, nr=nr, nz=nz, rptr=rptr, col=col)
+    call attach(this, nr=nr, nc=nc, nz=nz, rptr=rptr, col=col)
 
     if ( present(pvt) ) then
       
       if ( size(pvt) < nz ) then
+        err = SM_INPUT + 3
         pvt = -1
         return
       end if
 
       do ir = 1 , nr
-        call sort_quick(rptr(ir+1)-rptr(ir), col(rptr(ir):), &
-          pvt(rptr(ir):))
+        nz = rptr(ir+1) - rptr(ir)
+        call sort_quick(nz, col(rptr(ir):), pvt(rptr(ir):))
+        do i = rptr(ir) , rptr(ir) + nz - 1
+          pvt(i) = pvt(i) + rptr(ir)
+          if ( col(i) > nc ) then
+            err = - i
+          end if
+          if ( i > rptr(ir) ) then
+            if ( col(i-1) == col(i) ) then
+              err = SM_ENTRY_MULTIPLE
+            end if
+          end if
+        end do
       end do
 
     else
       
       do ir = 1 , nr
-        call sort_quick(rptr(ir+1)-rptr(ir), col(rptr(ir):))
+        nz = rptr(ir+1) - rptr(ir)
+        call sort_quick(nz, col(rptr(ir):))
+        do i = rptr(ir) , rptr(ir) + nz - 1
+          if ( col(i) > nc ) then
+            err = - i
+            return
+          end if
+          if ( i > rptr(ir) ) then
+            if ( col(i-1) == col(i) ) then
+              err = SM_ENTRY_MULTIPLE
+              return
+            end if
+          end if
+        end do
+        
       end do
       
     end if
