@@ -3,11 +3,11 @@
 
 # Common makefile stuff:
 ifndef _INCLUDED_common
-include Makefile.common
+ include Makefile.common
 endif
 
 ifndef _INCLUDED_default
-include Makefile.default
+ include Makefile.default
 endif
 
 # Here we define default abstractions of the variables

@@ -96,13 +96,13 @@ ifneq ($(OPT), none)
   override FCFLAGS := $(filter-out $(_FILTER_OPT_FLAGS),$(FCFLAGS))
 
   # Populate them
-  include vendor/$(CC_VENDOR).make
+  include $(TOP_DIR)/vendor/$(CC_VENDOR).make
   override CFLAGS += $(V_CFLAGS_$(OPT))
 
-  include vendor/$(CXX_VENDOR).make
+  include $(TOP_DIR)/vendor/$(CXX_VENDOR).make
   override CXXFLAGS += $(V_CXXFLAGS_$(OPT))
 
-  include vendor/$(FC_VENDOR).make
+  include $(TOP_DIR)/vendor/$(FC_VENDOR).make
   override FCFLAGS += $(V_FCFLAGS_$(OPT))
 
 endif

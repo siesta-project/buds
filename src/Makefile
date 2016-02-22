@@ -1,17 +1,19 @@
+TOP_DIR = ..
+
 # Include user-defined setup
--include ../setup.make
+-include $(TOP_DIR)/setup.make
 
 # Common makefile stuff:
 ifndef _INCLUDED_common
-  include ../Makefile.common
+  include $(TOP_DIR)/Makefile.common
 endif
 
 ifndef _INCLUDED_default
-  include ../Makefile.default
+  include $(TOP_DIR)/Makefile.default
 endif
 
 # Include the top-dir include directory
-override INC += -I../include
+override INC += -I$(TOP_DIR)/include
 
 # Unset OBJS
 OBJS = 
@@ -96,11 +98,11 @@ mryp_utils.f90: utils.F90
 
 .PHONY: static shared
 static: $(OBJS)
-	$(AR) $(ARFLAGS) ../$(REFYPE_LIB_STATIC) $^
-	$(RANLIB) ../$(REFYPE_LIB_STATIC)
+	$(AR) $(ARFLAGS) $(TOP_DIR)/$(REFYPE_LIB_STATIC) $^
+	$(RANLIB) $(TOP_DIR)/$(REFYPE_LIB_STATIC)
 
 shared: $(OBJS)
-	$(CC) $(CFLAGS) -shared -o ../$(REFYPE_LIB_SHARED) $^
+	$(CC) $(CFLAGS) -shared -o $(TOP_DIR)/$(REFYPE_LIB_SHARED) $^
 
 .PHONY: clean
 clean:

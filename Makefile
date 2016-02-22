@@ -1,3 +1,4 @@
+TOP_DIR = .
 
 # the default target
 .PHONY: default
@@ -14,11 +15,11 @@ all: static shared
 
 # Common makefile stuff:
 ifndef _INCLUDED_common
-include Makefile.common
+ include Makefile.common
 endif
 
 ifndef _INCLUDED_default
-include Makefile.default
+ include Makefile.default
 endif
 
 # Add the installation makefile
