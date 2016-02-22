@@ -7,6 +7,10 @@ V_CC = gcc
 V_CXX = g++
 V_FC = gfortran
 
+V_MPICC = mpicc
+V_MPICXX = mpic++
+V_MPIFC = mpif90
+
 # default compiler flags
 V_CFLAGS =
 V_CXXFLAGS =

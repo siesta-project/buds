@@ -7,6 +7,10 @@ V_CC = icc
 V_CXX = icpc
 V_FC = ifort
 
+V_MPICC = mpicc
+V_MPICXX = mpic++
+V_MPIFC = mpif90
+
 # default compiler flags
 V_CFLAGS =
 V_CXXFLAGS =
