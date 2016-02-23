@@ -106,18 +106,18 @@
 !!$  end interface _R_TYPE_ASSOC
 
   !> Number of non-zero elements in the stored array (same as regular `size`)
-  interface nnzs
-    module procedure nnzs_
-  end interface 
+  interface nonzeros
+    module procedure nonzeros_
+  end interface
 
   !> Number of rows in matrix
-  interface rows
-    module procedure rows_
+  interface mat_rows
+    module procedure mat_rows_
   end interface 
 
   !> Number of columns in matrix
-  interface cols
-    module procedure cols_
+  interface mat_cols
+    module procedure mat_cols_
   end interface 
 
   !> Wrap-around column indices to form a smaller matrix
@@ -136,13 +136,13 @@
   end interface
 
   !> Retrieve a pointer to the internal row pointers
-  interface rptr
-    module procedure rptr_
+  interface row_pointer
+    module procedure row_pointer_
   end interface
 
   !> Retrieve a pointer to the internal column indices
-  interface col
-    module procedure col_
+  interface column_indices
+    module procedure column_indices_
   end interface
 
 
@@ -196,6 +196,10 @@
     integer(_R_TYPE_VAR_PREC), intent(in) :: nr, nc, nz
 
     call init(this)
+
+    this%data%nr = nr
+    this%data%nc = nc
+    this%data%nz = nz
     
     allocate(this%data%rptr(nr+1))
     allocate(this%data%col(nz))
@@ -228,36 +232,36 @@
     call new(this, nr, nc, nz)
 
     ! Copy pointers
-    this%data%rptr(1:nr) = rptr
+    this%data%rptr(1:this%data%nr) = rptr
     ! create last pointer (to one plus number of elements)
     ! This ensures simple loops without taking care of
     ! the last index
-    this%data%rptr(nr+1) = nz + 1
+    this%data%rptr(this%data%nr+1) = this%data%nz + 1
     
     this%data%col = col
 
   end subroutine new_copy_
 
   !> Query number of non-zero elements
-  elemental function nnzs_(this) result(nnzs)
+  elemental function nonzeros_(this) result(nnzs)
     type(_R_TYPE_NAME), intent(in) :: this
     integer :: nnzs
     nnzs = this%data%nz
-  end function nnzs_
+  end function nonzeros_
 
-  !> Query number of rows
-  elemental function rows_(this) result(rows)
+  !> Query number of rows of the stored sparse matrix
+  elemental function mat_rows_(this) result(rows)
     type(_R_TYPE_NAME), intent(in) :: this
     integer :: rows
     rows = this%data%nr
-  end function rows_
+  end function mat_rows_
 
-  !> Query number of columns
-  elemental function cols_(this) result(cols)
+  !> Query number of columns of the stored sparse matrix
+  elemental function mat_cols_(this) result(cols)
     type(_R_TYPE_NAME), intent(in) :: this
     integer :: cols
     cols = this%data%nc
-  end function cols_
+  end function mat_cols_
 
   !> Retrieve access to sparse pattern via pointers.
   !!
@@ -437,25 +441,25 @@
   !!
   !! @param[in] this type to retrieve the pointer from
   !! @return the pointer to the contained row-pointer segment
-  function rptr_(this) result(rptr)
+  function row_pointer_(this) result(rptr)
     type(_R_TYPE_NAME), intent(in) :: this
     integer(_R_TYPE_VAR_PREC), pointer, contiguous :: rptr(:)
 
     rptr => this%data%rptr
     
-  end function rptr_
+  end function row_pointer_
 
   !> Retrieve a pointer to the column indices
   !!
   !! @param[in] this type to retrieve the pointer from
   !! @return the pointer to the contained column indices segment
-  function col_(this) result(col)
+  function column_indices_(this) result(col)
     type(_R_TYPE_NAME), intent(in) :: this
     integer(_R_TYPE_VAR_PREC), pointer, contiguous :: col(:)
 
     col => this%data%col
     
-  end function col_
+  end function column_indices_
 
   
   !> Sorts the elements in the sparse pattern
@@ -574,7 +578,7 @@
     write(fmt, '(a,i0,a)') '(t',lindent,',3a,4(i0,a))'
     
     write(*,fmt) "<", trim(name), " rows=", this%data%nr, &
-      " cols=", this%data%nc, " nnzs=",this%data%nz, &
+      ", cols=", this%data%nc, ", nnzs=",this%data%nz, &
       ", refs: ", frefs(this), ">"
     
   end subroutine print_

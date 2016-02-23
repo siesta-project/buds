@@ -91,8 +91,8 @@
 
   public :: elem, elemp
 
-  public :: nelem, fnelem, size
-  public :: nelem_max, fnelem_max, size_max
+  public :: num_elem, fnum_elem, size
+  public :: num_elem_max, fnum_elem_max, size_max
 
   !> Create new @rype instances
   interface new
@@ -137,29 +137,29 @@
   end interface elemp
 
   !> Return number of elements in the stack
-  interface nelem
-    module procedure nelem_
-  end interface nelem
+  interface num_elem
+    module procedure num_elem_
+  end interface num_elem
   !> Return number of elements in the stack (function)
-  interface fnelem
-    module procedure fnelem_
-  end interface fnelem
+  interface fnum_elem
+    module procedure fnum_elem_
+  end interface fnum_elem
   !> Return number of elements in the stack (function)
   interface size
-    module procedure fnelem_
+    module procedure fnum_elem_
   end interface size
   
   !> Return maximum number of elements in the stack
-  interface nelem_max
-    module procedure nelem_max_
-  end interface nelem_max
+  interface num_elem_max
+    module procedure num_elem_max_
+  end interface num_elem_max
   !> Return maximum number of elements in the stack (function)
-  interface fnelem_max
-    module procedure fnelem_max_
-  end interface fnelem_max
+  interface fnum_elem_max
+    module procedure fnum_elem_max_
+  end interface fnum_elem_max
   !> Return maximum number of elements in the stack (function)
   interface size_max
-    module procedure fnelem_max_
+    module procedure fnum_elem_max_
   end interface size_max
 
   !> Print information about the @rype
@@ -230,7 +230,7 @@
   !! @param[out] nel number of currently stored elements
   !!
   !! @author Nick R. Papior (2016, February)
-  elemental subroutine nelem_(this, nel)
+  elemental subroutine num_elem_(this, nel)
     type(_R_TYPE_NAME), intent(in) :: this
     integer, intent(out) :: nel
     if ( .not. is_initd(this) ) then
@@ -238,18 +238,18 @@
     else
       nel = this%data%nel
     end if
-  end subroutine nelem_
+  end subroutine num_elem_
   !> Query number of currently stored elements in this stack (function)
   !!
   !! @param[inout] this @rype that is checked
   !! @return number of currently stored elements
   !!
   !! @author Nick R. Papior (2016, February)
-  elemental function fnelem_(this) result (nel)
+  elemental function fnum_elem_(this) result (nel)
     type(_R_TYPE_NAME), intent(in) :: this
     integer :: nel
-    call nelem(this, nel)
-  end function fnelem_
+    call num_elem(this, nel)
+  end function fnum_elem_
     
 
   !> Query maximum number of allowed elements in this stack
@@ -258,7 +258,7 @@
   !! @param[out] nel_max maximum number of allowed elements
   !!
   !! @author Nick R. Papior (2016, February)
-  elemental subroutine nelem_max_(this, nel_max)
+  elemental subroutine num_elem_max_(this, nel_max)
     type(_R_TYPE_NAME), intent(in) :: this
     integer, intent(out) :: nel_max
     if ( .not. is_initd(this) ) then
@@ -266,18 +266,18 @@
     else
       nel_max = this%data%nel_max
     end if
-  end subroutine nelem_max_
+  end subroutine num_elem_max_
   !> Query maximum number of allowed elements in this stack (function)
   !!
   !! @param[inout] this @rype that is checked
   !! @return maximum number of allowed elements
   !!
   !! @author Nick R. Papior (2016, February)
-  elemental function fnelem_max_(this) result (nel_max)
+  elemental function fnum_elem_max_(this) result (nel_max)
     type(_R_TYPE_NAME), intent(in) :: this
     integer :: nel_max
-    call nelem_max(this, nel_max)
-  end function fnelem_max_
+    call num_elem_max(this, nel_max)
+  end function fnum_elem_max_
 
   
   !> Adds new element to the stack
