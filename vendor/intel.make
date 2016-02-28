@@ -11,6 +11,9 @@ V_MPICC = mpicc
 V_MPICXX = mpic++
 V_MPIFC = mpif90
 
+# Flag for output directory of modules
+V_FC_MODDIR = -J
+
 # default compiler flags
 V_CFLAGS =
 V_CXXFLAGS =

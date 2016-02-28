@@ -1,4 +1,4 @@
-TOP_DIR = .
+TOP_DIR ?= .
 
 # the default target
 .PHONY: default
@@ -14,25 +14,32 @@ all: static shared
 -include setup.make
 
 # Common makefile stuff:
-ifndef _INCLUDED_common
- include Makefile.common
-endif
+include $(TOP_DIR)/Makefile.common
 
-ifndef _INCLUDED_default
- include Makefile.default
-endif
+include $(TOP_DIR)/Makefile.default
 
 # Add the installation makefile
-include Makefile.install
+include $(TOP_DIR)/Makefile.install
 
 # Add the documentation makefile
-include Makefile.doc
+include $(TOP_DIR)/Makefile.doc
 
 # Add the distribution creation tool
-include Makefile.dist
+include $(TOP_DIR)/Makefile.dist
+
+
+# Be sure to include the default include
+# directory:
+INC += -I$(TOP_DIR)/include
+
+
+# Include dir:
+#    ./src
+include $(TOP_DIR)/src/Makefile.inc
+
 
 # Now create the actual compilation make file
-.PHONY: lib libs shared static
+.PHONY: lib libs
 #.NOTPARALLEL: lib libs shared static
 # Define default library creations
 ifndef NO_SHARED
@@ -58,19 +65,28 @@ libs:
  endif
 endif
 
-shared:
-	$(MAKE) $(MFLAGS) -C src shared
+# Static library compilation
+$(REFYPE_LIB_STATIC): $(OBJS)
+	$(AR) $(ARFLAGS) $(REFYPE_LIB_STATIC) $^
+	$(RANLIB) $(REFYPE_LIB_STATIC)
 
-static:
-	$(MAKE) $(MFLAGS) -C src static
+$(REFYPE_LIB_SHARED): $(OBJS)
+	$(CC) -shared -o $(REFYPE_LIB_SHARED) $(CFLAGS) $^
 
+.PHONY: static shared
+static: $(REFYPE_LIB_STATIC)
+shared: $(REFYPE_LIB_SHARED)
+
+# Define tests
 .PHONY: test tests
+tests: test
 test: static
 	$(MAKE) $(MFLAGS) -C test test
 
-tests: test
 
 clean:
 	rm -f $(REFYPE_LIB_STATIC) $(REFYPE_LIB_SHARED)
-	$(MAKE) -C src clean
-	$(MAKE) -C test clean
+	rm -f src/*.o src/*.mod src/*.MOD src/mryp*.f90
+	rm -f src/mpi/*.o src/mpi/*.mod src/mpi/*.MOD src/mpi/mryp*.f90
+	rm -f test/*.o test/*.mod test/*.MOD test/mryp*.f90
+	rm -f $(REFYPE_MODDIR)/*.mod $(REFYPE_MODDIR)/*.MOD

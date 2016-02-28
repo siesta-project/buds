@@ -1,5 +1,3 @@
-_INCLUDED_default = 1
-
 .SUFFIXES:
 .SUFFIXES: .f90 .F90 .c .o .a .so
 
@@ -105,18 +103,26 @@ ifneq ($(OPT), none)
   include $(TOP_DIR)/vendor/$(FC_VENDOR).make
   override FCFLAGS += $(V_FCFLAGS_$(OPT))
 
+else
+
+# We simply default to include the vendor make file for fortran
+# to retrieve the FC_MODDIR variable
+  include $(TOP_DIR)/vendor/$(FC_VENDOR).make
+
 endif
 
+# Add to includes the mod directory
+INC += $(V_FC_MODDIR)$(REFYPE_MODDIR)
 
 # Define the compilation options:
 .F90.o:
-	$(FC) -c $(FCFLAGS) $(INC) $< 
+	$(FC) -o $@ -c $(FCFLAGS) $(INC) $<
 .f90.o:
-	$(FC) -c $(FCFLAGS) $(INC) $< 
+	$(FC) -o $@ -c $(FCFLAGS) $(INC) $<
 .c.o:
-	$(CC) -c $(CFLAGS) $(INC) $< 
+	$(CC) -o $@ -c $(CFLAGS) $(INC) $<
 .cpp.o:
-	$(CXX) -c $(CXXFLAGS) $(INC) $< 
+	$(CXX) -o $@ -c $(CXXFLAGS) $(INC) $<
 
 
 .PHONY: show
