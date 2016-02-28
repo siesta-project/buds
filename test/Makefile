@@ -1,21 +1,23 @@
+TOP_DIR = ..
+
 # Include user-defined setup
--include ../setup.make
+-include $(TOP_DIR)/setup.make
 
 # Common makefile stuff:
 ifndef _INCLUDED_common
-  include ../Makefile.common
+  include $(TOP_DIR)/Makefile.common
 endif
 
 ifndef _INCLUDED_default
-  include ../Makefile.default
+  include $(TOP_DIR)/Makefile.default
 endif
 
 # Include the top-dir include directory
-override INC += -I../include
-override INC += -I../src
+override INC += -I$(TOP_DIR)/include
+override INC += -I$(TOP_DIR)/src
 
 # The library
-LIBS = ../librefype.a
+LIBS = $(TOP_DIR)/librefype.a
 
 COMMON_OBJS = test_utils.o
 

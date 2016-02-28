@@ -236,7 +236,11 @@ contains
   !! @param[inout] this deleted @rype
   !!
   !! @author Nick R. Papior (2016, February)
+#ifndef _R_DELETE_NOELEMENTAL
   elemental subroutine delete_(this)
+#else
+  subroutine delete_(this)
+#endif
     type(_R_TYPE_NAME), intent(inout) :: this
 
     integer :: error

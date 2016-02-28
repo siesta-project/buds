@@ -267,6 +267,7 @@
       nel_max = this%data%nel_max
     end if
   end subroutine num_elem_max_
+  
   !> Query maximum number of allowed elements in this stack (function)
   !!
   !! @param[inout] this @rype that is checked
@@ -502,20 +503,32 @@
   !! stored elements `elem` will be un-initialized upon return.
   !!
   !! @param[in] this @rype to retrieve element from
-  !! @param[in] iel index of element to return
   !! @param[inout] elem returned @rype stored in element `iel`
+  !! @param[in] iel @opt=`size(this)` index of element to return. May be negative to offset from the top
   !!
   !! @author Nick R. Papior (2016, February)
-  subroutine elem_(this, iel, elem)
+  subroutine elem_(this, elem, iel)
     type(_R_TYPE_NAME), intent(in) :: this
-    integer, intent(in) :: iel
     type(_R_STACK_TYPE), intent(inout) :: elem
+    integer, intent(in), optional :: iel
+    integer :: el
 
     call delete(elem)
     if ( .not. is_initd(this) ) return
 
-    if ( iel <= size(this) ) then
-      elem = this%data%T(iel)
+    ! Default element
+    el = size(this)
+
+    if ( present(iel) ) then
+      if ( iel < 0 ) then
+        el = el + iel
+      else
+        el = iel
+      end if
+    end if
+
+    if ( el <= size(this) ) then
+      elem = this%data%T(el)
     end if
     
   end subroutine elem_
@@ -529,22 +542,34 @@
   !! stored elements `elem` will be null.
   !!
   !! @param[in] this @rype to retrieve pointer element from
-  !! @param[in] iel index of element to return
   !! @param p pointer to the element `iel`
+  !! @param[in] iel @opt=`size(this)` index of element to return. May be negative to offset from top.
   !!
   !! @author Nick R. Papior (2016, February)
-  subroutine elemp_(this, iel, p)
+  subroutine elemp_(this, p, iel)
     type(_R_TYPE_NAME), intent(in) :: this
-    integer, intent(in) :: iel
     type(_R_STACK_TYPE), pointer :: p
+    integer, intent(in), optional :: iel
+    integer :: el
 
     nullify(p)
     if ( .not. is_initd(this) ) return
 
-    if ( iel <= size(this) ) then
-      p => this%data%T(iel)
+    ! Default element
+    el = size(this)
+
+    if ( present(iel) ) then
+      if ( iel < 0 ) then
+        el = el + iel
+      else
+        el = iel
+      end if
     end if
     
+    if ( el <= size(this) ) then
+      p => this%data%T(el)
+    end if
+      
   end subroutine elemp_
 
   
