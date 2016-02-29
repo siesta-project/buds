@@ -17,6 +17,18 @@
 !#define _R_TYPE tryp_
 #define _R_TYPE 
 
+  ! Define the used fortran standard
+#ifndef _R_FORTRAN
+# define _R_FORTRAN 2003
+#endif
+
+#ifndef _R_FORTRAN_FINALIZE
+# if _R_FORTRAN >= 2003
+#  define _R_FORTRAN_FINALIZE 1
+# endif
+#endif
+
+
 
 ! Concatenation
 #define _R_CC2(a,b) _R_CCX2(a,b)

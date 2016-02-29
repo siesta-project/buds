@@ -52,8 +52,6 @@
   !!  2. track how many elements are currently stored
   !!  3. An array of the stack of variables stored.
   type _R_TYPE_NAME_
-    ! Consistent data in the reference counted object
-#   include "refype_common_type.inc"
 
     !> Maximum number of elements that can be stored in this stack.
     !!
@@ -70,7 +68,10 @@
     
     !> Array of elements (stack).
     type(_R_STACK_TYPE), pointer :: T(:) => null()
-    
+
+    ! Consistent data in the reference counted object
+#   include "refype_common_type.inc"
+
   end type _R_TYPE_NAME_
 
 

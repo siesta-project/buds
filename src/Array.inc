@@ -51,8 +51,6 @@
   !! Contains an array of _R_DIM dimensions.
   !!
   type _R_TYPE_NAME_
-    ! Consistent data in the reference counted object
-#   include "refype_common_type.inc"
 
     !> Array stored in the @rype
 #ifdef _R_TYPE_VAR_PREC
@@ -60,7 +58,10 @@
 #else
     _R_TYPE_VAR, pointer, contiguous :: array _R_DIM_SPEC() => null()
 #endif
-    
+
+    ! Consistent data in the reference counted object
+#   include "refype_common_type.inc"
+
   end type _R_TYPE_NAME_
 
   

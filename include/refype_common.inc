@@ -49,6 +49,18 @@
   ! however, the actual data is contained in the sub-structure
   type _R_TYPE_NAME
     type(_R_TYPE_NAME_), pointer :: data => null()
+    
+#if _R_FORTRAN >= 2003
+  contains
+
+#if _R_FORTRAN_FINALIZE == 1
+    ! This is strictly not needed
+    ! However, this may be used internally for
+    ! automatic clean-up
+    final :: delete_
+#endif
+    
+#endif
   end type _R_TYPE_NAME
 
   !> Internal data structure (@rype)

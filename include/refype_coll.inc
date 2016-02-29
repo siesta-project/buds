@@ -78,10 +78,7 @@
 #endif
 #endif
 #endif
-  type _R_TYPE_NAME_
-    ! Consistent data in the reference counted object
-#   include "refype_common_type.inc"
-    
+  type _R_TYPE_NAME_    
     !> First element of collection
     type(_R_COLL_A) :: A
     !> Second element of collection
@@ -98,6 +95,10 @@
 #endif
 #endif
 #endif
+    
+    ! Consistent data in the reference counted object
+#   include "refype_common_type.inc"
+
   end type _R_TYPE_NAME_
 
   public :: print

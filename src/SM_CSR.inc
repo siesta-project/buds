@@ -56,10 +56,6 @@
   !! This sparse matrix *must* contain the diagonal
   !! elements.
   type _R_TYPE_NAME_
-    ! Consistent data in the reference counted object
-#   include "refype_common_type.inc"
-    
-    !> Pattern stored in the @rype
     
     !> Number of rows in the matrix
     integer(_R_TYPE_VAR_PREC) :: nr = 0
@@ -72,6 +68,9 @@
     integer(_R_TYPE_VAR_PREC), pointer, contiguous :: rptr(:) => null()
     !> The column index of the equivalent sparse matrix (size `nz`)
     integer(_R_TYPE_VAR_PREC), pointer, contiguous :: col(:) => null()
+
+    ! Consistent data in the reference counted object
+#   include "refype_common_type.inc"
 
   end type _R_TYPE_NAME_
   
