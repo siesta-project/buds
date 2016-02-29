@@ -56,28 +56,6 @@
 
   !> @endcond ALWAYS_SKIP
   
-  !> Initialization routine of the @rype
-  public :: init
-  !> Delete the @rype, stepping reference counter and clearing this type
-  public :: delete
-    
-  !> Return number of references to the object (routine)
-  public :: refs
-  !> Return number of references to the object (function)
-  public :: frefs
-
-  !> Check if two @rypes point to the same data (routine)
-  public :: same
-  !> Check if two @rypes point to the same data (function)
-  public :: is_same
-
-  !> Check if a @rype has been initialized (routine)
-  public :: initd
-  !> Check if a @rype has been initialized (function)
-  public :: is_initd
-
-  !> Overiding assignment to ensure correct reference counting
-  public :: assignment(=)
 
   ! We force `delete_data` to be private.
   ! This will prohibit a mistaken public designation of the
@@ -85,50 +63,49 @@
   !> Internal routine for clearing the data container in the @rype
   private :: delete_data
 
-  !> Assign a @rype
+  !> Overiding assignment to ensure correct reference counting
   interface assignment(=)
     module procedure assign_
-  end interface assignment(=)
+  end interface
+  public :: assignment(=)
 
-  !> Initialize @rype
+  !> Initialization routine of the @rype
   interface init
     module procedure initialize_
-  end interface init
+  end interface
+  public :: init
   
-  !> Check for initialization (routine)
-  interface initd
-    module procedure initialized_
-  end interface initd
-  !> Check for initialization (function)
+  !> Check if a @rype has been initialized (function)
   interface is_initd
     module procedure is_initialized_
-  end interface is_initd
+  end interface
+  public :: is_initd
 
-  !> Check whether two @rypes data is the same (routine)
-  interface same
-    module procedure same_
-  end interface same
-  !> Check whether two @rypes data is the same (function)
+  !> Check if two @rypes point to the same data (function)
   interface is_same
     module procedure is_same_
-  end interface is_same
-
+  end interface
+  public :: is_same
+  
 #ifndef _R_NO_DELETE
-  !> Delete @rype
+  !> Delete the @rype, stepping reference counter and clearing this type
   interface delete
     module procedure delete_
-  end interface delete
+  end interface
+  public :: delete
 #endif
 
-  !> Query number of references to @rype (routine)
-  interface refs
-    module procedure sub_references_
-  end interface refs
+  !> Return number of references to the @rype (function)
+  interface references
+    module procedure references_
+  end interface
+  public :: references
 
-  !> Query number of references to @rype (function)
-  interface frefs
-    module procedure func_references_
-  end interface frefs
+  !> Return number of references to the @rype (function)
+  interface get_refs
+    module procedure references_
+  end interface
+  public :: get_refs
 
   !> @cond ALWAYS_SKIP
 
@@ -182,7 +159,7 @@ contains
     end if
 
     ! Set the initial reference count
-    this%data%ryp_refs = 1
+    this%data%refs_ = 1
 
     ! Tag the object (always)
     call tag_object_(this)
@@ -217,8 +194,8 @@ contains
     type(_R_TYPE_NAME), intent(in) :: this
 
     logical :: init
-    
-    call initd(this, init)
+
+    init = associated(this%data)
     
   end function is_initialized_
 
@@ -247,9 +224,9 @@ contains
     
     if (.not. is_initd(this) ) return
     
-    this%data%ryp_refs = this%data%ryp_refs - 1
+    this%data%refs_ = this%data%refs_ - 1
     
-    if ( 0 == this%data%ryp_refs ) then
+    if ( 0 == this%data%refs_ ) then
       
       ! Safe to delete the data now.
       ! Use the routine provided for this specific
@@ -314,31 +291,10 @@ contains
 
     ! Establish the new reference and increment the reference counter.
     lhs%data => rhs%data
-    lhs%data%ryp_refs = rhs%data%ryp_refs + 1
+    lhs%data%refs_ = rhs%data%refs_ + 1
     
   end subroutine assign_
 
-
-  !> Check whether two @rypes point to the same data (routine)
-  !!
-  !! Returns true if the two passed types are the same
-  !! data.
-  !!
-  !! @param[in] lhs first @rype 
-  !! @param[in] rhs second @rype
-  !! @param[out] same `.true.` if `lhs` and `rhs` point to the same data
-  !!
-  !! @author Nick R. Papior (2016, February)
-  pure subroutine same_(lhs, rhs, same)
-    type(_R_TYPE_NAME), intent(in) :: lhs, rhs
-    logical, intent(out) :: same
-    ! If they are not both initialized they can not be the same
-    same = is_initd(lhs) .and. is_initd(rhs)
-    if ( .not. same ) return
-    ! this checks that the memory location of
-    ! the underlying data is the same.
-    same = associated(lhs%data, target=rhs%data)
-  end subroutine same_
 
   !> Check whether two @rypes point to the same data (function)
   !!
@@ -351,32 +307,17 @@ contains
   !! @return `.true.` if `lhs` and `rhs` point to the same data
   !!
   !! @author Nick R. Papior (2016, February)
-  pure function is_same_(lhs, rhs) result(same)
+  elemental function is_same_(lhs, rhs) result(same)
     type(_R_TYPE_NAME), intent(in) :: lhs, rhs
     logical :: same
-    call same_(lhs, rhs, same)
+    same = is_initd(lhs) .and. is_initd(rhs)
+    if ( .not. same ) return
+    ! this checks that the memory location of
+    ! the underlying data is the same.
+    same = associated(lhs%data, target=rhs%data)
+    
   end function is_same_
 
-  !> Query number of references to the @rype (routine)
-  !!
-  !! Get number of times this @rype has been replicated
-  !! in the reference counted object.
-  !!
-  !! @param[in] this @rype
-  !! @param[out] refs number of times `this` has been referenced
-  !!
-  !! @author Nick R. Papior (2016, February)
-  pure subroutine sub_references_(this, refs)
-    type(_R_TYPE_NAME), intent(in) :: this
-    integer, intent(out) :: refs
-    
-    if ( is_initd(this) ) then
-      refs = this%data%ryp_refs
-    else
-      refs = 0
-    end if
-    
-  end subroutine sub_references_
 
   !> Query number of references to the @rype (function)
   !!
@@ -387,25 +328,29 @@ contains
   !! @return refs number of times `this` has been referenced
   !!
   !! @author Nick R. Papior (2016, February)
-  pure function func_references_(this) result(refs)
+  elemental function references_(this) result(refs)
     type(_R_TYPE_NAME), intent(in) :: this
     
     integer :: refs
+
+    if ( is_initd(this) ) then
+      refs = this%data%refs_
+    else
+      refs = 0
+    end if
     
-    call sub_references_(this, refs)
-    
-  end function func_references_
+  end function references_
 
   !> @cond ALWAYS_SKIP
   
   ! The remaining procedures are currently
   ! not used by refype
-  pure function id_(this) result(str)
+  elemental function id_(this) result(str)
     type(_R_TYPE_NAME), intent(in) :: this
     
     character(len=RYP_ID_LEN) :: str
     
-    str = this%data%ryp_id
+    str = this%data%id_
     
   end function id_
 

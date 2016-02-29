@@ -61,14 +61,12 @@
     
     !> Pattern stored in the @rype
     
-    !> `nr` is number of rows in the matrix
-    !!
-    !! `nc` is number of columns in the matrix
-    !!
-    !! `nz` is the number of non-zero elements
-    !! although `rptr(nr+1)==nz` it should give certain
-    !! check-point advantages. 
-    integer(_R_TYPE_VAR_PREC) :: nr = 0, nc = 0, nz = 0
+    !> Number of rows in the matrix
+    integer(_R_TYPE_VAR_PREC) :: nr = 0
+    !> Number of columns in the matrix
+    integer(_R_TYPE_VAR_PREC) :: nc = 0
+    !> Number of non-zero elements in the sparse matrix
+    integer(_R_TYPE_VAR_PREC) :: nz = 0
 
     !> Index of the equivalent row (size `nr+1`)
     integer(_R_TYPE_VAR_PREC), pointer, contiguous :: rptr(:) => null()
@@ -77,21 +75,19 @@
 
   end type _R_TYPE_NAME_
   
-  ! Public data-type routines defined particularly for
-  ! this type.
-  public :: new, _R_TYPE_NEW
-  public :: print
-  
   !> Create new @rype instances
   interface new
     module procedure new_dim_
     module procedure new_copy_
-  end interface new
+  end interface
+  public :: new
+  
   !> Create new @rype instances
   interface _R_TYPE_NEW
     module procedure new_dim_
     module procedure new_copy_
-  end interface _R_TYPE_NEW
+  end interface
+  public :: _R_TYPE_NEW
 
 !!$ Sadly, intel compilers cannot figure out to
 !!$ deallocate from other pointers... :(
@@ -109,47 +105,61 @@
   interface nonzeros
     module procedure nonzeros_
   end interface
+  public :: nonzeros
 
   !> Number of rows in matrix
   interface mat_rows
     module procedure mat_rows_
   end interface 
-
+  public :: mat_rows
+  
   !> Number of columns in matrix
   interface mat_cols
     module procedure mat_cols_
   end interface 
+  public :: mat_cols
 
   !> Wrap-around column indices to form a smaller matrix
-  interface wrap
-    module procedure wrap_
+  interface get_wrapped
+    module procedure get_wrapped_
   end interface 
-
+  public :: get_wrapped
+  
   !> Query internal data structure elements via simple routine
   interface attach
     module procedure attach_
   end interface 
+  public :: attach
 
   !> Finalize and sort the column indices per row
   interface finalize
     module procedure finalize_
   end interface
+  public :: finalize
 
   !> Retrieve a pointer to the internal row pointers
-  interface row_pointer
-    module procedure row_pointer_
+  interface get_row_ptrp
+    module procedure get_row_ptrp_
   end interface
-
+  public :: get_row_ptrp
+  
   !> Retrieve a pointer to the internal column indices
-  interface column_indices
-    module procedure column_indices_
+  interface get_columnp
+    module procedure get_columnp_
   end interface
+  public :: get_columnp
 
+  !> Query sparse index of a given row and column
+  interface index
+    module procedure index_
+  end interface
+  public :: index
 
   !> Print information about the @rype
   interface print
     module procedure print_
   end interface
+  public :: print
 
   ! Include the common elements of a sparsity method
 # include "SM_common.inc"
@@ -318,7 +328,7 @@
     integer(_R_TYPE_VAR_PREC), intent(out) :: idx
     
     call find_bin(this%data%rptr(ir+1)-this%data%rptr(ir), &
-      this%data%col(this%data%rptr(ir:)), ic, idx)
+      this%data%col(this%data%rptr(ir):), ic, idx)
     
     if ( idx > 0 ) idx = this%data%rptr(ir) + idx
 
@@ -341,7 +351,7 @@
   !! @param[in] unite @opt=.false. unites equivalent sparse
   !!                  elements to not have dublicate elements.
   !! @author Nick R. Papior (2016, February)
-  subroutine wrap_(from, nc, to, unite)
+  subroutine get_wrapped_(from, nc, to, unite)
     use _R_CC2(_R_MOD, _utils), only: sort_quick, modp
 
     type(_R_TYPE_NAME), intent(in) :: from
@@ -386,32 +396,44 @@
       allocate(tptr(fnr+1),tcol(fnz))
       allocate(tmpcol(fptr(2)-fptr(1)))
 
-      tptr(1) = 1
+      ! we correct the index at the end of
+      ! each loop as it eases the
+      ! readability of the algorithm
+      tptr(1) = 0
       do ir = 1 , fnr
+        
         ! ensure pivoting array long enough
         call realloc_tmpcol(ir)
 
-        ! Create pivoting array
-        ! so that we may easily find the reduced
-        ! sparsity pattern
+        ! Create pivoting array so that we
+        ! may easily find the reduced sparsity pattern
         call sort_quick(fptr(ir+1)-fptr(ir), &
           fcol(fptr(ir):), tmpcol(1:) )
 
-        ! first index of this row
+        ! point to the following rows pointer
+        ! this enables to count the number of entries
+        ! in the current row as:
+        !   number entries = tptr(ir+1) - tptr(ir)
         ind => tptr(ir+1)
         
         ! initialize counter for the following row
         ! (i.e. count number of entries)
         ind = tptr(ir)
+        ! initialize first element
         tcol(ind) = modp(fcol(tptr(ir)+tmpcol(1)), nc)
         do i = 2 , fptr(ir+1) - fptr(ir)
           if ( fcol(tptr(ir)+tmpcol(i-1)) /= fcol(tptr(ir)+tmpcol(i)) ) then
             ind = ind + 1
+
             tcol(ind) = modp(fcol(tptr(ir)+tmpcol(i-1)), nc)
           end if
         end do
+
+        tptr(ir) = tptr(ir) + 1
         
       end do
+      ! update number of entries
+      tptr(fnr+1) = tptr(fnr+1) + 1
 
       deallocate(tmpcol)
 
@@ -427,13 +449,15 @@
     ! a sorted array
     subroutine realloc_tmpcol(ir)
       integer(_R_TYPE_VAR_PREC), intent(in) :: ir
-      if ( fptr(ir+1)-fptr(ir) > size(tmpcol) ) then
+      integer(_R_TYPE_VAR_PREC) :: n
+      n = fptr(ir+1) - fptr(ir)
+      if ( n > size(tmpcol) ) then
         deallocate(tmpcol)
-        allocate(tmpcol(fptr(ir+1)-fptr(ir)))
+        allocate(tmpcol(n))
       end if
     end subroutine realloc_tmpcol
 
-  end subroutine wrap_
+  end subroutine get_wrapped_
 
 
 
@@ -441,25 +465,25 @@
   !!
   !! @param[in] this type to retrieve the pointer from
   !! @return the pointer to the contained row-pointer segment
-  function row_pointer_(this) result(rptr)
+  function get_row_ptrp_(this) result(rptr)
     type(_R_TYPE_NAME), intent(in) :: this
     integer(_R_TYPE_VAR_PREC), pointer, contiguous :: rptr(:)
-
+    
     rptr => this%data%rptr
     
-  end function row_pointer_
+  end function get_row_ptrp_
 
   !> Retrieve a pointer to the column indices
   !!
   !! @param[in] this type to retrieve the pointer from
   !! @return the pointer to the contained column indices segment
-  function column_indices_(this) result(col)
+  function get_columnp_(this) result(col)
     type(_R_TYPE_NAME), intent(in) :: this
     integer(_R_TYPE_VAR_PREC), pointer, contiguous :: col(:)
 
     col => this%data%col
     
-  end function column_indices_
+  end function get_columnp_
 
   
   !> Sorts the elements in the sparse pattern
@@ -579,7 +603,7 @@
     
     write(*,fmt) "<", trim(name), " rows=", this%data%nr, &
       ", cols=", this%data%nc, ", nnzs=",this%data%nz, &
-      ", refs: ", frefs(this), ">"
+      ", refs: ", get_refs(this), ">"
     
   end subroutine print_
 

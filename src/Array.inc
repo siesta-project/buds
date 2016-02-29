@@ -56,31 +56,28 @@
 
     !> Array stored in the @rype
 #ifdef _R_TYPE_VAR_PREC
-    _R_TYPE_VAR(_R_TYPE_VAR_PREC), pointer :: val _R_DIM_SPEC() => null()
+    _R_TYPE_VAR(_R_TYPE_VAR_PREC), pointer, contiguous :: array _R_DIM_SPEC() => null()
 #else
-    _R_TYPE_VAR, pointer :: val _R_DIM_SPEC() => null()
+    _R_TYPE_VAR, pointer, contiguous :: array _R_DIM_SPEC() => null()
 #endif
     
   end type _R_TYPE_NAME_
 
-  ! Public data-type routines defined particularly for
-  ! this type.
-  public :: new, _R_TYPE_NEW
-  public :: val, init_val, size
-  public :: print
   
   !> Create new @rype instances
   interface new
     module procedure new_dim_
     module procedure new_copy_
-  end interface new
+  end interface
+  public :: new
   !> Create new @rype instances
   interface _R_TYPE_NEW
     module procedure new_dim_
     module procedure new_copy_
-  end interface _R_TYPE_NEW
+  end interface
+  public :: _R_TYPE_NEW
 
-  !> Retrieve pointer/vaule to/in the stored array
+  !> Retrieve pointer/value to/in the stored array
   !!
   !! With a `=>` a pointer to the stored array is returned.
   !! With an indexed call the value in the specific array
@@ -89,25 +86,43 @@
   !! @note
   !! For excessive access to the array one should retrieve
   !! a pointer, and then access the elements in that array.
-  interface val
-    module procedure val_
-    module procedure val_idx_
-  end interface val
+  interface getp
+    module procedure get_arrayp_
+  end interface
+  public :: getp
+
+  interface get_arrayp
+    module procedure get_arrayp_
+  end interface
+  public :: get_arrayp
+
+  interface get
+    module procedure get_array_idx_
+  end interface
+  public :: get
+  interface get_array
+    module procedure get_array_idx_
+  end interface
+  public :: get_array
+
 
   !> Number of elements is the stored array (same as regular `size`)
   interface size
     module procedure size_
-  end interface size
+  end interface
+  public :: size
 
   !> Initialize all values in the array to a specific value
-  interface init_val
-    module procedure init_val_
-  end interface init_val
-
+  interface init_array
+    module procedure init_array_
+  end interface
+  public :: init_array
+  
   !> Print information about the @rype
   interface print
     module procedure print_
-  end interface print
+  end interface
+  public :: print
 
   
   ! Include common data routines
@@ -126,9 +141,9 @@
 
     ! Currently we do not allow external memory
     ! tracking.
-    if ( .not. associated(this%val) ) return
-    deallocate(this%val)
-    nullify(this%val)
+    if ( .not. associated(this%array) ) return
+    deallocate(this%array)
+    nullify(this%array)
     
   end subroutine delete_data
 
@@ -143,9 +158,12 @@
   !! @param[in] d2 size of the internal reference counted array (dim=2)
 #if _R_DIM > 2
   !! @param[in] d3 size of the internal reference counted array (dim=3)
+#if _R_DIM > 3
+  !! @param[in] d4 size of the internal reference counted array (dim=4)
 #endif
 #endif
-  !! @param[in] val @opt=@null initial value of the array
+#endif
+  !! @param[in] val @opt=@null initial value of all elements
   !!
   !! @author Nick R. Papior (2016, February)
   subroutine new_dim_(this, &
@@ -155,6 +173,8 @@
     d1, d2, &
 #elif _R_DIM == 3
     d1, d2, d3, &
+#elif _R_DIM == 4
+    d1, d2, d3, d4, &
 #endif
     val)
     type(_R_TYPE_NAME), intent(inout) :: this
@@ -164,9 +184,11 @@
     integer, intent(in) :: d1, d2
 #elif _R_DIM == 3
     integer, intent(in) :: d1, d2, d3
+#elif _R_DIM == 4
+    integer, intent(in) :: d1, d2, d3, d4
 #endif
 #ifdef _R_TYPE_VAR_PREC
-    _R_TYPE_VAR(_R_TYPE_VAR_PREC), intent(in), optional :: val 
+    _R_TYPE_VAR(_R_TYPE_VAR_PREC), intent(in), optional :: val
 #else
     _R_TYPE_VAR, intent(in), optional :: val
 #endif
@@ -178,15 +200,17 @@
 
     ! Allocate the value array
 #if _R_DIM == 1
-    allocate(this%data%val(d1))
+    allocate(this%data%array(d1))
 #elif _R_DIM == 2
-    allocate(this%data%val(d1,d2))
+    allocate(this%data%array(d1,d2))
 #elif _R_DIM == 3
-    allocate(this%data%val(d1,d2,d3))
+    allocate(this%data%array(d1,d2,d3))
+#elif _R_DIM == 4
+    allocate(this%data%array(d1,d2,d3,d4))
 #endif
 
     if ( present(val) ) then
-      call init_val(this, val)
+      call init_array(this, val)
     end if
 
   end subroutine new_dim_
@@ -201,15 +225,15 @@
   !! size as the value array.
   !!
   !! @param[inout] this @rype container
-  !! @param[in] val array to dublicate in `this`
+  !! @param[in] array array to dublicate in `this`
   !!
   !! @author Nick R. Papior (2016, February)
-  subroutine new_copy_(this, val)
+  subroutine new_copy_(this, array)
     type(_R_TYPE_NAME), intent(inout) :: this
 #ifdef _R_TYPE_VAR_PREC
-    _R_TYPE_VAR(_R_TYPE_VAR_PREC), intent(in) :: val _R_DIM_SPEC()
+    _R_TYPE_VAR(_R_TYPE_VAR_PREC), intent(in) :: array _R_DIM_SPEC()
 #else
-    _R_TYPE_VAR, intent(in) :: val _R_DIM_SPEC()
+    _R_TYPE_VAR, intent(in) :: array _R_DIM_SPEC()
 #endif
 
 #if _R_DIM == 1
@@ -218,13 +242,19 @@
     integer :: d1, d2
 #elif _R_DIM == 3
     integer :: d1, d2, d3
+#elif _R_DIM == 4
+    integer :: d1, d2, d3, d4
 #endif
 
-    d1 = size(val,dim=1)
+    d1 = size(array,dim=1)
 #if _R_DIM > 1
-    d2 = size(val,dim=2)
-#elif _R_DIM > 2
-    d3 = size(val,dim=3)
+    d2 = size(array,dim=2)
+#endif
+#if _R_DIM > 2
+    d3 = size(array,dim=3)
+#endif
+#if _R_DIM > 3
+    d4 = size(array,dim=4)
 #endif
 
     ! initialize and create data-container
@@ -234,10 +264,12 @@
     call new_dim_(this, d1, d2)
 #elif _R_DIM == 3
     call new_dim_(this, d1, d2, d3)
+#elif _R_DIM == 4
+    call new_dim_(this, d1, d2, d3, d4)
 #endif
 
     ! copy data
-    this%data%val = val
+    this%data%array = array
 
   end subroutine new_copy_
 
@@ -251,7 +283,7 @@
   !! @return a pointer to the data
   !!
   !! @author Nick R. Papior (2016, February)
-  function val_(this) result(p)
+  function get_arrayp_(this) result(p)
     type(_R_TYPE_NAME), intent(in) :: this
 #ifdef _R_TYPE_VAR_PREC
     _R_TYPE_VAR(_R_TYPE_VAR_PREC), pointer :: p _R_DIM_SPEC()
@@ -259,9 +291,9 @@
     _R_TYPE_VAR, pointer :: p _R_DIM_SPEC()
 #endif
 
-    p => this%data%val
+    p => this%data%array
 
-  end function val_
+  end function get_arrayp_
 
 
   !> Retrieve value in specific index of data array in the container
@@ -279,18 +311,23 @@
   !! @param[in] i2 index in the array
 #if _R_DIM > 2
   !! @param[in] i3 index in the array
+#if _R_DIM > 3
+  !! @param[in] i4 index in the array
+#endif
 #endif
 #endif
   !! @return the value in the specific indexed location of the array
   !!
   !! @author Nick R. Papior (2016, February)
-  pure function val_idx_(this, &
+  pure function get_array_idx_(this, &
 #if _R_DIM == 1
     i1 &
 #elif _R_DIM == 2
     i1, i2 &
 #elif _R_DIM == 3
     i1, i2, i3 &
+#elif _R_DIM == 4
+    i1, i2, i3, i4 &
 #endif
     ) result(v)
     type(_R_TYPE_NAME), intent(in) :: this
@@ -300,6 +337,8 @@
     integer, intent(in) :: i1, i2
 #elif _R_DIM == 3
     integer, intent(in) :: i1, i2, i3
+#elif _R_DIM == 4
+    integer, intent(in) :: i1, i2, i3, i4
 #endif
 #ifdef _R_TYPE_VAR_PREC
     _R_TYPE_VAR(_R_TYPE_VAR_PREC) :: v
@@ -308,14 +347,16 @@
 #endif
 
 #if _R_DIM == 1
-    v = this%data%val(i1)
+    v = this%data%array(i1)
 #elif _R_DIM == 2
-    v = this%data%val(i1,i2)
+    v = this%data%array(i1,i2)
 #elif _R_DIM == 3
-    v = this%data%val(i1,i2,i3)
+    v = this%data%array(i1,i2,i3)
+#elif _R_DIM == 4
+    v = this%data%array(i1,i2,i3,i4)
 #endif
 
-  end function val_idx_
+  end function get_array_idx_
 
 
   !> Query size of array
@@ -336,10 +377,10 @@
 
     integer :: d
 
-    if ( .not. is_initd(this) ) then
-      d = 0
+    if ( is_initd(this) ) then
+      d = size(this%data%array, dim=dim)
     else
-      d = size(this%data%val, dim=dim)
+      d = 0
     end if
 
   end function size_
@@ -353,22 +394,19 @@
   !! @param[in] v value to set all elements equal to
   !!
   !! @author Nick R. Papior (2016, February)
-  subroutine init_val_(this, v)
+  subroutine init_array_(this, v)
     type(_R_TYPE_NAME), intent(inout) :: this
 #ifdef _R_TYPE_VAR_PREC
     _R_TYPE_VAR(_R_TYPE_VAR_PREC), intent(in) :: v
-    _R_TYPE_VAR(_R_TYPE_VAR_PREC), pointer :: p _R_DIM_SPEC()
 #else
     _R_TYPE_VAR, intent(in) :: v
-    _R_TYPE_VAR, pointer :: p _R_DIM_SPEC()
 #endif
 
-    ! Retrieve data
-    p => val(this)
-    ! set data
-    p = v
+    if ( is_initd(this) ) then
+      this%data%array = v
+    end if
 
-  end subroutine init_val_
+  end subroutine init_array_
 
 
   !> Print, to std-out, some basic information of the data-container
@@ -396,6 +434,8 @@
     integer :: d1, d2
 #elif _R_DIM == 3
     integer :: d1, d2, d3
+#elif _R_DIM == 4
+    integer :: d1, d2, d3, d4
 #endif
 
     ! 4-byte variable
@@ -422,6 +462,9 @@
 #if _R_DIM > 2
     d3 = size_(this, 3)
 #endif
+#if _R_DIM > 3
+    d4 = size_(this, 4)
+#endif
     
     ! Create fmt
     write(fmt, '(a,i0,a)') '(t',lindent,',3a,10(i0,a))'
@@ -433,7 +476,10 @@
 #if _R_DIM > 2
       " d3=",d3, &
 #endif
-      ", refs: ", frefs(this), ">"
+#if _R_DIM > 3
+      " d4=",d4, &
+#endif
+      ", refs: ", get_refs(this), ">"
 
   end subroutine print_
 

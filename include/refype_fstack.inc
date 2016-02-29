@@ -82,26 +82,18 @@
   !! Allows one to pop/delete all elements in the stack.
   integer, public, parameter :: RYP_FSTACK_ALL = 0
 
-  public :: new
-  public :: _R_TYPE_NEW
-  public :: print
-
-  public :: push, pop
-  public :: keep
-
-  public :: elem, elemp
-
-  public :: num_elem, fnum_elem, size
-  public :: num_elem_max, fnum_elem_max, size_max
 
   !> Create new @rype instances
   interface new
     module procedure new_
-  end interface new
+  end interface
+  public :: new
+  
   !> Create new @rype instances
   interface _R_TYPE_NEW
     module procedure new_
-  end interface _R_TYPE_NEW
+  end interface
+  public :: _R_TYPE_NEW
   
   !> Push new elements to the stack
   !!
@@ -109,7 +101,8 @@
   !! One cannot push elements in the middle of the stack.
   interface push
     module procedure push_
-  end interface push
+  end interface
+  public :: push
   !> Pop, and possibly return elements from the stack
   !!
   !! One can return the top element or pop-delete elements
@@ -121,52 +114,43 @@
   interface pop
     module procedure pop_
     module procedure pop_delete_
-  end interface pop
+  end interface
+  public :: pop
   !> Keeps a fixed number of elements in the stack
   interface keep
     module procedure keep_
-  end interface keep
-
+  end interface
+  public :: keep
+  
   !> Return an indexed element in the stack
-  interface elem
-    module procedure elem_
-  end interface elem
+  interface get_elem
+    module procedure get_elem_
+  end interface
+  public :: get_elem
   !> Return a pointer to an indexed element in the stack
-  interface elemp
-    module procedure elemp_
-  end interface elemp
+  interface get_elemp
+    module procedure get_elemp_
+  end interface
+  public :: get_elemp
 
   !> Return number of elements in the stack
-  interface num_elem
-    module procedure num_elem_
-  end interface num_elem
-  !> Return number of elements in the stack (function)
-  interface fnum_elem
-    module procedure fnum_elem_
-  end interface fnum_elem
-  !> Return number of elements in the stack (function)
   interface size
-    module procedure fnum_elem_
-  end interface size
+    module procedure size_elem_
+  end interface
+  public :: size
   
-  !> Return maximum number of elements in the stack
-  interface num_elem_max
-    module procedure num_elem_max_
-  end interface num_elem_max
-  !> Return maximum number of elements in the stack (function)
-  interface fnum_elem_max
-    module procedure fnum_elem_max_
-  end interface fnum_elem_max
   !> Return maximum number of elements in the stack (function)
   interface size_max
-    module procedure fnum_elem_max_
-  end interface size_max
-
+    module procedure size_max_elem_
+  end interface
+  public :: size_max
+  
   !> Print information about the @rype
   interface print
     module procedure print_
-  end interface print
-
+  end interface
+  public :: print
+  
   ! all default reference counted stuff
 # include "refype_common.inc"
   
@@ -224,49 +208,22 @@
   end subroutine new_
 
 
-  !> Query number of currently stored elements in this stack
-  !!
-  !! @param[inout] this @rype that is checked
-  !! @param[out] nel number of currently stored elements
-  !!
-  !! @author Nick R. Papior (2016, February)
-  elemental subroutine num_elem_(this, nel)
-    type(_R_TYPE_NAME), intent(in) :: this
-    integer, intent(out) :: nel
-    if ( .not. is_initd(this) ) then
-      nel = 0
-    else
-      nel = this%data%nel
-    end if
-  end subroutine num_elem_
   !> Query number of currently stored elements in this stack (function)
   !!
   !! @param[inout] this @rype that is checked
   !! @return number of currently stored elements
   !!
   !! @author Nick R. Papior (2016, February)
-  elemental function fnum_elem_(this) result (nel)
+  elemental function size_elem_(this) result (nel)
     type(_R_TYPE_NAME), intent(in) :: this
     integer :: nel
-    call num_elem(this, nel)
-  end function fnum_elem_
-    
-
-  !> Query maximum number of allowed elements in this stack
-  !!
-  !! @param[inout] this @rype that is checked
-  !! @param[out] nel_max maximum number of allowed elements
-  !!
-  !! @author Nick R. Papior (2016, February)
-  elemental subroutine num_elem_max_(this, nel_max)
-    type(_R_TYPE_NAME), intent(in) :: this
-    integer, intent(out) :: nel_max
     if ( .not. is_initd(this) ) then
-      nel_max = 0
+      nel = 0
     else
-      nel_max = this%data%nel_max
+      nel = this%data%nel
     end if
-  end subroutine num_elem_max_
+  end function size_elem_
+    
   
   !> Query maximum number of allowed elements in this stack (function)
   !!
@@ -274,11 +231,15 @@
   !! @return maximum number of allowed elements
   !!
   !! @author Nick R. Papior (2016, February)
-  elemental function fnum_elem_max_(this) result (nel_max)
+  elemental function size_max_elem_(this) result (nel_max)
     type(_R_TYPE_NAME), intent(in) :: this
     integer :: nel_max
-    call num_elem_max(this, nel_max)
-  end function fnum_elem_max_
+    if ( .not. is_initd(this) ) then
+      nel_max = 0
+    else
+      nel_max = this%data%nel_max
+    end if
+  end function size_max_elem_
 
   
   !> Adds new element to the stack
@@ -507,7 +468,7 @@
   !! @param[in] iel @opt=`size(this)` index of element to return. May be negative to offset from the top
   !!
   !! @author Nick R. Papior (2016, February)
-  subroutine elem_(this, elem, iel)
+  subroutine get_elem_(this, elem, iel)
     type(_R_TYPE_NAME), intent(in) :: this
     type(_R_STACK_TYPE), intent(inout) :: elem
     integer, intent(in), optional :: iel
@@ -531,7 +492,7 @@
       elem = this%data%T(el)
     end if
     
-  end subroutine elem_
+  end subroutine get_elem_
 
   !> Retrieve pointer to specific element in the stack
   !!
@@ -546,7 +507,7 @@
   !! @param[in] iel @opt=`size(this)` index of element to return. May be negative to offset from top.
   !!
   !! @author Nick R. Papior (2016, February)
-  subroutine elemp_(this, p, iel)
+  subroutine get_elemp_(this, p, iel)
     type(_R_TYPE_NAME), intent(in) :: this
     type(_R_STACK_TYPE), pointer :: p
     integer, intent(in), optional :: iel
@@ -570,7 +531,7 @@
       p => this%data%T(el)
     end if
       
-  end subroutine elemp_
+  end subroutine get_elemp_
 
   
   !> Print, to std-out, some basic information of the data-container
@@ -618,7 +579,7 @@
     end do
     lindent = lindent - 2 ! go back to requested indentation
     write(fmt, '(a,i0,a)') '(t',lindent,',a,i0,a)'
-    write(*,fmt) " <stack-refs: ", frefs(this), ">>"
+    write(*,fmt) " <stack-refs: ", get_refs(this), ">>"
 
   end subroutine print_
 

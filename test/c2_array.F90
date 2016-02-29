@@ -33,7 +33,7 @@ contains
     call print(ca1)
     c1 = a1
     call print(ca1)
-    call elemb(ca1,c1)
+    call get_elemb(ca1,c1)
     call print(ca1)
     cb1 = ca1
     cc1 = ca1
@@ -55,7 +55,7 @@ contains
     call print(ca2)
     c2 = a2
     call print(ca2)
-    call elemb(ca2,c2)
+    call get_elemb(ca2,c2)
     call print(ca2)
     cb2 = ca2
     cc2 = ca2
@@ -77,7 +77,7 @@ contains
     call print(ca3)
     c3 = a3
     call print(ca3)
-    call elemb(ca3,c3)
+    call get_elemb(ca3,c3)
     call print(ca3)
     cb3 = ca3
     cc3 = ca3

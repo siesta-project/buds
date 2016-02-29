@@ -39,13 +39,13 @@
   !> Name of module
   ! Note // is often interpreted as a C-comment, hence we simply
   ! skip to a newline to make it expand in the preprocessor.
-  character(len=*), parameter :: RYP_MOD_NAME = _R_XSTR(_R_CC2(_R_MOD,_)) // &
+  character(len=*), parameter, private :: RYP_MOD_NAME = _R_XSTR(_R_CC2(_R_MOD,_)) // &
     _R_MOD_NAME_STR
 #endif
   
 #ifdef _R_TYPE_NAME_STR
   !> Name of @rype in this module
-  character(len=*), parameter :: RYP_TYPE_NAME = _R_TYPE_NAME_STR
+  character(len=*), parameter, private :: RYP_TYPE_NAME = _R_TYPE_NAME_STR
 #endif
   
 ! project-refype -- local file settings

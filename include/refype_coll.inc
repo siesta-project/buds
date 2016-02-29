@@ -100,41 +100,42 @@
 #endif
   end type _R_TYPE_NAME_
 
-  ! Exported procedures and functions
-  ! (in addition to init, delete, and assignment(=) )
-  public :: new, _R_TYPE_NEW
-
   public :: print
   
-  public :: elema, elempa, felempa
-  public :: elemb, elempb, felempb
-#ifdef _R_COLL_C
-  public :: elemc, elempc, felempc
-#ifdef _R_COLL_D
-  public :: elemd, elempd, felempd
-#ifdef _R_COLL_E
-  public :: eleme, elempe, felempe
-#endif
-#endif
-#endif
-
   !> Create a new @rype. This will be allocated with 1 reference.
   interface new
     module procedure new_
-  end interface new
+  end interface
+  public :: new
   !> Create a new @rype. This will be allocated with 1 reference.
   interface _R_TYPE_NEW
     module procedure new_
-  end interface _R_TYPE_NEW
+  end interface
+  public :: _R_TYPE_NEW
 
   !> Retrieve the first element of the collection (routine)
   !!
   !! Change the suffix letter `A` to `B`, ... to get the
   !! corresponding element in the collection.
-  interface elema
-    module procedure elema_
-  end interface elema
+  interface get_elema
+    module procedure get_elema_
+  end interface
+  public :: get_elema
+  
   !> Point to the first element of the collection (routine)
+  !!
+  !! This routine does not step the reference counting as it
+  !! is a pointer.
+  !!
+  !! Change the suffix letter `A` to `B`, ... to get the
+  !! corresponding element in the collection.
+  interface get_elempa
+    module procedure get_elempa_
+  end interface
+  public :: get_elempa
+  
+
+  !> Point to the first element of the collection (function)
   !!
   !! This routine does not step the reference counting as it
   !! is a pointer.
@@ -143,65 +144,68 @@
   !! corresponding element in the collection.
   interface elempa
     module procedure elempa_
-  end interface elempa
-  !> Point to the first element of the collection (function)
-  !!
-  !! This routine does not step the reference counting as it
-  !! is a pointer.
-  !!
-  !! Change the suffix letter `A` to `B`, ... to get the
-  !! corresponding element in the collection.
-  interface felempa
-    module procedure felempa_
-  end interface felempa
-
+  end interface
+  public :: elempa
+  
   !> @cond ALWAYS_SKIP
 
   ! we do not document these sub-routines as they are encompassed
   ! by elema etc.
-  
-  interface elemb
-    module procedure elemb_
-  end interface elemb
+
+  interface get_elemb
+    module procedure get_elemb_
+  end interface
+  public :: get_elemb
+  interface get_elempb
+    module procedure get_elempb_
+  end interface
+  public :: get_elempb
   interface elempb
     module procedure elempb_
-  end interface elempb
-  interface felempb
-    module procedure felempb_
-  end interface felempb
+  end interface
+  public :: elempb
 
 #ifdef _R_COLL_C
-  interface elemc
-    module procedure elemc_
-  end interface elemc
+  interface get_elemc
+    module procedure get_elemc_
+  end interface
+  public :: get_elemc
+  interface get_elempc
+    module procedure get_elempc_
+  end interface
+  public :: get_elempc
   interface elempc
     module procedure elempc_
-  end interface elempc
-  interface felempc
-    module procedure felempc_
-  end interface felempc
+  end interface
+  public :: elempc
   
 #ifdef _R_COLL_D
-  interface elemd
-    module procedure elemd_
-  end interface elemd
+  interface get_elemd
+    module procedure get_elemd_
+  end interface
+  public :: get_elemd
+  interface get_elempd
+    module procedure get_elempd_
+  end interface
+  public :: get_elempd
   interface elempd
     module procedure elempd_
-  end interface elempd
-  interface felempd
-    module procedure felempd_
-  end interface felempd
+  end interface
+  public :: elempd
 
 #ifdef _R_COLL_E
-  interface eleme
-    module procedure eleme_
-  end interface eleme
+  interface get_eleme
+    module procedure get_eleme_
+  end interface
+  public :: get_eleme
+  interface get_elempe
+    module procedure get_elempe_
+  end interface
+  public :: get_elempe
   interface elempe
     module procedure elempe_
-  end interface elempe
-  interface felempe
-    module procedure felempe_
-  end interface felempe
+  end interface
+  public :: elempe
 #endif
 #endif
 #endif
@@ -349,7 +353,7 @@
 #endif
     lindent = lindent - 2 ! go back to requested indentation
     write(fmt, '(a,i0,a)') '(t',lindent,',a,i0,a)'
-    write(*,fmt) " <coll-refs: ", frefs(this), ">>"
+    write(*,fmt) " <coll-refs: ", get_refs(this), ">>"
 
   end subroutine print_
 

@@ -4,11 +4,11 @@
   
   !> Reference counter for @rype
   !! Tracks the number of times this data structure is referenced
-  integer :: ryp_refs = 0
+  integer :: refs_ = 0
 
   !> Hash ID for the @rype (unique for different @rypes)
   !! Enables a unique ID for any @rype of the same type.
-  character(len=RYP_ID_LEN) :: ryp_id = "null_id"
+  character(len=RYP_ID_LEN) :: id_ = "null_id"
   
 ! project-refype -- local file settings
 !     Anything below this line may be overwritten by scripts
