@@ -112,7 +112,7 @@ else
 endif
 
 # Add to includes the mod directory
-INC += $(V_FC_MODDIR)$(REFYPE_MODDIR)
+INC += $(V_FC_MODDIR)$(BUDS_MODDIR)
 
 # Define the compilation options:
 .F90.o:

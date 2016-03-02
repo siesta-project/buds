@@ -1,7 +1,7 @@
 # Here we define default abstractions of the variables
 # Currently the default installation directory is in
-#  HOME/refype
-PREFIX ?= $(HOME)/refype
+#  HOME/buds
+PREFIX ?= $(HOME)/buds
 
 
 # Installation procedure
@@ -10,33 +10,33 @@ PREFIX ?= $(HOME)/refype
 #   PREFIX (the actual installation prefix)
 # This two-level approach allows one to make
 # distro packages more easily.
-REFYPE_PREFIX = $(DEST_PREFIX)$(PREFIX)
-REFYPE_INC_DIR = $(REFYPE_PREFIX)/include
-REFYPE_VERSION_FILE = $(REFYPE_PREFIX)/include/refype_version.inc
+BUDS_PREFIX = $(DEST_PREFIX)$(PREFIX)
+BUDS_INC_DIR = $(BUDS_PREFIX)/include
+BUDS_VERSION_FILE = $(BUDS_PREFIX)/include/bud_version.inc
 
 # Should we abstract to lib64?
 # There should be no difference between 32 and 64 bit.
-REFYPE_LIB_DIR = $(REFYPE_PREFIX)/lib
+BUDS_LIB_DIR = $(BUDS_PREFIX)/lib
 # This is for later stuff
-REFYPE_BIN_DIR = $(REFYPE_PREFIX)/bin
+BUDS_BIN_DIR = $(BUDS_PREFIX)/bin
 
 
 .PHONY: install
 .NOTPARALLEL: install
 install: install_init_dir install_version
-	@echo Installing generic include files: $(REFYPE_INC_DIR)
-	@install -pm$(_OCT_rw_r_r) -t $(REFYPE_INC_DIR) include/*.inc
+	@echo Installing generic include files: $(BUDS_INC_DIR)
+	@install -pm$(_OCT_rw_r_r) -t $(BUDS_INC_DIR) include/*.inc
 
-	@if [ -e $(REFYPE_LIB_SHARED) ]; then \
-		echo Installing $(REFYPE_LIB_SHARED) library to: $(REFYPE_LIB_DIR) ; \
-		install -pm$(_OCT_rwx_rx_rx) -t $(REFYPE_LIB_DIR) $(REFYPE_LIB_SHARED) ; \
+	@if [ -e $(BUDS_LIB_SHARED) ]; then \
+		echo Installing $(BUDS_LIB_SHARED) library to: $(BUDS_LIB_DIR) ; \
+		install -pm$(_OCT_rwx_rx_rx) -t $(BUDS_LIB_DIR) $(BUDS_LIB_SHARED) ; \
 	fi
-	@if [ -e $(REFYPE_LIB_STATIC) ]; then \
-		echo Installing $(REFYPE_LIB_STATIC) library to: $(REFYPE_LIB_DIR) ; \
-		install -pm$(_OCT_rwx_rx_rx) -t $(REFYPE_LIB_DIR) $(REFYPE_LIB_STATIC) ; \
+	@if [ -e $(BUDS_LIB_STATIC) ]; then \
+		echo Installing $(BUDS_LIB_STATIC) library to: $(BUDS_LIB_DIR) ; \
+		install -pm$(_OCT_rwx_rx_rx) -t $(BUDS_LIB_DIR) $(BUDS_LIB_STATIC) ; \
 	fi
-	@echo Installing module files to: $(REFYPE_INC_DIR)
-	@install -pm$(_OCT_rw_r_r) -t $(REFYPE_INC_DIR) $(REFYPE_MODDIR)/*.mod
+	@echo Installing module files to: $(BUDS_INC_DIR)
+	@install -pm$(_OCT_rw_r_r) -t $(BUDS_INC_DIR) $(BUDS_MODDIR)/*.mod
 
 
 ##
@@ -47,21 +47,21 @@ install: install_init_dir install_version
 .PHONY: install_init_dir
 .NOTPARALLEL: install_init_dir
 install_init_dir:
-	@echo Creating installation directory: $(REFYPE_PREFIX)
-	@-mkdir -p $(REFYPE_INC_DIR)
-	@-mkdir -p $(REFYPE_LIB_DIR)
-	@-mkdir -p $(REFYPE_BIN_DIR)
+	@echo Creating installation directory: $(BUDS_PREFIX)
+	@-mkdir -p $(BUDS_INC_DIR)
+	@-mkdir -p $(BUDS_LIB_DIR)
+	@-mkdir -p $(BUDS_BIN_DIR)
 
 
 .PHONY: install_version
 .NOTPARALLEL: install_version
 install_version: install_init_dir
-	@echo Creating version file: $(REFYPE_VERSION_FILE)
-	@echo "#define REFYPE_MAJOR $(REFYPE_MAJOR)" > $(REFYPE_VERSION_FILE)
-	@echo "#define REFYPE_MINOR $(REFYPE_MINOR)" >> $(REFYPE_VERSION_FILE)
-	@echo "#define REFYPE_MICRO $(REFYPE_MICRO)" >> $(REFYPE_VERSION_FILE)
-	@echo "#define REFYPE_VERSION_STR \"$(REFYPE_MAJOR).$(REFYPE_MINOR).$(REFYPE_MICRO)\"" >> $(REFYPE_VERSION_FILE)
-	@chmod $(_OCT_rw_r_r) $(REFYPE_VERSION_FILE)
+	@echo Creating version file: $(BUDS_VERSION_FILE)
+	@echo "#define BUDS_MAJOR $(BUDS_MAJOR)" > $(BUDS_VERSION_FILE)
+	@echo "#define BUDS_MINOR $(BUDS_MINOR)" >> $(BUDS_VERSION_FILE)
+	@echo "#define BUDS_MICRO $(BUDS_MICRO)" >> $(BUDS_VERSION_FILE)
+	@echo "#define BUDS_VERSION_STR \"$(BUDS_MAJOR).$(BUDS_MINOR).$(BUDS_MICRO)\"" >> $(BUDS_VERSION_FILE)
+	@chmod $(_OCT_rw_r_r) $(BUDS_VERSION_FILE)
 
 # Issuing uninstall will forcefully remove the installation directory
 .PHONY: uninstall

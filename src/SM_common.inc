@@ -22,7 +22,7 @@
   integer, parameter, public :: SM_INPUT = 1000
 
 
-! project-refype -- local file settings
+! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings
 

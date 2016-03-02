@@ -1,15 +1,15 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
   
-#include "refype_utils.inc"
+#include "bud_utils.inc"
   
-#define _R_MOD_NAME_STR _R_XSTR(_R_MOD_NAME)
-#define _R_TYPE_NAME_ _R_CC2(_R_TYPE_NAME,_)
-#define _R_TYPE_NAME_STR _R_XSTR(_R_TYPE_NAME)
+#define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
+#define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
+#define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
   
-  !> _R_MOD_NAME documentation
+  !> BUD_MOD_NAME documentation
   !!
   !! @details
-  !! The detailed implementation of the sparsity _R_TYPE_NAME type.
+  !! The detailed implementation of the sparsity BUD_TYPE_NAME type.
   !!
   !! This contains the implementation of a CSR sparsity pattern.
   !!
@@ -48,57 +48,57 @@
   
   ! This *MUST* be the first statement
   ! Common parameters and variables used
-# include "refype_common_declarations.inc"
+# include "bud_common_declarations.inc"
   
-  !> @rype container for _R_TYPE_NAME
+  !> @bud container for BUD_TYPE_NAME
   !!
   !! Contains the sparsity pattern for a CSR matrix.
   !! This sparse matrix *must* contain the diagonal
   !! elements.
-  type _R_TYPE_NAME_
+  type BUD_TYPE_NAME_
     
     !> Number of rows in the matrix
-    integer(_R_TYPE_VAR_PREC) :: nr = 0
+    integer(BUD_TYPE_VAR_PREC) :: nr = 0
     !> Number of columns in the matrix
-    integer(_R_TYPE_VAR_PREC) :: nc = 0
+    integer(BUD_TYPE_VAR_PREC) :: nc = 0
     !> Number of non-zero elements in the sparse matrix
-    integer(_R_TYPE_VAR_PREC) :: nz = 0
+    integer(BUD_TYPE_VAR_PREC) :: nz = 0
 
     !> Index of the equivalent row (size `nr+1`)
-    integer(_R_TYPE_VAR_PREC), pointer, contiguous :: rptr(:) => null()
+    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: rptr(:) => null()
     !> The column index of the equivalent sparse matrix (size `nz`)
-    integer(_R_TYPE_VAR_PREC), pointer, contiguous :: col(:) => null()
+    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: col(:) => null()
 
     ! Consistent data in the reference counted object
-#   include "refype_common_type.inc"
+#   include "bud_common_type.inc"
 
-  end type _R_TYPE_NAME_
+  end type BUD_TYPE_NAME_
   
-  !> Create new @rype instances
+  !> Create new @bud instances
   interface new
     module procedure new_dim_
     module procedure new_copy_
   end interface
   public :: new
   
-  !> Create new @rype instances
-  interface _R_TYPE_NEW
+  !> Create new @bud instances
+  interface BUD_TYPE_NEW
     module procedure new_dim_
     module procedure new_copy_
   end interface
-  public :: _R_TYPE_NEW
+  public :: BUD_TYPE_NEW
 
 !!$ Sadly, intel compilers cannot figure out to
 !!$ deallocate from other pointers... :(
 !!$
-!!$  !> Associate @rype instances to already existing arrays
+!!$  !> Associate @bud instances to already existing arrays
 !!$  interface assoc
 !!$    module procedure assoc_
 !!$  end interface assoc
-!!$  !> Associate @rype instances to already existing arrays
-!!$  interface _R_TYPE_ASSOC
+!!$  !> Associate @bud instances to already existing arrays
+!!$  interface BUD_TYPE_ASSOC
 !!$    module procedure assoc_
-!!$  end interface _R_TYPE_ASSOC
+!!$  end interface BUD_TYPE_ASSOC
 
   !> Number of non-zero elements in the stored array (same as regular `size`)
   interface nonzeros
@@ -154,7 +154,7 @@
   end interface
   public :: index
 
-  !> Print information about the @rype
+  !> Print information about the @bud
   interface print
     module procedure print_
   end interface
@@ -166,7 +166,7 @@
   
   ! Include common data routines
   ! Note that 'CONTAINS' is present in this include file.
-# include "refype_common.inc"
+# include "bud_common.inc"
 
   
   !> Internal routine for cleaning up the data container.
@@ -176,7 +176,7 @@
   !! any data in the type.
   !! Should never be made public.
   pure subroutine delete_data(this)
-    type(_R_TYPE_NAME_), intent(inout) :: this
+    type(BUD_TYPE_NAME_), intent(inout) :: this
 
     this%nr = 0
     this%nc = 0
@@ -193,16 +193,16 @@
   end subroutine delete_data
 
   
-  !> Create a new @rype allocating room or specific size
+  !> Create a new @bud allocating room or specific size
   !!
-  !! @param[inout] this @rype to be allocated
-  !! @param[in] nr number of rows of this @rype
-  !! @param[in] nc number of columns of this @rype
-  !! @param[in] nz number of non-zero elements this @rype
+  !! @param[inout] this @bud to be allocated
+  !! @param[in] nr number of rows of this @bud
+  !! @param[in] nc number of columns of this @bud
+  !! @param[in] nz number of non-zero elements this @bud
   subroutine new_dim_(this, nr, nc, nz)
-    type(_R_TYPE_NAME), intent(inout) :: this
+    type(BUD_TYPE_NAME), intent(inout) :: this
     ! sizes
-    integer(_R_TYPE_VAR_PREC), intent(in) :: nr, nc, nz
+    integer(BUD_TYPE_VAR_PREC), intent(in) :: nr, nc, nz
 
     call init(this)
 
@@ -215,20 +215,20 @@
 
   end subroutine new_dim_
 
-  !> Create a new @rype by copying in from an outside list
+  !> Create a new @bud by copying in from an outside list
   !!
-  !! @param[inout] this @rype to be allocated
-  !! @param[in] nr number of rows of this @rype
-  !! @param[in] nc number of columns of this @rype
-  !! @param[in] nz number of non-zero elements this @rype
+  !! @param[inout] this @bud to be allocated
+  !! @param[in] nr number of rows of this @bud
+  !! @param[in] nc number of columns of this @bud
+  !! @param[in] nz number of non-zero elements this @bud
   !! @param[in] rptr row pointers (can be of size `nr` or `nr+1`)
   !! @param[in] col column indices for the sparse elements
   subroutine new_copy_(this, nr, nc, nz, rptr, col)
-    type(_R_TYPE_NAME), intent(inout) :: this
+    type(BUD_TYPE_NAME), intent(inout) :: this
     ! sizes
-    integer(_R_TYPE_VAR_PREC), intent(in) :: nr, nc, nz
+    integer(BUD_TYPE_VAR_PREC), intent(in) :: nr, nc, nz
     ! limiting ptr
-    integer(_R_TYPE_VAR_PREC), intent(in) :: rptr(nr), col(nz)
+    integer(BUD_TYPE_VAR_PREC), intent(in) :: rptr(nr), col(nz)
 
     ! Copy over information
     ! It must be 1-based
@@ -253,21 +253,21 @@
 
   !> Query number of non-zero elements
   elemental function nonzeros_(this) result(nnzs)
-    type(_R_TYPE_NAME), intent(in) :: this
+    type(BUD_TYPE_NAME), intent(in) :: this
     integer :: nnzs
     nnzs = this%data%nz
   end function nonzeros_
 
   !> Query number of rows of the stored sparse matrix
   elemental function mat_rows_(this) result(rows)
-    type(_R_TYPE_NAME), intent(in) :: this
+    type(BUD_TYPE_NAME), intent(in) :: this
     integer :: rows
     rows = this%data%nr
   end function mat_rows_
 
   !> Query number of columns of the stored sparse matrix
   elemental function mat_cols_(this) result(cols)
-    type(_R_TYPE_NAME), intent(in) :: this
+    type(BUD_TYPE_NAME), intent(in) :: this
     integer :: cols
     cols = this%data%nc
   end function mat_cols_
@@ -286,19 +286,19 @@
   !! @todo
   !! Add error checking for `D` parameter.
   !!
-  !! @param[in] this the sparsity @rype
+  !! @param[in] this the sparsity @bud
   !! @param[out] nr @opt number of rows
   !! @param[out] nc @opt number of columns
   !! @param[out] nz @opt number of non-zero elements
   !! @param[out] rptr @opt row pointer (`rptr(2)` is starting index of `ir=2`)
   !! @param[out] col @opt column index
   subroutine attach_(this, D, nr, nc, nz, rptr, col)
-    type(_R_TYPE_NAME), intent(in) :: this
+    type(BUD_TYPE_NAME), intent(in) :: this
     ! Having this forces the user to explicitly specify the
     ! wanted information.
     logical, intent(in), optional :: D
-    integer(_R_TYPE_VAR_PREC), intent(out), optional :: nr, nc, nz
-    integer(_R_TYPE_VAR_PREC), intent(out), pointer, contiguous, optional :: rptr(:), col(:)
+    integer(BUD_TYPE_VAR_PREC), intent(out), optional :: nr, nc, nz
+    integer(BUD_TYPE_VAR_PREC), intent(out), pointer, contiguous, optional :: rptr(:), col(:)
 
     if ( present(nr) ) nr = this%data%nr
     if ( present(nc) ) nc = this%data%nc
@@ -316,15 +316,15 @@
   !!
   !! Manual interaction with the sparsity pattern is preferred.
   !!
-  !! @param[in] this the sparsity pattern @rype
+  !! @param[in] this the sparsity pattern @bud
   !! @param[in] ir the requested row
   !! @param[in] ic the requested column
   !! @param[out] idx the index of `(ir,ic)`, <0 if non-existing
   pure subroutine index_(this, ir, ic, idx)
-    use _R_CC2(_R_MOD, _utils), only: find_bin
-    type(_R_TYPE_NAME), intent(in) :: this
-    integer(_R_TYPE_VAR_PREC), intent(in) :: ir, ic
-    integer(_R_TYPE_VAR_PREC), intent(out) :: idx
+    use BUD_CC2(BUD_MOD, _utils), only: find_bin
+    type(BUD_TYPE_NAME), intent(in) :: this
+    integer(BUD_TYPE_VAR_PREC), intent(in) :: ir, ic
+    integer(BUD_TYPE_VAR_PREC), intent(out) :: idx
     
     call find_bin(this%data%rptr(ir+1)-this%data%rptr(ir), &
       this%data%col(this%data%rptr(ir):), ic, idx)
@@ -351,26 +351,26 @@
   !!                  elements to not have dublicate elements.
   !! @author Nick R. Papior (2016, February)
   subroutine get_wrapped_(from, nc, to, unite)
-    use _R_CC2(_R_MOD, _utils), only: sort_quick, modp
+    use BUD_CC2(BUD_MOD, _utils), only: sort_quick, modp
 
-    type(_R_TYPE_NAME), intent(in) :: from
-    integer(_R_TYPE_VAR_PREC), intent(in) :: nc
-    type(_R_TYPE_NAME), intent(inout) :: to
+    type(BUD_TYPE_NAME), intent(in) :: from
+    integer(BUD_TYPE_VAR_PREC), intent(in) :: nc
+    type(BUD_TYPE_NAME), intent(inout) :: to
     logical, intent(in), optional :: unite
 
     ! Local unite variable
     logical :: lunite
 
     ! from array elements
-    integer(_R_TYPE_VAR_PREC) :: fnr, fnz, fi
-    integer(_R_TYPE_VAR_PREC), pointer, contiguous :: fptr(:), fcol(:)
-    integer(_R_TYPE_VAR_PREC) :: tnr, ti
-    integer(_R_TYPE_VAR_PREC), pointer, contiguous :: tptr(:), tcol(:)
+    integer(BUD_TYPE_VAR_PREC) :: fnr, fnz, fi
+    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: fptr(:), fcol(:)
+    integer(BUD_TYPE_VAR_PREC) :: tnr, ti
+    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: tptr(:), tcol(:)
     
-    integer(_R_TYPE_VAR_PREC) :: ir, i
-    integer(_R_TYPE_VAR_PREC), pointer :: ind
+    integer(BUD_TYPE_VAR_PREC) :: ir, i
+    integer(BUD_TYPE_VAR_PREC), pointer :: ind
 
-    integer(_R_TYPE_VAR_PREC), allocatable :: tmpcol(:)
+    integer(BUD_TYPE_VAR_PREC), allocatable :: tmpcol(:)
 
     lunite = .false.
     if ( present(unite) ) lunite = unite
@@ -447,8 +447,8 @@
     ! Reallocate the temporary column indices in
     ! a sorted array
     subroutine realloc_tmpcol(ir)
-      integer(_R_TYPE_VAR_PREC), intent(in) :: ir
-      integer(_R_TYPE_VAR_PREC) :: n
+      integer(BUD_TYPE_VAR_PREC), intent(in) :: ir
+      integer(BUD_TYPE_VAR_PREC) :: n
       n = fptr(ir+1) - fptr(ir)
       if ( n > size(tmpcol) ) then
         deallocate(tmpcol)
@@ -465,8 +465,8 @@
   !! @param[in] this type to retrieve the pointer from
   !! @return the pointer to the contained row-pointer segment
   function get_row_ptrp_(this) result(rptr)
-    type(_R_TYPE_NAME), intent(in) :: this
-    integer(_R_TYPE_VAR_PREC), pointer, contiguous :: rptr(:)
+    type(BUD_TYPE_NAME), intent(in) :: this
+    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: rptr(:)
     
     rptr => this%data%rptr
     
@@ -477,8 +477,8 @@
   !! @param[in] this type to retrieve the pointer from
   !! @return the pointer to the contained column indices segment
   function get_columnp_(this) result(col)
-    type(_R_TYPE_NAME), intent(in) :: this
-    integer(_R_TYPE_VAR_PREC), pointer, contiguous :: col(:)
+    type(BUD_TYPE_NAME), intent(in) :: this
+    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: col(:)
 
     col => this%data%col
     
@@ -490,21 +490,21 @@
   !! Sorts the sparse matrix such that the column
   !! index is always increasing for each row.
   !!
-  !! @param[in] this @refype to finalize
+  !! @param[in] this @bud to finalize
   !! @param[out] err associated error message of the sparsity pattern
   !! @param[out] pvt @opt=@none if requested the pivoting array for the finalized sparsity pattern
   subroutine finalize_(this, err, pvt)
     ! We use the quick-sort algorithm in this general finalization
     ! algorithm.
-    use _R_CC2(_R_MOD, _utils), only: sort_quick
+    use BUD_CC2(BUD_MOD, _utils), only: sort_quick
 
-    type(_R_TYPE_NAME), intent(inout) :: this
-    integer(_R_TYPE_VAR_PREC), intent(out) :: err
-    integer(_R_TYPE_VAR_PREC), intent(out), optional :: pvt(:)
+    type(BUD_TYPE_NAME), intent(inout) :: this
+    integer(BUD_TYPE_VAR_PREC), intent(out) :: err
+    integer(BUD_TYPE_VAR_PREC), intent(out), optional :: pvt(:)
 
     ! Local variables
-    integer(_R_TYPE_VAR_PREC) :: ir, i, nr, nc, nz
-    integer(_R_TYPE_VAR_PREC), pointer, contiguous :: rptr(:), col(:)
+    integer(BUD_TYPE_VAR_PREC) :: ir, i, nr, nc, nz
+    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: rptr(:), col(:)
 
     ! Initialize error
     err = 0
@@ -569,23 +569,23 @@
   !! This will enable the parent program to show it in the way it wants.
   !!
   !! @param[in] this data type
-  !! @param[in] info @opt=_R_TYPE_NAME_STR additional information printed
+  !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
   !!
   !! @author Nick R. Papior (2016, February)
   subroutine print_(this, info, indent)
-    type(_R_TYPE_NAME), intent(in) :: this
+    type(BUD_TYPE_NAME), intent(in) :: this
     character(len=*), intent(in), optional :: info
     integer, intent(in), optional :: indent
 
     integer :: lindent
-    integer(_R_TYPE_VAR_PREC) :: nr, nz, nnzs
+    integer(BUD_TYPE_VAR_PREC) :: nr, nz, nnzs
 
     ! 4-byte variable
     character(len=32) :: fmt
     character(len=256) :: name
 
-    name = _R_TYPE_NAME_STR
+    name = BUD_TYPE_NAME_STR
     if ( present(info) ) name = info
     lindent = 1
     if ( present(indent) ) lindent = indent
@@ -609,15 +609,15 @@
 
 ! Local pre-processor variables that
 ! undefine the variables that are not needed anymore.
-#undef _R_MOD_NAME
-#undef _R_TYPE_NAME
-#undef _R_TYPE_NAME_
-#undef _R_TYPE_NAME_STR
-#undef _R_TYPE_NEW
-#undef _R_TYPE_VAR
-#undef _R_TYPE_VAR_PREC
+#undef BUD_MOD_NAME
+#undef BUD_TYPE_NAME
+#undef BUD_TYPE_NAME_
+#undef BUD_TYPE_NAME_STR
+#undef BUD_TYPE_NEW
+#undef BUD_TYPE_VAR
+#undef BUD_TYPE_VAR_PREC
 
-! project-refype -- local file settings
+! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings
 

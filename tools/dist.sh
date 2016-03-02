@@ -23,12 +23,12 @@ fi
 
 # Create file that we are going to store the distribution
 # in
-file=refype-$describe.tar.gz
+file=buds-$describe.tar.gz
 # Clean it
 rm -f $file
 
 # Create the archive (with prefix)
-git archive --prefix refype-$describe/ \
+git archive --prefix buds-$describe/ \
     --format tar.gz \
     -o $file HEAD
 

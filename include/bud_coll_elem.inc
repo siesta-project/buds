@@ -1,78 +1,78 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
 
-#include "refype_utils.inc"
+#include "bud_utils.inc"
 
-!> Retrieve _R_COLL_LETTER @rype in _R_TYPE_NAME
+!> Retrieve BUD_COLL_LETTER @bud in BUD_TYPE_NAME
 !!
-!! Query the data contained in the _R_TYPE_NAME
+!! Query the data contained in the BUD_TYPE_NAME
 !! and return the data in `item`.
 !!
 !! If `this` is not initialized, then `item` will be deleted
-!! and an un-initialized @rype will be returned.
+!! and an un-initialized @bud will be returned.
 !!
-!! @param[inout] this @rype container
+!! @param[inout] this @bud container
 !! @param[inout] item contains data collection upon exit (or null)
 !!
 !! @author Nick R. Papior (2016, February)
-subroutine _R_CC3(get_elem,_R_COLL_LETTER,_)(this, item)
-  type(_R_TYPE_NAME), intent(inout) :: this
-  type(_R_COLL_CURRENT), intent(inout) :: item
+subroutine BUD_CC3(get_elem,BUD_COLL_LETTER,_)(this, item)
+  type(BUD_TYPE_NAME), intent(inout) :: this
+  type(BUD_COLL_CURRENT), intent(inout) :: item
 
   if ( .not. is_initd(this) ) then
     ! it is empty, so return an empty item
     call delete(item)
   else
-    item = this%data% _R_COLL_LETTER
+    item = this%data% BUD_COLL_LETTER
   end if
   
 end subroutine
 
-!> Retrieve _R_COLL_LETTER @rype in _R_TYPE_NAME
+!> Retrieve BUD_COLL_LETTER @bud in BUD_TYPE_NAME
 !!
-!! Query the data contained in the _R_TYPE_NAME
+!! Query the data contained in the BUD_TYPE_NAME
 !! and return the data in `item` as a pointer
 !!
 !! If `this` is not initialized, then `item` will be deleted
 !! and an un-initialized type will be returned.
 !!
-!! @param[inout] this @rype container
+!! @param[inout] this @bud container
 !! @param p pointer to element in collection (or null if non-initialized)
 !!
 !! @author Nick R. Papior (2016, February)
-subroutine _R_CC3(get_elemp,_R_COLL_LETTER,_)(this, p)
-  type(_R_TYPE_NAME), intent(inout) :: this
-  type(_R_COLL_CURRENT), pointer :: p
+subroutine BUD_CC3(get_elemp,BUD_COLL_LETTER,_)(this, p)
+  type(BUD_TYPE_NAME), intent(inout) :: this
+  type(BUD_COLL_CURRENT), pointer :: p
 
   if ( .not. is_initd(this) ) then
     ! it is empty, so return an empty item
     nullify(p)
   else
-    p => this%data% _R_COLL_LETTER
+    p => this%data% BUD_COLL_LETTER
   end if
 
 end subroutine
 
-!> Retrieve _R_COLL_LETTER @rype in _R_TYPE_NAME (function)
+!> Retrieve BUD_COLL_LETTER @bud in BUD_TYPE_NAME (function)
 !!
-!! @iSee fcollp## _R_COLL_LETTER ## _
+!! @iSee fcollp## BUD_COLL_LETTER ## _
 !!
 !! @param[inout] this data container
 !! @return pointer to element in collection (or null if non-initialized)
 !!
 !! @author Nick R. Papior (2016, February)
-function _R_CC3(elemp,_R_COLL_LETTER,_)(this) result(p)
-  type(_R_TYPE_NAME), intent(inout) :: this
-  type(_R_COLL_CURRENT), pointer :: p
-  call _R_CC3(get_elemp,_R_COLL_LETTER,_)(this, p)
+function BUD_CC3(elemp,BUD_COLL_LETTER,_)(this) result(p)
+  type(BUD_TYPE_NAME), intent(inout) :: this
+  type(BUD_COLL_CURRENT), pointer :: p
+  call BUD_CC3(get_elemp,BUD_COLL_LETTER,_)(this, p)
 end function 
 
 
 ! Prepare next input
-#undef _R_COLL_LETTER
-#undef _R_COLL_CURRENT
+#undef BUD_COLL_LETTER
+#undef BUD_COLL_CURRENT
 
 
-! project-refype -- local file settings
+! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings
 

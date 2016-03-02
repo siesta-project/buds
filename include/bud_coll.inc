@@ -1,118 +1,118 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
   
   ! Include the common utilities
-#include "refype_utils.inc"
+#include "bud_utils.inc"
 
-#define _R_MOD_NAME_STR _R_XSTR(_R_MOD_NAME)
-#ifndef _R_TYPE_NAME_
-#  define _R_TYPE_NAME_ _R_CC2(_R_TYPE_NAME,_)
+#define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
+#ifndef BUD_TYPE_NAME_
+#  define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
 #endif
-#ifndef _R_TYPE_NAME_STR
-#  define _R_TYPE_NAME_STR _R_XSTR(_R_TYPE_NAME)
+#ifndef BUD_TYPE_NAME_STR
+#  define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
 #endif
 
-#include "refype_common_declarations.inc"
+#include "bud_common_declarations.inc"
   
   ! We use "collection" as "set" may be confusing as nothing is _set_.
-  !> @defgroup refype-coll Reference type of a collection
+  !> @defgroup bud-coll Reference type of a collection
   !!
   !! @details
   !! The implementation details of a collection of reference counted types.
-  !! This type implements a common container for N>1 @rypes.
+  !! This type implements a common container for N>1 @buds.
   !!
   !! @dev_note
   !! For extensions of basic routines you _must_ make a wrapper interface
   !! to allow other routine names to have the same name for different
   !! interfaces.
   !!
-  !! One __cannot__ store non-@rype types in this collection.
+  !! One __cannot__ store non-@bud types in this collection.
   !!
-  !! Currently this collection only allows up to 5 @rypes contained.
+  !! Currently this collection only allows up to 5 @buds contained.
   !! This can easily be extended.
   !!
   !! The following pre-processor variables are currently used when
   !! included:
-  !!  - __R_TYPE_NAME, name of the resulting type
-  !!  - __R_TYPE_NAME_, name of the internal data
-  !!  - __R_COLL_A, name of the first @rype
-  !!  - __R_COLL_B, name of the second @rype
-  !!  - __R_COLL_C, name of the third @rype (need not be used)
-  !!  - __R_COLL_D, name of the fourth @rype (need not be used)
-  !!  - __R_COLL_E, name of the fifth @rype (need not be used)
+  !!  - _BUD_TYPE_NAME, name of the resulting type
+  !!  - _BUD_TYPE_NAME_, name of the internal data
+  !!  - _BUD_COLL_A, name of the first @bud
+  !!  - _BUD_COLL_B, name of the second @bud
+  !!  - _BUD_COLL_C, name of the third @bud (need not be used)
+  !!  - _BUD_COLL_D, name of the fourth @bud (need not be used)
+  !!  - _BUD_COLL_E, name of the fifth @bud (need not be used)
   !!
   !! @acknowledge
   !! These declarations are community inspired from the FLIBS
   !! project by Arjen Markus as well as the PyF95 project.
   !! The initial draft of this library has been created by Alberto Garcia.
 
-  !> @rype container for _R_TYPE_NAME
+  !> @bud container for BUD_TYPE_NAME
   !!
   !! @details
-  !! Container for the data in the @rype.
+  !! Container for the data in the @bud.
   !!
   !! The container handles a collection up to 5 elements.
   !! Each element is stored via alphabetic sequences
   !! Hence the first item is `A`, second is `B` etc.
   !!
-#ifndef _R_COLL_C
-  !! This @rype is a collection of 2 elements:
+#ifndef BUD_COLL_C
+  !! This @bud is a collection of 2 elements:
 #else
-#ifndef _R_COLL_D
-  !! This @rype is a collection of 3 elements:
+#ifndef BUD_COLL_D
+  !! This @bud is a collection of 3 elements:
 #else
-#ifndef _R_COLL_E
-  !! This @rype is a collection of 4 elements:
+#ifndef BUD_COLL_E
+  !! This @bud is a collection of 4 elements:
 #else
-  !! This @rype is a collection of 5 elements:
+  !! This @bud is a collection of 5 elements:
 #endif
 #endif
 #endif
-  !! 1. _R_COLL_A
-  !! 2. _R_COLL_B
-#ifdef _R_COLL_C
-  !! 3. _R_COLL_C
-#ifdef _R_COLL_D
-  !! 4. _R_COLL_D
-#ifdef _R_COLL_E
-  !! 5. _R_COLL_E
+  !! 1. BUD_COLL_A
+  !! 2. BUD_COLL_B
+#ifdef BUD_COLL_C
+  !! 3. BUD_COLL_C
+#ifdef BUD_COLL_D
+  !! 4. BUD_COLL_D
+#ifdef BUD_COLL_E
+  !! 5. BUD_COLL_E
 #endif
 #endif
 #endif
-  type _R_TYPE_NAME_    
+  type BUD_TYPE_NAME_    
     !> First element of collection
-    type(_R_COLL_A) :: A
+    type(BUD_COLL_A) :: A
     !> Second element of collection
-    type(_R_COLL_B) :: B
-#ifdef _R_COLL_C
+    type(BUD_COLL_B) :: B
+#ifdef BUD_COLL_C
     !> Third element of collection
-    type(_R_COLL_C) :: C
-#ifdef _R_COLL_D
+    type(BUD_COLL_C) :: C
+#ifdef BUD_COLL_D
     !> Fourth element of collection
-    type(_R_COLL_D) :: D
-#ifdef _R_COLL_E
+    type(BUD_COLL_D) :: D
+#ifdef BUD_COLL_E
     !> Fifth element of collection
-    type(_R_COLL_E) :: E
+    type(BUD_COLL_E) :: E
 #endif
 #endif
 #endif
     
     ! Consistent data in the reference counted object
-#   include "refype_common_type.inc"
+#   include "bud_common_type.inc"
 
-  end type _R_TYPE_NAME_
+  end type BUD_TYPE_NAME_
 
   public :: print
   
-  !> Create a new @rype. This will be allocated with 1 reference.
+  !> Create a new @bud. This will be allocated with 1 reference.
   interface new
     module procedure new_
   end interface
   public :: new
-  !> Create a new @rype. This will be allocated with 1 reference.
-  interface _R_TYPE_NEW
+  !> Create a new @bud. This will be allocated with 1 reference.
+  interface BUD_TYPE_NEW
     module procedure new_
   end interface
-  public :: _R_TYPE_NEW
+  public :: BUD_TYPE_NEW
 
   !> Retrieve the first element of the collection (routine)
   !!
@@ -166,7 +166,7 @@
   end interface
   public :: elempb
 
-#ifdef _R_COLL_C
+#ifdef BUD_COLL_C
   interface get_elemc
     module procedure get_elemc_
   end interface
@@ -180,7 +180,7 @@
   end interface
   public :: elempc
   
-#ifdef _R_COLL_D
+#ifdef BUD_COLL_D
   interface get_elemd
     module procedure get_elemd_
   end interface
@@ -194,7 +194,7 @@
   end interface
   public :: elempd
 
-#ifdef _R_COLL_E
+#ifdef BUD_COLL_E
   interface get_eleme
     module procedure get_eleme_
   end interface
@@ -219,20 +219,20 @@
   end interface print
   
   ! all default reference counted stuff
-# include "refype_common.inc"
+# include "bud_common.inc"
   
   ! This routine takes care of deleting the 
   ! types storage
 
   pure subroutine delete_data(data)
-    type(_R_TYPE_NAME_), intent(inout) :: data
+    type(BUD_TYPE_NAME_), intent(inout) :: data
     call delete(data%a)
     call delete(data%b)
-#ifdef _R_COLL_C
+#ifdef BUD_COLL_C
     call delete(data%c)
-#ifdef _R_COLL_D
+#ifdef BUD_COLL_D
     call delete(data%d)
-#ifdef _R_COLL_E
+#ifdef BUD_COLL_E
     call delete(data%e)
 #endif
 #endif
@@ -248,40 +248,40 @@
   !! Subsequently the type container will be allocated
   !! and the reference counted data will be 1.
   !!
-  !! @param[inout] this initialized @rype
-  !! @param[in] A first element in the @rype
-  !! @param[in] B second element in the @rype
-#ifdef _R_COLL_C
-  !! @param[in] C third element in the @rype
-#ifdef _R_COLL_D
-  !! @param[in] D fourth element in the @rype
-#ifdef _R_COLL_E
-  !! @param[in] E fifth element in the @rype
+  !! @param[inout] this initialized @bud
+  !! @param[in] A first element in the @bud
+  !! @param[in] B second element in the @bud
+#ifdef BUD_COLL_C
+  !! @param[in] C third element in the @bud
+#ifdef BUD_COLL_D
+  !! @param[in] D fourth element in the @bud
+#ifdef BUD_COLL_E
+  !! @param[in] E fifth element in the @bud
 #endif
 #endif
 #endif
   !!
   !! @author Nick R. Papior (2016, February)
   subroutine new_(this, a, b &
-#ifdef _R_COLL_C
+#ifdef BUD_COLL_C
     , c &
-#ifdef _R_COLL_D
+#ifdef BUD_COLL_D
     , d &
-#ifdef _R_COLL_E
+#ifdef BUD_COLL_E
     , e &
 #endif
 #endif
 #endif
     )
-    type(_R_TYPE_NAME), intent(inout) :: this
-    type(_R_COLL_A), intent(in) :: a
-    type(_R_COLL_B), intent(in) :: b
-#ifdef _R_COLL_C
-    type(_R_COLL_C), intent(in) :: c
-#ifdef _R_COLL_D
-    type(_R_COLL_D), intent(in) :: d
-#ifdef _R_COLL_E
-    type(_R_COLL_E), intent(in) :: e
+    type(BUD_TYPE_NAME), intent(inout) :: this
+    type(BUD_COLL_A), intent(in) :: a
+    type(BUD_COLL_B), intent(in) :: b
+#ifdef BUD_COLL_C
+    type(BUD_COLL_C), intent(in) :: c
+#ifdef BUD_COLL_D
+    type(BUD_COLL_D), intent(in) :: d
+#ifdef BUD_COLL_E
+    type(BUD_COLL_E), intent(in) :: e
 #endif
 #endif
 #endif
@@ -291,11 +291,11 @@
     ! set objects
     this%data%a = a
     this%data%b = b
-#ifdef _R_COLL_C
+#ifdef BUD_COLL_C
     this%data%c = c
-#ifdef _R_COLL_D
+#ifdef BUD_COLL_D
     this%data%d = d
-#ifdef _R_COLL_E
+#ifdef BUD_COLL_E
     this%data%e = e
 #endif
 #endif
@@ -312,12 +312,12 @@
   !! Retrieval function of the string that represents the data.
   !!
   !! @param[in] this data type
-  !! @param[in] info @opt=_R_TYPE_NAME_STR additional information printed
+  !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
   !!
   !! @author Nick R. Papior (2016, February)
   subroutine print_(this, info, indent)
-    type(_R_TYPE_NAME), intent(in) :: this
+    type(BUD_TYPE_NAME), intent(in) :: this
     character(len=*), intent(in), optional :: info
     integer, intent(in), optional :: indent
     integer :: lindent
@@ -326,7 +326,7 @@
     character(len=32) :: fmt
     character(len=256) :: name
 
-    name = _R_TYPE_NAME_STR
+    name = BUD_TYPE_NAME_STR
     if ( present(info) ) name = info
     lindent = 1
     if ( present(indent) ) lindent = indent
@@ -343,11 +343,11 @@
     write(*,fmt) "<<", trim(name), " coll>"
     call print(this%data%a, indent = lindent)
     call print(this%data%b, indent = lindent)
-#ifdef _R_COLL_C
+#ifdef BUD_COLL_C
     call print(this%data%c, indent = lindent)
-#ifdef _R_COLL_D
+#ifdef BUD_COLL_D
     call print(this%data%d, indent = lindent)
-#ifdef _R_COLL_E
+#ifdef BUD_COLL_E
     call print(this%data%e, indent = lindent)
 #endif
 #endif
@@ -359,40 +359,40 @@
   end subroutine print_
 
   ! Create data-retrieval routines
-# define _R_COLL_LETTER A
-# define _R_COLL_CURRENT _R_COLL_A
-# include "refype_coll_elem.inc"
-# define _R_COLL_LETTER B
-# define _R_COLL_CURRENT _R_COLL_B
-# include "refype_coll_elem.inc"
-#ifdef _R_COLL_C
-# define _R_COLL_LETTER C
-# define _R_COLL_CURRENT _R_COLL_C
-# include "refype_coll_elem.inc"
-#ifdef _R_COLL_D
-# define _R_COLL_LETTER D
-# define _R_COLL_CURRENT _R_COLL_D
-# include "refype_coll_elem.inc"
-#ifdef _R_COLL_E
-# define _R_COLL_LETTER E
-# define _R_COLL_CURRENT _R_COLL_E
-# include "refype_coll_elem.inc"
+# define BUD_COLL_LETTER A
+# define BUD_COLL_CURRENT BUD_COLL_A
+# include "bud_coll_elem.inc"
+# define BUD_COLL_LETTER B
+# define BUD_COLL_CURRENT BUD_COLL_B
+# include "bud_coll_elem.inc"
+#ifdef BUD_COLL_C
+# define BUD_COLL_LETTER C
+# define BUD_COLL_CURRENT BUD_COLL_C
+# include "bud_coll_elem.inc"
+#ifdef BUD_COLL_D
+# define BUD_COLL_LETTER D
+# define BUD_COLL_CURRENT BUD_COLL_D
+# include "bud_coll_elem.inc"
+#ifdef BUD_COLL_E
+# define BUD_COLL_LETTER E
+# define BUD_COLL_CURRENT BUD_COLL_E
+# include "bud_coll_elem.inc"
 #endif
 #endif
 #endif
 
-#undef _R_MOD_NAME
-#undef _R_TYPE_NAME
-#undef _R_TYPE_NAME_
-#undef _R_TYPE_NAME_STR
-#undef _R_TYPE_NEW
-#undef _R_COLL_A
-#undef _R_COLL_B
-#undef _R_COLL_C
-#undef _R_COLL_D
-#undef _R_COLL_E
+#undef BUD_MOD_NAME
+#undef BUD_TYPE_NAME
+#undef BUD_TYPE_NAME_
+#undef BUD_TYPE_NAME_STR
+#undef BUD_TYPE_NEW
+#undef BUD_COLL_A
+#undef BUD_COLL_B
+#undef BUD_COLL_C
+#undef BUD_COLL_D
+#undef BUD_COLL_E
 
-  ! project-refype -- local file settings
+  ! project-bud -- local file settings
   !     Anything below this line may be overwritten by scripts
   !     Below are non-editable settings
 

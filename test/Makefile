@@ -17,7 +17,7 @@ override INC += -I$(TOP_DIR)/include
 override INC += -I$(TOP_DIR)/src
 
 # The library
-LIBS = $(TOP_DIR)/librefype.a
+LIBS = $(TOP_DIR)/libbuds.a
 
 COMMON_OBJS = test_utils.o
 

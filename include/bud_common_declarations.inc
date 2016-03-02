@@ -32,23 +32,23 @@
 
   !> @endcond ALWAYS_SKIP
   
-  !> Size of ID parameter for refype data-containers
-  integer, private, parameter :: RYP_ID_LEN = 36
+  !> Size of ID parameter for bud data-containers
+  integer, private, parameter :: BUD_ID_LEn = 36
 
-#ifdef _R_MOD_NAME_STR
+#ifdef BUD_MOD_NAME_STR
   !> Name of module
   ! Note // is often interpreted as a C-comment, hence we simply
   ! skip to a newline to make it expand in the preprocessor.
-  character(len=*), parameter, private :: RYP_MOD_NAME = _R_XSTR(_R_CC2(_R_MOD,_)) // &
-    _R_MOD_NAME_STR
+  character(len=*), parameter, private :: BUD_MOd = BUD_XSTR(BUD_CC2(BUD_MOD,_)) // &
+    BUD_MOD_NAME_STR
 #endif
   
-#ifdef _R_TYPE_NAME_STR
-  !> Name of @rype in this module
-  character(len=*), parameter, private :: RYP_TYPE_NAME = _R_TYPE_NAME_STR
+#ifdef BUD_TYPE_NAME_STR
+  !> Name of @bud in this module
+  character(len=*), parameter, private :: BUD_TYPe = BUD_TYPE_NAME_STR
 #endif
   
-! project-refype -- local file settings
+! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings
 

@@ -1,8 +1,8 @@
-#ifndef _R_PREC
-#ifdef _R_TYPE_VAR_PREC
-#define _R_PREC _R_TYPE_VAR_PREC
+#ifndef BUD_PREC
+#ifdef BUD_TYPE_VAR_PREC
+#define BUD_PREC BUD_TYPE_VAR_PREC
 #else
-#error "_R_PREC not defined in __FILE__"
+#error "BUD_PREC not defined in __FILE__"
 #endif
 #endif
 
@@ -24,12 +24,12 @@
 !! @param[in] n size of array to be sorted
 !! @param[in] array array to be sorted
 !! @param[out] sarray sorted array
-pure subroutine _R_CC2(sort_ps_,_R_PREC)(n, array, sarray)
-  integer(_R_PREC), intent(in) :: n, array(n)
-  integer(_R_PREC), intent(out) :: sarray(n)
+pure subroutine BUD_CC2(sort_ps_,BUD_PREC)(n, array, sarray)
+  integer(BUD_PREC), intent(in) :: n, array(n)
+  integer(BUD_PREC), intent(out) :: sarray(n)
 
   ! Local variables
-  integer(_R_PREC) :: i, j, h, FM
+  integer(BUD_PREC) :: i, j, h, FM
 
   if ( n == 0 ) then
     return
@@ -83,15 +83,15 @@ pure subroutine _R_CC2(sort_ps_,_R_PREC)(n, array, sarray)
 contains
 
   pure subroutine insert_mid(n,array,sarray,sF,sA,P)
-    integer(_R_PREC), intent(in) :: n, array(n)
-    integer(_R_PREC), intent(inout) :: sarray(n)
+    integer(BUD_PREC), intent(in) :: n, array(n)
+    integer(BUD_PREC), intent(inout) :: sarray(n)
     ! The place where we found a sarray(sF) <= array(sA)
-    integer(_R_PREC), intent(inout) :: sF
-    integer(_R_PREC), intent(in) :: sA ! The current reached iteration in array
-    integer(_R_PREC), intent(out) :: P ! the number of inserted values
+    integer(BUD_PREC), intent(inout) :: sF
+    integer(BUD_PREC), intent(in) :: sA ! The current reached iteration in array
+    integer(BUD_PREC), intent(out) :: P ! the number of inserted values
 
     ! The last insertion point
-    integer(_R_PREC) :: lA
+    integer(BUD_PREC) :: lA
 
     ! First we will skip to the last non-SAME value
     ! I.e. where we can do the insert in sarray
@@ -132,13 +132,13 @@ contains
   end subroutine insert_mid
 
   pure subroutine insert_front(n,array,sarray,sA,P)
-    integer(_R_PREC), intent(in) :: n, array(n)
-    integer(_R_PREC), intent(inout) :: sarray(n)
-    integer(_R_PREC), intent(in) :: sA
-    integer(_R_PREC), intent(out) :: P ! The number of Pasted values
+    integer(BUD_PREC), intent(in) :: n, array(n)
+    integer(BUD_PREC), intent(inout) :: sarray(n)
+    integer(BUD_PREC), intent(in) :: sA
+    integer(BUD_PREC), intent(out) :: P ! The number of Pasted values
 
     ! The last insertion point
-    integer(_R_PREC) :: lA, i
+    integer(BUD_PREC) :: lA, i
 
     i = sA + 1
     do lA = i , n
@@ -175,13 +175,13 @@ contains
   end subroutine insert_front
 
   pure subroutine insert_back(n,array,sarray,sA,P)
-    integer(_R_PREC), intent(in) :: n, array(n)
-    integer(_R_PREC), intent(inout) :: sarray(n)
-    integer(_R_PREC), intent(in) :: sA
-    integer(_R_PREC), intent(out) :: P ! 
+    integer(BUD_PREC), intent(in) :: n, array(n)
+    integer(BUD_PREC), intent(inout) :: sarray(n)
+    integer(BUD_PREC), intent(in) :: sA
+    integer(BUD_PREC), intent(out) :: P ! 
 
     ! The last insertion point
-    integer(_R_PREC) :: lA,i
+    integer(BUD_PREC) :: lA,i
 
     lA = sA + 1
     ! Step until sarray(sA-1) /= array(lA)
@@ -212,12 +212,12 @@ end subroutine
 !!
 !! @param[in] n number of elements in array
 !! @param[inout] array sorted array on exit
-pure subroutine  _R_CC2(sort_heap_,_R_PREC)(n, array)
-  integer(_R_PREC), intent(in) :: n
-  integer(_R_PREC), intent(inout) :: array(n)
+pure subroutine  BUD_CC2(sort_heap_,BUD_PREC)(n, array)
+  integer(BUD_PREC), intent(in) :: n
+  integer(BUD_PREC), intent(inout) :: array(n)
 
   ! Local variables for the heap-sort algorithm
-  integer(_R_PREC) :: nF, parent
+  integer(BUD_PREC) :: nF, parent
 
   ! Create parent tree
 
@@ -233,18 +233,18 @@ pure subroutine  _R_CC2(sort_heap_,_R_PREC)(n, array)
     parent = array(1)
     array(1) = array(nF+1)
     array(nF+1) = parent
-    call siftDown(n, array, 1_ _R_PREC)
+    call siftDown(n, array, 1_ BUD_PREC)
   end do
 
 contains
 
   ! Reorders to place in tree
   pure subroutine siftDown( n, array, person )
-    integer(_R_PREC), intent(in) :: n
-    integer(_R_PREC), intent(inout) :: array(n)
-    integer(_R_PREC), intent(in) :: person
+    integer(BUD_PREC), intent(in) :: n
+    integer(BUD_PREC), intent(inout) :: array(n)
+    integer(BUD_PREC), intent(in) :: person
 
-    integer(_R_PREC) :: sw, parent, child
+    integer(BUD_PREC) :: sw, parent, child
 
     ! initialize
     parent = person                    ! assume person is a parent
@@ -289,11 +289,11 @@ end subroutine
 !! @param[in] n number of elements in array
 !! @param[in] array sorted array on exit
 !! @param[out] pvt pivoting array such that array(pvt(1)) is the smallest number
-pure subroutine  _R_CC2(sort_heap_idx_,_R_PREC)(n, array, pvt)
-  integer(_R_PREC) ,intent(in) :: n, array(n)
-  integer(_R_PREC) ,intent(out) :: pvt(n)
+pure subroutine  BUD_CC2(sort_heap_idx_,BUD_PREC)(n, array, pvt)
+  integer(BUD_PREC) ,intent(in) :: n, array(n)
+  integer(BUD_PREC) ,intent(out) :: pvt(n)
 
-  integer(_R_PREC) :: nF, parent
+  integer(BUD_PREC) :: nF, parent
 
   ! Construct initial pivoting array
   do nF = 1 , n
@@ -314,16 +314,16 @@ pure subroutine  _R_CC2(sort_heap_idx_,_R_PREC)(n, array, pvt)
     parent = pvt(1)
     pvt(1) = pvt(nF+1)
     pvt(nF+1) = parent
-    call siftDown(n, array, pvt, 1_ _R_PREC)
+    call siftDown(n, array, pvt, 1_ BUD_PREC)
   end do
 
 contains
 
   pure subroutine siftDown( n, array, pvt, person )
-    integer(_R_PREC), intent(in) :: n, array(n)
-    integer(_R_PREC), intent(inout) :: pvt(n)
-    integer(_R_PREC), intent(in) :: person
-    integer(_R_PREC) :: sw, parent, child
+    integer(BUD_PREC), intent(in) :: n, array(n)
+    integer(BUD_PREC), intent(inout) :: pvt(n)
+    integer(BUD_PREC), intent(in) :: person
+    integer(BUD_PREC) :: sw, parent, child
     
     ! initialize
     parent = person                    ! assume person is a parent
@@ -364,28 +364,28 @@ end subroutine
 !!
 !! @param[in] n size of array to sort
 !! @param[inout] array on exit, the sorted array
-recursive pure subroutine _R_CC2(sort_quick_,_R_PREC)(n, array)
-  integer(_R_PREC), intent(in) :: n
-  integer(_R_PREC), intent(inout) :: array(n)
+recursive pure subroutine BUD_CC2(sort_quick_,BUD_PREC)(n, array)
+  integer(BUD_PREC), intent(in) :: n
+  integer(BUD_PREC), intent(inout) :: array(n)
   
-  integer(_R_PREC) :: div
+  integer(BUD_PREC) :: div
 
   if ( n <= 1 ) return
 
   ! Retrieve the partition ID
   call partition(n, array, div)
-  call _R_CC2(sort_quick_,_R_PREC)(div-int(1,_R_PREC), array(1))
-  call _R_CC2(sort_quick_,_R_PREC)(n-div, array(div))
+  call BUD_CC2(sort_quick_,BUD_PREC)(div-int(1,BUD_PREC), array(1))
+  call BUD_CC2(sort_quick_,BUD_PREC)(n-div, array(div))
   
 contains
 
   ! Partition an array by swapping
   pure subroutine partition(n, array, mark)
-    integer(_R_PREC), intent(in) :: n
-    integer(_R_PREC), intent(inout) :: array(n)
-    integer(_R_PREC), intent(out) :: mark
+    integer(BUD_PREC), intent(in) :: n
+    integer(BUD_PREC), intent(inout) :: array(n)
+    integer(BUD_PREC), intent(out) :: mark
 
-    integer(_R_PREC) :: i, j, x, t
+    integer(BUD_PREC) :: i, j, x, t
     
     i = n / 2
     ! Find the median of the searched elements
@@ -453,12 +453,12 @@ end subroutine
 !! @param[in] n size of array to sort
 !! @param[in] array array to retrieve the pivoting table of
 !! @param[out] pvt pivoting array for converting array to a sorted array
-pure subroutine _R_CC2(sort_quick_idx_,_R_PREC)(n, array, pvt)
-  integer(_R_PREC), intent(in) :: n
-  integer(_R_PREC), intent(in) :: array(n)
-  integer(_R_PREC), intent(out) :: pvt(n)
+pure subroutine BUD_CC2(sort_quick_idx_,BUD_PREC)(n, array, pvt)
+  integer(BUD_PREC), intent(in) :: n
+  integer(BUD_PREC), intent(in) :: array(n)
+  integer(BUD_PREC), intent(out) :: pvt(n)
 
-  integer(_R_PREC) :: i
+  integer(BUD_PREC) :: i
   
   if ( n <= 1 ) return
 
@@ -467,40 +467,40 @@ pure subroutine _R_CC2(sort_quick_idx_,_R_PREC)(n, array, pvt)
     pvt(i) = i
   end do
 
-#define _R_FIND_LOCAL _R_CC2(internal_quick_,_R_PREC)
+#define BUD_FIND_LOCAL BUD_CC2(internal_quick_,BUD_PREC)
 
   ! call actual algorithm
-  call _R_FIND_LOCAL (n, array, n, pvt)
+  call BUD_FIND_LOCAL (n, array, n, pvt)
 
 contains
 
   
-  recursive pure subroutine _R_FIND_LOCAL (n, array, m, pvt)
-    integer(_R_PREC), intent(in) :: n
-    integer(_R_PREC), intent(in) :: array(n)
-    integer(_R_PREC), intent(in) :: m
-    integer(_R_PREC), intent(out) :: pvt(m)
+  recursive pure subroutine BUD_FIND_LOCAL (n, array, m, pvt)
+    integer(BUD_PREC), intent(in) :: n
+    integer(BUD_PREC), intent(in) :: array(n)
+    integer(BUD_PREC), intent(in) :: m
+    integer(BUD_PREC), intent(out) :: pvt(m)
     
-    integer(_R_PREC) :: div
+    integer(BUD_PREC) :: div
     
     if ( m <= 1 ) return
     
     ! Retrieve the partition ID
     call partition(n, array, m, pvt, div)
-    call _R_FIND_LOCAL (n, array(1), div-int(1,_R_PREC), pvt(1))
-    call _R_FIND_LOCAL (n, array(1), m-div, pvt(div))
+    call BUD_FIND_LOCAL (n, array(1), div-int(1,BUD_PREC), pvt(1))
+    call BUD_FIND_LOCAL (n, array(1), m-div, pvt(div))
     
-  end subroutine _R_FIND_LOCAL
+  end subroutine BUD_FIND_LOCAL
   
   ! Partition an array by swapping
   pure subroutine partition(n, array, m, pvt, mark)
-    integer(_R_PREC), intent(in) :: n
-    integer(_R_PREC), intent(in) :: array(n)
-    integer(_R_PREC), intent(in) :: m
-    integer(_R_PREC), intent(inout) :: pvt(m)
-    integer(_R_PREC), intent(out) :: mark
+    integer(BUD_PREC), intent(in) :: n
+    integer(BUD_PREC), intent(in) :: array(n)
+    integer(BUD_PREC), intent(in) :: m
+    integer(BUD_PREC), intent(inout) :: pvt(m)
+    integer(BUD_PREC), intent(out) :: mark
     
-    integer(_R_PREC) :: i, j, t, x
+    integer(BUD_PREC) :: i, j, t, x
 
     i = pvt(1)
     j = pvt(m)
@@ -563,7 +563,7 @@ contains
 end subroutine
 
 
-! project-refype -- local file settings
+! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings
 

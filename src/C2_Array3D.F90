@@ -3,102 +3,102 @@
 !> @cond DOC_ALL
 
 ! Get default commands
-#include "refype_utils.inc"
+#include "bud_utils.inc"
 
 ! Integer (short)
-# define _R_MOD_NAME _R_CC3(_R_MOD,_C2_,sArray3D)
-!> @file _R_MOD_NAME
-module _R_MOD_NAME
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_C2_,sArray3D)
+!> @file BUD_MOD_NAME
+module BUD_MOD_NAME
   ! Requirement
-  use _R_CC3(_R_MOD,_,sArray3D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,C2_,sArray3D)
-# define _R_TYPE_NEW _R_CC3(_R_NEW,_C2_,sArray3D)
-# define _R_COLL_A _R_CC2(_R_TYPE,sArray3D)
-# define _R_COLL_B _R_CC2(_R_TYPE,sArray3D)
-#include "refype_coll.inc"
+  use BUD_CC3(BUD_MOD,_,sArray3D)
+# define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,C2_,sArray3D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_C2_,sArray3D)
+# define BUD_COLL_A BUD_CC2(BUD_TYPE,sArray3D)
+# define BUD_COLL_B BUD_CC2(BUD_TYPE,sArray3D)
+#include "bud_coll.inc"
 end module
 
 ! Integer (int)
-# define _R_MOD_NAME _R_CC3(_R_MOD,_C2_,iArray3D)
-!> @file _R_MOD_NAME
-module _R_MOD_NAME
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_C2_,iArray3D)
+!> @file BUD_MOD_NAME
+module BUD_MOD_NAME
   ! Requirement
-  use _R_CC3(_R_MOD,_,iArray3D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,C2_,iArray3D)
-# define _R_TYPE_NEW _R_CC3(_R_NEW,_C2_,iArray3D)
-# define _R_COLL_A _R_CC2(_R_TYPE,iArray3D)
-# define _R_COLL_B _R_CC2(_R_TYPE,iArray3D)
-#include "refype_coll.inc"
+  use BUD_CC3(BUD_MOD,_,iArray3D)
+# define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,C2_,iArray3D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_C2_,iArray3D)
+# define BUD_COLL_A BUD_CC2(BUD_TYPE,iArray3D)
+# define BUD_COLL_B BUD_CC2(BUD_TYPE,iArray3D)
+#include "bud_coll.inc"
 end module
 
 ! Integer (long)
-# define _R_MOD_NAME _R_CC3(_R_MOD,_C2_,lArray3D)
-!> @file _R_MOD_NAME
-module _R_MOD_NAME
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_C2_,lArray3D)
+!> @file BUD_MOD_NAME
+module BUD_MOD_NAME
   ! Requirement
-  use _R_CC3(_R_MOD,_,lArray3D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,C2_,lArray3D)
-# define _R_TYPE_NEW _R_CC3(_R_NEW,_C2_,lArray3D)
-# define _R_COLL_A _R_CC2(_R_TYPE,lArray3D)
-# define _R_COLL_B _R_CC2(_R_TYPE,lArray3D)
-#include "refype_coll.inc"
+  use BUD_CC3(BUD_MOD,_,lArray3D)
+# define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,C2_,lArray3D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_C2_,lArray3D)
+# define BUD_COLL_A BUD_CC2(BUD_TYPE,lArray3D)
+# define BUD_COLL_B BUD_CC2(BUD_TYPE,lArray3D)
+#include "bud_coll.inc"
 end module
 
 ! Real (single)
-# define _R_MOD_NAME _R_CC3(_R_MOD,_C2_,rArray3D)
-!> @file _R_MOD_NAME
-module _R_MOD_NAME
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_C2_,rArray3D)
+!> @file BUD_MOD_NAME
+module BUD_MOD_NAME
   ! Requirement
-  use _R_CC3(_R_MOD,_,rArray3D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,C2_,rArray3D)
-# define _R_TYPE_NEW _R_CC3(_R_NEW,_C2_,rArray3D)
-# define _R_COLL_A _R_CC2(_R_TYPE,rArray3D)
-# define _R_COLL_B _R_CC2(_R_TYPE,rArray3D)
-#include "refype_coll.inc"
+  use BUD_CC3(BUD_MOD,_,rArray3D)
+# define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,C2_,rArray3D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_C2_,rArray3D)
+# define BUD_COLL_A BUD_CC2(BUD_TYPE,rArray3D)
+# define BUD_COLL_B BUD_CC2(BUD_TYPE,rArray3D)
+#include "bud_coll.inc"
 end module
 
 ! Real (double)
-# define _R_MOD_NAME _R_CC3(_R_MOD,_C2_,dArray3D)
-!> @file _R_MOD_NAME
-module _R_MOD_NAME
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_C2_,dArray3D)
+!> @file BUD_MOD_NAME
+module BUD_MOD_NAME
   ! Requirement
-  use _R_CC3(_R_MOD,_,dArray3D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,C2_,dArray3D)
-# define _R_TYPE_NEW _R_CC3(_R_NEW,_C2_,dArray3D)
-# define _R_COLL_A _R_CC2(_R_TYPE,dArray3D)
-# define _R_COLL_B _R_CC2(_R_TYPE,dArray3D)
-#include "refype_coll.inc"
+  use BUD_CC3(BUD_MOD,_,dArray3D)
+# define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,C2_,dArray3D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_C2_,dArray3D)
+# define BUD_COLL_A BUD_CC2(BUD_TYPE,dArray3D)
+# define BUD_COLL_B BUD_CC2(BUD_TYPE,dArray3D)
+#include "bud_coll.inc"
 end module
 
 ! Complex (single)
-# define _R_MOD_NAME _R_CC3(_R_MOD,_C2_,cArray3D)
-!> @file _R_MOD_NAME
-module _R_MOD_NAME
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_C2_,cArray3D)
+!> @file BUD_MOD_NAME
+module BUD_MOD_NAME
   ! Requirement
-  use _R_CC3(_R_MOD,_,cArray3D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,C2_,cArray3D)
-# define _R_TYPE_NEW _R_CC3(_R_NEW,_C2_,cArray3D)
-# define _R_COLL_A _R_CC2(_R_TYPE,cArray3D)
-# define _R_COLL_B _R_CC2(_R_TYPE,cArray3D)
-#include "refype_coll.inc"
+  use BUD_CC3(BUD_MOD,_,cArray3D)
+# define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,C2_,cArray3D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_C2_,cArray3D)
+# define BUD_COLL_A BUD_CC2(BUD_TYPE,cArray3D)
+# define BUD_COLL_B BUD_CC2(BUD_TYPE,cArray3D)
+#include "bud_coll.inc"
 end module
 
 ! Complex (double)
-# define _R_MOD_NAME _R_CC3(_R_MOD,_C2_,zArray3D)
-!> @file _R_MOD_NAME
-module _R_MOD_NAME
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_C2_,zArray3D)
+!> @file BUD_MOD_NAME
+module BUD_MOD_NAME
   ! Requirement
-  use _R_CC3(_R_MOD,_,zArray3D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,C2_,zArray3D)
-# define _R_TYPE_NEW _R_CC3(_R_NEW,_C2_,zArray3D)
-# define _R_COLL_A _R_CC2(_R_TYPE,zArray3D)
-# define _R_COLL_B _R_CC2(_R_TYPE,zArray3D)
-#include "refype_coll.inc"
+  use BUD_CC3(BUD_MOD,_,zArray3D)
+# define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,C2_,zArray3D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_C2_,zArray3D)
+# define BUD_COLL_A BUD_CC2(BUD_TYPE,zArray3D)
+# define BUD_COLL_B BUD_CC2(BUD_TYPE,zArray3D)
+#include "bud_coll.inc"
 end module
 
 !> @endcond DOC_ALL
 
-! project-refype -- local file settings
+! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings
 

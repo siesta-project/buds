@@ -66,16 +66,16 @@ libs:
 endif
 
 # Static library compilation
-$(REFYPE_LIB_STATIC): $(OBJS)
-	$(AR) $(ARFLAGS) $(REFYPE_LIB_STATIC) $^
-	$(RANLIB) $(REFYPE_LIB_STATIC)
+$(BUDS_LIB_STATIC): $(OBJS)
+	$(AR) $(ARFLAGS) $(BUDS_LIB_STATIC) $^
+	$(RANLIB) $(BUDS_LIB_STATIC)
 
-$(REFYPE_LIB_SHARED): $(OBJS)
-	$(CC) -shared -o $(REFYPE_LIB_SHARED) $(CFLAGS) $^
+$(BUDS_LIB_SHARED): $(OBJS)
+	$(CC) -shared -o $(BUDS_LIB_SHARED) $(CFLAGS) $^
 
 .PHONY: static shared
-static: $(REFYPE_LIB_STATIC)
-shared: $(REFYPE_LIB_SHARED)
+static: $(BUDS_LIB_STATIC)
+shared: $(BUDS_LIB_SHARED)
 
 # Define tests
 .PHONY: test tests
@@ -85,8 +85,8 @@ test: static
 
 
 clean:
-	rm -f $(REFYPE_LIB_STATIC) $(REFYPE_LIB_SHARED)
-	rm -f src/*.o src/*.mod src/*.MOD src/mryp*.f90
-	rm -f src/mpi/*.o src/mpi/*.mod src/mpi/*.MOD src/mpi/mryp*.f90
-	rm -f test/*.o test/*.mod test/*.MOD test/mryp*.f90
-	rm -f $(REFYPE_MODDIR)/*.mod $(REFYPE_MODDIR)/*.MOD
+	rm -f $(BUDS_LIB_STATIC) $(BUDS_LIB_SHARED)
+	rm -f src/*.o src/*.mod src/*.MOD src/mbud*.f90
+	rm -f src/mpi/*.o src/mpi/*.mod src/mpi/*.MOD src/mpi/mbud*.f90
+	rm -f test/*.o test/*.mod test/*.MOD test/mbud*.f90
+	rm -f $(BUDS_MODDIR)/*.mod $(BUDS_MODDIR)/*.MOD

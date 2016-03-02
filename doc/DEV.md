@@ -1,7 +1,7 @@
 
 # General development
 
-Anybody is encouraged to contribute to refype in any way they feel.
+Anybody is encouraged to contribute to buds in any way they feel.
 
 We welcome:
 
@@ -46,7 +46,7 @@ In general the guide-lines for the code __must__ be followed:
       !> \@endcond ALWAYS_SKIP
     ```
 
-## Creation a new refype
+## Creation a new buds
 
 There are numerous ways to attack this problem.
 
@@ -56,7 +56,7 @@ some sort of standard for the data structures.
 
 1. The first code present in the type _must_ be
    ```fortran
-   #include "refype_common_declarations.inc"
+   #include "buds_common_declarations.inc"
    ```
 
 2. Define data structure.
@@ -73,7 +73,7 @@ some sort of standard for the data structures.
    And the <type>\_ should _always_ have this header:
    ```fortran
    type <type>_
-   # include "refype_type_common.inc"
+   # include "buds_type_common.inc"
      <other contained data>
    end type
    ```
@@ -81,9 +81,9 @@ some sort of standard for the data structures.
 3. Secondly the specific declarations for the module goes right after.
    You may perform any kind of preprocessing of variables at this point.
 
-4. Input the common refype codes.
+4. Input the common buds codes.
    ```fortran
-    #include "refype_common.inc"
+    #include "buds_common.inc"
    ```
    This separates the declarations from the routines. I.e. `contains`
    is present in the included file.

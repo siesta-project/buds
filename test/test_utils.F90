@@ -1,6 +1,6 @@
 module test_utils
 
-# include "refype_common_declarations.inc"
+# include "bud_common_declarations.inc"
 
   public :: tic, toc
 
@@ -19,7 +19,7 @@ contains
 end module test_utils
 
 
-! project-refype -- local file settings
+! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings
 

@@ -1,25 +1,25 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
   
   ! Include the common utilities
-#include "refype_utils.inc"
+#include "bud_utils.inc"
 
-#define _R_MOD_NAME_STR _R_XSTR(_R_MOD_NAME)
-#ifndef _R_TYPE_NAME_
-#  define _R_TYPE_NAME_ _R_CC2(_R_TYPE_NAME,_)
+#define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
+#ifndef BUD_TYPE_NAME_
+#  define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
 #endif
-#ifndef _R_TYPE_NAME_STR
-#  define _R_TYPE_NAME_STR _R_XSTR(_R_TYPE_NAME)
+#ifndef BUD_TYPE_NAME_STR
+#  define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
 #endif
 
-#include "refype_common_declarations.inc"
+#include "bud_common_declarations.inc"
 
-  !> @defgroup refype-fstack Finite stack with reference counting
+  !> @defgroup bud-fstack Finite stack with reference counting
   !!
   !! @details
   !! The finite stack implementation is an extension of the regular
   !! reference counted objects.
   !!
-  !! A stack is a "push-pop" sequence of @rypes.
+  !! A stack is a "push-pop" sequence of @buds.
   !! A finite stack pushes new values at the top, if the stack is
   !! full the oldest entry is deleted and removed from the stack.
   !! A pop of a value removes the entry from the top of the stack.
@@ -31,27 +31,27 @@
   !! @dev_note
   !! The following pre-processor variables are currently used when
   !! included:
-  !!  - __R_TYPE_NAME of the type
-  !!  - __R_TYPE_NAME_, internal data pointer of the type
-  !!  - __R_TYPE_NAME_STR, the routine name in "string" format (for IO)
-  !!  - __R_TYPE_NEW, the routine name for creating a new type
-  !!  - __R_STACK_TYPE, the variable type contained in the stack
+  !!  - _BUD_TYPE_NAME of the type
+  !!  - _BUD_TYPE_NAME_, internal data pointer of the type
+  !!  - _BUD_TYPE_NAME_STR, the routine name in "string" format (for IO)
+  !!  - _BUD_TYPE_NEW, the routine name for creating a new type
+  !!  - _BUD_STACK_TYPE, the variable type contained in the stack
   !!
   !! @acknowledge
   !! These declarations are community inspired from the FLIBS
   !! project by Arjen Markus as well as the PyF95 project.
   !! The initial draft of this library has been created by Alberto Garcia.
 
-  !> @rype container for _R_TYPE_NAME
+  !> @bud container for BUD_TYPE_NAME
   !!
   !! @details
-  !! Container for the data in the @rype.
+  !! Container for the data in the @bud.
   !!
   !! This data container holds 3 variables,
   !!  1. track maximum number of elements allowed in the finite stack
   !!  2. track how many elements are currently stored
   !!  3. An array of the stack of variables stored.
-  type _R_TYPE_NAME_
+  type BUD_TYPE_NAME_
 
     !> Maximum number of elements that can be stored in this stack.
     !!
@@ -67,34 +67,34 @@
     integer :: nel
     
     !> Array of elements (stack).
-    type(_R_STACK_TYPE), pointer :: T(:) => null()
+    type(BUD_STACK_TYPE), pointer :: T(:) => null()
 
     ! Consistent data in the reference counted object
-#   include "refype_common_type.inc"
+#   include "bud_common_type.inc"
 
-  end type _R_TYPE_NAME_
+  end type BUD_TYPE_NAME_
 
 
   ! special counter for deleting all elements
   ! of a stack using:
-  !   call pop(<this>, RYP_FSTACK_ALL)
+  !   call pop(<this>, BUD_FSTACK_ALL)
   !> Special parameter for popping all elements.
   !!
   !! Allows one to pop/delete all elements in the stack.
-  integer, public, parameter :: RYP_FSTACK_ALL = 0
+  integer, public, parameter :: BUD_FSTACK_ALL = 0
 
 
-  !> Create new @rype instances
+  !> Create new @bud instances
   interface new
     module procedure new_
   end interface
   public :: new
   
-  !> Create new @rype instances
-  interface _R_TYPE_NEW
+  !> Create new @bud instances
+  interface BUD_TYPE_NEW
     module procedure new_
   end interface
-  public :: _R_TYPE_NEW
+  public :: BUD_TYPE_NEW
   
   !> Push new elements to the stack
   !!
@@ -146,18 +146,18 @@
   end interface
   public :: size_max
   
-  !> Print information about the @rype
+  !> Print information about the @bud
   interface print
     module procedure print_
   end interface
   public :: print
   
   ! all default reference counted stuff
-# include "refype_common.inc"
+# include "bud_common.inc"
   
 
   pure subroutine delete_data(data)
-    type(_R_TYPE_NAME_), intent(inout) :: data
+    type(BUD_TYPE_NAME_), intent(inout) :: data
     
     if ( associated(data%T) ) then
       
@@ -174,7 +174,7 @@
   end subroutine delete_data
 
 
-  !> Internal initialization of finite stack holding _R_STACK_TYPE
+  !> Internal initialization of finite stack holding BUD_STACK_TYPE
   !!
   !! If called on a previously allocated data scope this
   !! will clear the reference (@isee delete).
@@ -186,12 +186,12 @@
   !!
   !! @author Nick R. Papior (2016, February)
   subroutine new_(this, nel)
-    type(_R_TYPE_NAME), intent(inout) :: this
+    type(BUD_TYPE_NAME), intent(inout) :: this
     integer, intent(in) :: nel
 
     if ( nel < 1 ) then
-#ifdef REFYPE_ERROR
-      call REFYPE_ERROR("Finite stack allocated with <1 maximum elements.")
+#ifdef BUD_ERROR
+      call BUD_ERROR("Finite stack allocated with <1 maximum elements.")
 #endif
       call delete(this)
       return
@@ -211,12 +211,12 @@
 
   !> Query number of currently stored elements in this stack (function)
   !!
-  !! @param[inout] this @rype that is checked
+  !! @param[inout] this @bud that is checked
   !! @return number of currently stored elements
   !!
   !! @author Nick R. Papior (2016, February)
   elemental function size_elem_(this) result (nel)
-    type(_R_TYPE_NAME), intent(in) :: this
+    type(BUD_TYPE_NAME), intent(in) :: this
     integer :: nel
     if ( .not. is_initd(this) ) then
       nel = 0
@@ -228,12 +228,12 @@
   
   !> Query maximum number of allowed elements in this stack (function)
   !!
-  !! @param[inout] this @rype that is checked
+  !! @param[inout] this @bud that is checked
   !! @return maximum number of allowed elements
   !!
   !! @author Nick R. Papior (2016, February)
   elemental function size_max_elem_(this) result (nel_max)
-    type(_R_TYPE_NAME), intent(in) :: this
+    type(BUD_TYPE_NAME), intent(in) :: this
     integer :: nel_max
     if ( .not. is_initd(this) ) then
       nel_max = 0
@@ -248,13 +248,13 @@
   !! Add new element to the stack. If the stack is full the oldest
   !! element will be deleted.
   !!
-  !! @param[inout] this @rype that is added to
+  !! @param[inout] this @bud that is added to
   !! @param[in] item element added to the stack
   !!
   !! @author Nick R. Papior (2016, February)
   subroutine push_(this,item)
-    type(_R_TYPE_NAME), intent(inout) :: this
-    type(_R_STACK_TYPE), intent(in) :: item
+    type(BUD_TYPE_NAME), intent(inout) :: this
+    type(BUD_STACK_TYPE), intent(in) :: item
 
     integer :: el
 
@@ -292,13 +292,13 @@
   !! @note
   !! The returned item will thus not have its counted references changed.
   !!
-  !! @param[inout] this @rype to pop from
+  !! @param[inout] this @bud to pop from
   !! @param[inout] item returned element from the top of the stack
   !!
   !! @author Nick R. Papior (2016, February)
   subroutine pop_(this, item)
-    type(_R_TYPE_NAME), intent(inout) :: this
-    type(_R_STACK_TYPE), intent(inout) :: item
+    type(BUD_TYPE_NAME), intent(inout) :: this
+    type(BUD_STACK_TYPE), intent(inout) :: item
 
     integer :: el
 
@@ -331,16 +331,16 @@
   !!
   !! Defaults to popping(deleting) the top element.
   !!
-  !! @param[inout] this @rype from which elements are popped
+  !! @param[inout] this @bud from which elements are popped
   !! @param[in] top @opt=1 number of popped elements from top.
-  !!                If RYP_FSTACK_ALL is supplied it will
+  !!                If BUD_FSTACK_ALL is supplied it will
   !!                clear all elements.
   !! @param[in] bot @opt=@null has precedence if `top` not supplied.
   !!                Pops `bot` elements from the bottom of the stack.
   !!
   !! @author Nick R. Papior (2016, February)
   subroutine pop_delete_(this, top, bot)
-    type(_R_TYPE_NAME), intent(inout) :: this
+    type(BUD_TYPE_NAME), intent(inout) :: this
     integer, intent(in), optional :: top, bot
 
     integer :: lnpop
@@ -359,8 +359,8 @@
     
       if ( present(top) ) lnpop = top
       
-      ! RYP_FSTACK_ALL == 0, we delete all
-      if ( lnpop == RYP_FSTACK_ALL ) lnpop = el
+      ! BUD_FSTACK_ALL == 0, we delete all
+      if ( lnpop == BUD_FSTACK_ALL ) lnpop = el
 
       ! we should not pop anything 
       if ( lnpop < 0 ) return
@@ -416,14 +416,14 @@
   !! @note
   !! Defaults to `top=fnelem(this)-1`
   !!
-  !! @param[inout] this @rype to keep elements in
+  !! @param[inout] this @bud to keep elements in
   !! @param[in] top @opt=1 number of elements kept from the top
   !! @param[in] bot @opt=@null number of elements kept from the bottom,
   !!                only used if `top` is not supplied.
   !!
   !! @author Nick R. Papior (2016, February)
   subroutine keep_(this, top, bot)
-    type(_R_TYPE_NAME), intent(inout) :: this
+    type(BUD_TYPE_NAME), intent(inout) :: this
     integer, intent(in), optional :: top, bot
     
     integer :: lnpop
@@ -464,14 +464,14 @@
   !! If the requested element is beyond the number of
   !! stored elements `elem` will be un-initialized upon return.
   !!
-  !! @param[in] this @rype to retrieve element from
-  !! @param[inout] elem returned @rype stored in element `iel`
+  !! @param[in] this @bud to retrieve element from
+  !! @param[inout] elem returned @bud stored in element `iel`
   !! @param[in] iel @opt=`size(this)` index of element to return. May be negative to offset from the top
   !!
   !! @author Nick R. Papior (2016, February)
   subroutine get_elem_(this, elem, iel)
-    type(_R_TYPE_NAME), intent(in) :: this
-    type(_R_STACK_TYPE), intent(inout) :: elem
+    type(BUD_TYPE_NAME), intent(in) :: this
+    type(BUD_STACK_TYPE), intent(inout) :: elem
     integer, intent(in), optional :: iel
     integer :: el
 
@@ -498,19 +498,19 @@
   !> Retrieve pointer to specific element in the stack
   !!
   !! Retrieving a pointer does not change the reference status
-  !! of the @rype.
+  !! of the @bud.
   !!
   !! If the requested element is beyond the number of
   !! stored elements `elem` will be null.
   !!
-  !! @param[in] this @rype to retrieve pointer element from
+  !! @param[in] this @bud to retrieve pointer element from
   !! @param p pointer to the element `iel`
   !! @param[in] iel @opt=`size(this)` index of element to return. May be negative to offset from top.
   !!
   !! @author Nick R. Papior (2016, February)
   subroutine get_elemp_(this, p, iel)
-    type(_R_TYPE_NAME), intent(in) :: this
-    type(_R_STACK_TYPE), pointer :: p
+    type(BUD_TYPE_NAME), intent(in) :: this
+    type(BUD_STACK_TYPE), pointer :: p
     integer, intent(in), optional :: iel
     integer :: el
 
@@ -544,12 +544,12 @@
   !! This will enable the parent program to show it in the way it wants.
   !!
   !! @param[in] this data type
-  !! @param[in] info @opt=_R_TYPE_NAME_STR additional information printed
+  !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
   !!
   !! @author Nick R. Papior (2016, February)
   subroutine print_(this, info, indent)
-    type(_R_TYPE_NAME), intent(in) :: this
+    type(BUD_TYPE_NAME), intent(in) :: this
     character(len=*), intent(in), optional :: info
     integer, intent(in), optional :: indent
 
@@ -560,7 +560,7 @@
     character(len=32) :: fmt
     character(len=256) :: name
     
-    name = _R_TYPE_NAME_STR
+    name = BUD_TYPE_NAME_STR
     if ( present(info) ) name = info
     lindent = 1
     if ( present(indent) ) lindent = indent
@@ -584,14 +584,14 @@
 
   end subroutine print_
 
-#undef _R_MOD_NAME
-#undef _R_TYPE_NAME
-#undef _R_TYPE_NAME_
-#undef _R_TYPE_NAME_STR
-#undef _R_TYPE_NEW
-#undef _R_STACK_TYPE
+#undef BUD_MOD_NAME
+#undef BUD_TYPE_NAME
+#undef BUD_TYPE_NAME_
+#undef BUD_TYPE_NAME_STR
+#undef BUD_TYPE_NEW
+#undef BUD_STACK_TYPE
 
-  ! project-refype -- local file settings
+  ! project-bud -- local file settings
   !     Anything below this line may be overwritten by scripts
   !     Below are non-editable settings
 

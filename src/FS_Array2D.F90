@@ -3,95 +3,95 @@
 !> @cond DOC_ALL
 
 ! Get default commands
-#include "refype_utils.inc"
+#include "bud_utils.inc"
 
 ! Integer (short)
-# define _R_MOD_NAME _R_CC3(_R_MOD,_FS_,sArray2D)
-!> @file _R_MOD_NAME
-module _R_MOD_NAME
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_FS_,sArray2D)
+!> @file BUD_MOD_NAME
+module BUD_MOD_NAME
   ! Requirement
-  use _R_CC3(_R_MOD,_,sArray2D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,FS_,sArray2D)
-# define _R_TYPE_NEW _R_CC3(_R_NEW,_FS_,sArray2D)
-# define _R_STACK_TYPE _R_CC2(_R_TYPE,sArray2D)
-#include "refype_fstack.inc"
+  use BUD_CC3(BUD_MOD,_,sArray2D)
+# define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,FS_,sArray2D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_FS_,sArray2D)
+# define BUD_STACK_TYPE BUD_CC2(BUD_TYPE,sArray2D)
+#include "bud_fstack.inc"
 end module
 
 ! Integer (int)
-# define _R_MOD_NAME _R_CC3(_R_MOD,_FS_,iArray2D)
-!> @file _R_MOD_NAME
-module _R_MOD_NAME
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_FS_,iArray2D)
+!> @file BUD_MOD_NAME
+module BUD_MOD_NAME
   ! Requirement
-  use _R_CC3(_R_MOD,_,iArray2D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,FS_,iArray2D)
-# define _R_TYPE_NEW _R_CC3(_R_NEW,_FS_,iArray2D)
-# define _R_STACK_TYPE _R_CC2(_R_TYPE,iArray2D)
-#include "refype_fstack.inc"
+  use BUD_CC3(BUD_MOD,_,iArray2D)
+# define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,FS_,iArray2D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_FS_,iArray2D)
+# define BUD_STACK_TYPE BUD_CC2(BUD_TYPE,iArray2D)
+#include "bud_fstack.inc"
 end module
 
 ! Integer (long)
-# define _R_MOD_NAME _R_CC3(_R_MOD,_FS_,lArray2D)
-!> @file _R_MOD_NAME
-module _R_MOD_NAME
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_FS_,lArray2D)
+!> @file BUD_MOD_NAME
+module BUD_MOD_NAME
   ! Requirement
-  use _R_CC3(_R_MOD,_,lArray2D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,FS_,lArray2D)
-# define _R_TYPE_NEW _R_CC3(_R_NEW,_FS_,lArray2D)
-# define _R_STACK_TYPE _R_CC2(_R_TYPE,lArray2D)
-#include "refype_fstack.inc"
+  use BUD_CC3(BUD_MOD,_,lArray2D)
+# define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,FS_,lArray2D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_FS_,lArray2D)
+# define BUD_STACK_TYPE BUD_CC2(BUD_TYPE,lArray2D)
+#include "bud_fstack.inc"
 end module
 
 ! Real (single)
-# define _R_MOD_NAME _R_CC3(_R_MOD,_FS_,rArray2D)
-!> @file _R_MOD_NAME
-module _R_MOD_NAME
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_FS_,rArray2D)
+!> @file BUD_MOD_NAME
+module BUD_MOD_NAME
   ! Requirement
-  use _R_CC3(_R_MOD,_,rArray2D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,FS_,rArray2D)
-# define _R_TYPE_NEW _R_CC3(_R_NEW,_FS_,rArray2D)
-# define _R_STACK_TYPE _R_CC2(_R_TYPE,rArray2D)
-#include "refype_fstack.inc"
+  use BUD_CC3(BUD_MOD,_,rArray2D)
+# define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,FS_,rArray2D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_FS_,rArray2D)
+# define BUD_STACK_TYPE BUD_CC2(BUD_TYPE,rArray2D)
+#include "bud_fstack.inc"
 end module
 
 ! Real (double)
-# define _R_MOD_NAME _R_CC3(_R_MOD,_FS_,dArray2D)
-!> @file _R_MOD_NAME
-module _R_MOD_NAME
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_FS_,dArray2D)
+!> @file BUD_MOD_NAME
+module BUD_MOD_NAME
   ! Requirement
-  use _R_CC3(_R_MOD,_,dArray2D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,FS_,dArray2D)
-# define _R_TYPE_NEW _R_CC3(_R_NEW,_FS_,dArray2D)
-# define _R_STACK_TYPE _R_CC2(_R_TYPE,dArray2D)
-#include "refype_fstack.inc"
+  use BUD_CC3(BUD_MOD,_,dArray2D)
+# define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,FS_,dArray2D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_FS_,dArray2D)
+# define BUD_STACK_TYPE BUD_CC2(BUD_TYPE,dArray2D)
+#include "bud_fstack.inc"
 end module
 
 ! Complex (single)
-# define _R_MOD_NAME _R_CC3(_R_MOD,_FS_,cArray2D)
-!> @file _R_MOD_NAME
-module _R_MOD_NAME
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_FS_,cArray2D)
+!> @file BUD_MOD_NAME
+module BUD_MOD_NAME
   ! Requirement
-  use _R_CC3(_R_MOD,_,cArray2D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,FS_,cArray2D)
-# define _R_TYPE_NEW _R_CC3(_R_NEW,_FS_,cArray2D)
-# define _R_STACK_TYPE _R_CC2(_R_TYPE,cArray2D)
-#include "refype_fstack.inc"
+  use BUD_CC3(BUD_MOD,_,cArray2D)
+# define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,FS_,cArray2D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_FS_,cArray2D)
+# define BUD_STACK_TYPE BUD_CC2(BUD_TYPE,cArray2D)
+#include "bud_fstack.inc"
 end module
 
 ! Complex (double)
-# define _R_MOD_NAME _R_CC3(_R_MOD,_FS_,zArray2D)
-!> @file _R_MOD_NAME
-module _R_MOD_NAME
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_FS_,zArray2D)
+!> @file BUD_MOD_NAME
+module BUD_MOD_NAME
   ! Requirement
-  use _R_CC3(_R_MOD,_,zArray2D)
-# define _R_TYPE_NAME _R_CC3(_R_TYPE,FS_,zArray2D)
-# define _R_TYPE_NEW _R_CC3(_R_NEW,_FS_,zArray2D)
-# define _R_STACK_TYPE _R_CC2(_R_TYPE,zArray2D)
-#include "refype_fstack.inc"
+  use BUD_CC3(BUD_MOD,_,zArray2D)
+# define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,FS_,zArray2D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_FS_,zArray2D)
+# define BUD_STACK_TYPE BUD_CC2(BUD_TYPE,zArray2D)
+#include "bud_fstack.inc"
 end module
 
 !> @endcond DOC_ALL
 
-! project-refype -- local file settings
+! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings
 

@@ -32,7 +32,7 @@ DOXYFILE_ENCODING      = UTF-8
 # title of most generated pages and in a few other places.
 # The default value is: My Project.
 
-PROJECT_NAME           = "refype"
+PROJECT_NAME           = "buds"
 
 # The PROJECT_NUMBER tag can be used to enter a project or revision number. This
 # could be handy for archiving the generated documentation or if some version
@@ -228,10 +228,10 @@ TAB_SIZE               = 4
 # "Side Effects:". You can put \n's in the value part of an alias to insert
 # newlines.
 
-ALIASES  = lib="__refype__"
-ALIASES += rype="refype"
-ALIASES += rypes="refypes"
-ALIASES += mod="refype"
+ALIASES  = lib="__buds__"
+ALIASES += bud="bud"
+ALIASES += buds="buds"
+ALIASES += mod="bud"
 ALIASES += fort="fortran"
 ALIASES += f90="fortran90"
 ALIASES += f95="fortran95"

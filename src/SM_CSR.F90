@@ -1,43 +1,43 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
 
 ! Get default commands
-#include "refype_utils.inc"
+#include "bud_utils.inc"
 
 !!$! Integer (short)
-!!$# define _R_MOD_NAME _R_CC3(_R_MOD,_,sSM_CSR)
-!!$!> @file _R_MOD_NAME
-!!$module _R_MOD_NAME
-!!$# define _R_TYPE_NAME _R_CC2(_R_TYPE,sSM_CSR)
-!!$# define _R_TYPE_NEW _R_CC3(_R_NEW,_,sSM_CSR)
-!!$# define _R_TYPE_VAR integer
-!!$# define _R_TYPE_VAR_PREC is_
+!!$# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,sSM_CSR)
+!!$!> @file BUD_MOD_NAME
+!!$module BUD_MOD_NAME
+!!$# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,sSM_CSR)
+!!$# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,sSM_CSR)
+!!$# define BUD_TYPE_VAR integer
+!!$# define BUD_TYPE_VAR_PREC is_
 !!$#include "SM_CSR.inc"
 !!$end module
 
 ! Integer (int)
-# define _R_MOD_NAME _R_CC3(_R_MOD,_,iSM_CSR)
-!> @file _R_MOD_NAME
-module _R_MOD_NAME
-# define _R_TYPE_NAME _R_CC2(_R_TYPE,iSM_CSR)
-# define _R_TYPE_NEW _R_CC3(_R_NEW,_,iSM_CSR)
-# define _R_TYPE_VAR integer
-# define _R_TYPE_VAR_PREC ii_
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,iSM_CSR)
+!> @file BUD_MOD_NAME
+module BUD_MOD_NAME
+# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iSM_CSR)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,iSM_CSR)
+# define BUD_TYPE_VAR integer
+# define BUD_TYPE_VAR_PREC ii_
 #include "SM_CSR.inc"
 end module
 
 ! Integer (long)
-# define _R_MOD_NAME _R_CC3(_R_MOD,_,lSM_CSR)
-!> @file _R_MOD_NAME
-module _R_MOD_NAME
-# define _R_TYPE_NAME _R_CC2(_R_TYPE,lSM_CSR)
-# define _R_TYPE_NEW _R_CC3(_R_NEW,_,lSM_CSR)
-# define _R_TYPE_VAR integer
-# define _R_TYPE_VAR_PREC il_
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,lSM_CSR)
+!> @file BUD_MOD_NAME
+module BUD_MOD_NAME
+# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,lSM_CSR)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,lSM_CSR)
+# define BUD_TYPE_VAR integer
+# define BUD_TYPE_VAR_PREC il_
 #include "SM_CSR.inc"
 end module
 
 
-! project-refype -- local file settings
+! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings
 

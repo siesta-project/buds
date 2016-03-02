@@ -1,13 +1,13 @@
-#ifndef _R_PREC
-#ifdef _R_TYPE_VAR_PREC
-#define _R_PREC _R_TYPE_VAR_PREC
+#ifndef BUD_PREC
+#ifdef BUD_TYPE_VAR_PREC
+#define BUD_PREC BUD_TYPE_VAR_PREC
 #else
-#error "_R_PREC not defined in __FILE__"
+#error "BUD_PREC not defined in __FILE__"
 #endif
 #endif
 
-#undef _R_FIND
-#define _R_FIND _R_CC2(find_bin_, _R_PREC)
+#undef BUD_FIND
+#define BUD_FIND BUD_CC2(find_bin_, BUD_PREC)
 
 !> Searches for a specific integer value in a sorted array (binary search)
 !!
@@ -18,9 +18,9 @@
 !! @param[in] array the searced array
 !! @param[in] val value to search for in array
 !! @param[out] idx index in array which contains `val`, if non-existing `val=-1`
-pure subroutine _R_FIND (n, array, val, idx)
-  integer(_R_PREC), intent(in) :: n, array(n), val
-  integer(_R_PREC), intent(out) :: idx
+pure subroutine BUD_FIND (n, array, val, idx)
+  integer(BUD_PREC), intent(in) :: n, array(n), val
+  integer(BUD_PREC), intent(out) :: idx
 
   ! Local variables for doing the binary search
   integer :: a, b, d, i
@@ -70,8 +70,8 @@ pure subroutine _R_FIND (n, array, val, idx)
   
 end subroutine
 
-#undef _R_FIND
-#define _R_FIND _R_CC2(find_binheur_, _R_PREC)
+#undef BUD_FIND
+#define BUD_FIND BUD_CC2(find_binheur_, BUD_PREC)
 
 !> Searches for a specific integer value in a sorted array (heuristic search)
 !!
@@ -82,12 +82,12 @@ end subroutine
 !! @param[in] array the searced array
 !! @param[in] val value to search for in array
 !! @param[out] idx index in array which contains `val`, if non-existing `val=-1`
-pure subroutine _R_FIND (n, array, val, idx)
-  integer(_R_PREC), intent(in) :: n, array(n), val
-  integer(_R_PREC), intent(out) :: idx
+pure subroutine BUD_FIND (n, array, val, idx)
+  integer(BUD_PREC), intent(in) :: n, array(n), val
+  integer(BUD_PREC), intent(out) :: idx
 
   ! Used internal variables
-  integer(_R_PREC) :: h, FM
+  integer(BUD_PREC) :: h, FM
   
   ! Initialize to default value
   idx = -1
@@ -169,7 +169,7 @@ pure subroutine _R_FIND (n, array, val, idx)
 end subroutine
 
 
-! project-refype -- local file settings
+! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings
 

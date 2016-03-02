@@ -2,18 +2,18 @@
 
   ! Simple type for inclusion in the type scopes.
   
-  !> Reference counter for @rype
+  !> Reference counter for @bud
   !! Tracks the number of times this data structure is referenced
   integer :: refs_ = 0
 
-  !> Hash ID for the @rype (unique for different @rypes)
-  !! Enables a unique ID for any @rype of the same type.
-  character(len=RYP_ID_LEN) :: id_ = "null_id"
+  !> Hash ID for the @bud (unique for different @buds)
+  !! Enables a unique ID for any @bud of the same type.
+  character(len=BUD_ID_LEN) :: id_ = "null_id"
 
-#if _R_FORTRAN >= 2003
+#if BUD_FORTRAN >= 2003
 contains
 
-#if _R_FORTRAN_FINALIZE == 1
+#if BUD_FORTRAN_FINALIZE == 1
   ! This is strictly not needed
   ! However, this may be used internally for
   ! automatic clean-up
@@ -22,7 +22,7 @@ contains
 
 #endif
   
-! project-refype -- local file settings
+! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings
 

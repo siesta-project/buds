@@ -1,9 +1,9 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
 
   ! Include the common utilities
-# include "refype_utils.inc"
+# include "bud_utils.inc"
 
-  !> @defgroup refype-common Global functions for reference counted types
+  !> @defgroup bud-common Global functions for reference counted types
   !! @brief
   !! General considerations of reference counted types.
   !!
@@ -27,8 +27,8 @@
   !!
   !! The following pre-processor variables are currently used when
   !! included:
-  !!  - __R_TYPE_NAME, name of the resulting type
-  !!  - __R_TYPE_NAME_, contained data structure (as a pointer)
+  !!  - _BUD_TYPE_NAME, name of the resulting type
+  !!  - _BUD_TYPE_NAME_, contained data structure (as a pointer)
   !!
   !! @acknowledge
   !! These declarations are community inspired from the FLIBS
@@ -37,23 +37,23 @@
 
   ! Start on function declarations
   
-  !!> @addtogroup refype-common
+  !!> @addtogroup bud-common
   !!! @{
 
   !> @cond ALWAYS_SKIP
   
-  !> Name of the reference counted type (@rype)
-  public :: _R_TYPE_NAME
+  !> Name of the reference counted type (@bud)
+  public :: BUD_TYPE_NAME
   
   ! public data type
   ! however, the actual data is contained in the sub-structure
-  type _R_TYPE_NAME
-    type(_R_TYPE_NAME_), pointer :: data => null()
+  type BUD_TYPE_NAME
+    type(BUD_TYPE_NAME_), pointer :: data => null()
     
-#if _R_FORTRAN >= 2003
+#if BUD_FORTRAN >= 2003
   contains
 
-#if _R_FORTRAN_FINALIZE == 1
+#if BUD_FORTRAN_FINALIZE == 1
     ! This is strictly not needed
     ! However, this may be used internally for
     ! automatic clean-up
@@ -61,10 +61,10 @@
 #endif
     
 #endif
-  end type _R_TYPE_NAME
+  end type BUD_TYPE_NAME
 
-  !> Internal data structure (@rype)
-  private :: _R_TYPE_NAME_
+  !> Internal data structure (@bud)
+  private :: BUD_TYPE_NAME_
 
   !> @endcond ALWAYS_SKIP
   
@@ -72,7 +72,7 @@
   ! We force `delete_data` to be private.
   ! This will prohibit a mistaken public designation of the
   ! routine.
-  !> Internal routine for clearing the data container in the @rype
+  !> Internal routine for clearing the data container in the @bud
   private :: delete_data
 
   !> Overiding assignment to ensure correct reference counting
@@ -81,39 +81,39 @@
   end interface
   public :: assignment(=)
 
-  !> Initialization routine of the @rype
+  !> Initialization routine of the @bud
   interface init
     module procedure initialize_
   end interface
   public :: init
   
-  !> Check if a @rype has been initialized (function)
+  !> Check if a @bud has been initialized (function)
   interface is_initd
     module procedure is_initialized_
   end interface
   public :: is_initd
 
-  !> Check if two @rypes point to the same data (function)
+  !> Check if two @buds point to the same data (function)
   interface is_same
     module procedure is_same_
   end interface
   public :: is_same
   
-#ifndef _R_NO_DELETE
-  !> Delete the @rype, stepping reference counter and clearing this type
+#ifndef BUD_NO_DELETE
+  !> Delete the @bud, stepping reference counter and clearing this type
   interface delete
     module procedure delete_
   end interface
   public :: delete
 #endif
 
-  !> Return number of references to the @rype (function)
+  !> Return number of references to the @bud (function)
   interface references
     module procedure references_
   end interface
   public :: references
 
-  !> Return number of references to the @rype (function)
+  !> Return number of references to the @bud (function)
   interface get_refs
     module procedure references_
   end interface
@@ -121,7 +121,7 @@
 
   !> @cond ALWAYS_SKIP
 
-#if defined(REFYPE_ERROR)
+#if defined(BUD_ERROR)
   ! Stand-alone routine which must be provided
   interface
     subroutine error(str)
@@ -129,9 +129,9 @@
     end subroutine error
   end interface
 #else
-# ifndef _REFYPE_ERROR_H
-#   warning "REFYPE_ERROR not defined! Expect sudden crashes without warnings!"
-#   define _REFYPE_ERROR_H
+# ifndef _BUD_ERROR_H
+#   warning "BUD_ERROR not defined! Expect sudden crashes without warnings!"
+#   define _BUD_ERROR_H
 # endif
 #endif
 
@@ -149,11 +149,11 @@ contains
   !! Subsequently the type container will be allocated
   !! and the reference counted data will be 1.
   !!
-  !! @param[inout] this @rype that is initialized
+  !! @param[inout] this @bud that is initialized
   !!
   !! @author Nick R. Papior (2016, February)
   subroutine initialize_(this)
-    type(_R_TYPE_NAME), intent(inout) :: this
+    type(BUD_TYPE_NAME), intent(inout) :: this
 
     integer :: error
     
@@ -164,8 +164,8 @@ contains
     allocate(this%data, stat=error)
     
     if ( 0 /= error ) then
-#if defined(REFYPE_ERROR)
-      call REFYPE_ERROR("Error allocating data structure")
+#if defined(BUD_ERROR)
+      call BUD_ERROR("Error allocating data structure")
 #endif
       return
     end if
@@ -182,12 +182,12 @@ contains
   !!
   !! Check whether a type is associated to a container.
   !!
-  !! @param[in] this checked @rype
+  !! @param[in] this checked @bud
   !! @param[out] init `.true.` if it is associated, else `.false.`
   !!
   !! @author Nick R. Papior (2016, February)
   pure subroutine initialized_(this, init)
-    type(_R_TYPE_NAME), intent(in) :: this
+    type(BUD_TYPE_NAME), intent(in) :: this
     logical, intent(out) :: init
     
     init = associated(this%data)
@@ -198,12 +198,12 @@ contains
   !!
   !! @iSee initialized_
   !!
-  !! @param[in] this checked @rype
+  !! @param[in] this checked @bud
   !! @return `.true.` if it is associated, else `.false.`
   !!
   !! @author Nick R. Papior (2016, February)
   pure function is_initialized_(this) result(init)
-    type(_R_TYPE_NAME), intent(in) :: this
+    type(BUD_TYPE_NAME), intent(in) :: this
 
     logical :: init
 
@@ -211,26 +211,26 @@ contains
     
   end function is_initialized_
 
-#ifndef _R_NO_DELETE
+#ifndef BUD_NO_DELETE
   
-  !> Deletes the current @rype
+  !> Deletes the current @bud
   !!
-  !! Deletes the @rype. The number of references will be
+  !! Deletes the @bud. The number of references will be
   !! decremented.
   !!
   !! If the number of references of the associated data is 0
   !! after decremention, the data will be
-  !! deleted. Else this @rype will return an un-associated @rype.
+  !! deleted. Else this @bud will return an un-associated @bud.
   !!
-  !! @param[inout] this deleted @rype
+  !! @param[inout] this deleted @bud
   !!
   !! @author Nick R. Papior (2016, February)
-#ifndef _R_DELETE_NOELEMENTAL
+#ifndef BUD_DELETE_NOELEMENTAL
   elemental subroutine delete_(this)
 #else
   subroutine delete_(this)
 #endif
-    type(_R_TYPE_NAME), intent(inout) :: this
+    type(BUD_TYPE_NAME), intent(inout) :: this
 
     integer :: error
     
@@ -249,8 +249,8 @@ contains
       ! Deallocate the currently referenced storage
       deallocate(this%data, stat=error)
       if ( 0 /= error ) then
-#if defined(REFYPE_ERROR)
-        call REFYPE_ERROR("Error in deallocation")
+#if defined(BUD_ERROR)
+        call BUD_ERROR("Error in deallocation")
 #endif
       end if
 
@@ -263,7 +263,7 @@ contains
 
 #endif
   
-  !> Assignment of @rype with another @rype
+  !> Assignment of @bud with another @bud
   !!
   !! Method for assigning a data container with another
   !! data-container.
@@ -276,8 +276,8 @@ contains
   !!
   !! `lhs` will be un-associated if `rhs` is un-associated.
   !!
-  !! @param[inout] lhs @rype that is assigned to
-  !! @param[in] rhs @rype that is dublicated
+  !! @param[inout] lhs @bud that is assigned to
+  !! @param[in] rhs @bud that is dublicated
   !!
   !! @author Nick R. Papior (2016, February)
   subroutine assign_(lhs, rhs)
@@ -291,8 +291,8 @@ contains
     ! "rhs".  In a function, the intrinsic "out" intent for "lhs"
     ! will destroy any prior information.
 
-    type(_R_TYPE_NAME), intent(inout) :: lhs
-    type(_R_TYPE_NAME), intent(in) :: rhs
+    type(BUD_TYPE_NAME), intent(inout) :: lhs
+    type(BUD_TYPE_NAME), intent(in) :: rhs
 
     ! Delete to remove the current reference of "this"
     call delete(lhs)
@@ -308,19 +308,19 @@ contains
   end subroutine assign_
 
 
-  !> Check whether two @rypes point to the same data (function)
+  !> Check whether two @buds point to the same data (function)
   !!
   !! Same as same_
   !! Returns true if the two passed types are the same
   !! data.
   !!
-  !! @param[in] lhs first @rype 
-  !! @param[in] rhs second @rype
+  !! @param[in] lhs first @bud 
+  !! @param[in] rhs second @bud
   !! @return `.true.` if `lhs` and `rhs` point to the same data
   !!
   !! @author Nick R. Papior (2016, February)
   elemental function is_same_(lhs, rhs) result(same)
-    type(_R_TYPE_NAME), intent(in) :: lhs, rhs
+    type(BUD_TYPE_NAME), intent(in) :: lhs, rhs
     logical :: same
     same = is_initd(lhs) .and. is_initd(rhs)
     if ( .not. same ) return
@@ -331,17 +331,17 @@ contains
   end function is_same_
 
 
-  !> Query number of references to the @rype (function)
+  !> Query number of references to the @bud (function)
   !!
-  !! Get number of times this @rype has been replicated
+  !! Get number of times this @bud has been replicated
   !! in the reference counted object.
   !!
-  !! @param[in] this @rype
+  !! @param[in] this @bud
   !! @return refs number of times `this` has been referenced
   !!
   !! @author Nick R. Papior (2016, February)
   elemental function references_(this) result(refs)
-    type(_R_TYPE_NAME), intent(in) :: this
+    type(BUD_TYPE_NAME), intent(in) :: this
     
     integer :: refs
 
@@ -356,18 +356,18 @@ contains
   !> @cond ALWAYS_SKIP
   
   ! The remaining procedures are currently
-  ! not used by refype
+  ! not used by bud
   elemental function id_(this) result(str)
-    type(_R_TYPE_NAME), intent(in) :: this
+    type(BUD_TYPE_NAME), intent(in) :: this
     
-    character(len=RYP_ID_LEN) :: str
+    character(len=BUD_ID_LEN) :: str
     
     str = this%data%id_
     
   end function id_
 
   subroutine tag_object_(this)
-    type(_R_TYPE_NAME), intent(inout)  :: this
+    type(BUD_TYPE_NAME), intent(inout)  :: this
 
     ! currently we do not tag the types
     
@@ -377,7 +377,7 @@ contains
 
   !!> @}
 
-! project-refype -- local file settings
+! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings
 

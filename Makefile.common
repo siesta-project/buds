@@ -1,9 +1,9 @@
 _INCLUDED_common = 1
 
 # Define default library names
-REFYPE_LIB_STATIC ?= librefype.a
-REFYPE_LIB_SHARED ?= librefype.so
-REFYPE_MODDIR ?= include
+BUDS_LIB_STATIC ?= libbuds.a
+BUDS_LIB_SHARED ?= libbuds.so
+BUDS_MODDIR ?= include
 
 # Define common variables
 _OCT_rw_r_r = 644

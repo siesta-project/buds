@@ -2,13 +2,13 @@ program test_c2_array
 
   use test_utils
 
-  use mryp_iArray1D
-  use mryp_iArray2D
-  use mryp_iArray3D
+  use mbud_iArray1D
+  use mbud_iArray2D
+  use mbud_iArray3D
 
-  use mryp_C2_iArray1D
-  use mryp_C2_iArray2D
-  use mryp_C2_iArray3D
+  use mbud_C2_iArray1D
+  use mbud_C2_iArray2D
+  use mbud_C2_iArray3D
 
   type(iArray1D) :: a1, b1, c1
   type(iArray2D) :: a2, b2, c2
