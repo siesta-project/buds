@@ -116,13 +116,13 @@ INC += $(V_FC_MODDIR)$(BUDS_MODDIR)
 
 # Define the compilation options:
 .F90.o:
-	$(FC) -o $@ -c $(FCFLAGS) $(INC) $<
+	$(FC) -c -o $@ $(FCFLAGS) $(INC) $<
 .f90.o:
-	$(FC) -o $@ -c $(FCFLAGS) $(INC) $<
+	$(FC) -c -o $@ $(FCFLAGS) $(INC) $<
 .c.o:
-	$(CC) -o $@ -c $(CFLAGS) $(INC) $<
+	$(CC) -c -o $@ $(CFLAGS) $(INC) $<
 .cpp.o:
-	$(CXX) -o $@ -c $(CXXFLAGS) $(INC) $<
+	$(CXX) -c -o $@ $(CXXFLAGS) $(INC) $<
 
 
 .PHONY: show

@@ -27,6 +27,9 @@ include $(TOP_DIR)/Makefile.doc
 # Add the distribution creation tool
 include $(TOP_DIR)/Makefile.dist
 
+# Add the test directory make file
+include $(TOP_DIR)/Makefile.test
+
 
 # Be sure to include the default include
 # directory:
@@ -77,16 +80,18 @@ $(BUDS_LIB_SHARED): $(OBJS)
 static: $(BUDS_LIB_STATIC)
 shared: $(BUDS_LIB_SHARED)
 
-# Define tests
-.PHONY: test tests
-tests: test
-test: static
-	$(MAKE) $(MFLAGS) -C test test
 
-
-clean:
+.PHONY: clean clean-lib clean-src clean-mod clean-test clean-tests
+clean-lib:
 	rm -f $(BUDS_LIB_STATIC) $(BUDS_LIB_SHARED)
-	rm -f src/*.o src/*.mod src/*.MOD src/mbud*.f90
-	rm -f src/mpi/*.o src/mpi/*.mod src/mpi/*.MOD src/mpi/mbud*.f90
-	rm -f test/*.o test/*.mod test/*.MOD test/mbud*.f90
+clean-test:
+	rm -f src/test/{*.o,*.mod,*.MOD} src/test/mbud*.f90
+clean-tests: clean_test
+clean-src:
+	rm -f src/{*.o,*.mod,*.MOD} src/mbud*.f90
+	rm -f src/mpi/{*.o,*.mod,*.MOD} src/mpi/mbud*.f90
+clean-mod:
 	rm -f $(BUDS_MODDIR)/*.mod $(BUDS_MODDIR)/*.MOD
+
+clean: clean-lib clean-src clean-test clean-mod
+
