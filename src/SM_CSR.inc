@@ -206,12 +206,12 @@
 
     call init(this)
 
-    this%data%nr = nr
-    this%data%nc = nc
-    this%data%nz = nz
+    this%D%nr = nr
+    this%D%nc = nc
+    this%D%nz = nz
     
-    allocate(this%data%rptr(nr+1))
-    allocate(this%data%col(nz))
+    allocate(this%D%rptr(nr+1))
+    allocate(this%D%col(nz))
 
   end subroutine new_dim_
 
@@ -241,13 +241,13 @@
     call new(this, nr, nc, nz)
 
     ! Copy pointers
-    this%data%rptr(1:this%data%nr) = rptr
+    this%D%rptr(1:this%D%nr) = rptr
     ! create last pointer (to one plus number of elements)
     ! This ensures simple loops without taking care of
     ! the last index
-    this%data%rptr(this%data%nr+1) = this%data%nz + 1
+    this%D%rptr(this%D%nr+1) = this%D%nz + 1
     
-    this%data%col = col
+    this%D%col = col
 
   end subroutine new_copy_
 
@@ -255,21 +255,21 @@
   elemental function nonzeros_(this) result(nnzs)
     type(BUD_TYPE_NAME), intent(in) :: this
     integer :: nnzs
-    nnzs = this%data%nz
+    nnzs = this%D%nz
   end function nonzeros_
 
   !> Query number of rows of the stored sparse matrix
   elemental function mat_rows_(this) result(rows)
     type(BUD_TYPE_NAME), intent(in) :: this
     integer :: rows
-    rows = this%data%nr
+    rows = this%D%nr
   end function mat_rows_
 
   !> Query number of columns of the stored sparse matrix
   elemental function mat_cols_(this) result(cols)
     type(BUD_TYPE_NAME), intent(in) :: this
     integer :: cols
-    cols = this%data%nc
+    cols = this%D%nc
   end function mat_cols_
 
   !> Retrieve access to sparse pattern via pointers.
@@ -300,11 +300,11 @@
     integer(BUD_TYPE_VAR_PREC), intent(out), optional :: nr, nc, nz
     integer(BUD_TYPE_VAR_PREC), intent(out), pointer, contiguous, optional :: rptr(:), col(:)
 
-    if ( present(nr) ) nr = this%data%nr
-    if ( present(nc) ) nc = this%data%nc
-    if ( present(nz) ) nz = this%data%nz
-    if ( present(rptr) ) rptr => this%data%rptr
-    if ( present(col) ) col => this%data%col
+    if ( present(nr) ) nr = this%D%nr
+    if ( present(nc) ) nc = this%D%nc
+    if ( present(nz) ) nz = this%D%nz
+    if ( present(rptr) ) rptr => this%D%rptr
+    if ( present(col) ) col => this%D%col
 
   end subroutine attach_
 
@@ -326,10 +326,10 @@
     integer(BUD_TYPE_VAR_PREC), intent(in) :: ir, ic
     integer(BUD_TYPE_VAR_PREC), intent(out) :: idx
     
-    call find_bin(this%data%rptr(ir+1)-this%data%rptr(ir), &
-      this%data%col(this%data%rptr(ir):), ic, idx)
+    call find_bin(this%D%rptr(ir+1)-this%D%rptr(ir), &
+      this%D%col(this%D%rptr(ir):), ic, idx)
     
-    if ( idx > 0 ) idx = this%data%rptr(ir) + idx
+    if ( idx > 0 ) idx = this%D%rptr(ir) + idx
 
   end subroutine index_
 
@@ -468,7 +468,7 @@
     type(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: rptr(:)
     
-    rptr => this%data%rptr
+    rptr => this%D%rptr
     
   end function get_row_ptrp_
 
@@ -480,7 +480,7 @@
     type(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: col(:)
 
-    col => this%data%col
+    col => this%D%col
     
   end function get_columnp_
 
@@ -600,8 +600,8 @@
     ! Create fmt
     write(fmt, '(a,i0,a)') '(t',lindent,',3a,4(i0,a))'
     
-    write(*,fmt) "<", trim(name), " rows=", this%data%nr, &
-      ", cols=", this%data%nc, ", nnzs=",this%data%nz, &
+    write(*,fmt) "<", trim(name), " rows=", this%D%nr, &
+      ", cols=", this%D%nc, ", nnzs=",this%D%nz, &
       ", refs: ", get_refs(this), ">"
     
   end subroutine print_

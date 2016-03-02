@@ -22,7 +22,7 @@ subroutine BUD_CC3(get_elem,BUD_COLL_LETTER,_)(this, item)
     ! it is empty, so return an empty item
     call delete(item)
   else
-    item = this%data% BUD_COLL_LETTER
+    item = this%D% BUD_COLL_LETTER
   end if
   
 end subroutine
@@ -47,7 +47,7 @@ subroutine BUD_CC3(get_elemp,BUD_COLL_LETTER,_)(this, p)
     ! it is empty, so return an empty item
     nullify(p)
   else
-    p => this%data% BUD_COLL_LETTER
+    p => this%D% BUD_COLL_LETTER
   end if
 
 end subroutine

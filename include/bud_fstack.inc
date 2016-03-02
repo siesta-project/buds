@@ -199,10 +199,10 @@
 
     call init(this)
 
-    this%data%nel_max = nel
-    this%data%nel = 0
+    this%D%nel_max = nel
+    this%D%nel = 0
     ! prepare data locations
-    allocate(this%data%T(nel))
+    allocate(this%D%T(nel))
 
     call tag_object_(this)
     
@@ -221,7 +221,7 @@
     if ( .not. is_initd(this) ) then
       nel = 0
     else
-      nel = this%data%nel
+      nel = this%D%nel
     end if
   end function size_elem_
     
@@ -238,7 +238,7 @@
     if ( .not. is_initd(this) ) then
       nel_max = 0
     else
-      nel_max = this%data%nel_max
+      nel_max = this%D%nel_max
     end if
   end function size_max_elem_
 
@@ -269,14 +269,14 @@
     if ( el == size_max(this) ) then
       
       ! cycle stack and push
-      this%data%T = cshift(this%data%T,+1)
-      call delete(this%data%T(el))
-      this%data%T(el) = item
+      this%D%T = cshift(this%D%T,+1)
+      call delete(this%D%T(el))
+      this%D%T(el) = item
     else
       el = el + 1
       ! simply add it to the stack
-      this%data%nel = el
-      this%data%T(el) = item
+      this%D%nel = el
+      this%D%T(el) = item
     end if
     
   end subroutine push_
@@ -318,7 +318,7 @@
     end if
     
     ! retrieve the latest value
-    item = this%data%T(el)
+    item = this%D%T(el)
 
     call pop(this)
     
@@ -371,8 +371,8 @@
         if ( 0 == el ) return
         
         ! Delete the local item and decrease counter
-        call delete(this%data%T(el))
-        this%data%nel = this%data%nel - 1
+        call delete(this%D%T(el))
+        this%D%nel = this%D%nel - 1
         
         el = el - 1
         lnpop = lnpop - 1
@@ -392,10 +392,10 @@
         if ( 0 == el ) return
         
         ! Delete the local item and decrease counter
-        call delete(this%data%T(1))
-        this%data%nel = this%data%nel - 1
+        call delete(this%D%T(1))
+        this%D%nel = this%D%nel - 1
         ! shift to attain the correct order
-        this%data%T = cshift(this%data%T,-1)
+        this%D%T = cshift(this%D%T,-1)
         
         el = el - 1
         lnpop = lnpop - 1
@@ -490,7 +490,7 @@
     end if
 
     if ( el <= size(this) ) then
-      elem = this%data%T(el)
+      elem = this%D%T(el)
     end if
     
   end subroutine get_elem_
@@ -529,7 +529,7 @@
     end if
     
     if ( el <= size(this) ) then
-      p => this%data%T(el)
+      p => this%D%T(el)
     end if
       
   end subroutine get_elemp_
@@ -576,7 +576,7 @@
     lindent = lindent + 2 ! step indentation
     write(*,fmt) "<<", trim(name), " stack>"
     do i = 1 , size(this)
-      call print(this%data%T(i), indent = lindent)
+      call print(this%D%T(i), indent = lindent)
     end do
     lindent = lindent - 2 ! go back to requested indentation
     write(fmt, '(a,i0,a)') '(t',lindent,',a,i0,a)'

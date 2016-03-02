@@ -289,14 +289,14 @@
     call init(this)
 
     ! set objects
-    this%data%a = a
-    this%data%b = b
+    this%D%a = a
+    this%D%b = b
 #ifdef BUD_COLL_C
-    this%data%c = c
+    this%D%c = c
 #ifdef BUD_COLL_D
-    this%data%d = d
+    this%D%d = d
 #ifdef BUD_COLL_E
-    this%data%e = e
+    this%D%e = e
 #endif
 #endif
 #endif
@@ -341,14 +341,14 @@
     write(fmt, '(a,i0,a)') '(t',lindent,',3a)'
     lindent = lindent + 2 ! step indentation
     write(*,fmt) "<<", trim(name), " coll>"
-    call print(this%data%a, indent = lindent)
-    call print(this%data%b, indent = lindent)
+    call print(this%D%a, indent = lindent)
+    call print(this%D%b, indent = lindent)
 #ifdef BUD_COLL_C
-    call print(this%data%c, indent = lindent)
+    call print(this%D%c, indent = lindent)
 #ifdef BUD_COLL_D
-    call print(this%data%d, indent = lindent)
+    call print(this%D%d, indent = lindent)
 #ifdef BUD_COLL_E
-    call print(this%data%e, indent = lindent)
+    call print(this%D%e, indent = lindent)
 #endif
 #endif
 #endif

@@ -48,7 +48,7 @@
   ! public data type
   ! however, the actual data is contained in the sub-structure
   type BUD_TYPE_NAME
-    type(BUD_TYPE_NAME_), pointer :: data => null()
+    type(BUD_TYPE_NAME_), pointer :: D => null()
     
 #if BUD_FORTRAN >= 2003
   contains
@@ -161,7 +161,7 @@ contains
     call delete(this)
 
     ! Allocate fresh storage
-    allocate(this%data, stat=error)
+    allocate(this%D, stat=error)
     
     if ( 0 /= error ) then
 #if defined(BUD_ERROR)
@@ -171,7 +171,7 @@ contains
     end if
 
     ! Set the initial reference count
-    this%data%refs_ = 1
+    this%D%refs_ = 1
 
     ! Tag the object (always)
     call tag_object_(this)
@@ -190,7 +190,7 @@ contains
     type(BUD_TYPE_NAME), intent(in) :: this
     logical, intent(out) :: init
     
-    init = associated(this%data)
+    init = associated(this%D)
     
   end subroutine initialized_
 
@@ -207,7 +207,7 @@ contains
 
     logical :: init
 
-    init = associated(this%data)
+    init = associated(this%D)
     
   end function is_initialized_
 
@@ -236,18 +236,18 @@ contains
     
     if (.not. is_initd(this) ) return
     
-    this%data%refs_ = this%data%refs_ - 1
+    this%D%refs_ = this%D%refs_ - 1
     
-    if ( 0 == this%data%refs_ ) then
+    if ( 0 == this%D%refs_ ) then
       
       ! Safe to delete the data now.
       ! Use the routine provided for this specific
       ! type to clean up any internal structure
       
-      call delete_data(this%data)
+      call delete_data(this%D)
       
       ! Deallocate the currently referenced storage
-      deallocate(this%data, stat=error)
+      deallocate(this%D, stat=error)
       if ( 0 /= error ) then
 #if defined(BUD_ERROR)
         call BUD_ERROR("Error in deallocation")
@@ -257,7 +257,7 @@ contains
     end if
     
     ! This is important to use the correct initialized functions
-    nullify(this%data)
+    nullify(this%D)
     
   end subroutine delete_
 
@@ -302,8 +302,8 @@ contains
     if ( .not. is_initd(rhs) ) return
 
     ! Establish the new reference and increment the reference counter.
-    lhs%data => rhs%data
-    lhs%data%refs_ = rhs%data%refs_ + 1
+    lhs%D => rhs%D
+    lhs%D%refs_ = rhs%D%refs_ + 1
     
   end subroutine assign_
 
@@ -326,7 +326,7 @@ contains
     if ( .not. same ) return
     ! this checks that the memory location of
     ! the underlying data is the same.
-    same = associated(lhs%data, target=rhs%data)
+    same = associated(lhs%D, target=rhs%D)
     
   end function is_same_
 
@@ -346,7 +346,7 @@ contains
     integer :: refs
 
     if ( is_initd(this) ) then
-      refs = this%data%refs_
+      refs = this%D%refs_
     else
       refs = 0
     end if
@@ -362,7 +362,7 @@ contains
     
     character(len=BUD_ID_LEN) :: str
     
-    str = this%data%id_
+    str = this%D%id_
     
   end function id_
 

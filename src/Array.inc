@@ -201,13 +201,13 @@
 
     ! Allocate the value array
 #if BUD_DIM == 1
-    allocate(this%data%array(d1))
+    allocate(this%D%array(d1))
 #elif BUD_DIM == 2
-    allocate(this%data%array(d1,d2))
+    allocate(this%D%array(d1,d2))
 #elif BUD_DIM == 3
-    allocate(this%data%array(d1,d2,d3))
+    allocate(this%D%array(d1,d2,d3))
 #elif BUD_DIM == 4
-    allocate(this%data%array(d1,d2,d3,d4))
+    allocate(this%D%array(d1,d2,d3,d4))
 #endif
 
     if ( present(val) ) then
@@ -270,7 +270,7 @@
 #endif
 
     ! copy data
-    this%data%array = array
+    this%D%array = array
 
   end subroutine new_copy_
 
@@ -292,7 +292,7 @@
     BUD_TYPE_VAR, pointer :: p BUD_DIM_SPEC()
 #endif
 
-    p => this%data%array
+    p => this%D%array
 
   end function get_arrayp_
 
@@ -348,13 +348,13 @@
 #endif
 
 #if BUD_DIM == 1
-    v = this%data%array(i1)
+    v = this%D%array(i1)
 #elif BUD_DIM == 2
-    v = this%data%array(i1,i2)
+    v = this%D%array(i1,i2)
 #elif BUD_DIM == 3
-    v = this%data%array(i1,i2,i3)
+    v = this%D%array(i1,i2,i3)
 #elif BUD_DIM == 4
-    v = this%data%array(i1,i2,i3,i4)
+    v = this%D%array(i1,i2,i3,i4)
 #endif
 
   end function get_array_idx_
@@ -379,7 +379,7 @@
     integer :: d
 
     if ( is_initd(this) ) then
-      d = size(this%data%array, dim=dim)
+      d = size(this%D%array, dim=dim)
     else
       d = 0
     end if
@@ -404,7 +404,7 @@
 #endif
 
     if ( is_initd(this) ) then
-      this%data%array = v
+      this%D%array = v
     end if
 
   end subroutine init_array_
