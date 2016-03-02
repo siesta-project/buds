@@ -1,0 +1,22 @@
+.PHONY: clean clean-lib clean-src clean-mod clean-test clean-tests
+
+clean-lib:
+	rm -f $(BUDS_LIB_STATIC) $(BUDS_LIB_SHARED)
+
+clean-tests: clean_test
+clean-test:
+	rm -f $(addprefix src/test/,*.o *.mod *.MOD) src/test/mbud*.f90
+
+clean-src:
+	rm -f $(addprefix src/,*.o *.mod *.MOD) src/mbud*.f90
+	rm -f $(addprefix src/mpi/,*.o *.mod *.MOD) src/mpi/mbud*.f90
+
+clean-mod:
+	rm -f $(BUDS_MODDIR)/*.mod $(BUDS_MODDIR)/*.MOD
+
+clean: clean-lib clean-src clean-test clean-mod
+
+
+# Local Variables:
+#  mode: makefile-gmake
+# End:

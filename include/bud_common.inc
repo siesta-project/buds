@@ -107,6 +107,14 @@
   public :: delete
 #endif
 
+#ifndef BUD_NO_NULLIFY
+  !> Nullify the @bud, equivalent to delete (without stepping reference counter)
+  interface nullify
+    module procedure nullify_
+  end interface
+  public :: nullify
+#endif
+
   !> Return number of references to the @bud (function)
   interface references
     module procedure references_
@@ -261,6 +269,28 @@ contains
     
   end subroutine delete_
 
+#endif
+
+  
+#ifndef BUD_NO_NULLIFY
+  !> Nullifies the current @bud
+  !!
+  !! Nullify the @bud. Simple way to not fully delete
+  !! an element, but rather remove the pointer to the data.
+  !!
+  !! @param[inout] this nullify references from this @bud
+  !!
+  !! @author Nick R. Papior (2016, February)
+  elemental subroutine nullify_(this)
+    type(BUD_TYPE_NAME), intent(inout) :: this
+
+    integer :: error
+    
+    if (.not. is_initd(this) ) return
+    
+    nullify(this%D)
+    
+  end subroutine nullify_
 #endif
   
   !> Assignment of @bud with another @bud
