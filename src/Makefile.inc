@@ -28,6 +28,29 @@ $(SRC_DIR)/mbud_Array3D.f90: $(SRC_DIR)/Array1D.F90
 	$(CPP) $(INC) $(_TMP_FILE) > $@
 
 
+ITEM_ARRAY_OBJS = \
+	mbud_Item_Array1D.o \
+	mbud_Item_Array2D.o \
+	mbud_Item_Array3D.o
+ITEM_ARRAY_OBJS := $(addprefix $(SRC_DIR)/,$(ITEM_ARRAY_OBJS))
+$(ITEM_ARRAY_OBJS): $(ARRAY_OBJS)
+SRC_OBJS += $(ITEM_ARRAY_OBJS)
+$(SRC_DIR)/mbud_Item_Array1D.f90: $(SRC_DIR)/Item_Array1D.F90
+	$(CPP) $(INC) $< > $@
+$(SRC_DIR)/mbud_Item_Array2D.f90: _TMP_FILE=$(SRC_DIR)/Item_Array2D.F90
+$(SRC_DIR)/mbud_Item_Array2D.f90: $(SRC_DIR)/Item_Array1D.F90
+	@echo " !> @cond DOC_ALL" > $(_TMP_FILE)
+	@sed -e 's/Array1D/Array2D/g' $(SRC_DIR)/Item_Array1D.F90 >> $(_TMP_FILE)
+	@echo " !> @endcond DOC_ALL" >> $(_TMP_FILE)
+	$(CPP) $(INC) $(_TMP_FILE) > $@
+$(SRC_DIR)/mbud_Item_Array3D.f90: _TMP_FILE=$(SRC_DIR)/Item_Array3D.F90
+$(SRC_DIR)/mbud_Item_Array3D.f90: $(SRC_DIR)/Item_Array1D.F90
+	@echo " !> @cond DOC_ALL" > $(_TMP_FILE)
+	@sed -e 's/Array1D/Array3D/g' $(SRC_DIR)/Item_Array1D.F90 >> $(_TMP_FILE)
+	@echo " !> @endcond DOC_ALL" >> $(_TMP_FILE)
+	$(CPP) $(INC) $(_TMP_FILE) > $@
+
+
 C_ARRAY_OBJS = \
 	mbud_C2_Array1D.o \
 	mbud_C2_Array2D.o \
