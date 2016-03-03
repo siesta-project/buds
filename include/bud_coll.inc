@@ -224,16 +224,16 @@
   ! This routine takes care of deleting the 
   ! types storage
 
-  pure subroutine delete_data(data)
-    type(BUD_TYPE_NAME_), intent(inout) :: data
-    call delete(data%a)
-    call delete(data%b)
+  pure subroutine delete_data(D)
+    type(BUD_TYPE_NAME_), intent(inout) :: D
+    call delete(D%a)
+    call delete(D%b)
 #ifdef BUD_COLL_C
-    call delete(data%c)
+    call delete(D%c)
 #ifdef BUD_COLL_D
-    call delete(data%d)
+    call delete(D%d)
 #ifdef BUD_COLL_E
-    call delete(data%e)
+    call delete(D%e)
 #endif
 #endif
 #endif

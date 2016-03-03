@@ -156,20 +156,20 @@
 # include "bud_common.inc"
   
 
-  pure subroutine delete_data(data)
-    type(BUD_TYPE_NAME_), intent(inout) :: data
+  pure subroutine delete_data(D)
+    type(BUD_TYPE_NAME_), intent(inout) :: D
     
-    if ( associated(data%T) ) then
+    if ( associated(D%T) ) then
       
       ! Deallocate array
-      call delete(data%T)
-      deallocate(data%T)
-      nullify(data%T)
+      call delete(D%T)
+      deallocate(D%T)
+      nullify(D%T)
       
     end if
     
-    data%nel_max = 0
-    data%nel = 0
+    D%nel_max = 0
+    D%nel = 0
     
   end subroutine delete_data
 
