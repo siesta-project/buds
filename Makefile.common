@@ -9,6 +9,19 @@ BUDS_MODDIR ?= include
 _OCT_rw_r_r = 644
 _OCT_rwx_rx_rx = 755
 
+
+# We force the CC, FC, CXX
+#              MPICC, MPIFC, MPICXX
+# to be unitialized
+# This will enable the vendor setup using
+# a default vendor
+undefine CC
+undefine FC
+undefine CXX
+undefine MPICC
+undefine MPIFC
+undefine MPICXX
+
 # Local Variables:
 #  mode: makefile-gmake
 # End:

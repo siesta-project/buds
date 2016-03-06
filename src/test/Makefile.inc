@@ -30,6 +30,14 @@ $(TEST_DIR)/c2_array: $(TEST_COMMON_OBJS) $(TEST_DIR)/c2_array.o
 	@echo "#### TEST -- running: $@"
 	-./$@
 
+TEST_TESTS += ll_array
+TEST_OBJS += ll_array.o
+$(TEST_DIR)/ll_array: $(TEST_COMMON_OBJS) $(TEST_DIR)/ll_array.o
+	$(FC) -o $@ $^ $(BUDS_LIB_STATIC) $(INC)
+	@echo "#### TEST -- running: $@"
+	-./$@
+
+
 TESTS_OBJS += $(TEST_COMMON_OBJS) $(addprefix $(TEST_DIR)/,$(TEST_OBJS))
 TEST_TESTS := $(addprefix $(TEST_DIR)/,$(TEST_TESTS))
 

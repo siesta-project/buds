@@ -283,8 +283,6 @@ contains
   !! @author Nick R. Papior (2016, February)
   elemental subroutine nullify_(this)
     type(BUD_TYPE_NAME), intent(inout) :: this
-
-    integer :: error
     
     if (.not. is_initd(this) ) return
     

@@ -10,11 +10,11 @@ default: static
 .NOTPARALLEL: all
 all: static shared
 
-# Include user-defined setup
--include setup.make
-
 # Common makefile stuff:
 include $(TOP_DIR)/Makefile.common
+
+# Include user-defined setup
+-include setup.make
 
 include $(TOP_DIR)/Makefile.default
 
