@@ -370,12 +370,15 @@ recursive pure subroutine BUD_CC2(sort_quick_,BUD_PREC)(n, array)
   
   integer(BUD_PREC) :: div
 
+  integer(BUD_PREC), parameter :: one = int(1, BUD_PREC)
+
+
   if ( n <= 1 ) return
 
   ! Retrieve the partition ID
   call partition(n, array, div)
-  call BUD_CC2(sort_quick_,BUD_PREC)(div-int(1,BUD_PREC), array(1))
-  call BUD_CC2(sort_quick_,BUD_PREC)(n-div, array(div))
+  call BUD_CC2(sort_quick_,BUD_PREC)(div-one, array(1))
+  call BUD_CC2(sort_quick_,BUD_PREC)(n-div+one, array(div))
   
 contains
 
