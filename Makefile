@@ -44,6 +44,14 @@ INC += -I$(TOP_DIR)/include
 include $(TOP_DIR)/src/Makefile.inc
 
 
+ifeq ($(USE_MPI),1)
+# Include dir:
+#    ./src/mpi
+include $(TOP_DIR)/src/mpi/Makefile.inc
+
+endif
+
+
 # Now create the actual compilation make file
 .PHONY: lib libs
 #.NOTPARALLEL: lib libs shared static

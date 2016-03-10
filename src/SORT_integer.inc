@@ -372,7 +372,6 @@ recursive pure subroutine BUD_CC2(sort_quick_,BUD_PREC)(n, array)
 
   integer(BUD_PREC), parameter :: one = int(1, BUD_PREC)
 
-
   if ( n <= 1 ) return
 
   ! Retrieve the partition ID
@@ -389,6 +388,8 @@ contains
     integer(BUD_PREC), intent(out) :: mark
 
     integer(BUD_PREC) :: i, j, x, t
+    
+    integer(BUD_PREC), parameter :: one = int(1, BUD_PREC)
     
     i = n / 2
     ! Find the median of the searched elements
@@ -412,21 +413,21 @@ contains
 
     ! Starting counters..
     i = 0
-    j = n + 1
+    j = n + ONE
 
     do
       ! find point from below which is
       ! above median
-      j = j - 1
+      j = j - ONE
       do while ( j > 0 )
         if ( array(j) <= x ) exit
-        j = j - 1
+        j = j - ONE
       end do
       
-      i = i + 1
+      i = i + ONE
       do while ( i < n )
         if ( array(i) >= x ) exit
-        i = i + 1
+        i = i + ONE
       end do
 
       if ( i < j ) then
@@ -435,7 +436,7 @@ contains
         array(i) = array(j)
         array(j) = t
       else if ( i == j ) then
-        mark = i + 1
+        mark = i + ONE
         return
       else
         mark = i
@@ -476,7 +477,6 @@ pure subroutine BUD_CC2(sort_quick_idx_,BUD_PREC)(n, array, pvt)
   call BUD_FIND_LOCAL (n, array, n, pvt)
 
 contains
-
   
   recursive pure subroutine BUD_FIND_LOCAL (n, array, m, pvt)
     integer(BUD_PREC), intent(in) :: n
@@ -493,7 +493,9 @@ contains
     call BUD_FIND_LOCAL (n, array(1), div-int(1,BUD_PREC), pvt(1))
     call BUD_FIND_LOCAL (n, array(1), m-div, pvt(div))
     
-  end subroutine BUD_FIND_LOCAL
+  end subroutine
+
+#undef BUD_FIND_LOCAL
   
   ! Partition an array by swapping
   pure subroutine partition(n, array, m, pvt, mark)

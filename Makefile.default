@@ -7,10 +7,6 @@
 # a common variable space, then subsequently grabbing
 # those needed.
 
-# Generic compiler options
-CC ?= gcc
-CXX ?= g++
-FC ?= gfortran
 CFLAGS ?= 
 CXXFLAGS ?=
 FCFLAGS ?=
@@ -87,6 +83,7 @@ override OPT = $(_OPT)
 _FILTER_OPT_FLAGS = -Ofast -Os -O0 -O1 -O2 -O3 -fast
 
 ifneq ($(OPT), none)
+
   # Filter out all the optimizations as they will be
   # re-inserted below
   override CFLAGS := $(filter-out $(_FILTER_OPT_FLAGS),$(CFLAGS))
@@ -105,10 +102,33 @@ ifneq ($(OPT), none)
 
 else
 
-# We simply default to include the vendor make file for fortran
-# to retrieve the FC_MODDIR variable
+  # We simply default to include the vendor make file for fortran
+  # to retrieve the FC_MODDIR variable
   include $(TOP_DIR)/vendor/$(FC_VENDOR).make
 
+endif
+
+
+# Generic compiler options
+CC := $(V_CC)
+CXX := $(V_CXX)
+FC := $(V_FC)
+MPICC := $(V_MPICC)
+MPICXX := $(V_MPICXX)
+MPIFC := $(V_MPIFC)
+
+# Simple conversion from YES/yes/true/TRUE to 1
+ifeq ($(USE_MPI), yes)
+ USE_MPI = 1
+endif
+ifeq ($(USE_MPI), YES)
+ USE_MPI = 1
+endif
+ifeq ($(USE_MPI), true)
+ USE_MPI = 1
+endif
+ifeq ($(USE_MPI), TRUE)
+ USE_MPI = 1
 endif
 
 # Add to includes the mod directory
