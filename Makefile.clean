@@ -16,7 +16,10 @@ clean-src:
 clean-mod:
 	rm -f $(BUDS_MODDIR)/*.mod $(BUDS_MODDIR)/*.MOD
 
-clean: clean-lib clean-src clean-test clean-mod
+clean-doc:
+	rm -rf final_doc
+
+clean: clean-lib clean-src clean-test clean-mod clean-doc
 
 
 # Local Variables:
