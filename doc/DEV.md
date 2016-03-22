@@ -1,95 +1,148 @@
+# Development of buds
 
-# General development
+A short introduction to the buds library and how it may be
+extended can be found in this section.
 
-Anybody is encouraged to contribute to buds in any way they feel.
+We highly welcome suggestions, issues and/or bug-fixes.
+Anybody is encouraged to contribute via the github development page:
 
-We welcome:
+- [General development repository][buds]
+- [Reporting issues/bugs][issues]
+- [Creating pull-requests for buds][pr]
 
-- Finding issues
-- Reporting bugs
-- Advice on extensions
-
+Please do not hesitate to contribute!
 
 ## Notes for developers
 
-We target the code to be as clear as possible and as self-interpreted as well.
-In general the guide-lines for the code __must__ be followed:
+The library is heavily pasted with pre-processor statements
+which, sadly, is not well-supported in a large range of
+fortran compilers.  
+As such we require a minimal usage of external preprocessors
+which adhere to the C preprocessor statements.  
+Any development should adhere to the standards found in the
+already present buds.  
+These guide-lines for the code __must__ be followed:
 
 - Indent in a 2-level sequence.
-  - This is enabled by variable tracking in the files
-  - For vi/emacs users this is already enabled
+  + Currently this is enabled for emacs via local variables
+
 - Pre-processor variables __must__ adhere to these rules:
-  1. Prefix with \_R\_
-- Document every routine via the regular Doxygen statements.
+  1. Prefix with `BUD_` which ensures no name-clashing with
+     parenting libraries/applications.
+
+- All public routines/functions __must__ be interfaced. I.e.
+  no routines/functions may be made public.
+
+- Documentation using the Doxygen format for every routine.
   If you do not know how Doxygen works, please look in the documentation
   for a routine/function which you think replicates your routine the most
   and copy/paste the corresponding documentation.
-  - Do __not__ use the `\@date` marker as it clutters the documentation.
-    Instead add the date after your `\@author <author> <date>` statement.
-  - Use `\@opt` to denote optional arguments, for instance:
 
-~~~{.f90}
-		!! \@param[in] bar2 \@opt=\@null decide how `bar1` calculated.
+  + Prefer to add contribution statements in the CONTRIBUTORS.md file
+	which ensures a resulting documentation to be short and concise.  
+    In the CONTRIBUTORS.md file you may add any information and specifics
+	of what has been implemented by specific authors.
+  + Do __not__ use the `\@date` marker as it clutters the documentation.
+  + Use `\@opt` to denote optional arguments, for instance:
+~~~~~~~~~~~{.f90}
+		!! @param[inout] bar1 updated value
+		!! @param[in] bar2 \@opt=\@null decide how bar1 calculated.
 		subroutine foo(bar1, bar2)
 		 ..., intent(inout) :: bar1
 		 ..., intent(in), optional :: bar2 ! none default
-~~~
-
-	   
-  - Use `\@null` as replacement for non-supplied arguments in optional
-	arguments.
-  - To remove routines or hidden variables from the documentation you may
+~~~~~~~~~~~
+  + Use `\@null` as replacement for optional arguments which may have no information
+  + To remove routines or hidden variables from the documentation you may
     encompass part of the code with
-    ```fortran
+~~~~~~~~{.f90}
 	  !> \@cond ALWAYS_SKIP
        ... ! skipped documentation in doxygen
       !> \@endcond ALWAYS_SKIP
-    ```
+~~~~~~~~
 
-## Creation a new buds
+- *Only* use functions for single value retrievals. Generally subroutines
+  have less overhead and are preferred over functions.  
+  However, functions have their usage as they have a clear
+  intente.
 
-There are numerous ways to attack this problem.
+- Functions should be named `get\_?` to enable the 
+  function name as a local variable.  
+  It also helps understanding the code *in-line*.
+  
+## Creating a new bud
 
-In the following a description of the mryp_Array types are followed.
-My recommendations is to follow that implementation to adhere to
-some sort of standard for the data structures.
+A short description of the required steps needed to
+create a custom bud type is listed here:
 
 1. The first code present in the type _must_ be
-   ```fortran
-   #include "buds_common_declarations.inc"
-   ```
+~~~~~~{.f90}
+    #include "bud_utils.inc"
+~~~~~~
 
-2. Define data structure.
-   Define two types, one you _actual_ data structure name (tryp\_<Array1D>),
-   and the other with an underscore appended (which is the actual
-   data container).
-   
-   The data-type should _always_ look like this:
-   ```fortran
-   type <type>
-     type(<type>_), pointer :: data => null()
-   end type
-   ```
-   And the <type>\_ should _always_ have this header:
-   ```fortran
-   type <type>_
-   # include "buds_type_common.inc"
-     <other contained data>
-   end type
-   ```
+2. Define your internal data container. Its name **must** be
+   `BUD_TYPE_NAME_`:
+~~~~~~{.f90}
+	#define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
+~~~~~~
+   This data container name will only be visible
+   in the module and thus it is relatively un-important
+   what you choose.
 
-3. Secondly the specific declarations for the module goes right after.
-   You may perform any kind of preprocessing of variables at this point.
+   We, however, recommend that you re-use the public
+   type name with an appended `_`.
+	
+3. Add the common declarations:
+~~~~~~~~{.f90}
+    #include "bud_common_declarations.inc"
+~~~~~~~~
+   This adds the common used variables such as
+   data precisions etc.
+	
+4. Define the data container (`BUD_TYPE_NAME_`)
 
-4. Input the common buds codes.
-   ```fortran
-    #include "buds_common.inc"
-   ```
-   This separates the declarations from the routines. I.e. `contains`
-   is present in the included file.
+	This data type may contain anything you want but
+	**must** be defined as this:
+~~~~~~~{.f90}
+	type BUD_TYPE_NAME_
+     <contained data>
+    #include "buds_common_type.inc"
+    end type
+~~~~~~~
 
-5. Add `delete_data` routine to enable a clean-up of the data.
+5. Add specific interfaces that you may implement for
+   interacting with the contained data.  
+   Ensure that you add a one-line documentation to the interfaces.
+   Explicitly add `public` or `private` for clarity of the
+   interfaced routines.
 
-6. Add all routines specific for this data-type.
+6. Add the common buds interfaces and routines.
+~~~~~~~{.f90}
+   #include "buds_common.inc"
+~~~~~~~
 
+   Remark that this inclusions inserts a `contains`
+   statement which forces the separation of variable/interface declarations
+   from routine declarations.
+
+7. Create a deletion routine which shall ensure no
+   memory leaks. I.e. it should delete *all* allocatable/pointers in the
+   `BUD_TYPE_NAME_` type.  
+   This routine **must** be named `delete_data`.
+
+8. Add any specific routines for your data type. Note that you may
+   never expose routines directly from the module. This will ensure
+   that name-clashes are never encountered.
+
+
+## Acknowledgements
+
+The basic concept of the reference counted mechanisms is inspired by
+the FLIBS project by Arjen Markus as well as minor things from the PyF95 project.
+
+The initial draft of this library was created by Alberto Garcia.
+
+
+[buds]: https://github.com/siesta-project/buds
+[issues]: https://github.com/siesta-project/buds/issues
+[pr]: https://github.com/siesta-project/buds/pulls
 

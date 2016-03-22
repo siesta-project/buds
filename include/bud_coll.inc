@@ -14,11 +14,27 @@
 #include "bud_common_declarations.inc"
   
   ! We use "collection" as "set" may be confusing as nothing is _set_.
-  !> @defgroup bud-coll Reference type of a collection
+  !> @defgroup bud-coll Collection @bud of several @buds
   !!
-  !! @details
-  !! The implementation details of a collection of reference counted types.
-  !! This type implements a common container for N>1 @buds.
+  !! A collection holds a certain number of @buds in a strict order.
+  !! Hence the elements contained are predefined in the data type and
+  !! any access to the stored elements may be accessed by retrieving the
+  !! data and subsequently operating on that data-type.\n
+  !! The collection data-type may be used to easily group together
+  !! associated data from different @buds.
+  !!
+  !! The stored elements may be accessed either via routine calls:
+  !! ~~~{.f90}
+  !! call get_elem1(this, A)
+  !! ~~~
+  !! which will be equivalent to deleting `A` and assigning the
+  !! stored element.
+  !! One can also access the data via a pointer:
+  !! ~~~{.f90}
+  !! A => get_elem1p(this)
+  !! ~~~
+  !! which does not increase the reference counter for the stored
+  !! element. Hence no deletion should be performed.
   !!
   !! @dev_note
   !! For extensions of basic routines you _must_ make a wrapper interface
@@ -34,64 +50,61 @@
   !! included:
   !!  - _BUD_TYPE_NAME, name of the resulting type
   !!  - _BUD_TYPE_NAME_, name of the internal data
-  !!  - _BUD_COLL_A, name of the first @bud
-  !!  - _BUD_COLL_B, name of the second @bud
-  !!  - _BUD_COLL_C, name of the third @bud (need not be used)
-  !!  - _BUD_COLL_D, name of the fourth @bud (need not be used)
-  !!  - _BUD_COLL_E, name of the fifth @bud (need not be used)
+  !!  - _BUD_TYPE_NEW, additional name of the `new` command
+  !!  - _BUD_COLL_1, name of the first @bud
+  !!  - _BUD_COLL_2, name of the second @bud
+  !!  - _BUD_COLL_3, name of the third @bud (need not be used)
+  !!  - _BUD_COLL_4, name of the fourth @bud (need not be used)
+  !!  - _BUD_COLL_5, name of the fifth @bud (need not be used)
   !!
-  !! @acknowledge
-  !! These declarations are community inspired from the FLIBS
-  !! project by Arjen Markus as well as the PyF95 project.
-  !! The initial draft of this library has been created by Alberto Garcia.
 
-  !> @bud container for BUD_TYPE_NAME
+  !> Internal data container for BUD_TYPE_NAME
   !!
   !! @details
   !! Container for the data in the @bud.
   !!
-  !! The container handles a collection up to 5 elements.
-  !! Each element is stored via alphabetic sequences
-  !! Hence the first item is `A`, second is `B` etc.
+  !! The container handles a collection of up to 5 elements.
+  !! Each element is stored via numeric sequences
+  !! Hence the first item is `e1`, second is `e2` etc.
   !!
-#ifndef BUD_COLL_C
+#ifndef BUD_COLL_3
   !! This @bud is a collection of 2 elements:
 #else
-#ifndef BUD_COLL_D
+#ifndef BUD_COLL_4
   !! This @bud is a collection of 3 elements:
 #else
-#ifndef BUD_COLL_E
+#ifndef BUD_COLL_5
   !! This @bud is a collection of 4 elements:
 #else
   !! This @bud is a collection of 5 elements:
 #endif
 #endif
 #endif
-  !! 1. BUD_COLL_A
-  !! 2. BUD_COLL_B
-#ifdef BUD_COLL_C
-  !! 3. BUD_COLL_C
-#ifdef BUD_COLL_D
-  !! 4. BUD_COLL_D
-#ifdef BUD_COLL_E
-  !! 5. BUD_COLL_E
+  !! 1. BUD_COLL_1
+  !! 2. BUD_COLL_2
+#ifdef BUD_COLL_3
+  !! 3. BUD_COLL_3
+#ifdef BUD_COLL_4
+  !! 4. BUD_COLL_4
+#ifdef BUD_COLL_5
+  !! 5. BUD_COLL_5
 #endif
 #endif
 #endif
   type BUD_TYPE_NAME_    
     !> First element of collection
-    type(BUD_COLL_A) :: A
+    type(BUD_COLL_1) :: e1
     !> Second element of collection
-    type(BUD_COLL_B) :: B
-#ifdef BUD_COLL_C
+    type(BUD_COLL_2) :: e2
+#ifdef BUD_COLL_3
     !> Third element of collection
-    type(BUD_COLL_C) :: C
-#ifdef BUD_COLL_D
+    type(BUD_COLL_3) :: e3
+#ifdef BUD_COLL_4
     !> Fourth element of collection
-    type(BUD_COLL_D) :: D
-#ifdef BUD_COLL_E
+    type(BUD_COLL_4) :: e4
+#ifdef BUD_COLL_5
     !> Fifth element of collection
-    type(BUD_COLL_E) :: E
+    type(BUD_COLL_5) :: e5
 #endif
 #endif
 #endif
@@ -101,14 +114,12 @@
 
   end type BUD_TYPE_NAME_
 
-  public :: print
-  
-  !> Create a new @bud. This will be allocated with 1 reference.
+  !> Initialize new BUD_TYPE_NAME
   interface new
     module procedure new_
   end interface
   public :: new
-  !> Create a new @bud. This will be allocated with 1 reference.
+  !> Initialize new BUD_TYPE_NAME (@isee new)
   interface BUD_TYPE_NEW
     module procedure new_
   end interface
@@ -116,97 +127,68 @@
 
   !> Retrieve the first element of the collection (routine)
   !!
-  !! Change the suffix letter `A` to `B`, ... to get the
+  !! Change the suffix number `1` to `2`, ... to get the
   !! corresponding element in the collection.
-  interface get_elema
-    module procedure get_elema_
+  interface get_elem1
+    module procedure get_elem1_
   end interface
-  public :: get_elema
+  public :: get_elem1
   
-  !> Point to the first element of the collection (routine)
+  !> Return a pointer to the first element of the collection (function)
   !!
   !! This routine does not step the reference counting as it
-  !! is a pointer.
+  !! returns a pointer.
   !!
-  !! Change the suffix letter `A` to `B`, ... to get the
+  !! Change the suffix number `1` to `2`, ... to get the
   !! corresponding element in the collection.
-  interface get_elempa
-    module procedure get_elempa_
+  interface get_elem1p
+    module procedure get_elem1p_
   end interface
-  public :: get_elempa
-  
-
-  !> Point to the first element of the collection (function)
-  !!
-  !! This routine does not step the reference counting as it
-  !! is a pointer.
-  !!
-  !! Change the suffix letter `A` to `B`, ... to get the
-  !! corresponding element in the collection.
-  interface elempa
-    module procedure elempa_
-  end interface
-  public :: elempa
-  
+  public :: get_elem1p
+    
   !> @cond ALWAYS_SKIP
 
   ! we do not document these sub-routines as they are encompassed
   ! by elema etc.
 
-  interface get_elemb
-    module procedure get_elemb_
+  interface get_elem2
+    module procedure get_elem2_
   end interface
-  public :: get_elemb
-  interface get_elempb
-    module procedure get_elempb_
+  public :: get_elem2
+  interface get_elem2p
+    module procedure get_elem2p_
   end interface
-  public :: get_elempb
-  interface elempb
-    module procedure elempb_
-  end interface
-  public :: elempb
+  public :: get_elem2p
 
-#ifdef BUD_COLL_C
-  interface get_elemc
-    module procedure get_elemc_
+#ifdef BUD_COLL_3
+  interface get_elem3
+    module procedure get_elem3_
   end interface
-  public :: get_elemc
-  interface get_elempc
-    module procedure get_elempc_
+  public :: get_elem3
+  interface get_elem3p
+    module procedure get_elem3p_
   end interface
-  public :: get_elempc
-  interface elempc
-    module procedure elempc_
-  end interface
-  public :: elempc
+  public :: get_elem3p
   
-#ifdef BUD_COLL_D
-  interface get_elemd
-    module procedure get_elemd_
+#ifdef BUD_COLL_4
+  interface get_elem4
+    module procedure get_elem4_
   end interface
-  public :: get_elemd
-  interface get_elempd
-    module procedure get_elempd_
+  public :: get_elem4
+  interface get_elem4p
+    module procedure get_elem4p_
   end interface
-  public :: get_elempd
-  interface elempd
-    module procedure elempd_
-  end interface
-  public :: elempd
+  public :: get_elem4p
 
-#ifdef BUD_COLL_E
-  interface get_eleme
-    module procedure get_eleme_
+#ifdef BUD_COLL_5
+  interface get_elem5
+    module procedure get_elem5_
   end interface
-  public :: get_eleme
-  interface get_elempe
-    module procedure get_elempe_
+  public :: get_elem5
+  interface get_elem5p
+    module procedure get_elem5p_
   end interface
-  public :: get_elempe
-  interface elempe
-    module procedure elempe_
-  end interface
-  public :: elempe
+  public :: get_elem5p
 #endif
 #endif
 #endif
@@ -217,6 +199,7 @@
   interface print
     module procedure print_
   end interface print
+  public :: print
   
   ! all default reference counted stuff
 # include "bud_common.inc"
@@ -226,62 +209,63 @@
 
   pure subroutine delete_data(D)
     type(BUD_TYPE_NAME_), intent(inout) :: D
-    call delete(D%a)
-    call delete(D%b)
-#ifdef BUD_COLL_C
-    call delete(D%c)
-#ifdef BUD_COLL_D
-    call delete(D%d)
-#ifdef BUD_COLL_E
-    call delete(D%e)
+
+    call delete(D%e1)
+    call delete(D%e2)
+#ifdef BUD_COLL_3
+    call delete(D%e3)
+#ifdef BUD_COLL_4
+    call delete(D%e4)
+#ifdef BUD_COLL_5
+    call delete(D%e5)
 #endif
 #endif
 #endif
+    
   end subroutine delete_data
 
-  !> Internal initialization of data container
+  !> Initialize of data container with containing elements
   !!
-  !! Initializes the data handler to a new data handler.
+  !! A new @bud is initialized with each element
+  !! being specified in the routine interface.
   !!
   !! If called on a previously allocated data scope this
   !! will clear the reference (@isee delete).
   !! Subsequently the type container will be allocated
   !! and the reference counted data will be 1.
   !!
-  !! @param[inout] this initialized @bud
+  !! @param[inout] this new initialized @bud
   !! @param[in] A first element in the @bud
   !! @param[in] B second element in the @bud
-#ifdef BUD_COLL_C
+#ifdef BUD_COLL_3
   !! @param[in] C third element in the @bud
-#ifdef BUD_COLL_D
+#ifdef BUD_COLL_4
   !! @param[in] D fourth element in the @bud
-#ifdef BUD_COLL_E
+#ifdef BUD_COLL_5
   !! @param[in] E fifth element in the @bud
 #endif
 #endif
 #endif
-  !!
-  !! @author Nick R. Papior (2016, February)
   subroutine new_(this, a, b &
-#ifdef BUD_COLL_C
+#ifdef BUD_COLL_3
     , c &
-#ifdef BUD_COLL_D
+#ifdef BUD_COLL_4
     , d &
-#ifdef BUD_COLL_E
+#ifdef BUD_COLL_5
     , e &
 #endif
 #endif
 #endif
     )
     type(BUD_TYPE_NAME), intent(inout) :: this
-    type(BUD_COLL_A), intent(in) :: a
-    type(BUD_COLL_B), intent(in) :: b
-#ifdef BUD_COLL_C
-    type(BUD_COLL_C), intent(in) :: c
-#ifdef BUD_COLL_D
-    type(BUD_COLL_D), intent(in) :: d
-#ifdef BUD_COLL_E
-    type(BUD_COLL_E), intent(in) :: e
+    type(BUD_COLL_1), intent(in) :: a
+    type(BUD_COLL_2), intent(in) :: b
+#ifdef BUD_COLL_3
+    type(BUD_COLL_3), intent(in) :: c
+#ifdef BUD_COLL_4
+    type(BUD_COLL_4), intent(in) :: d
+#ifdef BUD_COLL_5
+    type(BUD_COLL_5), intent(in) :: e
 #endif
 #endif
 #endif
@@ -289,17 +273,18 @@
     call init(this)
 
     ! set objects
-    this%D%a = a
-    this%D%b = b
-#ifdef BUD_COLL_C
-    this%D%c = c
-#ifdef BUD_COLL_D
-    this%D%d = d
-#ifdef BUD_COLL_E
-    this%D%e = e
+    this%D%e1 = a
+    this%D%e2 = b
+#ifdef BUD_COLL_3
+    this%D%e3 = c
+#ifdef BUD_COLL_4
+    this%D%e4 = d
+#ifdef BUD_COLL_5
+    this%D%e5 = e
 #endif
 #endif
 #endif
+
     call tag_object_(this)
     
   end subroutine new_
@@ -314,8 +299,6 @@
   !! @param[in] this data type
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
-  !!
-  !! @author Nick R. Papior (2016, February)
   subroutine print_(this, info, indent)
     type(BUD_TYPE_NAME), intent(in) :: this
     character(len=*), intent(in), optional :: info
@@ -341,14 +324,14 @@
     write(fmt, '(a,i0,a)') '(t',lindent,',3a)'
     lindent = lindent + 2 ! step indentation
     write(*,fmt) "<<", trim(name), " coll>"
-    call print(this%D%a, indent = lindent)
-    call print(this%D%b, indent = lindent)
-#ifdef BUD_COLL_C
-    call print(this%D%c, indent = lindent)
-#ifdef BUD_COLL_D
-    call print(this%D%d, indent = lindent)
-#ifdef BUD_COLL_E
-    call print(this%D%e, indent = lindent)
+    call print(this%D%e1, indent = lindent)
+    call print(this%D%e2, indent = lindent)
+#ifdef BUD_COLL_3
+    call print(this%D%e3, indent = lindent)
+#ifdef BUD_COLL_4
+    call print(this%D%e4, indent = lindent)
+#ifdef BUD_COLL_5
+    call print(this%D%e5, indent = lindent)
 #endif
 #endif
 #endif
@@ -359,23 +342,23 @@
   end subroutine print_
 
   ! Create data-retrieval routines
-# define BUD_COLL_LETTER A
-# define BUD_COLL_CURRENT BUD_COLL_A
+# define BUD_COLL_NUM 1
+# define BUD_COLL_CURRENT BUD_COLL_1
 # include "bud_coll_elem.inc"
-# define BUD_COLL_LETTER B
-# define BUD_COLL_CURRENT BUD_COLL_B
+# define BUD_COLL_NUM 2
+# define BUD_COLL_CURRENT BUD_COLL_2
 # include "bud_coll_elem.inc"
-#ifdef BUD_COLL_C
-# define BUD_COLL_LETTER C
-# define BUD_COLL_CURRENT BUD_COLL_C
+#ifdef BUD_COLL_3
+# define BUD_COLL_NUM 3
+# define BUD_COLL_CURRENT BUD_COLL_3
 # include "bud_coll_elem.inc"
-#ifdef BUD_COLL_D
-# define BUD_COLL_LETTER D
-# define BUD_COLL_CURRENT BUD_COLL_D
+#ifdef BUD_COLL_4
+# define BUD_COLL_NUM 4
+# define BUD_COLL_CURRENT BUD_COLL_4
 # include "bud_coll_elem.inc"
-#ifdef BUD_COLL_E
-# define BUD_COLL_LETTER E
-# define BUD_COLL_CURRENT BUD_COLL_E
+#ifdef BUD_COLL_5
+# define BUD_COLL_NUM 5
+# define BUD_COLL_CURRENT BUD_COLL_5
 # include "bud_coll_elem.inc"
 #endif
 #endif
@@ -386,11 +369,11 @@
 #undef BUD_TYPE_NAME_
 #undef BUD_TYPE_NAME_STR
 #undef BUD_TYPE_NEW
-#undef BUD_COLL_A
-#undef BUD_COLL_B
-#undef BUD_COLL_C
-#undef BUD_COLL_D
-#undef BUD_COLL_E
+#undef BUD_COLL_1
+#undef BUD_COLL_2
+#undef BUD_COLL_3
+#undef BUD_COLL_4
+#undef BUD_COLL_5
 
   ! project-bud -- local file settings
   !     Anything below this line may be overwritten by scripts

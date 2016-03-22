@@ -7,6 +7,7 @@ clean-tests: clean_test
 clean-test:
 	rm -f $(addprefix src/test/,*.o *.mod *.MOD) src/test/mbud*.f90
 	rm -f $(addprefix src/mpi/test/,*.o *.mod *.MOD) src/mpi/test/mbud*.f90
+	rm -rf $(TESTS)
 
 clean-src:
 	rm -f $(addprefix src/,*.o *.mod *.MOD) src/mbud*.f90

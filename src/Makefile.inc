@@ -153,6 +153,14 @@ $(SRC_DIR)/mbud_SM_CSR.f90: $(SRC_DIR)/SM_CSR.F90
 	$(CPP) $(INC) $< > $@
 
 
+FILE_OBJS = \
+	mbud_File.o
+FILE_OBJS := $(addprefix $(SRC_DIR)/,$(FILE_OBJS))
+SRC_OBJS += $(FILE_OBJS)
+$(SRC_DIR)/mbud_File.f90: $(SRC_DIR)/File.F90
+	$(CPP) $(INC) $< > $@
+
+
 # For now everything depends on the utility program
 UTIL_OBJS = \
 	mbud_utils.o

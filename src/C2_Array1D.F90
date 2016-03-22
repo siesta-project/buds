@@ -11,8 +11,8 @@ module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,sArray1D)
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,C2_,sArray1D)
 # define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_C2_,sArray1D)
-# define BUD_COLL_A BUD_CC2(BUD_TYPE,sArray1D)
-# define BUD_COLL_B BUD_CC2(BUD_TYPE,sArray1D)
+# define BUD_COLL_1 BUD_CC2(BUD_TYPE,sArray1D)
+# define BUD_COLL_2 BUD_CC2(BUD_TYPE,sArray1D)
 #include "bud_coll.inc"
 end module
 
@@ -24,8 +24,8 @@ module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,iArray1D)
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,C2_,iArray1D)
 # define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_C2_,iArray1D)
-# define BUD_COLL_A BUD_CC2(BUD_TYPE,iArray1D)
-# define BUD_COLL_B BUD_CC2(BUD_TYPE,iArray1D)
+# define BUD_COLL_1 BUD_CC2(BUD_TYPE,iArray1D)
+# define BUD_COLL_2 BUD_CC2(BUD_TYPE,iArray1D)
 #include "bud_coll.inc"
 end module
 
@@ -37,8 +37,8 @@ module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,lArray1D)
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,C2_,lArray1D)
 # define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_C2_,lArray1D)
-# define BUD_COLL_A BUD_CC2(BUD_TYPE,lArray1D)
-# define BUD_COLL_B BUD_CC2(BUD_TYPE,lArray1D)
+# define BUD_COLL_1 BUD_CC2(BUD_TYPE,lArray1D)
+# define BUD_COLL_2 BUD_CC2(BUD_TYPE,lArray1D)
 #include "bud_coll.inc"
 end module
 
@@ -50,8 +50,8 @@ module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,rArray1D)
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,C2_,rArray1D)
 # define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_C2_,rArray1D)
-# define BUD_COLL_A BUD_CC2(BUD_TYPE,rArray1D)
-# define BUD_COLL_B BUD_CC2(BUD_TYPE,rArray1D)
+# define BUD_COLL_1 BUD_CC2(BUD_TYPE,rArray1D)
+# define BUD_COLL_2 BUD_CC2(BUD_TYPE,rArray1D)
 #include "bud_coll.inc"
 end module
 
@@ -63,8 +63,8 @@ module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,dArray1D)
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,C2_,dArray1D)
 # define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_C2_,dArray1D)
-# define BUD_COLL_A BUD_CC2(BUD_TYPE,dArray1D)
-# define BUD_COLL_B BUD_CC2(BUD_TYPE,dArray1D)
+# define BUD_COLL_1 BUD_CC2(BUD_TYPE,dArray1D)
+# define BUD_COLL_2 BUD_CC2(BUD_TYPE,dArray1D)
 #include "bud_coll.inc"
 end module
 
@@ -76,8 +76,8 @@ module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,cArray1D)
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,C2_,cArray1D)
 # define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_C2_,cArray1D)
-# define BUD_COLL_A BUD_CC2(BUD_TYPE,cArray1D)
-# define BUD_COLL_B BUD_CC2(BUD_TYPE,cArray1D)
+# define BUD_COLL_1 BUD_CC2(BUD_TYPE,cArray1D)
+# define BUD_COLL_2 BUD_CC2(BUD_TYPE,cArray1D)
 #include "bud_coll.inc"
 end module
 
@@ -89,8 +89,8 @@ module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,zArray1D)
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,C2_,zArray1D)
 # define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_C2_,zArray1D)
-# define BUD_COLL_A BUD_CC2(BUD_TYPE,zArray1D)
-# define BUD_COLL_B BUD_CC2(BUD_TYPE,zArray1D)
+# define BUD_COLL_1 BUD_CC2(BUD_TYPE,zArray1D)
+# define BUD_COLL_2 BUD_CC2(BUD_TYPE,zArray1D)
 #include "bud_coll.inc"
 end module
 

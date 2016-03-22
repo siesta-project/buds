@@ -165,8 +165,6 @@
 #endif
 #endif
   !! @param[in] val @opt=@null initial value of all elements
-  !!
-  !! @author Nick R. Papior (2016, February)
   subroutine new_dim_(this, &
 #if BUD_DIM == 1
     d1, &
@@ -227,8 +225,6 @@
   !!
   !! @param[inout] this @bud container
   !! @param[in] array array to dublicate in `this`
-  !!
-  !! @author Nick R. Papior (2016, February)
   subroutine new_copy_(this, array)
     type(BUD_TYPE_NAME), intent(inout) :: this
 #ifdef BUD_TYPE_VAR_PREC
@@ -282,8 +278,6 @@
   !!
   !! @param[in] this the containing @bud
   !! @return a pointer to the data
-  !!
-  !! @author Nick R. Papior (2016, February)
   function get_arrayp_(this) result(p)
     type(BUD_TYPE_NAME), intent(in) :: this
 #ifdef BUD_TYPE_VAR_PREC
@@ -318,8 +312,6 @@
 #endif
 #endif
   !! @return the value in the specific indexed location of the array
-  !!
-  !! @author Nick R. Papior (2016, February)
   pure function get_array_idx_(this, &
 #if BUD_DIM == 1
     i1 &
@@ -370,8 +362,6 @@
   !! @param[in] this @bud container
   !! @param[in] dim @opt=@null along the specified dimension
   !! @return the size of the contained array
-  !!
-  !! @author Nick R. Papior (2016, February)
   pure function size_(this, dim) result(d)
     type(BUD_TYPE_NAME), intent(in) :: this
     integer, intent(in), optional :: dim
@@ -393,8 +383,6 @@
   !!
   !! @param[in] this @bud containing the array
   !! @param[in] v value to set all elements equal to
-  !!
-  !! @author Nick R. Papior (2016, February)
   subroutine init_array_(this, v)
     type(BUD_TYPE_NAME), intent(inout) :: this
 #ifdef BUD_TYPE_VAR_PREC
@@ -421,8 +409,6 @@
   !! @param[in] this data type
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
-  !!
-  !! @author Nick R. Papior (2016, February)
   subroutine print_(this, info, indent)
     type(BUD_TYPE_NAME), intent(in) :: this
     character(len=*), intent(in), optional :: info

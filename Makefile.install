@@ -35,12 +35,14 @@ install: install_init_dir install_version
 		echo Installing $(BUDS_LIB_STATIC) library to: $(BUDS_LIB_DIR) ; \
 		install -pm$(_OCT_rwx_rx_rx) -t $(BUDS_LIB_DIR) $(BUDS_LIB_STATIC) ; \
 	fi
-	@echo Installing module files to: $(BUDS_INC_DIR)
-	@install -pm$(_OCT_rw_r_r) -t $(BUDS_INC_DIR) $(BUDS_MODDIR)/*.mod
+	@if `ls $(BUDS_MODDIR)/*.mod > /dev/null 2>&1` ; then \
+		echo Installing module files to: $(BUDS_INC_DIR) ; \
+		install -pm$(_OCT_rw_r_r) -t $(BUDS_INC_DIR) $(BUDS_MODDIR)/*.mod ; \
+	fi
 
 
 ##
-# Basic smallutilities that probably never should
+# Basic small utilities that probably never should
 # be changed:
 ##
 

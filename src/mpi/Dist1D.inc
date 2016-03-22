@@ -1483,8 +1483,6 @@
   !! @param[in] this data type
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
-  !!
-  !! @author Nick R. Papior (2016, February)
   subroutine print_(this, info, indent)
     type(BUD_TYPE_NAME), intent(in) :: this
     character(len=*), intent(in), optional :: info

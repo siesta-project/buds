@@ -183,8 +183,6 @@
   !!
   !! @param[inout] this Type that is initialized
   !! @param[in] nel maximum number of elements that may be contained
-  !!
-  !! @author Nick R. Papior (2016, February)
   subroutine new_(this, nel)
     type(BUD_TYPE_NAME), intent(inout) :: this
     integer, intent(in) :: nel
@@ -213,8 +211,6 @@
   !!
   !! @param[inout] this @bud that is checked
   !! @return number of currently stored elements
-  !!
-  !! @author Nick R. Papior (2016, February)
   elemental function size_elem_(this) result (nel)
     type(BUD_TYPE_NAME), intent(in) :: this
     integer :: nel
@@ -230,8 +226,6 @@
   !!
   !! @param[inout] this @bud that is checked
   !! @return maximum number of allowed elements
-  !!
-  !! @author Nick R. Papior (2016, February)
   elemental function size_max_elem_(this) result (nel_max)
     type(BUD_TYPE_NAME), intent(in) :: this
     integer :: nel_max
@@ -250,8 +244,6 @@
   !!
   !! @param[inout] this @bud that is added to
   !! @param[in] item element added to the stack
-  !!
-  !! @author Nick R. Papior (2016, February)
   subroutine push_(this,item)
     type(BUD_TYPE_NAME), intent(inout) :: this
     type(BUD_STACK_TYPE), intent(in) :: item
@@ -294,8 +286,6 @@
   !!
   !! @param[inout] this @bud to pop from
   !! @param[inout] item returned element from the top of the stack
-  !!
-  !! @author Nick R. Papior (2016, February)
   subroutine pop_(this, item)
     type(BUD_TYPE_NAME), intent(inout) :: this
     type(BUD_STACK_TYPE), intent(inout) :: item
@@ -337,8 +327,6 @@
   !!                clear all elements.
   !! @param[in] bot @opt=@null has precedence if `top` not supplied.
   !!                Pops `bot` elements from the bottom of the stack.
-  !!
-  !! @author Nick R. Papior (2016, February)
   subroutine pop_delete_(this, top, bot)
     type(BUD_TYPE_NAME), intent(inout) :: this
     integer, intent(in), optional :: top, bot
@@ -420,8 +408,6 @@
   !! @param[in] top @opt=1 number of elements kept from the top
   !! @param[in] bot @opt=@null number of elements kept from the bottom,
   !!                only used if `top` is not supplied.
-  !!
-  !! @author Nick R. Papior (2016, February)
   subroutine keep_(this, top, bot)
     type(BUD_TYPE_NAME), intent(inout) :: this
     integer, intent(in), optional :: top, bot
@@ -467,8 +453,6 @@
   !! @param[in] this @bud to retrieve element from
   !! @param[inout] elem returned @bud stored in element `iel`
   !! @param[in] iel @opt=`size(this)` index of element to return. May be negative to offset from the top
-  !!
-  !! @author Nick R. Papior (2016, February)
   subroutine get_elem_(this, elem, iel)
     type(BUD_TYPE_NAME), intent(in) :: this
     type(BUD_STACK_TYPE), intent(inout) :: elem
@@ -506,8 +490,6 @@
   !! @param[in] this @bud to retrieve pointer element from
   !! @param p pointer to the element `iel`
   !! @param[in] iel @opt=`size(this)` index of element to return. May be negative to offset from top.
-  !!
-  !! @author Nick R. Papior (2016, February)
   subroutine get_elemp_(this, p, iel)
     type(BUD_TYPE_NAME), intent(in) :: this
     type(BUD_STACK_TYPE), pointer :: p
@@ -546,8 +528,6 @@
   !! @param[in] this data type
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
-  !!
-  !! @author Nick R. Papior (2016, February)
   subroutine print_(this, info, indent)
     type(BUD_TYPE_NAME), intent(in) :: this
     character(len=*), intent(in), optional :: info

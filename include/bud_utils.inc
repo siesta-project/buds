@@ -28,6 +28,12 @@
 # endif
 #endif
 
+  ! If we are using F03 we may use the class statements
+#if BUD_FORTRAN >= 2003
+# define BUD_CLASS class
+#else
+# define BUD_CLASS type
+#endif
 
 
 ! Concatenation

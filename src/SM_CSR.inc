@@ -43,8 +43,6 @@
   !! 4-array input without changing any array elements and/or
   !! extra memory allocation.
   !! The sparsity pattern *must* contain the diagonal elements.
-  !!
-  !! @author Nick R. Papior (2016, February)
   
   ! This *MUST* be the first statement
   ! Common parameters and variables used
@@ -341,15 +339,14 @@
   !!  `c` to column `mod(c-1, nc) + 1`. Which in a 0-counted
   !! array would simply be: `mod(c,nc)`.
   !!
-  !! This can be usefull for transforming an `M(nr, 2*nr)`
-  !! matrix to `M(nr,nr)` square matrix.
+  !! This can be useful for transforming a rectangular matrix
+  !! `M(nr, 2*nr)` to a square matrix `M(nr,nr)`.
   !!
   !! @param[in] from the originating sparse pattern
   !! @param[in] nc new number of columns in the sparse pattern
   !! @param[inout] to the resulting sparse pattern
   !! @param[in] unite @opt=.false. unites equivalent sparse
   !!                  elements to not have dublicate elements.
-  !! @author Nick R. Papior (2016, February)
   subroutine get_wrapped_(from, nc, to, unite)
     use BUD_CC2(BUD_MOD, _utils), only: sort_quick, modp
 
@@ -490,6 +487,9 @@
   !! Sorts the sparse matrix such that the column
   !! index is always increasing for each row.
   !!
+  !! Double entries are not allowed and an error will
+  !! be returned.
+  !!
   !! @param[in] this @bud to finalize
   !! @param[out] err associated error message of the sparsity pattern
   !! @param[out] pvt @opt=@none if requested the pivoting array for the finalized sparsity pattern
@@ -571,8 +571,6 @@
   !! @param[in] this data type
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
-  !!
-  !! @author Nick R. Papior (2016, February)
   subroutine print_(this, info, indent)
     type(BUD_TYPE_NAME), intent(in) :: this
     character(len=*), intent(in), optional :: info

@@ -4,22 +4,22 @@
 # include "bud_utils.inc"
 
   !> @defgroup bud-common Global functions for reference counted types
+  !!
   !! @brief
-  !! General considerations of reference counted types.
+  !! Common routines and interfaces that are required for
+  !! handling and maintaing a @bud.
   !!
   !! @details
-  !!
-  !! The basic functionality of reference counting is performed
-  !! in these few routines.
-  !!
-  !! @note
-  !! A type need not have _all_ these routines available if so desired.
-  !! This is internally controlled and is mentioned for the relevant types.
+  !! The common routines are the initialization routines,
+  !! deletion, checking for initialization, checking for
+  !! equivalence between two @buds, number of references for
+  !! the @bud.
   !!
   !! @dev_note
   !! For extensions of basic routines you _must_ make a wrapper interface
   !! to allow other routine names to have the same name for different
   !! interfaces.
+  !! I.e. you may not make _any_ routine/function public. Only interfaces.
   !!
   !! The routines defined in this file may not be defined in any
   !! of the reference counted type-modules. Doing so will create
@@ -29,11 +29,8 @@
   !! included:
   !!  - _BUD_TYPE_NAME, name of the resulting type
   !!  - _BUD_TYPE_NAME_, contained data structure (as a pointer)
-  !!
-  !! @acknowledge
-  !! These declarations are community inspired from the FLIBS
-  !! project by Arjen Markus as well as the PyF95 project.
-  !! The initial draft of this library has been created by Alberto Garcia.
+  !!  - _BUD_ERROR, if this is not defined there will be
+  !!    no error mechanism for catching erroneous calls.
 
   ! Start on function declarations
   
@@ -44,11 +41,13 @@
   
   !> Name of the reference counted type (@bud)
   public :: BUD_TYPE_NAME
+
+#ifndef BUD_NOTYPE
   
   ! public data type
   ! however, the actual data is contained in the sub-structure
   type BUD_TYPE_NAME
-    type(BUD_TYPE_NAME_), pointer :: D => null()
+    BUD_CLASS(BUD_TYPE_NAME_), pointer :: D => null()
     
 #if BUD_FORTRAN >= 2003
   contains
@@ -62,6 +61,8 @@
     
 #endif
   end type BUD_TYPE_NAME
+  
+#endif
 
   !> Internal data structure (@bud)
   private :: BUD_TYPE_NAME_
@@ -132,9 +133,9 @@
 #if defined(BUD_ERROR)
   ! Stand-alone routine which must be provided
   interface
-    subroutine error(str)
+    subroutine BUD_ERROR(str)
       character(len=*), intent(in), optional :: str
-    end subroutine error
+    end subroutine 
   end interface
 #else
 # ifndef _BUD_ERROR_H
@@ -158,8 +159,6 @@ contains
   !! and the reference counted data will be 1.
   !!
   !! @param[inout] this @bud that is initialized
-  !!
-  !! @author Nick R. Papior (2016, February)
   subroutine initialize_(this)
     type(BUD_TYPE_NAME), intent(inout) :: this
 
@@ -192,8 +191,6 @@ contains
   !!
   !! @param[in] this checked @bud
   !! @param[out] init `.true.` if it is associated, else `.false.`
-  !!
-  !! @author Nick R. Papior (2016, February)
   pure subroutine initialized_(this, init)
     type(BUD_TYPE_NAME), intent(in) :: this
     logical, intent(out) :: init
@@ -208,8 +205,6 @@ contains
   !!
   !! @param[in] this checked @bud
   !! @return `.true.` if it is associated, else `.false.`
-  !!
-  !! @author Nick R. Papior (2016, February)
   pure function is_initialized_(this) result(init)
     type(BUD_TYPE_NAME), intent(in) :: this
 
@@ -231,8 +226,6 @@ contains
   !! deleted. Else this @bud will return an un-associated @bud.
   !!
   !! @param[inout] this deleted @bud
-  !!
-  !! @author Nick R. Papior (2016, February)
 #ifndef BUD_DELETE_NOELEMENTAL
   elemental subroutine delete_(this)
 #else
@@ -279,8 +272,6 @@ contains
   !! an element, but rather remove the pointer to the data.
   !!
   !! @param[inout] this nullify references from this @bud
-  !!
-  !! @author Nick R. Papior (2016, February)
   elemental subroutine nullify_(this)
     type(BUD_TYPE_NAME), intent(inout) :: this
     
@@ -306,8 +297,6 @@ contains
   !!
   !! @param[inout] lhs @bud that is assigned to
   !! @param[in] rhs @bud that is dublicated
-  !!
-  !! @author Nick R. Papior (2016, February)
   subroutine assign_(lhs, rhs)
 
     ! No copying of data is involved, simply an increment of the
@@ -345,8 +334,6 @@ contains
   !! @param[in] lhs first @bud 
   !! @param[in] rhs second @bud
   !! @return `.true.` if `lhs` and `rhs` point to the same data
-  !!
-  !! @author Nick R. Papior (2016, February)
   elemental function is_same_(lhs, rhs) result(same)
     type(BUD_TYPE_NAME), intent(in) :: lhs, rhs
     logical :: same
@@ -366,8 +353,6 @@ contains
   !!
   !! @param[in] this @bud
   !! @return refs number of times `this` has been referenced
-  !!
-  !! @author Nick R. Papior (2016, February)
   elemental function references_(this) result(refs)
     type(BUD_TYPE_NAME), intent(in) :: this
     

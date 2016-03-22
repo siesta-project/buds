@@ -24,6 +24,25 @@ if [[ $(dirname $_sd) != $_cwd ]]; then
     exit 1
 fi
 
+# Assert that the used executables are available:
+_fail=""
+for exe in doxygen dot
+do
+    which $exe > /dev/null
+    if [[ $? -ne 0 ]]; then
+	_fail="$_fail $exe"
+    fi
+done
+if [[ -n "$_fail" ]]; then
+    echo "The following executables could not be found:"
+    echo ""
+    echo "  $_fail"
+    echo ""
+    echo "They are required for creating the documentation."
+    exit 1
+fi
+
+
 # Start on the actual creation of the documentation
 # We create a temporary directory
 rm -rf $_DOC
