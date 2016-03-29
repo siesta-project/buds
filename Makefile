@@ -3,7 +3,7 @@ TOP_DIR ?= .
 # the default target
 .PHONY: default
 .NOTPARALLEL: default
-default: static
+default: libs
 
 # the default target
 .PHONY: all
@@ -15,6 +15,37 @@ include $(TOP_DIR)/Makefile.common
 
 # Include user-defined setup
 -include setup.make
+
+# User-defined setup-file
+ifdef SETUP
+
+ifneq ("$(wildcard $(SETUP))","")
+ include $(SETUP)
+else ifneq ("$(wildcard setup.makes/$(SETUP))","")
+ include setup.makes/$(SETUP)
+else ifneq ("$(wildcard $(SETUP).make)","")
+ include $(SETUP).make
+else ifneq ("$(wildcard setup.makes/$(SETUP).make)","")
+ include setup.makes/$(SETUP).make
+else
+ # This is a small information utility
+ $(info Could not find: ./$(SETUP))
+ $(info Could not find: ./setup.makes/$(SETUP))
+ $(info Could not find: ./$(SETUP).make)
+ $(info Could not find: ./setup.makes/$(SETUP).make)
+
+ _TMP = $(subst .make,,$(subst ./setup.makes/,$(_NL)  ,$(wildcard ./setup.makes/*.make)))
+ $(info Available arguments are: $(_TMP))
+ $(error Custom setup (SETUP=<>) file could not be located)
+endif
+
+endif # only check if SETUP is defined
+
+.PHONY: setup-list
+setup-list:
+	@echo
+	$(info Available SETUP arguments are:$(_NL)$(subst .make,,$(subst ./setup.makes/,$(_NL)  ,$(wildcard ./setup.makes/*.make))))
+
 
 include $(TOP_DIR)/Makefile.default
 
@@ -44,7 +75,7 @@ INC += -I$(TOP_DIR)/include
 include $(TOP_DIR)/src/Makefile.inc
 
 
-ifeq ($(USE_MPI),1)
+ifeq ($(MPI),1)
 # Include dir:
 #    ./src/mpi
 include $(TOP_DIR)/src/mpi/Makefile.inc
@@ -55,28 +86,25 @@ endif
 # Now create the actual compilation make file
 .PHONY: lib libs
 #.NOTPARALLEL: lib libs shared static
+lib: libs
+
 # Define default library creations
-ifndef NO_SHARED
-ifndef NO_STATIC
-# No options given
-NO_SHARED = 1
+STATIC ?= 1
+SHARED ?= 0
+
+# Create default targets for the libraries
+ifeq ($(SHARED),1)
+libs: shared
 endif
+ifeq ($(STATIC),1)
+libs: static
 endif
 
-lib: libs
-ifndef NO_STATIC
- ifndef NO_SHARED
-libs: static shared
- else
-libs: static
- endif
-else
- ifndef NO_SHARED
-libs: shared
- else
+# Only in this case should we error out for the user
+ifeq ($(STATIC)$(SHARED),00)
 libs:
-	@echo "No library build."
- endif
+	@echo "No libraries build. (no static or shared)"
+	@echo "This is probably an error on your part?"
 endif
 
 # Static library compilation
@@ -85,7 +113,7 @@ $(BUDS_LIB_STATIC): $(OBJS)
 	$(RANLIB) $(BUDS_LIB_STATIC)
 
 $(BUDS_LIB_SHARED): $(OBJS)
-	$(CC) -shared -o $(BUDS_LIB_SHARED) $(CFLAGS) $^
+	$(CC) -shared -o $(BUDS_LIB_SHARED) $(CFLAGS) $(LDFLAGS) $^
 
 .PHONY: static shared
 static: $(BUDS_LIB_STATIC)

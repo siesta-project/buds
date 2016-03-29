@@ -4,7 +4,7 @@
 #    ./src/test
 include $(TOP_DIR)/src/test/Makefile.inc
 
-ifeq ($(USE_MPI),1)
+ifeq ($(MPI),1)
 # Include dir:
 #    ./src/mpi/test
 include $(TOP_DIR)/src/mpi/test/Makefile.inc

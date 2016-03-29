@@ -1,6 +1,5 @@
 # This distribution forces the compilation of
-# the tool to enable storing the pre-processed
-# sources.
+# the tool to enable storing the pre-processed sources.
 .PHONY: dist
 .NOTPARALLEL: dist
 dist: libs

@@ -1,0 +1,2 @@
+VENDOR=intel
+OPT=hard

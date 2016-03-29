@@ -1,0 +1,3 @@
+STATIC = 1
+SHARED = 1
+OPT=debug

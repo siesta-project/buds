@@ -1114,8 +1114,7 @@
   !! via a common set-distribution and a common `root`.
   !! Note that `root` must be equivalent on all nodes.
   subroutine fake_sub_(set, sub)
-    type(BUD_TYPE_NAME), intent(in) :: set
-    type(BUD_TYPE_NAME), intent(inout) :: sub
+    type(BUD_TYPE_NAME), intent(inout) :: set, sub
     integer(ii_) :: root, nbot
 
     ! if the node is not part of the set distribution
@@ -1137,7 +1136,7 @@
   !! A fake distribution allows one to use a common
   !! interface for determining the parent processor.
   subroutine fake_sub_explicit_(set, sub, sub_root)
-    type(BUD_TYPE_NAME), intent(in) :: set
+    type(BUD_TYPE_NAME), intent(inout) :: set
     type(BUD_TYPE_NAME), intent(inout) :: sub
     integer(ii_), intent(in) :: sub_root
     integer(ii_), allocatable :: rank(:)
@@ -1261,7 +1260,7 @@
   !!
   !! Hence, upon exit `rank` has size `dist_NP(sub)`.
   subroutine sub1_ranks_(set, sub, rank)
-    type(BUD_TYPE_NAME), intent(in) :: set
+    type(BUD_TYPE_NAME), intent(inout) :: set
     type(BUD_TYPE_NAME), intent(inout) :: sub
     integer(ii_), intent(inout), allocatable :: rank(:)
     integer(ii_) :: sub_root, nbot
@@ -1312,7 +1311,8 @@
   !! Query the `root` and number of nodes in `sub` distribution in the
   !! `set` distribution.
   subroutine sub1_root_(set, sub, sub_root)
-    type(BUD_TYPE_NAME), intent(in) :: set, sub
+    type(BUD_TYPE_NAME), intent(inout) :: set
+    type(BUD_TYPE_NAME), intent(in) :: sub
     integer(ii_), intent(out) :: sub_root
     
     if ( .not. is_comm(set) ) return
@@ -1336,7 +1336,8 @@
   !! Query the `root` and number of nodes in `sub` distribution in the
   !! `set` distribution.
   subroutine sub1_root_NP_(set, sub, sub_root, sub_NP)
-    type(BUD_TYPE_NAME), intent(in) :: set, sub
+    type(BUD_TYPE_NAME), intent(inout) :: set
+    type(BUD_TYPE_NAME), intent(in) :: sub
     integer(ii_), intent(out) :: sub_root, sub_NP
     
     if ( .not. is_comm(set) ) return
@@ -1374,7 +1375,7 @@
   !! `set` distribution.
   subroutine subN_groups_(set, sub, sub_root, Ng, groups)
     use BUD_CC2(BUD_MOD,_utils), only: sort_quick
-    type(BUD_TYPE_NAME), intent(in) :: set, sub
+    type(BUD_TYPE_NAME), intent(inout) :: set, sub
     integer, intent(out) :: sub_root
     integer, intent(out) :: Ng
     integer, intent(inout), allocatable :: groups(:)

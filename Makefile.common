@@ -22,6 +22,11 @@ undefine MPICC
 undefine MPIFC
 undefine MPICXX
 
+define _NL
+
+
+endef
+
 # Local Variables:
 #  mode: makefile-gmake
 # End:

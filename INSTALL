@@ -1,0 +1,122 @@
+Installation instructions
+*************************
+
+Copyright (C) 2016 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.  This file is offered as-is,
+without warranty of any kind.
+
+
+Basic Installation
+==================
+
+Building buds is only controlled using the basic Makefiles included.
+Every setting for the compilation and installation can be controlled
+using the `setup.make` file.
+
+If you are using the standard GNU compiler suite you may compile
+and install buds using the following commands:
+
+    make
+    make install PREFIX=<install prefix>
+
+the default `PREFIX` is `$HOME/buds`.
+
+This basic installation will only install the static library.
+To control whether the shared/static or both libraries should be installed
+one can do
+
+    make all
+
+To _only_ compile the shared library one should do:
+
+   make shared
+
+
+The installation will install either library and the basic buds include
+files in the PREFIX directory.
+
+
+Advanced installation script
+============================
+
+The actual control of the installation script can be fully controlled in the
+`setup.make` file.
+An assortment of pre-make files are created in the setup.makes directory.
+
+To use one of them you may link it to `setup.make`:
+
+   ln -s setup.makes/static-hard.make setup.make
+   make
+
+which will use the settings for the static library using an aggressive
+optimization strategy.
+
+You may also denote the `setup.make` file using the `SETUP` flag:
+
+   make SETUP=static-hard # or
+   make SETUP=static-hard.make # or
+   make SETUP=setup.makes/static-hard.make
+
+To check your current installation setup run this command:
+
+   make show
+
+
+Additional settings for the compiler
+------------------------------------
+
+Either of these settings may be provided on the `make` command line
+or in `setup.make`.
+In the following 0 means disable while 1 means enable.
+
+PREFIX=<installation prefix>:
+    installation prefix for buds.
+
+STATIC=0|1:
+    control whether the `libs` target is dependent on the `static` target
+    
+SHARED=0|1:
+    control whether the `libs` target is dependent on the `shared` target
+
+OPT=debug|1|2|3:
+    controls the optimization level of the compiler.
+    Debug is the lowest compiler options, 1 is low optimization and
+    3 is the highest optimization.
+
+VENDOR=<vendor>:
+    use the settings in the vendor/<vendor>.make file for the
+    compiler.
+
+SETUP=<file>:
+    use the specified file in addition to the `setup.make` file
+    to control the options. The corresponding file will be included in the
+    makefile process right _after_ `setup.make`.
+
+MPI=0|1:
+    control whether the MPI objects should also be added to the library.
+    This enables certain buds only available for MPI installations.
+
+
+Adding new vendors for compilation
+==================================
+
+The vendor/ directory contains individual files that creates
+defaults for different vendors.
+If you want to enable a new compiler you may copy the vendor/gnu.make
+to vendor/<new>.make and customize the flags to your liking.
+
+Once you have created the vendor file you may use the vendor by compiling
+using:
+
+    make VENDOR=<new>
+
+Currently only GNU and Intel compiler vendors are supported:
+
+    make VENDOR=gnu # default
+    make VENDOR=intel
+
+If you add a new vendor please consider contributing to buds by sending
+the source.

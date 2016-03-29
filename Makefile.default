@@ -1,3 +1,4 @@
+# We do not allow .f/.F sources
 .SUFFIXES:
 .SUFFIXES: .f90 .F90 .c .o .a .so
 
@@ -23,16 +24,13 @@ CPP = cpp -E -P -C -nostdinc
 
 # Only in the case of no fPIC should we not add it
 ifndef NO_PIC
- override CFLAGS += -fPIC
- override CXXFLAGS += -fPIC
- override FCFLAGS += -fPIC
+ CFLAGS += -fPIC
+ CXXFLAGS += -fPIC
+ FCFLAGS += -fPIC
 endif
 
 # Default vendor setting
-ifndef VENDOR
- VENDOR = gnu
- $(info Defaults to the GNU C-compiler vendor)
-endif
+VENDOR ?= gnu
 
 CC_VENDOR ?= $(VENDOR)
 CXX_VENDOR ?= $(VENDOR)
@@ -77,28 +75,28 @@ endif
 ifeq ($(_OPT), HARD)
   _OPT = hard
 endif
-override OPT = $(_OPT)
+override OPT := $(_OPT)
 
 # All opt-flags that we process to filter out
 _FILTER_OPT_FLAGS = -Ofast -Os -O0 -O1 -O2 -O3 -fast
 
-ifneq ($(OPT), none)
+ifneq ($(OPT),none)
 
   # Filter out all the optimizations as they will be
   # re-inserted below
-  override CFLAGS := $(filter-out $(_FILTER_OPT_FLAGS),$(CFLAGS))
-  override CXXFLAGS := $(filter-out $(_FILTER_OPT_FLAGS),$(CXXFLAGS))
-  override FCFLAGS := $(filter-out $(_FILTER_OPT_FLAGS),$(FCFLAGS))
+  CFLAGS := $(filter-out $(_FILTER_OPT_FLAGS),$(CFLAGS))
+  CXXFLAGS := $(filter-out $(_FILTER_OPT_FLAGS),$(CXXFLAGS))
+  FCFLAGS := $(filter-out $(_FILTER_OPT_FLAGS),$(FCFLAGS))
 
   # Populate them
   include $(TOP_DIR)/vendor/$(CC_VENDOR).make
-  override CFLAGS += $(V_CFLAGS_$(OPT))
+  CFLAGS += $(V_CFLAGS_$(OPT))
 
   include $(TOP_DIR)/vendor/$(CXX_VENDOR).make
-  override CXXFLAGS += $(V_CXXFLAGS_$(OPT))
+  CXXFLAGS += $(V_CXXFLAGS_$(OPT))
 
   include $(TOP_DIR)/vendor/$(FC_VENDOR).make
-  override FCFLAGS += $(V_FCFLAGS_$(OPT))
+  FCFLAGS += $(V_FCFLAGS_$(OPT))
 
 else
 
@@ -118,17 +116,17 @@ MPICXX := $(V_MPICXX)
 MPIFC := $(V_MPIFC)
 
 # Simple conversion from YES/yes/true/TRUE to 1
-ifeq ($(USE_MPI), yes)
- USE_MPI = 1
+ifeq ($(MPI), yes)
+ override MPI = 1
 endif
-ifeq ($(USE_MPI), YES)
- USE_MPI = 1
+ifeq ($(MPI), YES)
+ override MPI = 1
 endif
-ifeq ($(USE_MPI), true)
- USE_MPI = 1
+ifeq ($(MPI), true)
+ override MPI = 1
 endif
-ifeq ($(USE_MPI), TRUE)
- USE_MPI = 1
+ifeq ($(MPI), TRUE)
+ override MPI = 1
 endif
 
 # Add to includes the mod directory
@@ -149,17 +147,28 @@ INC += $(V_FC_MODDIR)$(BUDS_MODDIR)
 .NOTPARALLEL: show
 show:
 	@echo ""
-	@echo "Used compilation options:"
-	@echo ""
-	@echo "C-compiler options:"
+	@echo "Used compilation options (VENDOR=$(VENDOR)):"
 	@echo "  CC = $(CC)"
 	@echo "  CFLAGS = $(CFLAGS)"
-	@echo "CXX-compiler options:"
 	@echo "  CXX = $(CXX)"
 	@echo "  CXXFLAGS = $(CXXFLAGS)"
-	@echo "Fortran-compiler options:"
 	@echo "  FC = $(FC)"
 	@echo "  FCFLAGS = $(FCFLAGS)"
+	@echo "Linker (shared)"
+	@echo "  $(CC) -shared $(CFLAGS) $(LDFLAGS)"
+ifeq ($(MPI),1)
+	@echo ""
+	@echo "Used MPI compilation options:"
+	@echo "  MPICC = $(MPICC)"
+	@echo "  CFLAGS = $(CFLAGS)"
+	@echo "  MPICXX = $(MPICXX)"
+	@echo "  CXXFLAGS = $(CXXFLAGS)"
+	@echo "  MPIFC = $(MPIFC)"
+	@echo "  FCFLAGS = $(FCFLAGS)"
+endif
+	@echo ""
+	@echo "Installation prefixes:"
+	@echo "  PREFIX = $(PREFIX)"
 
 
 # Local Variables:
