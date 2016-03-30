@@ -1405,7 +1405,7 @@
 
     ! figure out how many groups there are
     ! 1. the root node from each sub-group
-    !    b-cast it's parent get_P value
+    !    b-cast its parent get_P value
     !    which is unique.
     ! 2. Every sub-node has information about the parent
     !    node ID
