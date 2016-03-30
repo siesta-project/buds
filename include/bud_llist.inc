@@ -54,6 +54,23 @@
   !!  - _BUD_LIST_TYPE, the variable type contained in the linked list
   !!  - _BUD_LINKED_LIST_NAME, the name of the self-contained linked list
 
+
+  !> @bud variable
+  !!
+  !! Handler for the pointer type stored
+  type BUD_TYPE_NAME
+    !> Stored pointer which contains the reference counting etc.
+    type(BUD_TYPE_NAME_), pointer :: D => null()
+
+#if BUD_FORTRAN >= 2003
+  contains
+#   include "bud_common_type.inc"
+
+    
+#endif
+  end type BUD_TYPE_NAME
+
+  
   !> @bud container for BUD_TYPE_NAME
   !!
   !! @details
@@ -89,7 +106,7 @@
     type(BUD_LINKED_LIST_NAME), pointer :: head => null()
 
     ! Consistent data in the reference counted object
-#   include "bud_common_type.inc"
+#   include "bud_common_type_.inc"
 
   end type BUD_TYPE_NAME_
 
@@ -296,7 +313,7 @@
   !!
   !! @param[inout] this new @bud upon exit
   subroutine new_(this)
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
     call init(this)
 
@@ -309,7 +326,7 @@
   !! @param[inout] this new @bud upon exit
   !! @param[in] D stored data in the first node
   subroutine new_data_(this, D)
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     type(BUD_LIST_TYPE), intent(in) :: D
 
     call new(this)
@@ -323,7 +340,7 @@
   ! ********
   !   Internal routines
   subroutine get_ll_headp(this, head)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     type(BUD_LINKED_LIST_NAME), pointer :: head
 
     if ( .not. is_initd(this) ) then
@@ -342,7 +359,7 @@
   end subroutine get_ll_headp
   
   subroutine get_ll_tailp(this, tail)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     type(BUD_LINKED_LIST_NAME), pointer :: tail
     
     if ( .not. is_initd(this) ) then
@@ -368,7 +385,7 @@
   !! @param[inout] node returned @bud in node `index`
   !! @param[in] index @opt=`0` index of element to return. May be negative to offset from the head
   subroutine get_ll_idxp(this, node, index)
-    type(BUD_TYPE_NAME), intent(in), target :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in), target :: this
     type(BUD_LINKED_LIST_NAME), pointer :: node
     integer, intent(in), optional :: index
 
@@ -448,7 +465,7 @@
   !! @param[inout] this @bud that is checked
   !! @return number of currently nodes
   function size_llist_(this) result (nnodes)
-    type(BUD_TYPE_NAME), intent(in), target :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in), target :: this
     integer :: nnodes
     type(BUD_LINKED_LIST_NAME), pointer :: head, tmp
     
@@ -477,7 +494,7 @@
   !!
   !! @param[inout] this @bud that is added to
   subroutine add_node_(this)
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     type(BUD_LINKED_LIST_NAME), pointer :: tail
 
     if ( .not. is_initd(this) ) then
@@ -508,7 +525,7 @@
   !! @param[inout] this @bud that is added to
   !! @param[in] item node added to the stack
   subroutine add_node_data_(this, D)
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     type(BUD_LIST_TYPE), intent(in) :: D
     type(BUD_LINKED_LIST_NAME), pointer :: tail
 
@@ -525,7 +542,7 @@
 
   !> Attach BUD_LIST_TYPE to current node
   subroutine set_data_(this, D)
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     type(BUD_LIST_TYPE), intent(in) :: D
     
     if ( is_initd(this) ) then
@@ -536,7 +553,7 @@
 
   !> Attach BUD_LIST_TYPE to current node
   subroutine set_data_idx_(this, D, index)
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     type(BUD_LIST_TYPE), intent(in) :: D
     integer, intent(in) :: index
     type(BUD_LINKED_LIST_NAME), pointer :: node
@@ -549,7 +566,7 @@
 
   !> Set the head of the linked list
   subroutine set_head_idx_(this, index)
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer, intent(in) :: index
     type(BUD_LINKED_LIST_NAME), pointer :: node
 
@@ -569,7 +586,7 @@
   !! @param[inout] D returned @bud stored in node `i`
   !! @param[in] index @opt=`1` index of element to return. May be negative to offset from the head
   subroutine get_node_data_idx_(this, D, index)
-    type(BUD_TYPE_NAME), intent(in), target :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in), target :: this
     type(BUD_LIST_TYPE), intent(inout) :: D
     integer, intent(in), optional :: index
     type(BUD_LINKED_LIST_NAME), pointer :: node
@@ -595,8 +612,8 @@
   !! @param[inout] itt the itterator container
   !! @return .true. if the next element can be reached
   function step_itt_(this, itt) result(itterated)
-    type(BUD_TYPE_NAME), intent(in) :: this
-    type(BUD_TYPE_NAME), intent(inout) :: itt
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: itt
     logical :: itterated
 
     itterated = .false.
@@ -642,7 +659,7 @@
   !! the connections such that the linked list items are
   !! preserved.
   subroutine remove_node_(this, index)
-    type(BUD_TYPE_NAME), intent(inout), target :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout), target :: this
     integer, intent(in) :: index
     type(BUD_LINKED_LIST_NAME), pointer :: node, pnode, nnode
 
@@ -684,7 +701,7 @@
 
   !> Delete specific data in node in a linked list
   subroutine remove_node_data_(this, index)
-    type(BUD_TYPE_NAME), intent(inout), target :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout), target :: this
     integer, intent(in), optional :: index
     type(BUD_LINKED_LIST_NAME), pointer :: node
 
@@ -700,7 +717,7 @@
 
 
   subroutine copy_list_(from, to)
-    type(BUD_TYPE_NAME), intent(inout) :: to, from
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to, from
     type(BUD_LINKED_LIST_NAME), pointer :: t, f
 
     if ( .not. is_initd(from) ) then
@@ -755,7 +772,7 @@
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
   subroutine print_(this, info, indent)
-    type(BUD_TYPE_NAME), intent(in), target :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in), target :: this
     character(len=*), intent(in), optional :: info
     integer, intent(in), optional :: indent
 

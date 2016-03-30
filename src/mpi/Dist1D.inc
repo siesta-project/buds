@@ -68,6 +68,20 @@
   integer(ii_), parameter, public :: DIST_BLOCK_LAST = 6
 
 
+  !> @bud variable
+  !!
+  !! Handler for the pointer type stored
+  type BUD_TYPE_NAME
+    !> Stored pointer which contains the reference counting etc.
+    type(BUD_TYPE_NAME_), pointer :: D => null()
+
+#if BUD_FORTRAN >= 2003
+  contains
+#   include "bud_common_type.inc"
+    
+#endif
+  end type BUD_TYPE_NAME
+
   !> @bud container for the distributions
   !!
   !! Any information regarding the MPI processors
@@ -147,7 +161,7 @@
 
 
     ! Consistent data in the reference counted object
-#   include "bud_common_type.inc"
+#   include "bud_common_type_.inc"
 
   end type BUD_TYPE_NAME_
 
@@ -401,77 +415,77 @@
   ! First we implement the easy stuff
   !> Query the associated communicator
   elemental function comm_(this) result(comm)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_) :: comm
     comm = this%D%comm
   end function comm_
 
   !> Query the associated communicator
   function commp_(this) result(commp)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_), pointer :: commp
     commp => this%D%comm
   end function commp_
 
   !> Query the associated group
   elemental function group_(this) result(grp)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_) :: grp
     grp = this%D%Grp
   end function group_
 
   !> Query the associated group
   function groupp_(this) result(grpp)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_), pointer :: grpp
     grpp => this%D%Grp
   end function groupp_
 
   !> Query the current processor ID in the communicator
   elemental function P_(this) result(P)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_) :: P
     P = this%D%P
   end function P_
 
   !> Query pointer to the current processor ID in the communicator
   function Pp_(this) result(Pp)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_), pointer :: Pp
     Pp => this%D%P
   end function Pp_
 
   !> Query the number of processors in the communicator
   elemental function NP_(this) result(NP)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_) :: NP
     NP = this%D%NP
   end function NP_
 
   !> Query pointer to the number of processors in the communicator
   function NPp_(this) result(NPp)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_), pointer :: NPp
     NPp => this%D%NP
   end function NPp_
 
   !> Query the default size of the distribution
   elemental function size_(this) result(n)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_) :: n
     n = this%D%ng
   end function size_
 
   !> Query the block-size, `-1` if non-block-cyclic
   elemental function blocksize_(this) result(BS)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_) :: BS
     BS = this%D%BS
   end function blocksize_
 
   !> Assert the distribution type
   elemental function is_dist_(this, dist) result(is)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_), intent(in) :: dist
     logical :: is
     is = this%D%dist == dist
@@ -479,7 +493,7 @@
 
   !> Query distribution type used 
   elemental function dtype_(this) result(dist)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_) :: dist
     dist = this%D%dist
   end function dtype_
@@ -487,7 +501,7 @@
 
   !> Query several contained quantities
   subroutine attach_(this, D, P, NP, ng, Comm, Grp, BS, err)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     logical, intent(in), optional :: D
     integer(ii_), intent(out), optional :: P, NP, ng, Comm, Grp, BS, err
 
@@ -511,7 +525,7 @@
   !! @param[inout] this the @bud distribution container
   !! @param[in] Comm the communicator that we will dublicate and attach
   subroutine new_(this, Comm)
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer(ii_), intent(in) :: Comm
 
     call init(this)
@@ -531,7 +545,7 @@
 
   !> Create a new block cyclic distribution
   subroutine new_block_cyclic_(this, Comm, bs, ng, dist)
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer(ii_), intent(in) :: Comm, BS
     integer(BUD_PREC), intent(in) :: ng
     integer(ii_), intent(in) :: dist
@@ -565,7 +579,7 @@
 
   !> Create a new block distribution
   subroutine new_block_(this, Comm, ng, dist)
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer(ii_), intent(in) :: Comm
     integer(BUD_PREC), intent(in) :: ng
     integer(ii_), intent(in) :: dist
@@ -599,7 +613,7 @@
 
     !> Create a new block cyclic distribution
   subroutine new_fake_block_cyclic_(this, NP, BS, ng, dist)
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer(ii_), intent(in) :: NP, BS
     integer(BUD_PREC), intent(in) :: ng
     integer(ii_), intent(in) :: dist
@@ -634,7 +648,7 @@
 
   !> Create a new block distribution (non-cyclic)
   subroutine new_fake_block_(this, NP, ng, dist)
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer(BUD_PREC), intent(in) :: NP, ng
     integer(ii_), intent(in) :: dist
     
@@ -668,7 +682,7 @@
 
   ! Interface for number of local elements
   elemental function size_local_default_(this) result(nl)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_PREC) :: nl, i, ir, irB
 
     if ( this%D%NP == 1 ) then
@@ -736,7 +750,7 @@
 
   ! Interface for number of local elements
   elemental function size_local_ng_(this, ng) result(nl)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_PREC), intent(in) :: ng
 
     integer(BUD_PREC) :: nl, i, ir, irB
@@ -804,7 +818,7 @@
 
 
   elemental function l2g_default_(this, il) result(ig)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_PREC), intent(in) :: il
     integer(BUD_PREC) :: ig
 
@@ -842,7 +856,7 @@
 
 
   elemental function l2g_ng_(this, il, ng) result(ig)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_PREC), intent(in) :: il, ng
     integer(BUD_PREC) :: ig
 
@@ -883,7 +897,7 @@
 
 
   elemental function g2l_default_(this, ig) result(il)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_PREC), intent(in) :: ig
     integer(BUD_PREC) :: il
 
@@ -953,7 +967,7 @@
 
 
   elemental function g2l_ng_(this, ig, ng) result(il)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_PREC), intent(in) :: ig, ng
     integer(BUD_PREC) :: il
 
@@ -1027,7 +1041,7 @@
 
 
   elemental function g2P_default_(this, ig) result(P)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_PREC), intent(in) :: ig
     integer(BUD_PREC) :: P
 
@@ -1061,7 +1075,7 @@
   end function g2P_default_
   
   elemental function g2P_ng_(this, ig, ng) result(P)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_PREC), intent(in) :: ig, ng
     integer(BUD_PREC) :: P
 
@@ -1100,7 +1114,7 @@
   !! This may be used to identify `fake` distributions
   !! vs. real distributions.
   elemental function is_comm_(this) result(is)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     logical :: is
     is = is_initd(this)
     if ( is ) is = this%D%Comm /= MPI_Comm_Null
@@ -1114,7 +1128,7 @@
   !! via a common set-distribution and a common `root`.
   !! Note that `root` must be equivalent on all nodes.
   subroutine fake_sub_(set, sub)
-    type(BUD_TYPE_NAME), intent(inout) :: set, sub
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: set, sub
     integer(ii_) :: root, nbot
 
     ! if the node is not part of the set distribution
@@ -1136,8 +1150,8 @@
   !! A fake distribution allows one to use a common
   !! interface for determining the parent processor.
   subroutine fake_sub_explicit_(set, sub, sub_root)
-    type(BUD_TYPE_NAME), intent(inout) :: set
-    type(BUD_TYPE_NAME), intent(inout) :: sub
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: set
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: sub
     integer(ii_), intent(in) :: sub_root
     integer(ii_), allocatable :: rank(:)
 
@@ -1260,8 +1274,8 @@
   !!
   !! Hence, upon exit `rank` has size `dist_NP(sub)`.
   subroutine sub1_ranks_(set, sub, rank)
-    type(BUD_TYPE_NAME), intent(inout) :: set
-    type(BUD_TYPE_NAME), intent(inout) :: sub
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: set
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: sub
     integer(ii_), intent(inout), allocatable :: rank(:)
     integer(ii_) :: sub_root, nbot
     integer(ii_) :: err
@@ -1311,8 +1325,8 @@
   !! Query the `root` and number of nodes in `sub` distribution in the
   !! `set` distribution.
   subroutine sub1_root_(set, sub, sub_root)
-    type(BUD_TYPE_NAME), intent(inout) :: set
-    type(BUD_TYPE_NAME), intent(in) :: sub
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: set
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: sub
     integer(ii_), intent(out) :: sub_root
     
     if ( .not. is_comm(set) ) return
@@ -1336,8 +1350,8 @@
   !! Query the `root` and number of nodes in `sub` distribution in the
   !! `set` distribution.
   subroutine sub1_root_NP_(set, sub, sub_root, sub_NP)
-    type(BUD_TYPE_NAME), intent(inout) :: set
-    type(BUD_TYPE_NAME), intent(in) :: sub
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: set
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: sub
     integer(ii_), intent(out) :: sub_root, sub_NP
     
     if ( .not. is_comm(set) ) return
@@ -1375,7 +1389,7 @@
   !! `set` distribution.
   subroutine subN_groups_(set, sub, sub_root, Ng, groups)
     use BUD_CC2(BUD_MOD,_utils), only: sort_quick
-    type(BUD_TYPE_NAME), intent(inout) :: set, sub
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: set, sub
     integer, intent(out) :: sub_root
     integer, intent(out) :: Ng
     integer, intent(inout), allocatable :: groups(:)
@@ -1463,7 +1477,7 @@
   
   !> Function for retrieving the latest error messag
   elemental function get_MPIerr_(this) result(err)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_) :: err
     if ( is_initd(this) ) then
       err = this%D%err
@@ -1485,7 +1499,7 @@
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
   subroutine print_(this, info, indent)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     character(len=*), intent(in), optional :: info
     integer, intent(in), optional :: indent
 

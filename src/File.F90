@@ -35,6 +35,44 @@ module BUD_MOD_NAME
 # include "bud_common_declarations.inc"
 
   integer, parameter :: FILENAME_LEN = 256
+
+  
+  !> @bud variable
+  !!
+  !! Handler for the pointer type stored
+  type BUD_TYPE_NAME
+    !> Stored pointer which contains the reference counting etc.
+    type(BUD_TYPE_NAME_), pointer :: D => null()
+
+#if BUD_FORTRAN >= 2003
+  contains
+#   include "bud_common_type.inc"
+
+    !> Open file via object
+    procedure, public :: open => open_
+
+    !> Close file via object
+    procedure, public :: close => close_
+
+    !> Filename of object
+    procedure, public :: file => filename_
+    procedure, public :: filename => filename_
+
+    !> Unit of object
+    procedure, public :: unit => get_unit_
+
+    !> Query whether file is open
+    procedure, public :: is_open => is_open_
+
+    !> Query whether file exists 
+    procedure, public :: exists => exists_
+
+    !> Delete file on-disk
+    procedure, public :: file_delete => file_delete_
+
+#endif
+  end type BUD_TYPE_NAME
+
   
   !> @bud container for BUD_TYPE_NAME
   !!
@@ -52,7 +90,7 @@ module BUD_MOD_NAME
     integer :: stat = 0
 
     ! Consistent data in the reference counted object
-#   include "bud_common_type.inc"
+#   include "bud_common_type_.inc"
     
   end type BUD_TYPE_NAME_
 
@@ -155,55 +193,13 @@ module BUD_MOD_NAME
   public :: file_delete
 
   
-  type BUD_TYPE_NAME
-    BUD_CLASS(BUD_TYPE_NAME_), pointer :: D => null()
-    
-#if BUD_FORTRAN >= 2003
-  contains
-    
-    ! This is strictly not needed
-    ! However, this may be used internally for
-    ! automatic clean-up
-    final :: delete_
-
-    !> Open file via object
-    procedure, public :: open => open_
-
-    !> Close file via object
-    procedure, public :: close => close_
-
-    !> Filename of object
-    procedure, public :: file => filename_
-    procedure, public :: filename => filename_
-
-    !> Unit of object
-    procedure, public :: unit => get_unit_
-
-    !> Query whether file is open
-    procedure, public :: is_open => is_open_
-
-    !> Query whether file exists 
-    procedure, public :: exists => exists_
-
-    !> Delete file on-disk
-    procedure, public :: delete => file_delete_
-
-    !> Print object information
-    procedure, public :: print => print_
-
-#endif
-  end type BUD_TYPE_NAME
-
-  
   ! Include common data routines
   ! Note that 'CONTAINS' is present in this include file.
   ! the delete_data ensures a closed file
   ! Hence we *must* not use elemental
 #define BUD_DELETE_NOELEMENTAL
-#define BUD_NOTYPE
 # include "bud_common.inc"
 #undef BUD_DELETE_NOELEMENTAL
-#undef BUD_NOTYPE
 
   !> @cond BUD_INTERNAL
 

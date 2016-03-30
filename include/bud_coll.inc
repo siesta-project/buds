@@ -58,6 +58,22 @@
   !!  - _BUD_COLL_5, name of the fifth @bud (need not be used)
   !!
 
+  !> @bud variable
+  !!
+  !! Handler for the pointer type stored
+  type BUD_TYPE_NAME
+    !> Stored pointer which contains the reference counting etc.
+    type(BUD_TYPE_NAME_), pointer :: D => null()
+
+#if BUD_FORTRAN >= 2003
+  contains
+#   include "bud_common_type.inc"
+
+    
+#endif
+  end type BUD_TYPE_NAME
+
+  
   !> Internal data container for BUD_TYPE_NAME
   !!
   !! @details
@@ -110,7 +126,7 @@
 #endif
     
     ! Consistent data in the reference counted object
-#   include "bud_common_type.inc"
+#   include "bud_common_type_.inc"
 
   end type BUD_TYPE_NAME_
 
@@ -257,7 +273,7 @@
 #endif
 #endif
     )
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     type(BUD_COLL_1), intent(in) :: a
     type(BUD_COLL_2), intent(in) :: b
 #ifdef BUD_COLL_3
@@ -300,7 +316,7 @@
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
   subroutine print_(this, info, indent)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     character(len=*), intent(in), optional :: info
     integer, intent(in), optional :: indent
     integer :: lindent

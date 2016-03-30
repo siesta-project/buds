@@ -42,6 +42,23 @@
   !! project by Arjen Markus as well as the PyF95 project.
   !! The initial draft of this library has been created by Alberto Garcia.
 
+  
+  !> @bud variable
+  !!
+  !! Handler for the pointer type stored
+  type BUD_TYPE_NAME
+    !> Stored pointer which contains the reference counting etc.
+    type(BUD_TYPE_NAME_), pointer :: D => null()
+
+#if BUD_FORTRAN >= 2003
+  contains
+#   include "bud_common_type.inc"
+
+    
+#endif
+  end type BUD_TYPE_NAME
+
+
   !> @bud container for BUD_TYPE_NAME
   !!
   !! @details
@@ -70,7 +87,7 @@
     type(BUD_STACK_TYPE), pointer :: T(:) => null()
 
     ! Consistent data in the reference counted object
-#   include "bud_common_type.inc"
+#   include "bud_common_type_.inc"
 
   end type BUD_TYPE_NAME_
 
@@ -184,7 +201,7 @@
   !! @param[inout] this Type that is initialized
   !! @param[in] nel maximum number of elements that may be contained
   subroutine new_(this, nel)
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer, intent(in) :: nel
 
     if ( nel < 1 ) then
@@ -212,7 +229,7 @@
   !! @param[inout] this @bud that is checked
   !! @return number of currently stored elements
   elemental function size_elem_(this) result (nel)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer :: nel
     if ( .not. is_initd(this) ) then
       nel = 0
@@ -227,7 +244,7 @@
   !! @param[inout] this @bud that is checked
   !! @return maximum number of allowed elements
   elemental function size_max_elem_(this) result (nel_max)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer :: nel_max
     if ( .not. is_initd(this) ) then
       nel_max = 0
@@ -245,7 +262,7 @@
   !! @param[inout] this @bud that is added to
   !! @param[in] item element added to the stack
   subroutine push_(this,item)
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     type(BUD_STACK_TYPE), intent(in) :: item
 
     integer :: el
@@ -287,7 +304,7 @@
   !! @param[inout] this @bud to pop from
   !! @param[inout] item returned element from the top of the stack
   subroutine pop_(this, item)
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     type(BUD_STACK_TYPE), intent(inout) :: item
 
     integer :: el
@@ -328,7 +345,7 @@
   !! @param[in] bot @opt=@null has precedence if `top` not supplied.
   !!                Pops `bot` elements from the bottom of the stack.
   subroutine pop_delete_(this, top, bot)
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer, intent(in), optional :: top, bot
 
     integer :: lnpop
@@ -409,7 +426,7 @@
   !! @param[in] bot @opt=@null number of elements kept from the bottom,
   !!                only used if `top` is not supplied.
   subroutine keep_(this, top, bot)
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer, intent(in), optional :: top, bot
     
     integer :: lnpop
@@ -454,7 +471,7 @@
   !! @param[inout] elem returned @bud stored in element `iel`
   !! @param[in] iel @opt=`size(this)` index of element to return. May be negative to offset from the top
   subroutine get_elem_(this, elem, iel)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     type(BUD_STACK_TYPE), intent(inout) :: elem
     integer, intent(in), optional :: iel
     integer :: el
@@ -491,7 +508,7 @@
   !! @param p pointer to the element `iel`
   !! @param[in] iel @opt=`size(this)` index of element to return. May be negative to offset from top.
   subroutine get_elemp_(this, p, iel)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     type(BUD_STACK_TYPE), pointer :: p
     integer, intent(in), optional :: iel
     integer :: el
@@ -529,7 +546,7 @@
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
   subroutine print_(this, info, indent)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     character(len=*), intent(in), optional :: info
     integer, intent(in), optional :: indent
 

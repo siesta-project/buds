@@ -1,5 +1,7 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
-  
+
+# include "bud_utils.inc"
+
   ! Force explicit declarations of variables
   implicit none
 

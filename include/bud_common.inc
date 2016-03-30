@@ -42,26 +42,6 @@
   !> Name of the reference counted type (@bud)
   public :: BUD_TYPE_NAME
 
-#ifndef BUD_NOTYPE
-  
-  ! public data type
-  ! however, the actual data is contained in the sub-structure
-  type BUD_TYPE_NAME
-    BUD_CLASS(BUD_TYPE_NAME_), pointer :: D => null()
-    
-#if BUD_FORTRAN >= 2003
-  contains
-
-    ! This is strictly not needed
-    ! However, this may be used internally for
-    ! automatic clean-up
-    final :: delete_
-    
-#endif
-  end type BUD_TYPE_NAME
-  
-#endif
-
   !> Internal data structure (@bud)
   private :: BUD_TYPE_NAME_
 
@@ -158,7 +138,7 @@ contains
   !!
   !! @param[inout] this @bud that is initialized
   subroutine initialize_(this)
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
     integer :: error
     
@@ -190,7 +170,7 @@ contains
   !! @param[in] this checked @bud
   !! @param[out] init `.true.` if it is associated, else `.false.`
   pure subroutine initialized_(this, init)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     logical, intent(out) :: init
     
     init = associated(this%D)
@@ -204,7 +184,7 @@ contains
   !! @param[in] this checked @bud
   !! @return `.true.` if it is associated, else `.false.`
   pure function is_initialized_(this) result(init)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
 
     logical :: init
 
@@ -229,7 +209,7 @@ contains
 #else
   subroutine delete_(this)
 #endif
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
     integer :: error
     
@@ -271,7 +251,7 @@ contains
   !!
   !! @param[inout] this nullify references from this @bud
   elemental subroutine nullify_(this)
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     
     if (.not. is_initd(this) ) return
     
@@ -306,8 +286,8 @@ contains
     ! "rhs".  In a function, the intrinsic "out" intent for "lhs"
     ! will destroy any prior information.
 
-    type(BUD_TYPE_NAME), intent(inout) :: lhs
-    type(BUD_TYPE_NAME), intent(in) :: rhs
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: lhs
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: rhs
 
     ! Delete to remove the current reference of "this"
     call delete(lhs)
@@ -333,7 +313,7 @@ contains
   !! @param[in] rhs second @bud
   !! @return `.true.` if `lhs` and `rhs` point to the same data
   elemental function is_same_(lhs, rhs) result(same)
-    type(BUD_TYPE_NAME), intent(in) :: lhs, rhs
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: lhs, rhs
     logical :: same
     same = is_initd(lhs) .and. is_initd(rhs)
     if ( .not. same ) return
@@ -352,7 +332,7 @@ contains
   !! @param[in] this @bud
   !! @return refs number of times `this` has been referenced
   elemental function references_(this) result(refs)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     
     integer :: refs
 
@@ -369,7 +349,7 @@ contains
   ! The remaining procedures are currently
   ! not used by bud
   elemental function id_(this) result(str)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     
     character(len=BUD_ID_LEN) :: str
     
@@ -378,7 +358,7 @@ contains
   end function id_
 
   subroutine tag_object_(this)
-    type(BUD_TYPE_NAME), intent(inout)  :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout)  :: this
 
     ! currently we do not tag the types
     

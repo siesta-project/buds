@@ -46,6 +46,21 @@
 #  error "mbud_Array: Does not handle array sizes larger than 4"
 #endif
 
+  !> @bud variable
+  !!
+  !! Handler for the pointer type stored
+  type BUD_TYPE_NAME
+    !> Stored pointer which contains the reference counting etc.
+    type(BUD_TYPE_NAME_), pointer :: D => null()
+
+#if BUD_FORTRAN >= 2003
+  contains
+#   include "bud_common_type.inc"
+
+    
+#endif
+  end type BUD_TYPE_NAME
+
   !> @bud container for BUD_TYPE_NAME
   !!
   !! Contains an array of BUD_DIM dimensions.
@@ -60,7 +75,7 @@
 #endif
 
     ! Consistent data in the reference counted object
-#   include "bud_common_type.inc"
+#   include "bud_common_type_.inc"
 
   end type BUD_TYPE_NAME_
 
@@ -176,7 +191,7 @@
     d1, d2, d3, d4, &
 #endif
     val)
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 #if BUD_DIM == 1
     integer, intent(in) :: d1
 #elif BUD_DIM == 2
@@ -226,7 +241,7 @@
   !! @param[inout] this @bud container
   !! @param[in] array array to dublicate in `this`
   subroutine new_copy_(this, array)
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in) :: array BUD_DIM_SPEC()
 #else
@@ -279,7 +294,7 @@
   !! @param[in] this the containing @bud
   !! @return a pointer to the data
   function get_arrayp_(this) result(p)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer :: p BUD_DIM_SPEC()
 #else
@@ -323,7 +338,7 @@
     i1, i2, i3, i4 &
 #endif
     ) result(v)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
 #if BUD_DIM == 1
     integer, intent(in) :: i1
 #elif BUD_DIM == 2
@@ -363,7 +378,7 @@
   !! @param[in] dim @opt=@null along the specified dimension
   !! @return the size of the contained array
   pure function size_(this, dim) result(d)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer, intent(in), optional :: dim
 
     integer :: d
@@ -384,7 +399,7 @@
   !! @param[in] this @bud containing the array
   !! @param[in] v value to set all elements equal to
   subroutine init_array_(this, v)
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in) :: v
 #else
@@ -410,7 +425,7 @@
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
   subroutine print_(this, info, indent)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     character(len=*), intent(in), optional :: info
     integer, intent(in), optional :: indent
 

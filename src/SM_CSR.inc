@@ -47,7 +47,22 @@
   ! This *MUST* be the first statement
   ! Common parameters and variables used
 # include "bud_common_declarations.inc"
-  
+
+  !> @bud variable
+  !!
+  !! Handler for the pointer type stored
+  type BUD_TYPE_NAME
+    !> Stored pointer which contains the reference counting etc.
+    type(BUD_TYPE_NAME_), pointer :: D => null()
+
+#if BUD_FORTRAN >= 2003
+  contains
+#   include "bud_common_type.inc"
+
+    
+#endif
+  end type BUD_TYPE_NAME
+
   !> @bud container for BUD_TYPE_NAME
   !!
   !! Contains the sparsity pattern for a CSR matrix.
@@ -68,7 +83,7 @@
     integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: col(:) => null()
 
     ! Consistent data in the reference counted object
-#   include "bud_common_type.inc"
+#   include "bud_common_type_.inc"
 
   end type BUD_TYPE_NAME_
   
@@ -198,7 +213,7 @@
   !! @param[in] nc number of columns of this @bud
   !! @param[in] nz number of non-zero elements this @bud
   subroutine new_dim_(this, nr, nc, nz)
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     ! sizes
     integer(BUD_TYPE_VAR_PREC), intent(in) :: nr, nc, nz
 
@@ -222,7 +237,7 @@
   !! @param[in] rptr row pointers (can be of size `nr` or `nr+1`)
   !! @param[in] col column indices for the sparse elements
   subroutine new_copy_(this, nr, nc, nz, rptr, col)
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     ! sizes
     integer(BUD_TYPE_VAR_PREC), intent(in) :: nr, nc, nz
     ! limiting ptr
@@ -251,21 +266,21 @@
 
   !> Query number of non-zero elements
   elemental function nonzeros_(this) result(nnzs)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer :: nnzs
     nnzs = this%D%nz
   end function nonzeros_
 
   !> Query number of rows of the stored sparse matrix
   elemental function mat_rows_(this) result(rows)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer :: rows
     rows = this%D%nr
   end function mat_rows_
 
   !> Query number of columns of the stored sparse matrix
   elemental function mat_cols_(this) result(cols)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer :: cols
     cols = this%D%nc
   end function mat_cols_
@@ -291,7 +306,7 @@
   !! @param[out] rptr @opt row pointer (`rptr(2)` is starting index of `ir=2`)
   !! @param[out] col @opt column index
   subroutine attach_(this, D, nr, nc, nz, rptr, col)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     ! Having this forces the user to explicitly specify the
     ! wanted information.
     logical, intent(in), optional :: D
@@ -320,7 +335,7 @@
   !! @param[out] idx the index of `(ir,ic)`, <0 if non-existing
   pure subroutine index_(this, ir, ic, idx)
     use BUD_CC2(BUD_MOD, _utils), only: find_bin
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_TYPE_VAR_PREC), intent(in) :: ir, ic
     integer(BUD_TYPE_VAR_PREC), intent(out) :: idx
     
@@ -350,9 +365,9 @@
   subroutine get_wrapped_(from, nc, to, unite)
     use BUD_CC2(BUD_MOD, _utils), only: sort_quick, modp
 
-    type(BUD_TYPE_NAME), intent(in) :: from
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
     integer(BUD_TYPE_VAR_PREC), intent(in) :: nc
-    type(BUD_TYPE_NAME), intent(inout) :: to
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
     logical, intent(in), optional :: unite
 
     ! Local unite variable
@@ -462,7 +477,7 @@
   !! @param[in] this type to retrieve the pointer from
   !! @return the pointer to the contained row-pointer segment
   function get_row_ptrp_(this) result(rptr)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: rptr(:)
     
     rptr => this%D%rptr
@@ -474,7 +489,7 @@
   !! @param[in] this type to retrieve the pointer from
   !! @return the pointer to the contained column indices segment
   function get_columnp_(this) result(col)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: col(:)
 
     col => this%D%col
@@ -498,7 +513,7 @@
     ! algorithm.
     use BUD_CC2(BUD_MOD, _utils), only: sort_quick
 
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer(BUD_TYPE_VAR_PREC), intent(out) :: err
     integer(BUD_TYPE_VAR_PREC), intent(out), optional :: pvt(:)
 
@@ -572,7 +587,7 @@
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
   subroutine print_(this, info, indent)
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     character(len=*), intent(in), optional :: info
     integer, intent(in), optional :: indent
 

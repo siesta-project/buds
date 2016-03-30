@@ -1,22 +1,28 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
 
   ! Simple type for inclusion in the type scopes.
+  ! This adds all OO routines 
   
-  !> Reference counter for @bud
-  !! Tracks the number of times this data structure is referenced
-  integer :: refs_ = 0
-
-  !> Hash ID for the @bud (unique for different @buds)
-  !! Enables a unique ID for any @bud of the same type.
-  character(len=BUD_ID_LEN) :: id_ = "null_id"
-
 #if BUD_FORTRAN >= 2003
-contains
+  
+#ifndef BUD_NO_DELETE
+  procedure, public :: delete => delete_
+#endif
+#ifndef BUD_NO_NULLIFY
+  procedure, public :: nullify => nullify_
+#endif
 
-  ! This is strictly not needed
-  ! However, this may be used internally for
-  ! automatic clean-up
-  final :: delete_data
+  procedure, public :: init => initialize_
+  
+  procedure, public :: is_initd => is_initialized_
+  procedure, public :: is_same => is_same_
+  
+  procedure, public :: references => references_
+  procedure, public :: get_refs => references_
+
+#ifndef BUD_NO_PRINT
+  procedure, public :: print => print_
+#endif
 
 #endif
   

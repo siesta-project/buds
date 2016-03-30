@@ -24,6 +24,22 @@
   !!  - _BUD_TYPE_NEW, the routine name for creating a new type
   !!  - _BUD_ITEM_TYPE, the @bud contained in the single item
 
+
+  !> @bud variable
+  !!
+  !! Handler for the pointer type stored
+  type BUD_TYPE_NAME
+    !> Stored pointer which contains the reference counting etc.
+    type(BUD_TYPE_NAME_), pointer :: D => null()
+
+#if BUD_FORTRAN >= 2003
+  contains
+#   include "bud_common_type.inc"
+
+    
+#endif
+  end type BUD_TYPE_NAME
+
   
   !> Internal data structure for containing an item
   type BUD_TYPE_NAME_
@@ -31,7 +47,7 @@
     !> Contained item data
     type(BUD_ITEM_TYPE) :: item
 
-#   include "bud_common_type.inc"
+#   include "bud_common_type_.inc"
 
   end type BUD_TYPE_NAME_
 
@@ -96,7 +112,7 @@
   !!
   !! @param[inout] this @bud that is initialized
   subroutine new_(this)
-    type(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
     call init(this)
 
@@ -112,8 +128,8 @@
   !! @param[inout] this @bud that is initialized
   !! @param[inout] item stored BUD_ITEM_TYPE in the item
   subroutine new_data_(this, item)
-    type(BUD_TYPE_NAME), intent(inout) :: this
-    type(BUD_ITEM_TYPE), intent(in) :: item
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_ITEM_TYPE), intent(in) :: item
 
     call init(this)
 
@@ -131,8 +147,8 @@
   !! @param[inout] this item to store @bud-data in
   !! @param[in] item @bud which will be contained in `this`
   subroutine set_data_(this, item)
-    type(BUD_TYPE_NAME), intent(inout) :: this
-    type(BUD_ITEM_TYPE), intent(in) :: item
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_ITEM_TYPE), intent(in) :: item
     
     if ( is_initd(this) ) then
       this%D%item = item
@@ -145,8 +161,8 @@
   !! @param[inout] item item to store @bud-data in
   !! @param[in] this item containing @bud
   subroutine get_data_(item, this)
-    type(BUD_ITEM_TYPE), intent(inout) :: item
-    type(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_ITEM_TYPE), intent(inout) :: item
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     
     if ( is_initd(this) ) then
       item = this%D%item
@@ -169,7 +185,7 @@
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
   subroutine print_(this, info, indent)
-    type(BUD_TYPE_NAME), intent(in), target :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in), target :: this
     character(len=*), intent(in), optional :: info
     integer, intent(in), optional :: indent
 
