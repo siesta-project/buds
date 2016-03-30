@@ -528,7 +528,7 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer(ii_), intent(in) :: Comm
 
-    call init(this)
+    call initialize(this)
 
     ! dublicate communicator (ensures that we can delete it again)
     call MPI_Comm_dup(Comm, this%D%comm, this%D%err)
@@ -626,7 +626,7 @@
 
       ! Create a new object with communicator
       ! and populate 'P' and 'NP'
-      call init(this)
+      call initialize(this)
       this%D%NP = NP
 
       ! we do not use any explicit terminology
@@ -660,7 +660,7 @@
 
       ! Create a new object with communicator
       ! and populate 'P' and 'NP'
-      call init(this)
+      call initialize(this)
       this%D%NP = NP
 
       ! we do not use any explicit terminology
@@ -1228,7 +1228,7 @@
     ! Ensure empty sub
     if ( .not. is_comm(sub) ) then
       call delete(sub)
-      call init(sub)
+      call initialize(sub)
     else if ( set%D%P == set_root ) then
       ! or  ( sub%D%P == 0 )
       ! or  ( MPI_Group_Rank(Grp) == grp_root )

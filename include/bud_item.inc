@@ -36,7 +36,19 @@
   contains
 #   include "bud_common_type.inc"
 
-    
+    procedure, private :: new_
+    procedure, private :: new_data_
+    !> Initialization of the @bud
+    generic, public :: new => new_, new_data_
+
+    !> Set passed data as the contained item
+    procedure, public :: set => set_data_
+    procedure, public :: set_data => set_data_
+
+    !> Query the stored data in the item
+    procedure, public :: get => get_data_
+    procedure, public :: get_data => get_data_
+
 #endif
   end type BUD_TYPE_NAME
 
@@ -85,7 +97,7 @@
   ! also accept direct contained element
   interface assignment(=)
     module procedure set_data_
-    module procedure get_data_
+    module procedure get_data_assign_
   end interface
 
   !> Print information about the @bud
@@ -114,7 +126,7 @@
   subroutine new_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
-    call init(this)
+    call initialize(this)
 
     call tag_object_(this)
     
@@ -131,7 +143,7 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     BUD_CLASS(BUD_ITEM_TYPE), intent(in) :: item
 
-    call init(this)
+    call initialize(this)
 
     this = item
 
@@ -148,7 +160,7 @@
   !! @param[in] item @bud which will be contained in `this`
   subroutine set_data_(this, item)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    BUD_CLASS(BUD_ITEM_TYPE), intent(in) :: item
+    type(BUD_ITEM_TYPE), intent(in) :: item
     
     if ( is_initd(this) ) then
       this%D%item = item
@@ -158,11 +170,11 @@
 
   !> Retrieve BUD_ITEM_TYPE from @bud
   !!
-  !! @param[inout] item item to store @bud-data in
   !! @param[in] this item containing @bud
-  subroutine get_data_(item, this)
-    BUD_CLASS(BUD_ITEM_TYPE), intent(inout) :: item
+  !! @param[inout] item item to store @bud-data in
+  subroutine get_data_(this, item)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    type(BUD_ITEM_TYPE), intent(inout) :: item
     
     if ( is_initd(this) ) then
       item = this%D%item
@@ -171,6 +183,22 @@
     end if
     
   end subroutine get_data_
+
+  !> Retrieve BUD_ITEM_TYPE from @bud
+  !!
+  !! @param[inout] item item to store @bud-data in
+  !! @param[in] this item containing @bud
+  subroutine get_data_assign_(item, this)
+    type(BUD_ITEM_TYPE), intent(inout) :: item
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    
+    if ( is_initd(this) ) then
+      item = this%D%item
+    else
+      call delete(item)
+    end if
+    
+  end subroutine get_data_assign_
 
   
   !> Print, to std-out, some basic information of the data-container

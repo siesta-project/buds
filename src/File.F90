@@ -246,7 +246,7 @@ module BUD_MOD_NAME
     character(len=*), intent(in) :: filename
 
     ! initialize object
-    call init(this)
+    call initialize(this)
 
     this%D%file = filename
     

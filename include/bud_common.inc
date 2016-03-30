@@ -61,11 +61,23 @@
   public :: assignment(=)
 
   !> Initialization routine of the @bud
-  interface init
+  interface initialize
     module procedure initialize_
   end interface
-  public :: init
-  
+  public :: initialize
+
+  !> Check if a @bud has been initialized (function)
+  interface is_initialized
+    module procedure is_initialized_
+  end interface
+  public :: is_initialized
+
+  !> Check if a @bud has been initialized (function)
+  interface initialized
+    module procedure is_initialized_
+  end interface
+  public :: initialized
+
   !> Check if a @bud has been initialized (function)
   interface is_initd
     module procedure is_initialized_
@@ -77,7 +89,13 @@
     module procedure is_same_
   end interface
   public :: is_same
-  
+
+  !> Check if two @buds point to the same data (function)
+  interface same
+    module procedure is_same_
+  end interface
+  public :: same
+
 #ifndef BUD_NO_DELETE
   !> Delete the @bud, stepping reference counter and clearing this type
   interface delete
@@ -344,10 +362,11 @@ contains
     
   end function references_
 
+  
   !> @cond ALWAYS_SKIP
   
   ! The remaining procedures are currently
-  ! not used by bud
+  ! not used by public buds
   elemental function id_(this) result(str)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     

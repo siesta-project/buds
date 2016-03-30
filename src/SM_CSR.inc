@@ -217,7 +217,7 @@
     ! sizes
     integer(BUD_TYPE_VAR_PREC), intent(in) :: nr, nc, nz
 
-    call init(this)
+    call initialize(this)
 
     this%D%nr = nr
     this%D%nc = nc

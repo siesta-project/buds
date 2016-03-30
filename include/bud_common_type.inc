@@ -12,13 +12,18 @@
   procedure, public :: nullify => nullify_
 #endif
 
-  procedure, public :: init => initialize_
+  procedure, public :: initialize => initialize_
   
+  procedure, public :: is_initialized => is_initialized_
   procedure, public :: is_initd => is_initialized_
   procedure, public :: is_same => is_same_
+  ! they have a clear intent hence the is_ prefix is not
+  ! required.
+  procedure, public :: initialized => is_initialized_
+  procedure, public :: same => is_same_
   
   procedure, public :: references => references_
-  procedure, public :: get_refs => references_
+  procedure, public :: refs => references_
 
 #ifndef BUD_NO_PRINT
   procedure, public :: print => print_

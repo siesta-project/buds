@@ -54,6 +54,21 @@
   contains
 #   include "bud_common_type.inc"
 
+    procedure, public :: new => new_
+
+    procedure, public :: push => push_
+    procedure, public :: pop => pop_
+    procedure, public :: keep => keep_
+
+    procedure, public :: get => get_elem_
+    procedure, public :: get_elem => get_elem_
+
+    procedure, public :: getp => get_elemp_
+    procedure, public :: get_elemp => get_elemp_
+
+    procedure, public :: size => size_elem_
+    procedure, public :: size_max => size_max_elem_
+
     
 #endif
   end type BUD_TYPE_NAME
@@ -212,7 +227,7 @@
       return
     end if
 
-    call init(this)
+    call initialize(this)
 
     this%D%nel_max = nel
     this%D%nel = 0

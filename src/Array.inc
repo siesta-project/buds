@@ -210,7 +210,7 @@
     ! Make sure the container is initialized and ready for
     ! data-creation.
 
-    call init(this)
+    call initialize(this)
 
     ! Allocate the value array
 #if BUD_DIM == 1

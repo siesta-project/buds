@@ -13,7 +13,7 @@
 !! @param[inout] this @bud container
 !! @param[inout] item contains data collection upon exit (or null)
 subroutine BUD_CC3(get_elem,BUD_COLL_NUM,_)(this, item)
-  type(BUD_TYPE_NAME), intent(inout) :: this
+  BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
   type(BUD_COLL_CURRENT), intent(inout) :: item
 
   if ( .not. is_initd(this) ) then
@@ -25,6 +25,26 @@ subroutine BUD_CC3(get_elem,BUD_COLL_NUM,_)(this, item)
   
 end subroutine
 
+
+!> Set the BUD_COLL_NUM @bud in BUD_TYPE_NAME
+!!
+!! Set the data in the element to the passed item.
+!!
+!! If `this` is not initialized, then nothing will
+!! happen.
+!!
+!! @param[inout] this @bud container
+!! @param[inout] item item to store in the container
+subroutine BUD_CC3(set_elem,BUD_COLL_NUM,_)(this, item)
+  BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+  type(BUD_COLL_CURRENT), intent(inout) :: item
+
+  if ( .not. is_initd(this) ) return
+
+  this%D% BUD_CC2(e,BUD_COLL_NUM) = item
+  
+end subroutine
+
 !> Retrieve pointer to BUD_COLL_NUM @bud in BUD_TYPE_NAME
 !!
 !! @note This will not step the reference counter for the
@@ -33,7 +53,7 @@ end subroutine
 !! @param[inout] this data container
 !! @return pointer to element in collection (or null if non-initialized)
 function BUD_CC3(get_elem,BUD_COLL_NUM,p_)(this) result(p)
-  type(BUD_TYPE_NAME), intent(inout) :: this
+  BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
   type(BUD_COLL_CURRENT), pointer :: p
   
   if ( .not. is_initd(this) ) then

@@ -66,6 +66,34 @@
   contains
 #   include "bud_common_type.inc"
 
+    procedure, private :: new_
+    procedure, private :: new_data_
+    generic, public :: new => new_, new_data_
+
+    procedure, public :: nodes => size_llist_
+    procedure, public :: size => size_llist_
+
+    procedure, private :: set_data_
+    procedure, private :: set_data_idx_
+    generic, public :: set => set_data_, set_data_idx_
+    generic, public :: set_data => set_data_, set_data_idx_
+
+    procedure, public :: get_node_data => get_node_data_idx_
+    procedure, public :: get_data => get_node_data_idx_
+
+    procedure, private :: add_node_
+    procedure, private :: add_node_data_
+    generic, public :: add_node => add_node_, add_node_data_
+
+    procedure, public :: remove_node => remove_node_
+    procedure, public :: remove_node_data => remove_node_data_
+
+    procedure, public :: set_head => set_head_idx_
+
+    procedure, public :: copy_list => copy_list_
+    procedure, public :: copy => copy_list_
+
+    procedure, public :: itt_step => itt_step_
     
 #endif
   end type BUD_TYPE_NAME
@@ -208,10 +236,10 @@
 
 
   !> Set the head of the linked list to the indexed node
-  interface step_itt
-    module procedure step_itt_
+  interface itt_step
+    module procedure itt_step_
   end interface
-  public :: step_itt
+  public :: itt_step
 
 
   !> Remove a specific node from the linked list
@@ -315,7 +343,7 @@
   subroutine new_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
-    call init(this)
+    call initialize(this)
 
     call tag_object_(this)
     
@@ -611,7 +639,7 @@
   !! @param[in] this the linked list to be iterated
   !! @param[inout] itt the itterator container
   !! @return .true. if the next element can be reached
-  function step_itt_(this, itt) result(itterated)
+  function itt_step_(this, itt) result(itterated)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: itt
     logical :: itterated
@@ -650,7 +678,7 @@
       call delete(itt)
     end if
 
-  end function step_itt_
+  end function itt_step_
 
 
   !> Delete specific node in a linked list
@@ -742,6 +770,16 @@
 #endif
       t => t%next
       t%D = f%D
+
+      ! check for circular list
+#ifdef BUD_LIST_IS_DOUBLY
+      ! In this case we have already progressed
+      ! the entire list
+      ! Hence we should return and NOT perform
+      ! an additional copy.
+#endif
+      if ( associated(t, to%D%head) ) return
+      
     end do
 
 #ifdef BUD_LIST_IS_DOUBLY
@@ -754,6 +792,7 @@
       t%prev%next => t
       t => t%prev
       t%D = f%D
+
     end do
 #endif
 

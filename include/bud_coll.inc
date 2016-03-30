@@ -69,7 +69,34 @@
   contains
 #   include "bud_common_type.inc"
 
+    !> Initialization of the @bud
+    procedure, private :: new_ => new_
+    procedure, private :: new_data_ => new_data_
+    generic, public :: new => new_, new_data_
+
+    procedure, public :: get_elem1 => get_elem1_
+    procedure, public :: get_elem1p=> get_elem1p_
+    procedure, public :: set_elem1 => set_elem1_
     
+    procedure, public :: get_elem2 => get_elem2_
+    procedure, public :: get_elem2p=> get_elem2p_
+    procedure, public :: set_elem2 => set_elem2_
+#ifdef BUD_COLL_3
+    procedure, public :: get_elem3 => get_elem3_
+    procedure, public :: get_elem3p=> get_elem3p_
+    procedure, public :: set_elem3 => set_elem3_
+#ifdef BUD_COLL_4
+    procedure, public :: get_elem4 => get_elem4_
+    procedure, public :: get_elem4p=> get_elem4p_
+    procedure, public :: set_elem4 => set_elem4_
+#ifdef BUD_COLL_5
+    procedure, public :: get_elem5 => get_elem5_
+    procedure, public :: get_elem5p=> get_elem5p_
+    procedure, public :: set_elem5 => set_elem5_
+#endif
+#endif
+#endif
+
 #endif
   end type BUD_TYPE_NAME
 
@@ -133,11 +160,13 @@
   !> Initialize new BUD_TYPE_NAME
   interface new
     module procedure new_
+    module procedure new_data_
   end interface
   public :: new
   !> Initialize new BUD_TYPE_NAME (@isee new)
   interface BUD_TYPE_NEW
     module procedure new_
+    module procedure new_data_
   end interface
   public :: BUD_TYPE_NEW
 
@@ -149,7 +178,16 @@
     module procedure get_elem1_
   end interface
   public :: get_elem1
-  
+
+  !> Set the first element of the collection (routine)
+  !!
+  !! Change the suffix number `1` to `2`, ... to set the
+  !! corresponding element in the collection.
+  interface set_elem1
+    module procedure set_elem1_
+  end interface
+  public :: set_elem1
+
   !> Return a pointer to the first element of the collection (function)
   !!
   !! This routine does not step the reference counting as it
@@ -171,6 +209,10 @@
     module procedure get_elem2_
   end interface
   public :: get_elem2
+  interface set_elem2
+    module procedure set_elem2_
+  end interface
+  public :: set_elem2
   interface get_elem2p
     module procedure get_elem2p_
   end interface
@@ -181,6 +223,10 @@
     module procedure get_elem3_
   end interface
   public :: get_elem3
+  interface set_elem3
+    module procedure set_elem3_
+  end interface
+  public :: set_elem3
   interface get_elem3p
     module procedure get_elem3p_
   end interface
@@ -191,6 +237,10 @@
     module procedure get_elem4_
   end interface
   public :: get_elem4
+  interface set_elem4
+    module procedure set_elem4_
+  end interface
+  public :: set_elem4
   interface get_elem4p
     module procedure get_elem4p_
   end interface
@@ -201,6 +251,10 @@
     module procedure get_elem5_
   end interface
   public :: get_elem5
+  interface set_elem5
+    module procedure set_elem5_
+  end interface
+  public :: set_elem5
   interface get_elem5p
     module procedure get_elem5p_
   end interface
@@ -240,6 +294,19 @@
     
   end subroutine delete_data
 
+  
+  !> Initialize of data container with no contained elements
+  !!
+  !! @param[inout] this new initialized @bud
+  subroutine new_(this)
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+
+    call initialize(this)
+
+    call tag_object_(this)
+    
+  end subroutine new_
+
   !> Initialize of data container with containing elements
   !!
   !! A new @bud is initialized with each element
@@ -262,7 +329,7 @@
 #endif
 #endif
 #endif
-  subroutine new_(this, a, b &
+  subroutine new_data_(this, a, b &
 #ifdef BUD_COLL_3
     , c &
 #ifdef BUD_COLL_4
@@ -286,7 +353,7 @@
 #endif
 #endif
 
-    call init(this)
+    call initialize(this)
 
     ! set objects
     this%D%e1 = a
@@ -303,7 +370,7 @@
 
     call tag_object_(this)
     
-  end subroutine new_
+  end subroutine new_data_
 
   !> Print, to std-out, some basic information of the data-container
   !!
