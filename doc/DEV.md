@@ -38,6 +38,24 @@ These guide-lines for the code __must__ be followed:
   for a routine/function which you think replicates your routine the most
   and copy/paste the corresponding documentation.
 
+  + Full documentation of the routine should be performed for the interface.
+    In case several private routines are interfaced for a public routine
+    their differences should be made clear in this documentation part.
+  + Private routines should _only_ document the parameters.
+  + Create references for F2003 OO procedures to the equivalent interface.
+~~~~~~~~~~~{.f90}
+          ...
+        contains
+		  !> @iSee `new`
+          procedure, public :: new => new_
+	    end type
+
+        !> Here goes full documentation
+		interface new
+          module procedure new_
+		end interface
+~~~~~~~~~~~
+    
   + Prefer to add contribution statements in the CONTRIBUTORS.md file
 	which ensures a resulting documentation to be short and concise.  
     In the CONTRIBUTORS.md file you may add any information and specifics
@@ -51,6 +69,7 @@ These guide-lines for the code __must__ be followed:
 		 ..., intent(inout) :: bar1
 		 ..., intent(in), optional :: bar2 ! none default
 ~~~~~~~~~~~
+
   + Use `\@null` as replacement for optional arguments which may have no information
   + To remove routines or hidden variables from the documentation you may
     encompass part of the code with
