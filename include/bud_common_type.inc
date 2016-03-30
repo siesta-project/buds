@@ -13,12 +13,10 @@
 #if BUD_FORTRAN >= 2003
 contains
 
-#if BUD_FORTRAN_FINALIZE == 1
   ! This is strictly not needed
   ! However, this may be used internally for
   ! automatic clean-up
   final :: delete_data
-#endif
 
 #endif
   

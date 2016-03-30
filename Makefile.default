@@ -134,13 +134,13 @@ INC += $(V_FC_MODDIR)$(BUDS_MODDIR)
 
 # Define the compilation options:
 .F90.o:
-	$(FC) -c -o $@ $(FCFLAGS) $(INC) $<
+	$(FC) -c -o $@ $(FCFLAGS) $(INC) $(FPPFLAGS) $<
 .f90.o:
 	$(FC) -c -o $@ $(FCFLAGS) $(INC) $<
 .c.o:
-	$(CC) -c -o $@ $(CFLAGS) $(INC) $<
+	$(CC) -c -o $@ $(CFLAGS) $(INC) $(CPPFLAGS) $<
 .cpp.o:
-	$(CXX) -c -o $@ $(CXXFLAGS) $(INC) $<
+	$(CXX) -c -o $@ $(CXXFLAGS) $(INC) $(CPPFLAGS) $<
 
 
 .PHONY: show
@@ -150,10 +150,12 @@ show:
 	@echo "Used compilation options (VENDOR=$(VENDOR)):"
 	@echo "  CC = $(CC)"
 	@echo "  CFLAGS = $(CFLAGS)"
+	@echo "  CPPFLAGS = $(CPPFLAGS)"
 	@echo "  CXX = $(CXX)"
 	@echo "  CXXFLAGS = $(CXXFLAGS)"
 	@echo "  FC = $(FC)"
 	@echo "  FCFLAGS = $(FCFLAGS)"
+	@echo "  FPPFLAGS = $(FPPFLAGS)"
 	@echo "Linker (shared)"
 	@echo "  $(CC) -shared $(CFLAGS) $(LDFLAGS)"
 ifeq ($(MPI),1)

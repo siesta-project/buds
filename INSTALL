@@ -100,6 +100,37 @@ MPI=0|1:
     This enables certain buds only available for MPI installations.
 
 
+Controlling the library functionality
+-------------------------------------
+
+There are several preprocessor flags for controlling the final
+buds library. Some of them extends the functionality while others
+limit the functionality.
+Currently the preprocessor flags must be added to the CPPFLAGS variable:
+
+    CPPFLAGS = -D<preprocessor-flag>
+
+Add these to the CPPFLAGS controlling
+
+-DBUD_FORTRAN=<integer>:
+    This controls the fortran standard used.
+    Currently if <integer> is 2003 or above the basic buds
+    will contain OO functionality as `bud%is_initd()` together
+    with the direct function call `is_initd(bud)`.
+
+    This is defaulted to 2003 as the majority of compiler vendors
+    intrinsically support these extensions.
+
+-DBUD_ERROR=<routine name>:
+    Controls whether the parent application will provide a
+    routine for grabbing errors.
+    The interface for this error *MUST* be
+
+        subroutine BUD_ERROR(str)
+         character(len=*), intent(in), optional :: str
+        end subroutine
+
+
 Adding new vendors for compilation
 ==================================
 

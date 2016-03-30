@@ -11,7 +11,7 @@ $(DIST_OBJS:.o=.f90): $(MPI_DIR)/Dist1D.inc
 $(DIST_OBJS): $(MPI_DIR)/Dist1D.inc
 MPI_OBJS += $(DIST_OBJS)
 $(MPI_DIR)/mbud_Dist1D.f90: $(MPI_DIR)/Dist1D.F90
-	$(CPP) $(INC) $< > $@
+	$(CPP) $(INC) $(CPPFLAGS) $< > $@
 
 
 # Populate the correct OBJS file

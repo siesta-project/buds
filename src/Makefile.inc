@@ -13,19 +13,19 @@ $(ARRAY_OBJS:.o=.f90): $(SRC_DIR)/Array.inc
 $(ARRAY_OBJS): $(SRC_DIR)/Array.inc
 SRC_OBJS += $(ARRAY_OBJS)
 $(SRC_DIR)/mbud_Array1D.f90: $(SRC_DIR)/Array1D.F90
-	$(CPP) $(INC) $< > $@
+	$(CPP) $(INC) $(CPPFLAGS) $< > $@
 $(SRC_DIR)/mbud_Array2D.f90: _TMP_FILE=$(SRC_DIR)/Array2D.F90
 $(SRC_DIR)/mbud_Array2D.f90: $(SRC_DIR)/Array1D.F90
 	@echo " !> @cond DOC_ALL" > $(_TMP_FILE)
 	@sed -e 's/\(define BUD_DIM\) 1/\1 2/g;s/Array1D/Array2D/g' $(SRC_DIR)/Array1D.F90 >> $(_TMP_FILE)
 	@echo " !> @endcond DOC_ALL" >> $(_TMP_FILE)
-	$(CPP) $(INC) $(_TMP_FILE) > $@
+	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
 $(SRC_DIR)/mbud_Array3D.f90: _TMP_FILE=$(SRC_DIR)/Array3D.F90
 $(SRC_DIR)/mbud_Array3D.f90: $(SRC_DIR)/Array1D.F90
 	@echo " !> @cond DOC_ALL" > $(_TMP_FILE)
 	@sed -e 's/\(define BUD_DIM\) 1/\1 3/g;s/Array1D/Array3D/g' $(SRC_DIR)/Array1D.F90 >> $(_TMP_FILE)
 	@echo " !> @endcond DOC_ALL" >> $(_TMP_FILE)
-	$(CPP) $(INC) $(_TMP_FILE) > $@
+	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
 
 
 ITEM_ARRAY_OBJS = \
@@ -36,19 +36,19 @@ ITEM_ARRAY_OBJS := $(addprefix $(SRC_DIR)/,$(ITEM_ARRAY_OBJS))
 $(ITEM_ARRAY_OBJS): $(ARRAY_OBJS)
 SRC_OBJS += $(ITEM_ARRAY_OBJS)
 $(SRC_DIR)/mbud_Item_Array1D.f90: $(SRC_DIR)/Item_Array1D.F90
-	$(CPP) $(INC) $< > $@
+	$(CPP) $(INC) $(CPPFLAGS) $< > $@
 $(SRC_DIR)/mbud_Item_Array2D.f90: _TMP_FILE=$(SRC_DIR)/Item_Array2D.F90
 $(SRC_DIR)/mbud_Item_Array2D.f90: $(SRC_DIR)/Item_Array1D.F90
 	@echo " !> @cond DOC_ALL" > $(_TMP_FILE)
 	@sed -e 's/Array1D/Array2D/g' $(SRC_DIR)/Item_Array1D.F90 >> $(_TMP_FILE)
 	@echo " !> @endcond DOC_ALL" >> $(_TMP_FILE)
-	$(CPP) $(INC) $(_TMP_FILE) > $@
+	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
 $(SRC_DIR)/mbud_Item_Array3D.f90: _TMP_FILE=$(SRC_DIR)/Item_Array3D.F90
 $(SRC_DIR)/mbud_Item_Array3D.f90: $(SRC_DIR)/Item_Array1D.F90
 	@echo " !> @cond DOC_ALL" > $(_TMP_FILE)
 	@sed -e 's/Array1D/Array3D/g' $(SRC_DIR)/Item_Array1D.F90 >> $(_TMP_FILE)
 	@echo " !> @endcond DOC_ALL" >> $(_TMP_FILE)
-	$(CPP) $(INC) $(_TMP_FILE) > $@
+	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
 
 
 C_ARRAY_OBJS = \
@@ -59,19 +59,19 @@ C_ARRAY_OBJS := $(addprefix $(SRC_DIR)/,$(C_ARRAY_OBJS))
 $(C_ARRAY_OBJS): $(ARRAY_OBJS)
 SRC_OBJS += $(C_ARRAY_OBJS)
 $(SRC_DIR)/mbud_C2_Array1D.f90: $(SRC_DIR)/C2_Array1D.F90
-	$(CPP) $(INC) $< > $@
+	$(CPP) $(INC) $(CPPFLAGS) $< > $@
 $(SRC_DIR)/mbud_C2_Array2D.f90: _TMP_FILE=$(SRC_DIR)/C2_Array2D.F90
 $(SRC_DIR)/mbud_C2_Array2D.f90: $(SRC_DIR)/C2_Array1D.F90
 	@echo " !> @cond DOC_ALL" > $(_TMP_FILE)
 	@sed -e 's/Array1D/Array2D/g' $(SRC_DIR)/C2_Array1D.F90 >> $(_TMP_FILE)
 	@echo " !> @endcond DOC_ALL" >> $(_TMP_FILE)
-	$(CPP) $(INC) $(_TMP_FILE) > $@
+	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
 $(SRC_DIR)/mbud_C2_Array3D.f90: _TMP_FILE=$(SRC_DIR)/C2_Array3D.F90
 $(SRC_DIR)/mbud_C2_Array3D.f90: $(SRC_DIR)/C2_Array1D.F90
 	@echo " !> @cond DOC_ALL" > $(_TMP_FILE)
 	@sed -e 's/Array1D/Array3D/g' $(SRC_DIR)/C2_Array1D.F90 >> $(_TMP_FILE)
 	@echo " !> @endcond DOC_ALL" >> $(_TMP_FILE)
-	$(CPP) $(INC) $(_TMP_FILE) > $@
+	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
 
 
 FS_ARRAY_OBJS = \
@@ -82,19 +82,19 @@ FS_ARRAY_OBJS := $(addprefix $(SRC_DIR)/,$(FS_ARRAY_OBJS))
 $(FS_ARRAY_OBJS): $(ARRAY_OBJS)
 SRC_OBJS += $(FS_ARRAY_OBJS)
 $(SRC_DIR)/mbud_FS_Array1D.f90: $(SRC_DIR)/FS_Array1D.F90
-	$(CPP) $(INC) $< > $@
+	$(CPP) $(INC) $(CPPFLAGS) $< > $@
 $(SRC_DIR)/mbud_FS_Array2D.f90: _TMP_FILE=$(SRC_DIR)/FS_Array2D.F90
 $(SRC_DIR)/mbud_FS_Array2D.f90: $(SRC_DIR)/FS_Array1D.F90
 	@echo " !> @cond DOC_ALL" > $(_TMP_FILE)
 	@sed -e 's/Array1D/Array2D/g' $(SRC_DIR)/FS_Array1D.F90 >> $(_TMP_FILE)
 	@echo " !> @endcond DOC_ALL" >> $(_TMP_FILE)
-	$(CPP) $(INC) $(_TMP_FILE) > $@
+	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
 $(SRC_DIR)/mbud_FS_Array3D.f90: _TMP_FILE=$(SRC_DIR)/FS_Array3D.F90
 $(SRC_DIR)/mbud_FS_Array3D.f90: $(SRC_DIR)/FS_Array1D.F90
 	@echo " !> @cond DOC_ALL" > $(_TMP_FILE)
 	@sed -e 's/Array1D/Array3D/g' $(SRC_DIR)/FS_Array1D.F90 >> $(_TMP_FILE)
 	@echo " !> @endcond DOC_ALL" >> $(_TMP_FILE)
-	$(CPP) $(INC) $(_TMP_FILE) > $@
+	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
 
 
 LL_ARRAY_OBJS = \
@@ -105,19 +105,19 @@ LL_ARRAY_OBJS := $(addprefix $(SRC_DIR)/,$(LL_ARRAY_OBJS))
 $(LL_ARRAY_OBJS): $(ARRAY_OBJS)
 SRC_OBJS += $(LL_ARRAY_OBJS)
 $(SRC_DIR)/mbud_LL_Array1D.f90: $(SRC_DIR)/LL_Array1D.F90
-	$(CPP) $(INC) $< > $@
+	$(CPP) $(INC) $(CPPFLAGS) $< > $@
 $(SRC_DIR)/mbud_LL_Array2D.f90: _TMP_FILE=$(SRC_DIR)/LL_Array2D.F90
 $(SRC_DIR)/mbud_LL_Array2D.f90: $(SRC_DIR)/LL_Array1D.F90
 	@echo " !> @cond DOC_ALL" > $(_TMP_FILE)
 	@sed -e 's/Array1D/Array2D/g' $(SRC_DIR)/LL_Array1D.F90 >> $(_TMP_FILE)
 	@echo " !> @endcond DOC_ALL" >> $(_TMP_FILE)
-	$(CPP) $(INC) $(_TMP_FILE) > $@
+	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
 $(SRC_DIR)/mbud_LL_Array3D.f90: _TMP_FILE=$(SRC_DIR)/LL_Array3D.F90
 $(SRC_DIR)/mbud_LL_Array3D.f90: $(SRC_DIR)/LL_Array1D.F90
 	@echo " !> @cond DOC_ALL" > $(_TMP_FILE)
 	@sed -e 's/Array1D/Array3D/g' $(SRC_DIR)/LL_Array1D.F90 >> $(_TMP_FILE)
 	@echo " !> @endcond DOC_ALL" >> $(_TMP_FILE)
-	$(CPP) $(INC) $(_TMP_FILE) > $@
+	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
 
 
 FS_C_ARRAY_OBJS = \
@@ -128,19 +128,19 @@ FS_C_ARRAY_OBJS := $(addprefix $(SRC_DIR)/,$(FS_C_ARRAY_OBJS))
 $(FS_C_ARRAY_OBJS): $(C_ARRAY_OBJS)
 SRC_OBJS += $(FS_C_ARRAY_OBJS)
 $(SRC_DIR)/mbud_FS_C2_Array1D.f90: $(SRC_DIR)/FS_C2_Array1D.F90
-	$(CPP) $(INC) $< > $@
+	$(CPP) $(INC) $(CPPFLAGS) $< > $@
 $(SRC_DIR)/mbud_FS_C2_Array2D.f90: _TMP_FILE=$(SRC_DIR)/FS_C2_Array2D.F90
 $(SRC_DIR)/mbud_FS_C2_Array2D.f90: $(SRC_DIR)/FS_C2_Array1D.F90
 	@echo " !> @cond DOC_ALL" > $(_TMP_FILE)
 	@sed -e 's/Array1D/Array2D/g' $(SRC_DIR)/FS_C2_Array1D.F90 >> $(_TMP_FILE)
 	@echo " !> @endcond DOC_ALL" >> $(_TMP_FILE)
-	$(CPP) $(INC) $(_TMP_FILE) > $@
+	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
 $(SRC_DIR)/mbud_FS_C2_Array3D.f90: _TMP_FILE=$(SRC_DIR)/FS_C2_Array3D.F90
 $(SRC_DIR)/mbud_FS_C2_Array3D.f90: $(SRC_DIR)/FS_C2_Array1D.F90
 	@echo " !> @cond DOC_ALL" > $(_TMP_FILE)
 	@sed -e 's/Array1D/Array3D/g' $(SRC_DIR)/FS_C2_Array1D.F90 >> $(_TMP_FILE)
 	@echo " !> @endcond DOC_ALL" >> $(_TMP_FILE)
-	$(CPP) $(INC) $(_TMP_FILE) > $@
+	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
 
 
 SM_OBJS = \
@@ -150,7 +150,7 @@ $(SM_OBJS:.o=.f90): $(SRC_DIR)/SM_common.inc $(SRC_DIR)/SM_CSR.inc
 $(SM_OBJS): $(SRC_DIR)/SM_common.inc $(SRC_DIR)/SM_CSR.inc
 SRC_OBJS += $(SM_OBJS)
 $(SRC_DIR)/mbud_SM_CSR.f90: $(SRC_DIR)/SM_CSR.F90
-	$(CPP) $(INC) $< > $@
+	$(CPP) $(INC) $(CPPFLAGS) $< > $@
 
 
 FILE_OBJS = \
@@ -158,7 +158,7 @@ FILE_OBJS = \
 FILE_OBJS := $(addprefix $(SRC_DIR)/,$(FILE_OBJS))
 SRC_OBJS += $(FILE_OBJS)
 $(SRC_DIR)/mbud_File.f90: $(SRC_DIR)/File.F90
-	$(CPP) $(INC) $< > $@
+	$(CPP) $(INC) $(CPPFLAGS) $< > $@
 
 
 # For now everything depends on the utility program
@@ -171,7 +171,7 @@ $(UTIL_OBJS): $(SRC_DIR)/UNIQ_integer.inc
 $(SRC_OBJS): $(UTIL_OBJS)
 SRC_OBJS += $(UTIL_OBJS)
 $(SRC_DIR)/mbud_utils.f90: $(SRC_DIR)/utils.F90
-	$(CPP) $(INC) $< > $@
+	$(CPP) $(INC) $(CPPFLAGS) $< > $@
 
 
 # Populate the correct OBJS file
