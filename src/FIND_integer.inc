@@ -9,12 +9,7 @@
 #undef BUD_FIND
 #define BUD_FIND BUD_CC2(find_bin_, BUD_PREC)
 
-!> Searches for a specific integer value in a sorted array (binary search)
-!!
-!! This is an efficient binary search algorithm for searching
-!! for specific elements in an integer array.
-!!
-!! @param[in] n number of elements in `array`
+!> @param[in] n number of elements in `array`
 !! @param[in] array the searced array
 !! @param[in] val value to search for in array
 !! @param[out] idx index in array which contains `val`, if non-existing `val=-1`
@@ -73,12 +68,7 @@ end subroutine
 #undef BUD_FIND
 #define BUD_FIND BUD_CC2(find_binheur_, BUD_PREC)
 
-!> Searches for a specific integer value in a sorted array (heuristic search)
-!!
-!! This is an efficient binary-like search algorithm for searching
-!! for specific elements in an integer array.
-!!
-!! @param[in] n number of elements in `array`
+!> @param[in] n number of elements in `array`
 !! @param[in] array the searced array
 !! @param[in] val value to search for in array
 !! @param[out] idx index in array which contains `val`, if non-existing `val=-1`

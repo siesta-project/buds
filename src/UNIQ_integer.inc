@@ -7,14 +7,12 @@
 #endif
 
 
-!> Counting the number of unique value for a sorted array
-!!
-!! @param[in] n size of array 
+!> @param[in] n size of array 
 !! @param[in] array sorted array where we count unique numbers
-!! @param[out] nuniq number of unique values in sorted array
-pure subroutine BUD_CC2(nuniq_sorted_,BUD_PREC)(n, array, nuniq)
+!! @return number of unique values in sorted array
+pure function BUD_CC2(nuniq_sorted_,BUD_PREC)(n, array) result(nuniq)
   integer(BUD_PREC), intent(in) :: n, array(n)
-  integer(BUD_PREC), intent(out) :: nuniq
+  integer(BUD_PREC) :: nuniq
 
   integer(BUD_PREC) :: i
 
@@ -28,16 +26,14 @@ pure subroutine BUD_CC2(nuniq_sorted_,BUD_PREC)(n, array, nuniq)
     end if
   end do
   
-end subroutine
+end function
 
-!> Counting the number of unique value for a sorted array
-!!
-!! @param[in] n size of array 
+!> @param[in] n size of array 
 !! @param[in] array sorted array where we count unique numbers
-!! @param[out] nuniq number of unique values in sorted array
-pure subroutine BUD_CC2(nuniq_,BUD_PREC)(n, array, nuniq)
+!! @return number of unique values in sorted array
+pure function BUD_CC2(nuniq_,BUD_PREC)(n, array) result(nuniq)
   integer(BUD_PREC), intent(in) :: n, array(n)
-  integer(BUD_PREC), intent(out) :: nuniq
+  integer(BUD_PREC) :: nuniq
 
   ! Temporary array for pivoting element
   integer(BUD_PREC), allocatable :: pvt(:)
@@ -59,17 +55,15 @@ pure subroutine BUD_CC2(nuniq_,BUD_PREC)(n, array, nuniq)
 
   deallocate(pvt)
   
-end subroutine
+end function
 
-!> Counting the number of unique value for a sorted array
-!!
-!! @param[in] n size of array 
+!> @param[in] n size of array 
 !! @param[in] array sorted array where we count unique numbers
 !! @param[in] pvt pivoting array that creates a sorted array
 !! @param[out] nuniq number of unique values in sorted array
-pure subroutine BUD_CC2(nuniq_pvt_,BUD_PREC)(n, array, pvt, nuniq)
+pure function BUD_CC2(nuniq_pvt_,BUD_PREC)(n, array, pvt) result(nuniq)
   integer(BUD_PREC), intent(in) :: n, array(n), pvt(n)
-  integer(BUD_PREC), intent(out) :: nuniq
+  integer(BUD_PREC) :: nuniq
 
   ! Temporary array for pivoting element
   integer(BUD_PREC) :: i
@@ -84,7 +78,7 @@ pure subroutine BUD_CC2(nuniq_pvt_,BUD_PREC)(n, array, pvt, nuniq)
     end if
   end do
 
-end subroutine
+end function
 
 
 ! project-bud -- local file settings

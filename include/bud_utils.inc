@@ -7,17 +7,50 @@
 #ifndef BUD_UTILS_H
 #define BUD_UTILS_H
 
+  !> \defgroup buds-utils Preprocessor utility functions
+  !!
+  !! @details
+  !! Documentation of utility functions that may be
+  !! used by adding this to a @bud
+  !! \code{.f90}
+  !! # include "bud_utils.inc"
+  !! \endcode
+  !!
+  !! These preprocessor macros may be used to easily
+  !! concatenate or stringify macros or constants.
+  !!
+  !! @{
+  
+  ! function name for new routines
+  ! Although all interfaces need not have explicit names
+  ! we allow both the "new" and the "new<T>" construct
+  ! for clarity.
 
-! function name for new routines
-! Although all interfaces need not have explicit names
-! we allow both the "new" and the "new<T>" construct
-! for clarity.
+  !> \def BUD_NEW
+  !! The name for creating a new @bud
 #define BUD_NEW new
+  !> \def BUD_MOD
+  !! The prefix used for @bud modules
 #define BUD_MOD mbud
-!#define BUD_TYPE tbud_
+  !> \def BUD_TYPE
+  !! The prefix used for @bud types, this should generally not be altered.
 #define BUD_TYPE 
 
-  ! Define the used fortran standard
+  !> \def BUD_FORTRAN
+  !! Denote the fortran standard that the compiler supports.
+  !!
+  !! This will default to 2003 and will directly enable the
+  !! use of OO programming paradigms for the @bud.
+  !!
+  !! Essentially every @bud allows calls such as:
+  !! \code{.f90}
+  !! type(Bud) :: bu
+  !! call new(bu)
+  !! ! or
+  !! call bu%new()
+  !! \endcode
+  !! where the developer creates interfaces for both.
+
 #ifndef BUD_FORTRAN
 # define BUD_FORTRAN 2003
 #endif
@@ -36,7 +69,18 @@
 #endif
 
 
-! Concatenation
+  !> \def BUD_CC2(a,b)
+  !! Concatenate two arguments \a a and \a b.
+  
+  !> \def BUD_CC3(a,b,c)
+  !! Concatenate three arguments \a a, \a b and \a c.
+  
+  !> \def BUD_CC4(a,b,c,d)
+  !! Concatenate four arguments \a a, \a b, \a c and \a d.
+  
+  !> \def BUD_CC5(a,b,c,d,e)
+  !! Concatenate five arguments \a a, \a b, \a c, \a d and \a e.
+
 #define BUD_CC2(a,b) BUD_CCX2(a,b)
 #define BUD_CCX2(a,b) a ## b
 #define BUD_CC3(a,b,c) BUD_CCX3(a,b,c)
@@ -46,11 +90,15 @@
 #define BUD_CC5(a,b,c,d,e) BUD_CCX5(a,b,c,d,e)
 #define BUD_CCX5(a,b,c,d,e) a ## b ## c ## d ## e
 
-
-! To stringify
+  !> \def BUD_XSTR(x)
+  !! Creates a string of the expanded argument.
 #define BUD_XSTR(x) BUD_STR(x)
+  
+  !> \def BUD_STR(x)
+  !! Creates a string of the argument.
 #define BUD_STR(x) #x
 
+  !> @}
 
 #endif
 

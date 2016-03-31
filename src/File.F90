@@ -1,4 +1,11 @@
-  ! @@LICENSE@@ see Copyright notice in the top-directory
+! @@LICENSE@@ see Copyright notice in the top-directory
+
+! This extension currently uses these pre-processor flags:
+!  - BUD_MOD_NAME name of the module
+!  - BUD_TYPE_NAME name of the public type
+!  - BUD_TYPE_NAME_ name of the internal data pointer
+!  - BUD_TYPE_NAME_STR the routine name in "string" format (for IO)
+!  - BUD_TYPE_NEW the routine name for creating a new type
   
 #include "bud_utils.inc"
   
@@ -11,25 +18,14 @@
 #define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
 #define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
 
+!> @bud for performing file operations such as open/close/delete etc.
+!!
+!! This module exposes functionality regarding files.
+!! It allows interaction with the files in a standard way
+!! by opening, closing, deleting files in a simple and clean
+!! interface.
 module BUD_MOD_NAME
 
-  !> BUD_MOD_NAME documentation
-  !!
-  !! @details
-  !! This module creates a file type which is reference counted
-  !! and may be used in a variety of environments.
-  !!
-  !! @dev_note
-  !! The following pre-processor variables are currently used when
-  !! included:
-  !!  - _BUD_MOD_NAME of the module
-  !!  - _BUD_TYPE_NAME of the type
-  !!  - _BUD_TYPE_NAME_, internal data pointer of the type
-  !!  - _BUD_TYPE_NAME_STR, the routine name in "string" format (for IO)
-  !!  - _BUD_TYPE_NEW, the routine name for creating a new type
-  !! If you add any new dependencies be sure to undefine the variable
-  !! at the bottom of this file.
-  
   ! This *MUST* be the first statement
   ! Common parameters and variables used
 # include "bud_common_declarations.inc"

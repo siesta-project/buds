@@ -17,14 +17,32 @@ module BUD_MOD_NAME
   ! Sort routines
   public :: sort_ps, sort_heap, sort_quick
 
-  !> Sort an array which is partially sorted
+  !> Sorting routine for integer arrays (partially sorted)
+  !!
+  !! Re-arranges the values in an integer array
+  !! and returns the resulting sorted array in another
+  !! array.
+  !!
+  !! This routine is fastest for partially sorted
+  !! arrays such as:
+  !! \code{.f90}
+  !!   array = (/1,2,3,4,25,26,27,28,15,16,17/)
+  !! \endcode
+  !!
+  !! To sort generic arrays using the quick-sort algorithm
+  !! may be faster.
   interface sort_ps
     module procedure BUD_CC2(sort_ps_,is_)
     module procedure BUD_CC2(sort_ps_,ii_)
     module procedure BUD_CC2(sort_ps_,il_)
   end interface
 
-  !> Sort an array using the heap-sort algorithm
+  !> Heap sort algorithm for integers
+  !!
+  !! Heap sort algorithm for sorting integer arrays.
+  !! Two variants exists where one is in-place, the
+  !! other returns the pivoting indices to create a
+  !! sorted array.
   interface sort_heap
     module procedure BUD_CC2(sort_heap_,is_)
     module procedure BUD_CC2(sort_heap_,ii_)
@@ -34,7 +52,12 @@ module BUD_MOD_NAME
     module procedure BUD_CC2(sort_heap_idx_,il_)
   end interface 
 
-  !> Sort an array using the quick-sort algorithm
+  !> Quick-sort array
+  !!
+  !! Sorts an integer array using the quick-sort algorithm.
+  !! Two variants exists where one is in-place, the
+  !! other returns the pivoting indices to create a
+  !! sorted array.
   interface sort_quick
     module procedure BUD_CC2(sort_quick_,is_)
     module procedure BUD_CC2(sort_quick_,ii_)
@@ -48,14 +71,20 @@ module BUD_MOD_NAME
   ! Find routines
   public :: find_bin, find_binheur
 
-  !> Find an element in a sorted array using the binary search algorithm
+  !> Searches for a specific integer value in a sorted array (binary search)
+  !!
+  !! Efficient binary search algorithm for searching
+  !! for specific elements in a sorted integer array.
   interface find_bin
     module procedure BUD_CC2(find_bin_,is_)
     module procedure BUD_CC2(find_bin_,ii_)
     module procedure BUD_CC2(find_bin_,il_)
   end interface 
 
-  !> Find an element in a sorted array using a binary heuristic search algorithm
+  !> Searches for a specific integer value in a sorted array (heuristic search)
+  !!
+  !! Efficient binary-like search algorithm for searching
+  !! for specific elements in an integer array.
   interface find_binheur
     module procedure BUD_CC2(find_binheur_,is_)
     module procedure BUD_CC2(find_binheur_,ii_)
@@ -65,7 +94,9 @@ module BUD_MOD_NAME
   
   ! Unique count scenes
   public :: nuniq_sorted
-  !> Query number of unique values in a sorted array
+  !> Count number of unique value for a sorted array
+  !!
+  !! Returns number of unique values in a sorted array.
   interface nuniq_sorted
     module procedure BUD_CC2(nuniq_sorted_,is_)
     module procedure BUD_CC2(nuniq_sorted_,ii_)
@@ -73,7 +104,13 @@ module BUD_MOD_NAME
   end interface 
 
   public :: nuniq
-  !> Query number of unique values in an array
+  !> Count number of unique values in a non-sorted array.
+  !!
+  !! Return the number of unique values in the passed array.
+  !! The array need not be sorted but one may optionally pass
+  !! a pivoting array
+  !! which sorts the array. This pivoting array may be
+  !! retrieved from the sorting routines (`sort_quick`, `sort_heap`).
   interface nuniq
     module procedure BUD_CC2(nuniq_,is_)
     module procedure BUD_CC2(nuniq_,ii_)
@@ -85,7 +122,14 @@ module BUD_MOD_NAME
 
   
   public :: modp
-  !> 1-based modulo operator
+  !> Return wrapped integer by modulo operation
+  !!
+  !! Routine for performing 1-index based modulo
+  !! operations.
+  !!
+  !! For any numbers `i` and `n` performing `modp(i,n)`
+  !! returns `n` if `mod(i,n) == 0`, otherwise it
+  !! returns `i`.
   interface modp
     module procedure BUD_CC2(modp_,is_)
     module procedure BUD_CC2(modp_,ii_)
@@ -94,43 +138,28 @@ module BUD_MOD_NAME
 
 contains
 
-  !> Return wrapped integer by modulo operation
-  !!
-  !! Routine for performing 1-index based modulo
-  !! operations.
-  !!
-  !! For any numbers `i` and `n` performing `modp(i,n)`
-  !! returns `n` if `mod(i,n) == 0`, otherwise it
-  !! returns `i`.
+  
+  !> @param[in] i number to extract the remainer of
+  !! @param[in] n divisor
+  !! @return the remainder of `(i+1) % n`
   elemental function BUD_CC2(modp_,is_)(i,n) result(p)
     integer(is_), intent(in) :: i, n
     integer(is_) :: p
     p = mod(i-1,n) + 1
   end function
 
-
-  !> Return wrapped integer by modulo operation
-  !!
-  !! Routine for performing 1-index based modulo
-  !! operations.
-  !!
-  !! For any numbers `i` and `n` performing `modp(i,n)`
-  !! returns `n` if `mod(i,n) == 0`, otherwise it
-  !! returns `i`.
+  !> @param[in] i number to extract the remainer of
+  !! @param[in] n divisor
+  !! @return the remainder of `(i+1) % n`
   elemental function BUD_CC2(modp_,ii_)(i,n) result(p)
     integer(ii_), intent(in) :: i, n
     integer(ii_) :: p
     p = mod(i-1,n) + 1
   end function
 
-  !> Return wrapped integer by modulo operation
-  !!
-  !! Routine for performing 1-index based modulo
-  !! operations.
-  !!
-  !! For any numbers `i` and `n` performing `modp(i,n)`
-  !! returns `n` if `mod(i,n) == 0`, otherwise it
-  !! returns `i`.
+  !> @param[in] i number to extract the remainer of
+  !! @param[in] n divisor
+  !! @return the remainder of `(i+1) % n`
   elemental function BUD_CC2(modp_,il_)(i,n) result(p)
     integer(il_), intent(in) :: i, n
     integer(il_) :: p

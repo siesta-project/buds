@@ -6,22 +6,7 @@
 #endif
 #endif
 
-!> Sorting routine for integer arrays (partially sorted)
-!!
-!! Re-arranges the values in an integer array
-!! and returns the resulting sorted array in another
-!! array.
-!!
-!! This routine is fastest for partially sorted
-!! arrays such as:
-!! \code{.f90}
-!!   array = (/1,2,3,4,25,26,27,28,15,16,17/)
-!! \endcode
-!!
-!! To sort generic arrays using the quick-sort algorithm
-!! may be faster.
-!!
-!! @param[in] n size of array to be sorted
+!> @param[in] n size of array to be sorted
 !! @param[in] array array to be sorted
 !! @param[out] sarray sorted array
 pure subroutine BUD_CC2(sort_ps_,BUD_PREC)(n, array, sarray)
@@ -206,11 +191,7 @@ contains
 end subroutine
 
 
-!> Heap sort algorithm for integers
-!!
-!! Heap sort algorithm for sorting integer arrays (in-place)
-!!
-!! @param[in] n number of elements in array
+!> @param[in] n number of elements in array
 !! @param[inout] array sorted array on exit
 pure subroutine  BUD_CC2(sort_heap_,BUD_PREC)(n, array)
   integer(BUD_PREC), intent(in) :: n
@@ -278,16 +259,8 @@ contains
 end subroutine
 
 
-!> Heap sort algorithm for integers (index return)
-!!
-!! Heap sort algorithm for sorting integer arrays.
-!! Return and indexable sorted pivoting array.
-!!
-!! @acknowledge
-!! Initial algorithm implemented by Jose M. Soler
-!!
-!! @param[in] n number of elements in array
-!! @param[in] array sorted array on exit
+!> @param[in] n number of elements in array
+!! @param[in] array unaltered array on exit
 !! @param[out] pvt pivoting array such that array(pvt(1)) is the smallest number
 pure subroutine  BUD_CC2(sort_heap_idx_,BUD_PREC)(n, array, pvt)
   integer(BUD_PREC) ,intent(in) :: n, array(n)
@@ -358,11 +331,7 @@ end subroutine
 
 
 
-!> Quick-sort array (in-place)
-!!
-!! Sorts an integer array using the quick-sort algorithm.
-!!
-!! @param[in] n size of array to sort
+!> @param[in] n size of array to sort
 !! @param[inout] array on exit, the sorted array
 recursive pure subroutine BUD_CC2(sort_quick_,BUD_PREC)(n, array)
   integer(BUD_PREC), intent(in) :: n
@@ -448,13 +417,7 @@ contains
   
 end subroutine
 
-!> Quick-sort array, pivoting table returned
-!!
-!! Sorts an integer array using the quick-sort algorithm.
-!! Instead of performing in place operations we return
-!! an index based sorting table.
-!!
-!! @param[in] n size of array to sort
+!> @param[in] n size of array to sort
 !! @param[in] array array to retrieve the pivoting table of
 !! @param[out] pvt pivoting array for converting array to a sorted array
 pure subroutine BUD_CC2(sort_quick_idx_,BUD_PREC)(n, array, pvt)

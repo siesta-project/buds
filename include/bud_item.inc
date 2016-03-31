@@ -13,8 +13,12 @@
 
 #include "bud_common_declarations.inc"
 
-  !> @defgroup buds-item Container for a single element of another @bud
+  !> @defgroup buds-item Item
   !!
+  !! Container for a single element of another @bud (wrapper)
+  !!
+  !! This @bud enables containing another @bud and only one.
+  !! 
   !! @dev_note
   !! The following pre-processor variables are currently used when
   !! included:
