@@ -2,9 +2,9 @@ program test_array
 
   use test_utils
 
-  use mbud_iArray1D
-  use mbud_iArray2D
-  use mbud_iArray3D
+  use bud_iArray1D
+  use bud_iArray2D
+  use bud_iArray3D
 
   type(iArray1D) :: a1, b1, c1
   type(iArray2D) :: a2, b2, c2

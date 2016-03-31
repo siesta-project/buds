@@ -5,12 +5,12 @@ INC += -I$(MPI_DIR)
 
 
 DIST_OBJS = \
-	mbud_Dist1D.o
+	bud_Dist1D.o
 DIST_OBJS := $(addprefix $(MPI_DIR)/,$(DIST_OBJS))
 $(DIST_OBJS:.o=.f90): $(MPI_DIR)/Dist1D.inc
 $(DIST_OBJS): $(MPI_DIR)/Dist1D.inc
 MPI_OBJS += $(DIST_OBJS)
-$(MPI_DIR)/mbud_Dist1D.f90: $(MPI_DIR)/Dist1D.F90
+$(MPI_DIR)/bud_Dist1D.f90: $(MPI_DIR)/Dist1D.F90
 	$(CPP) $(INC) $(CPPFLAGS) $< > $@
 
 

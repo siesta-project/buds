@@ -2,13 +2,13 @@ program test_ll_array
 
   use test_utils
 
-  use mbud_iArray1D
-  use mbud_iArray2D
-  use mbud_iArray3D
+  use bud_iArray1D
+  use bud_iArray2D
+  use bud_iArray3D
 
-  use mbud_LL_iArray1D
-  use mbud_LL_iArray2D
-  use mbud_LL_iArray3D
+  use bud_LL_iArray1D
+  use bud_LL_iArray2D
+  use bud_LL_iArray3D
 
   type(iArray1D) :: a1, b1, c1
   type(iArray2D) :: a2, b2, c2
@@ -42,7 +42,7 @@ contains
     ! create an iterator
     call delete(lb1)
     i = 0
-    do while ( step_itt(la1, lb1) )
+    do while ( itt_step(la1, lb1) )
        call get_data(lb1, b1)
        i = i + 1
        print '(a,i0)','Element: ',i

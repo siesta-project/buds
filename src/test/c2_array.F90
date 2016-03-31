@@ -2,13 +2,13 @@ program test_c2_array
 
   use test_utils
 
-  use mbud_iArray1D
-  use mbud_iArray2D
-  use mbud_iArray3D
+  use bud_iArray1D
+  use bud_iArray2D
+  use bud_iArray3D
 
-  use mbud_C2_iArray1D
-  use mbud_C2_iArray2D
-  use mbud_C2_iArray3D
+  use bud_C2_iArray1D
+  use bud_C2_iArray2D
+  use bud_C2_iArray3D
 
   type(iArray1D) :: a1, b1, c1
   type(iArray2D) :: a2, b2, c2
@@ -33,7 +33,7 @@ contains
     call print(ca1)
     c1 = a1
     call print(ca1)
-    call get_elemb(ca1,c1)
+    call get_elem1(ca1,c1)
     call print(ca1)
     cb1 = ca1
     cc1 = ca1
@@ -55,7 +55,7 @@ contains
     call print(ca2)
     c2 = a2
     call print(ca2)
-    call get_elemb(ca2,c2)
+    call get_elem2(ca2,c2)
     call print(ca2)
     cb2 = ca2
     cc2 = ca2
@@ -77,7 +77,7 @@ contains
     call print(ca3)
     c3 = a3
     call print(ca3)
-    call get_elemb(ca3,c3)
+    call get_elem2(ca3,c3)
     call print(ca3)
     cb3 = ca3
     cc3 = ca3

@@ -3,7 +3,7 @@ program dist
   ! we use everything
   use mpi
 
-  use mbud_iDist1D
+  use bud_iDist1D
 
   implicit none
 

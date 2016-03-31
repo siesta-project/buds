@@ -43,7 +43,7 @@
 #elif BUD_DIM == 4
 #  define BUD_DIM_SPEC() (:,:,:,:)
 #else
-#  error "mbud_Array: Does not handle array sizes larger than 4"
+#  error "bud_Array: Does not handle array sizes larger than 4"
 #endif
 
   !> @bud variable

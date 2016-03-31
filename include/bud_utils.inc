@@ -31,7 +31,7 @@
 #define BUD_NEW new
   !> \def BUD_MOD
   !! The prefix used for @bud modules
-#define BUD_MOD mbud
+#define BUD_MOD bud
   !> \def BUD_TYPE
   !! The prefix used for @bud types, this should generally not be altered.
 #define BUD_TYPE 

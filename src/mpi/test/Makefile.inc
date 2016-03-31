@@ -11,7 +11,7 @@ MPI_TESTS += dist
 T_DIST_OBJS += dist.o
 T_DIST_OBJS := $(addprefix $(TEST_MPI_DIR)/,$(T_DIST_OBJS))
 TEST_MPI_OBJS += $(T_DIST_OBJS)
-$(TEST_MPI_DIR)/mbud_iDist.f90: $(TEST_MPI_DIR)/Dist.F90
+$(TEST_MPI_DIR)/bud_iDist.f90: $(TEST_MPI_DIR)/Dist.F90
 	$(CPP) $(INC) $< > $@
 $(TEST_MPI_DIR)/dist: $(TEST_COMMON_OBJS) $(TEST_MPI_DIR)/dist.o
 	$(MPIFC) -o $@ $^ $(BUDS_LIB_STATIC) $(FCFLAGS) $(INC)

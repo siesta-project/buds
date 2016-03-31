@@ -5,13 +5,13 @@ clean-lib:
 
 clean-tests: clean_test
 clean-test:
-	rm -f $(addprefix src/test/,*.o *.lo *.mod *.MOD) src/test/mbud*.f90
-	rm -f $(addprefix src/mpi/test/,*.o *.lo *.mod *.MOD) src/mpi/test/mbud*.f90
+	rm -f $(addprefix src/test/,*.o *.lo *.mod *.MOD) src/test/bud*.f90
+	rm -f $(addprefix src/mpi/test/,*.o *.lo *.mod *.MOD) src/mpi/test/bud*.f90
 	rm -rf $(TESTS)
 
 clean-src:
-	rm -f $(addprefix src/,*.o *.lo *.mod *.MOD) src/mbud*.f90
-	rm -f $(addprefix src/mpi/,*.o *.lo *.mod *.MOD) src/mpi/mbud*.f90
+	rm -f $(addprefix src/,*.o *.lo *.mod *.MOD) src/bud*.f90
+	rm -f $(addprefix src/mpi/,*.o *.lo *.mod *.MOD) src/mpi/bud*.f90
 
 clean-mod:
 	rm -f $(BUDS_MODDIR)/*.mod $(BUDS_MODDIR)/*.MOD
