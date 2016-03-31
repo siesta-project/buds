@@ -1,9 +1,18 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
 
+  ! The following pre-processor variables are currently used when
+  ! included:
+  !  - BUD_TYPE_NAME, name of the resulting type
+  !  - BUD_TYPE_NAME_, contained data structure (as a pointer)
+  !  - BUD_ERROR, if this is not defined there will be
+  !    no error mechanism for catching erroneous calls.
+
   ! Include the common utilities
 # include "bud_utils.inc"
 
-  !> @defgroup bud-common Global functions for reference counted types
+  !> @cond BUD_DOC_INC
+
+  !> @defgroup bud-common Global functions for @buds
   !!
   !! @brief
   !! Common routines and interfaces that are required for
@@ -15,7 +24,6 @@
   !! equivalence between two @buds, number of references for
   !! the @bud.
   !!
-  !! @dev_note
   !! For extensions of basic routines you _must_ make a wrapper interface
   !! to allow other routine names to have the same name for different
   !! interfaces.
@@ -25,28 +33,13 @@
   !! of the reference counted type-modules. Doing so will create
   !! name-clashes.
   !!
-  !! The following pre-processor variables are currently used when
-  !! included:
-  !!  - _BUD_TYPE_NAME, name of the resulting type
-  !!  - _BUD_TYPE_NAME_, contained data structure (as a pointer)
-  !!  - _BUD_ERROR, if this is not defined there will be
-  !!    no error mechanism for catching erroneous calls.
+  !! @{
 
-  ! Start on function declarations
-  
-  !!> @addtogroup bud-common
-  !!! @{
+  !> @endcond BUD_DOC_INC
 
-  !> @cond ALWAYS_SKIP
-  
-  !> Name of the reference counted type (@bud)
+
   public :: BUD_TYPE_NAME
-
-  !> Internal data structure (@bud)
   private :: BUD_TYPE_NAME_
-
-  !> @endcond ALWAYS_SKIP
-  
 
   ! We force `delete_data` to be private.
   ! This will prohibit a mistaken public designation of the
@@ -54,50 +47,77 @@
   !> Internal routine for clearing the data container in the @bud
   private :: delete_data
 
-  !> Overiding assignment to ensure correct reference counting
+  !> Assignment of @bud to another @bud
+  !!
+  !! `lhs` is deleted before assignment.
+  !!
+  !! Make `lhs` contain the same data as in `rhs`.
+  !! Internally a pointer to the same data is created and the reference
+  !! counter will be incremented.
+  !!
+  !! `lhs` will be un-associated if `rhs` is un-associated.
   interface assignment(=)
     module procedure assign_
   end interface
   public :: assignment(=)
 
-  !> Initialization routine of the @bud
+  !> Initialization of data container
+  !!
+  !! If called on a previously allocated data scope this
+  !! will clear the reference (@isee delete).
+  !! Subsequently the type container will be allocated
+  !! and the reference counted data will be 1.
   interface initialize
     module procedure initialize_
   end interface
   public :: initialize
 
-  !> Check if a @bud has been initialized (function)
+  !> Query whether @bud is associated with any data
+  !!
+  !! Returns `.true.` if the @bud is already containing data.\n
+  !! Typically the `new` routine will call `initialize`.
   interface is_initialized
     module procedure is_initialized_
   end interface
   public :: is_initialized
 
-  !> Check if a @bud has been initialized (function)
+  !> @iSee is_initialized
   interface initialized
     module procedure is_initialized_
   end interface
   public :: initialized
 
-  !> Check if a @bud has been initialized (function)
+  !> @iSee is_initialized
   interface is_initd
     module procedure is_initialized_
   end interface
   public :: is_initd
 
-  !> Check if two @buds point to the same data (function)
+  !> Check whether two @buds point to the same data (function)
+  !!
+  !! Returns `.true.` if the two passed @buds are the same
+  !! data.
   interface is_same
     module procedure is_same_
   end interface
   public :: is_same
 
-  !> Check if two @buds point to the same data (function)
+  !> @iSee is_same
   interface same
     module procedure is_same_
   end interface
   public :: same
 
 #ifndef BUD_NO_DELETE
-  !> Delete the @bud, stepping reference counter and clearing this type
+  !> Deletes the @bud by decreasing references to the underlying data
+  !!
+  !! Number of references will be decremented and the data associated
+  !! with this object will be nullified.
+  !!
+  !! If the number of references of the associated data is 0
+  !! after decremention, the associated data will be
+  !! deleted. Else this @bud will return an un-associated @bud
+  !! and any other @buds that point to the same data will retain the data.
   interface delete
     module procedure delete_
   end interface
@@ -105,24 +125,36 @@
 #endif
 
 #ifndef BUD_NO_NULLIFY
-  !> Nullify the @bud, equivalent to delete (without stepping reference counter)
+  
+  !> Nullifies the current @bud
+  !!
+  !! This will not decrement the reference counter but
+  !! enables to _clear_ the data in the @bud.
+  !!
+  !! @note
+  !! This routine should be used with _extreme_ care and very
+  !! rarely.
   interface nullify
     module procedure nullify_
   end interface
   public :: nullify
+  
 #endif
 
-  !> Return number of references to the @bud (function)
+  !> Query number of references to the @bud
+  !!
+  !! Get number of times this @bud has been assigned
+  !! in the reference counted object.
   interface references
     module procedure references_
   end interface
   public :: references
 
-  !> Return number of references to the @bud (function)
-  interface get_refs
+  !> @iSee references
+  interface refs
     module procedure references_
   end interface
-  public :: get_refs
+  public :: refs
 
   !> @cond ALWAYS_SKIP
 
@@ -135,7 +167,7 @@
   end interface
 #else
 # ifndef _BUD_ERROR_H
-#   warning "BUD_ERROR not defined! Expect sudden crashes without warnings!"
+!#   warning "BUD_ERROR not defined! Expect sudden crashes without warnings!"
 #   define _BUD_ERROR_H
 # endif
 #endif
@@ -145,16 +177,7 @@ contains
   ! contains in non-modules freak doxygen out...
   !> @endcond ALWAYS_SKIP
 
-  !> Internal initialization of data container
-  !!
-  !! Initializes the data handler.
-  !!
-  !! If called on a previously allocated data scope this
-  !! will clear the reference (@isee delete).
-  !! Subsequently the type container will be allocated
-  !! and the reference counted data will be 1.
-  !!
-  !! @param[inout] this @bud that is initialized
+  !> @param[inout] this @bud that is initialized
   subroutine initialize_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
@@ -181,25 +204,7 @@ contains
     
   end subroutine initialize_
 
-  !> Query whether type is associated
-  !!
-  !! Check whether a type is associated to a container.
-  !!
-  !! @param[in] this checked @bud
-  !! @param[out] init `.true.` if it is associated, else `.false.`
-  pure subroutine initialized_(this, init)
-    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    logical, intent(out) :: init
-    
-    init = associated(this%D)
-    
-  end subroutine initialized_
-
-  !> Function equivalent of initialized
-  !!
-  !! @iSee initialized_
-  !!
-  !! @param[in] this checked @bud
+  !> @param[in] this check if this @bud is initialized
   !! @return `.true.` if it is associated, else `.false.`
   pure function is_initialized_(this) result(init)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
@@ -210,18 +215,24 @@ contains
     
   end function is_initialized_
 
+  !> @param[in] lhs first @bud 
+  !! @param[in] rhs second @bud
+  !! @return `.true.` if `lhs` and `rhs` point to the same data
+  elemental function is_same_(lhs, rhs) result(same)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: lhs, rhs
+    logical :: same
+    
+    same = is_initd(lhs) .and. is_initd(rhs)
+    if ( .not. same ) return
+    ! this checks that the memory location of
+    ! the underlying data is the same.
+    same = associated(lhs%D, target=rhs%D)
+    
+  end function is_same_
+
 #ifndef BUD_NO_DELETE
   
-  !> Deletes the current @bud
-  !!
-  !! Deletes the @bud. The number of references will be
-  !! decremented.
-  !!
-  !! If the number of references of the associated data is 0
-  !! after decremention, the data will be
-  !! deleted. Else this @bud will return an un-associated @bud.
-  !!
-  !! @param[inout] this deleted @bud
+  !> @param[inout] this returned @bud is un-initialized with no data associated
 #ifndef BUD_DELETE_NOELEMENTAL
   elemental subroutine delete_(this)
 #else
@@ -262,12 +273,7 @@ contains
 
   
 #ifndef BUD_NO_NULLIFY
-  !> Nullifies the current @bud
-  !!
-  !! Nullify the @bud. Simple way to not fully delete
-  !! an element, but rather remove the pointer to the data.
-  !!
-  !! @param[inout] this nullify references from this @bud
+  !> @param[inout] this nullify references from this @bud
   elemental subroutine nullify_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     
@@ -278,21 +284,8 @@ contains
   end subroutine nullify_
 #endif
   
-  !> Assignment of @bud with another @bud
-  !!
-  !! Method for assigning a data container with another
-  !! data-container.
-  !!
-  !! `lhs` is deleted before assignment.
-  !!
-  !! Make `lhs` contain the same data as in `rhs`.
-  !! Internally a pointer to the same data is created and the reference
-  !! counter will be incremented.
-  !!
-  !! `lhs` will be un-associated if `rhs` is un-associated.
-  !!
-  !! @param[inout] lhs @bud that is assigned to
-  !! @param[in] rhs @bud that is dublicated
+  !> @param[inout] lhs contains `rhs` after exit
+  !! @param[in] rhs copy the containing element @bud
   subroutine assign_(lhs, rhs)
 
     ! No copying of data is involved, simply an increment of the
@@ -321,34 +314,8 @@ contains
   end subroutine assign_
 
 
-  !> Check whether two @buds point to the same data (function)
-  !!
-  !! Same as same_
-  !! Returns true if the two passed types are the same
-  !! data.
-  !!
-  !! @param[in] lhs first @bud 
-  !! @param[in] rhs second @bud
-  !! @return `.true.` if `lhs` and `rhs` point to the same data
-  elemental function is_same_(lhs, rhs) result(same)
-    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: lhs, rhs
-    logical :: same
-    same = is_initd(lhs) .and. is_initd(rhs)
-    if ( .not. same ) return
-    ! this checks that the memory location of
-    ! the underlying data is the same.
-    same = associated(lhs%D, target=rhs%D)
-    
-  end function is_same_
-
-
-  !> Query number of references to the @bud (function)
-  !!
-  !! Get number of times this @bud has been replicated
-  !! in the reference counted object.
-  !!
-  !! @param[in] this @bud
-  !! @return refs number of times `this` has been referenced
+  !> @param[in] this reference counted @bud
+  !! @return number of times `this` has been referenced
   elemental function references_(this) result(refs)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     
@@ -363,7 +330,7 @@ contains
   end function references_
 
   
-  !> @cond ALWAYS_SKIP
+  !> @cond BUD_DEVELOPER
   
   ! The remaining procedures are currently
   ! not used by public buds
@@ -383,9 +350,13 @@ contains
     
   end subroutine tag_object_
 
-  !> @endcond ALWAYS_SKIP
+  !> @endcond BUD_DEVELOPER
 
-  !!> @}
+  !> @cond BUD_DOC_INC
+  
+  !> @}
+
+  !> @endcond BUD_DOC_INC
 
 ! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts

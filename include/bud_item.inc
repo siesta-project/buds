@@ -1,5 +1,13 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
   
+  ! The following pre-processor variables are currently used when
+  ! included:
+  !  - BUD_TYPE_NAME of the type
+  !  - BUD_TYPE_NAME_, internal data pointer of the type
+  !  - BUD_TYPE_NAME_STR, the routine name in "string" format (for IO)
+  !  - BUD_TYPE_NEW, the routine name for creating a new type
+  !  - BUD_ITEM_TYPE, the @bud contained in the single item
+
   ! Include the common utilities
 #include "bud_utils.inc"
 
@@ -13,28 +21,20 @@
 
 #include "bud_common_declarations.inc"
 
-  !> @defgroup buds-item Item
-  !!
-  !! Container for a single element of another @bud (wrapper)
-  !!
-  !! This @bud enables containing another @bud and only one.
-  !! 
-  !! @dev_note
-  !! The following pre-processor variables are currently used when
-  !! included:
-  !!  - _BUD_TYPE_NAME of the type
-  !!  - _BUD_TYPE_NAME_, internal data pointer of the type
-  !!  - _BUD_TYPE_NAME_STR, the routine name in "string" format (for IO)
-  !!  - _BUD_TYPE_NEW, the routine name for creating a new type
-  !!  - _BUD_ITEM_TYPE, the @bud contained in the single item
 
-
-  !> @bud variable
+  !> @bud containing another @bud.
   !!
-  !! Handler for the pointer type stored
+  !! This wrapper type contains another @bud. It may
+  !! be used as a container for sub-partitining but will
+  !! in many cases be a sub-optimal solution.
   type BUD_TYPE_NAME
+
+    !> @cond BUD_DEVELOPER
+    
     !> Stored pointer which contains the reference counting etc.
     type(BUD_TYPE_NAME_), pointer :: D => null()
+
+    !> @endcond BUD_DEVELOPER
 
 #if BUD_FORTRAN >= 2003
   contains
@@ -42,22 +42,31 @@
 
     procedure, private :: new_
     procedure, private :: new_data_
-    !> Initialization of the @bud
+    !> @iSee #new
     generic, public :: new => new_, new_data_
 
-    !> Set passed data as the contained item
+    !> @iSee #set_data
     procedure, public :: set => set_data_
+    !> @iSee #set_data
     procedure, public :: set_data => set_data_
 
-    !> Query the stored data in the item
+    !> @iSee #get_data
     procedure, public :: get => get_data_
+    !> @iSee #get_data
     procedure, public :: get_data => get_data_
 
 #endif
   end type BUD_TYPE_NAME
 
   
-  !> Internal data structure for containing an item
+  !> @cond BUD_DEVELOPER
+
+  !> Data container for the @bud.
+  !!
+  !! Data is stored in this type which is
+  !! pointed to by the parent type.
+  !! This is an internal type only used as a pointer and
+  !! should not be made public.
   type BUD_TYPE_NAME_
 
     !> Contained item data
@@ -67,15 +76,23 @@
 
   end type BUD_TYPE_NAME_
 
+  !> @endcond BUD_DEVELOPER
+  
 
-  !> Create new @bud instances
+  !> Create a new @bud prepared for containing a BUD_ITEM_TYPE
+  !!
+  !! Initialize the object and prepare it for use.
+  !!
+  !! There are two variants, one where the contained item
+  !! is initially un-initialized and one where the contained item
+  !! is passed and stored by reference.
   interface new
     module procedure new_
     module procedure new_data_
   end interface
   public :: new
   
-  !> Create new @bud instances
+  !> @iSee #new
   interface BUD_TYPE_NEW
     module procedure new_
     module procedure new_data_
@@ -83,28 +100,54 @@
   public :: BUD_TYPE_NEW
 
 
-  !> Set @bud in the item
+  !> Store BUD_ITEM_TYPE in the @bud
+  !!
+  !! Will store the passed BUD_ITEM_TYPE in the @bud
+  !!
+  !! This will increment the passed items reference counter.
+  !!
+  !! If the current container is un-initialized it will be
+  !! created with the item, @isee new.
   interface set_data
     module procedure set_data_
   end interface
   public :: set_data
+  !> @iSee #set_data
+  interface set
+    module procedure set_data_
+  end interface
+  public :: set
 
-  !> Get @bud from an item
+
+  !> Retrieve BUD_ITEM_TYPE from @bud
+  !!
+  !! Returns the contained @bud by setting the
+  !! passed item to the stored item.
   interface get_data
     module procedure get_data_
   end interface
   public :: get_data
+  !> @iSee #get_data
+  interface get
+    module procedure get_data_
+  end interface
+  public :: get
 
-  ! this should probably not be documented
-  ! as it is defined twice.
-  ! We override the assignment to
-  ! also accept direct contained element
+  !> Overriding assignment(=) by allowing contained data
+  !!
+  !! Allow assigning BUD_TYPE_NAME with BUD_ITEM_TYPE.
   interface assignment(=)
     module procedure set_data_
     module procedure get_data_assign_
   end interface
 
-  !> Print information about the @bud
+  !> Print, to std-out, some basic information of the data-container
+  !!
+  !! Print out XML-like information regarding the data-container.
+  !!
+  !! @wanted
+  !! Retrieval function of the string that represents the data.
+  !! This will enable the parent program to show it customized.
   interface print
     module procedure print_
   end interface
@@ -112,6 +155,8 @@
   
   ! all default reference counted stuff
 # include "bud_common.inc"
+
+  !> @cond BUD_DEVELOPER
   
   pure subroutine delete_data(D)
     type(BUD_TYPE_NAME_), intent(inout) :: D
@@ -120,13 +165,9 @@
     
   end subroutine delete_data
 
+  !> @endcond BUD_DEVELOPER
 
-  !> Internal initialization of item containing BUD_ITEM_TYPE
-  !!
-  !! This creates a new BUD_TYPE_NAME without any contained
-  !! @bud.
-  !!
-  !! @param[inout] this @bud that is initialized
+  !> @param[inout] this @bud that is initialized
   subroutine new_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
@@ -136,31 +177,20 @@
     
   end subroutine new_
 
-  !> Internal initialization of item containing BUD_ITEM_TYPE
-  !!
-  !! This creates a new BUD_TYPE_NAME by setting the contained
-  !! @bud.
-  !!
-  !! @param[inout] this @bud that is initialized
-  !! @param[inout] item stored BUD_ITEM_TYPE in the item
+  !> @param[inout] this @bud that is initialized
+  !! @param[in] item stored BUD_ITEM_TYPE in the item
   subroutine new_data_(this, item)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     BUD_CLASS(BUD_ITEM_TYPE), intent(in) :: item
 
-    call initialize(this)
+    call new(this)
 
     this = item
 
-    call tag_object_(this)
-    
   end subroutine new_data_
 
 
-  !> Store BUD_ITEM_TYPE in the @bud
-  !!
-  !! Will store the passed BUD_ITEM_TYPE in the @bud
-  !!
-  !! @param[inout] this item to store @bud-data in
+  !> @param[inout] this item to store @bud-data in
   !! @param[in] item @bud which will be contained in `this`
   subroutine set_data_(this, item)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
@@ -168,13 +198,13 @@
     
     if ( is_initd(this) ) then
       this%D%item = item
+    else
+      call new(this, item)
     end if
     
   end subroutine set_data_
 
-  !> Retrieve BUD_ITEM_TYPE from @bud
-  !!
-  !! @param[in] this item containing @bud
+  !> @param[in] this item containing @bud
   !! @param[inout] item item to store @bud-data in
   subroutine get_data_(this, item)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
@@ -188,32 +218,18 @@
     
   end subroutine get_data_
 
-  !> Retrieve BUD_ITEM_TYPE from @bud
-  !!
-  !! @param[inout] item item to store @bud-data in
+  !> @param[inout] item item to store @bud-data in
   !! @param[in] this item containing @bud
   subroutine get_data_assign_(item, this)
     type(BUD_ITEM_TYPE), intent(inout) :: item
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    
-    if ( is_initd(this) ) then
-      item = this%D%item
-    else
-      call delete(item)
-    end if
+
+    call get_data(this, item)
     
   end subroutine get_data_assign_
 
   
-  !> Print, to std-out, some basic information of the data-container
-  !!
-  !! Print out XML-like information regarding the data-container.
-  !!
-  !! @wanted
-  !! Retrieval function of the string that represents the data.
-  !! This will enable the parent program to show it in the way it wants.
-  !!
-  !! @param[in] this data type
+  !> @param[in] this data type
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
   subroutine print_(this, info, indent)
@@ -245,7 +261,7 @@
     call print(this%D%item, indent = lindent)
     lindent = lindent - 2 ! go back to requested indentation
     write(fmt, '(a,i0,a)') '(t',lindent,',a,i0,a)'
-    write(*,fmt) " <item-refs: ", get_refs(this), ">>"
+    write(*,fmt) " <item-refs: ", references(this), ">>"
     
   end subroutine print_
 
@@ -256,6 +272,7 @@
 #undef BUD_TYPE_NEW
 #undef BUD_ITEM_TYPE
 
+  
   ! project-buds -- local file settings
   !     Anything below this line may be overwritten by scripts
   !     Below are non-editable settings

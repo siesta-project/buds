@@ -6,26 +6,35 @@
 #if BUD_FORTRAN >= 2003
   
 #ifndef BUD_NO_DELETE
+  !> @iSee delete
   procedure, public :: delete => delete_
 #endif
 #ifndef BUD_NO_NULLIFY
+  !> @iSee nullify
   procedure, public :: nullify => nullify_
 #endif
 
+  !> @iSee initialize
   procedure, public :: initialize => initialize_
-  
+
+  !> @iSee is_initialized
   procedure, public :: is_initialized => is_initialized_
+  !> @iSee is_initialized
   procedure, public :: is_initd => is_initialized_
-  procedure, public :: is_same => is_same_
-  ! they have a clear intent hence the is_ prefix is not
-  ! required.
+  !> @iSee is_initialized
   procedure, public :: initialized => is_initialized_
+  !> @iSee is_same
+  procedure, public :: is_same => is_same_
+  !> @iSee is_same
   procedure, public :: same => is_same_
   
+  !> @iSee references
   procedure, public :: references => references_
+  !> @iSee references
   procedure, public :: refs => references_
 
 #ifndef BUD_NO_PRINT
+  !> @iSee print
   procedure, public :: print => print_
 #endif
 

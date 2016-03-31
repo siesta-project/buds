@@ -1,5 +1,13 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
-  
+
+  ! The following pre-processor variables are currently used when
+  ! included:
+  !  - BUD_TYPE_NAME of the type
+  !  - BUD_TYPE_NAME_, internal data pointer of the type
+  !  - BUD_TYPE_NAME_STR, the routine name in "string" format (for IO)
+  !  - BUD_TYPE_NEW, the routine name for creating a new type
+  !  - BUD_STACK_TYPE, the variable type contained in the stack
+
   ! Include the common utilities
 #include "bud_utils.inc"
 
@@ -12,6 +20,8 @@
 #endif
 
 #include "bud_common_declarations.inc"
+
+  !> @cond BUD_DOC_INC
 
   !> @defgroup bud-fstack Finite stack with reference counting
   !!
@@ -27,62 +37,62 @@
   !! @note
   !! A type need not have _all_ these routines available if so desired.
   !! This is internally controlled and is mentioned for the relevant types.
-  !!
-  !! @dev_note
-  !! The following pre-processor variables are currently used when
-  !! included:
-  !!  - _BUD_TYPE_NAME of the type
-  !!  - _BUD_TYPE_NAME_, internal data pointer of the type
-  !!  - _BUD_TYPE_NAME_STR, the routine name in "string" format (for IO)
-  !!  - _BUD_TYPE_NEW, the routine name for creating a new type
-  !!  - _BUD_STACK_TYPE, the variable type contained in the stack
-  !!
-  !! @acknowledge
-  !! These declarations are community inspired from the FLIBS
-  !! project by Arjen Markus as well as the PyF95 project.
-  !! The initial draft of this library has been created by Alberto Garcia.
 
+  !> @endcond BUD_DOC_INC
   
-  !> @bud variable
+  !> Finite stack with cyclic ability
   !!
-  !! Handler for the pointer type stored
-  type BUD_TYPE_NAME
-    !> Stored pointer which contains the reference counting etc.
-    type(BUD_TYPE_NAME_), pointer :: D => null()
-
-#if BUD_FORTRAN >= 2003
-  contains
-#   include "bud_common_type.inc"
-
-    procedure, public :: new => new_
-
-    procedure, public :: push => push_
-    procedure, public :: pop => pop_
-    procedure, public :: keep => keep_
-
-    procedure, public :: get => get_elem_
-    procedure, public :: get_elem => get_elem_
-
-    procedure, public :: getp => get_elemp_
-    procedure, public :: get_elemp => get_elemp_
-
-    procedure, public :: size => size_elem_
-    procedure, public :: size_max => size_max_elem_
-
-    
-#endif
-  end type BUD_TYPE_NAME
-
-
-  !> @bud container for BUD_TYPE_NAME
-  !!
-  !! @details
-  !! Container for the data in the @bud.
+  !! Container for a finite stack of a single @bud (BUD_STACK_TYPE).
   !!
   !! This data container holds 3 variables,
   !!  1. track maximum number of elements allowed in the finite stack
   !!  2. track how many elements are currently stored
   !!  3. An array of the stack of variables stored.
+  type BUD_TYPE_NAME
+
+    !> @cond BUD_DEVELOPER
+
+    !> Stored pointer which contains the reference counting etc.
+    type(BUD_TYPE_NAME_), pointer :: D => null()
+
+    !> @endcond BUD_DEVELOPER
+
+#if BUD_FORTRAN >= 2003
+  contains
+#   include "bud_common_type.inc"
+
+    !> @iSee #new
+    procedure, public :: new => new_
+
+    !> @iSee #push
+    procedure, public :: push => push_
+    !> @iSee #pop
+    procedure, public :: pop => pop_
+    !> @iSee #keep
+    procedure, public :: keep => keep_
+
+    !> @iSee #get_elem
+    procedure, public :: get_elem => get_elem_
+    !> @iSee #get_elem
+    procedure, public :: get => get_elem_
+
+    !> @iSee #get_elemp
+    procedure, public :: get_elemp => get_elemp_
+    !> @iSee #get_elemp
+    procedure, public :: getp => get_elemp_
+
+    !> @iSee #size
+    procedure, public :: size => size_elem_
+    !> @iSee #size_max
+    procedure, public :: size_max => size_max_elem_
+    
+#endif
+  end type BUD_TYPE_NAME
+
+
+  !> @cond BUD_DEVELOPER
+  
+  !> @bud container for BUD_TYPE_NAME
   type BUD_TYPE_NAME_
 
     !> Maximum number of elements that can be stored in this stack.
@@ -106,6 +116,8 @@
 
   end type BUD_TYPE_NAME_
 
+  !> @endcond BUD_DEVELOPER
+  
 
   ! special counter for deleting all elements
   ! of a stack using:
@@ -113,22 +125,36 @@
   !> Special parameter for popping all elements.
   !!
   !! Allows one to pop/delete all elements in the stack.
+  !! This basically performs a
+  !! \code{.f90}
+  !!  n = size_max(this)
+  !!  call delete(this)
+  !!  call new(this, n)
+  !! \endcode
   integer, public, parameter :: BUD_FSTACK_ALL = 0
 
 
-  !> Create new @bud instances
+  !> Internal initialization of finite stack holding BUD_STACK_TYPE
+  !!
+  !! If called on a previously allocated data scope this
+  !! will clear the reference (@isee delete).
+  !! Subsequently the type container will be allocated
+  !! and the reference counted data will be 1.
   interface new
     module procedure new_
   end interface
   public :: new
   
-  !> Create new @bud instances
+  !> @iSee #new
   interface BUD_TYPE_NEW
     module procedure new_
   end interface
   public :: BUD_TYPE_NEW
   
-  !> Push new elements to the stack
+  !> Adds/Pushes new element to the stack
+  !!
+  !! If the stack is full the oldest element will be deleted
+  !! and the second oldest becomes the first element of the stack.
   !!
   !! @note
   !! One cannot push elements in the middle of the stack.
@@ -136,49 +162,83 @@
     module procedure push_
   end interface
   public :: push
-  !> Pop, and possibly return elements from the stack
+
+  !> Pop and (possibly) return the latest item in the stack
   !!
-  !! One can return the top element or pop-delete elements
-  !! from the top or bottom.
+  !! The top item is returned in `item` and the stack
+  !! is decremented thus removing the returned item from the stack.
+  !!
+  !! An optional index may be given, see #pop_delete_.
+  !!
+  !! If the top element has not been initialized the returned item will
+  !! be un-initialized.
   !!
   !! @note
-  !! One cannot pop and return elements from the middle of the
-  !! stack.
+  !! The returned item will thus not have its counted references changed.
   interface pop
     module procedure pop_
     module procedure pop_delete_
   end interface
   public :: pop
+
+
   !> Keeps a fixed number of elements in the stack
+  !!
+  !! Retains a number of elements from either the top or the
+  !! bottom of the stack.
+  !!
+  !! If any of the counts are larger than the currently
+  !! number of stored elements, nothing will happen.
+  !!
+  !! @note
+  !! Defaults to `top=fnelem(this)-1`
   interface keep
     module procedure keep_
   end interface
   public :: keep
   
-  !> Return an indexed element in the stack
+  !> Retrieve specific element from the stack
+  !!
+  !! If the requested element is beyond the number of
+  !! stored elements `elem` will be un-initialized upon return.
   interface get_elem
     module procedure get_elem_
   end interface
   public :: get_elem
-  !> Return a pointer to an indexed element in the stack
+  
+  !> Retrieve pointer to specific element in the stack
+  !!
+  !! Retrieving a pointer does not change the reference status
+  !! of the @bud.
+  !!
+  !! If the requested element is beyond the number of
+  !! stored elements `elem` will be null.
+  !!
   interface get_elemp
     module procedure get_elemp_
   end interface
   public :: get_elemp
 
-  !> Return number of elements in the stack
+  !> Query number of currently stored elements in this stack
   interface size
     module procedure size_elem_
   end interface
   public :: size
   
-  !> Return maximum number of elements in the stack (function)
+  !> Query maximum number of allowed elements in this stack
   interface size_max
     module procedure size_max_elem_
   end interface
   public :: size_max
+
   
-  !> Print information about the @bud
+  !> Print, to std-out, some basic information of the data-container
+  !!
+  !! Print out XML-like information regarding the data-container.
+  !!
+  !! @wanted
+  !! Retrieval function of the string that represents the data.
+  !! This will enable the parent program to show it in the way it wants.
   interface print
     module procedure print_
   end interface
@@ -186,7 +246,8 @@
   
   ! all default reference counted stuff
 # include "bud_common.inc"
-  
+
+  !> @cond BUD_DEVELOPER
 
   pure subroutine delete_data(D)
     type(BUD_TYPE_NAME_), intent(inout) :: D
@@ -205,16 +266,11 @@
     
   end subroutine delete_data
 
+  !> @endcond BUD_DEVELOPER
 
-  !> Internal initialization of finite stack holding BUD_STACK_TYPE
-  !!
-  !! If called on a previously allocated data scope this
-  !! will clear the reference (@isee delete).
-  !! Subsequently the type container will be allocated
-  !! and the reference counted data will be 1.
-  !!
-  !! @param[inout] this Type that is initialized
-  !! @param[in] nel maximum number of elements that may be contained
+
+  !> @param[inout] this initialize the finite stack
+  !! @param[in] nel maximum number of elements that may be contained in the stack
   subroutine new_(this, nel)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer, intent(in) :: nel
@@ -239,42 +295,7 @@
   end subroutine new_
 
 
-  !> Query number of currently stored elements in this stack (function)
-  !!
-  !! @param[inout] this @bud that is checked
-  !! @return number of currently stored elements
-  elemental function size_elem_(this) result (nel)
-    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer :: nel
-    if ( .not. is_initd(this) ) then
-      nel = 0
-    else
-      nel = this%D%nel
-    end if
-  end function size_elem_
-    
-  
-  !> Query maximum number of allowed elements in this stack (function)
-  !!
-  !! @param[inout] this @bud that is checked
-  !! @return maximum number of allowed elements
-  elemental function size_max_elem_(this) result (nel_max)
-    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer :: nel_max
-    if ( .not. is_initd(this) ) then
-      nel_max = 0
-    else
-      nel_max = this%D%nel_max
-    end if
-  end function size_max_elem_
-
-  
-  !> Adds new element to the stack
-  !!
-  !! Add new element to the stack. If the stack is full the oldest
-  !! element will be deleted.
-  !!
-  !! @param[inout] this @bud that is added to
+  !> @param[inout] this stack that gets added an element
   !! @param[in] item element added to the stack
   subroutine push_(this,item)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
@@ -306,17 +327,7 @@
   end subroutine push_
 
 
-  !> Pop and return the latest item in the stack
-  !!
-  !! The top item is returned in `item` and the stack
-  !! is decremented thus removing the returned item from the stack.
-  !!
-  !! If there are no elements the returned item will be un-initialized.
-  !!
-  !! @note
-  !! The returned item will thus not have its counted references changed.
-  !!
-  !! @param[inout] this @bud to pop from
+  !> @param[inout] this stack that gets removed an item
   !! @param[inout] item returned element from the top of the stack
   subroutine pop_(this, item)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
@@ -347,13 +358,7 @@
   end subroutine pop_
   
   
-  !> Deletes the latest item(s) in the stack
-  !!
-  !! Pops and deletes any _n_ items from the top of the stack.
-  !!
-  !! Defaults to popping(deleting) the top element.
-  !!
-  !! @param[inout] this @bud from which elements are popped
+  !> @param[inout] this stack that gets removed an item
   !! @param[in] top @opt=1 number of popped elements from top.
   !!                If BUD_FSTACK_ALL is supplied it will
   !!                clear all elements.
@@ -425,18 +430,8 @@
     
   end subroutine pop_delete_
 
-  !> Keeps a fixed number of elements in the stack
-  !!
-  !! Retains a number of elements from either the top or the
-  !! bottom of the stack.
-  !!
-  !! If any of the counts are larger than the currently
-  !! number of stored elements, nothing will happen.
-  !!
-  !! @note
-  !! Defaults to `top=fnelem(this)-1`
-  !!
-  !! @param[inout] this @bud to keep elements in
+
+  !> @param[inout] this stack to operate on
   !! @param[in] top @opt=1 number of elements kept from the top
   !! @param[in] bot @opt=@null number of elements kept from the bottom,
   !!                only used if `top` is not supplied.
@@ -477,13 +472,9 @@
     
   end subroutine keep_
 
-  !> Retrieve specific element in the stack
-  !!
-  !! If the requested element is beyond the number of
-  !! stored elements `elem` will be un-initialized upon return.
-  !!
-  !! @param[in] this @bud to retrieve element from
-  !! @param[inout] elem returned @bud stored in element `iel`
+  
+  !> @param[in] this stack to retrieve element from
+  !! @param[inout] elem returned item stored in element `iel`
   !! @param[in] iel @opt=`size(this)` index of element to return. May be negative to offset from the top
   subroutine get_elem_(this, elem, iel)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
@@ -511,15 +502,7 @@
     
   end subroutine get_elem_
 
-  !> Retrieve pointer to specific element in the stack
-  !!
-  !! Retrieving a pointer does not change the reference status
-  !! of the @bud.
-  !!
-  !! If the requested element is beyond the number of
-  !! stored elements `elem` will be null.
-  !!
-  !! @param[in] this @bud to retrieve pointer element from
+  !> @param[in] this stack to retrieve pointer element from
   !! @param p pointer to the element `iel`
   !! @param[in] iel @opt=`size(this)` index of element to return. May be negative to offset from top.
   subroutine get_elemp_(this, p, iel)
@@ -548,16 +531,34 @@
       
   end subroutine get_elemp_
 
+
+  !> @param[inout] this stack to count element from
+  !! @return number of currently stored elements
+  elemental function size_elem_(this) result (nel)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    integer :: nel
+    if ( .not. is_initd(this) ) then
+      nel = 0
+    else
+      nel = this%D%nel
+    end if
+  end function size_elem_
+    
   
-  !> Print, to std-out, some basic information of the data-container
-  !!
-  !! Print out XML-like information regarding the data-container.
-  !!
-  !! @wanted
-  !! Retrieval function of the string that represents the data.
-  !! This will enable the parent program to show it in the way it wants.
-  !!
-  !! @param[in] this data type
+  !> @param[inout] this stack that is queried maximum size of
+  !! @return maximum number of allowed elements
+  elemental function size_max_elem_(this) result (nel_max)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    integer :: nel_max
+    if ( .not. is_initd(this) ) then
+      nel_max = 0
+    else
+      nel_max = this%D%nel_max
+    end if
+  end function size_max_elem_
+
+  
+  !> @param[in] this data type
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
   subroutine print_(this, info, indent)
@@ -592,10 +593,11 @@
     end do
     lindent = lindent - 2 ! go back to requested indentation
     write(fmt, '(a,i0,a)') '(t',lindent,',a,i0,a)'
-    write(*,fmt) " <stack-refs: ", get_refs(this), ">>"
+    write(*,fmt) " <stack-refs: ", references(this), ">>"
 
   end subroutine print_
 
+  
 #undef BUD_MOD_NAME
 #undef BUD_TYPE_NAME
 #undef BUD_TYPE_NAME_
@@ -603,6 +605,7 @@
 #undef BUD_TYPE_NEW
 #undef BUD_STACK_TYPE
 
+  
   ! project-bud -- local file settings
   !     Anything below this line may be overwritten by scripts
   !     Below are non-editable settings

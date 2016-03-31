@@ -7,6 +7,8 @@
 #ifndef BUD_UTILS_H
 #define BUD_UTILS_H
 
+  !> @cond BUD_DOC_INC
+
   !> \defgroup buds-utils Preprocessor utility functions
   !!
   !! @details
@@ -99,6 +101,8 @@
 #define BUD_STR(x) #x
 
   !> @}
+
+  !> @endcond BUD_DOC_INC
 
 #endif
 

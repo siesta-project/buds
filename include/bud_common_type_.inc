@@ -1,6 +1,8 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
 
   ! Simple type for inclusion in the type scopes.
+
+  !> @cond BUD_DEVELOPER
   
   !> Reference counter for @bud
   !! Tracks the number of times this data structure is referenced
@@ -10,7 +12,9 @@
   !! Enables a unique ID for any @bud of the same type.
   character(len=BUD_ID_LEN) :: id_ = "null_id"
 
+  !> @endcond BUD_DEVELOPER
 
+  
 ! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings

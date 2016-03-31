@@ -22,7 +22,7 @@
   !  rd == double (8-byte)
   !  re == long double, currently not supported 
 
-  !> @cond ALWAYS_SKIP
+  !> @cond BUD_DEVELOPER
   
   integer, private, parameter :: rr_ = selected_real_kind(p=6) ! single (real*4)
   integer, private, parameter :: rd_ = selected_real_kind(p=15) ! double (real*8)
@@ -32,7 +32,7 @@
   integer, private, parameter :: ii_ = selected_int_kind(9) ! int (integer*4)
   integer, private, parameter :: il_ = selected_int_kind(18) ! long (integer*8)
 
-  !> @endcond ALWAYS_SKIP
+  !> @endcond BUD_DEVELOPER
   
   !> Size of ID parameter for bud data-containers
   integer, private, parameter :: BUD_ID_LEn = 36
@@ -49,6 +49,7 @@
   !> Name of @bud in this module
   character(len=*), parameter, private :: BUD_TYPe = BUD_TYPE_NAME_STR
 #endif
+
   
 ! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts

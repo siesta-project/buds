@@ -1,5 +1,14 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
-  
+
+  ! The following pre-processor variables are currently used when
+  ! included:
+  !  - BUD_TYPE_NAME of the type
+  !  - BUD_TYPE_NAME_, internal data pointer of the type
+  !  - BUD_TYPE_NAME_STR, the routine name in "string" format (for IO)
+  !  - BUD_TYPE_NEW, the routine name for creating a new type
+  !  - BUD_LIST_TYPE, the variable type contained in the linked list
+  !  - BUD_LINKED_LIST_NAME, the name of the self-contained linked list
+
   ! Include the common utilities
 #include "bud_utils.inc"
 
@@ -31,6 +40,8 @@
 # error "Currently single linked lists are not implemented"
 #endif
 
+  !> @cond BUD_DOC_INC
+
   !> @defgroup buds-llist Linked list with reference counting
   !!
   !! @details
@@ -43,24 +54,25 @@
   !! @note
   !! A type need not have _all_ these routines available if so desired.
   !! This is internally controlled and is mentioned for the relevant types.
-  !!
-  !! @dev_note
-  !! The following pre-processor variables are currently used when
-  !! included:
-  !!  - _BUD_TYPE_NAME of the type
-  !!  - _BUD_TYPE_NAME_, internal data pointer of the type
-  !!  - _BUD_TYPE_NAME_STR, the routine name in "string" format (for IO)
-  !!  - _BUD_TYPE_NEW, the routine name for creating a new type
-  !!  - _BUD_LIST_TYPE, the variable type contained in the linked list
-  !!  - _BUD_LINKED_LIST_NAME, the name of the self-contained linked list
 
+  !> @endcond BUD_DOC_INC
 
-  !> @bud variable
+  !> Linked list with element contained BUD_LIST_TYPE
   !!
-  !! Handler for the pointer type stored
+  !! A direct linked list with contained element (BUD_LIST_TYPE).
+  !!
+#ifdef BUD_LIST_IS_DOUBLY
+  !! This linked list is doubly connected (both backwards and
+  !! forward itterable).
+#endif
   type BUD_TYPE_NAME
+
+    !> @cond BUD_DEVELOPER
+
     !> Stored pointer which contains the reference counting etc.
     type(BUD_TYPE_NAME_), pointer :: D => null()
+
+    !> @endcond BUD_DEVELOPER
 
 #if BUD_FORTRAN >= 2003
   contains
@@ -68,41 +80,57 @@
 
     procedure, private :: new_
     procedure, private :: new_data_
+    !> @iSee #new
     generic, public :: new => new_, new_data_
 
+    !> @iSee #nodes
     procedure, public :: nodes => size_llist_
+    !> @iSee #nodes
     procedure, public :: size => size_llist_
 
     procedure, private :: set_data_
     procedure, private :: set_data_idx_
-    generic, public :: set => set_data_, set_data_idx_
+    !> @iSee #set_data
     generic, public :: set_data => set_data_, set_data_idx_
+    !> @iSee #set_data
+    generic, public :: set => set_data_, set_data_idx_
 
     procedure, public :: get_node_data => get_node_data_idx_
+    !> @iSee #get_data
     procedure, public :: get_data => get_node_data_idx_
+    !> @iSee #get_data
+    procedure, public :: get => get_node_data_idx_
 
     procedure, private :: add_node_
     procedure, private :: add_node_data_
+    !> @iSee #add_node
     generic, public :: add_node => add_node_, add_node_data_
 
+    !> @iSee #remove_node
     procedure, public :: remove_node => remove_node_
+    !> @iSee #remove_node_data
     procedure, public :: remove_node_data => remove_node_data_
 
+    !> @iSee #set_head
     procedure, public :: set_head => set_head_idx_
 
+    !> @iSee #copy_list
     procedure, public :: copy_list => copy_list_
+    !> @iSee #copy_list
     procedure, public :: copy => copy_list_
 
+    !> @iSee #itt_step
     procedure, public :: itt_step => itt_step_
     
 #endif
   end type BUD_TYPE_NAME
 
+
+  !> @cond BUD_DOC_INC
   
-  !> @bud container for BUD_TYPE_NAME
+  !> @bud container for BUD_TYPE_NAME_
   !!
-  !! @details
-  !! Container for the data in the @bud.
+  !! The actual data container for the linked list.
   !!
 #ifdef BUD_LIST_IS_DOUBLY
   !! This data container holds 3 variables,
@@ -154,27 +182,37 @@
   end type
   private :: BUD_LINKED_LIST_NAME
 
+  !> @endcond BUD_DOC_INC
 
-  !> Create new @bud instances
+  !> Initialize new linked list.
+  !!
+  !! Possibly add the initial data in the head segment.
   interface new
     module procedure new_
     module procedure new_data_
   end interface
   public :: new
   
-  !> Create new @bud instances
+  !> @iSee #new
   interface BUD_TYPE_NEW
     module procedure new_
     module procedure new_data_
   end interface
   public :: BUD_TYPE_NEW
 
-  !> Return number of nodes in the list
-#ifndef BUD_LIST_IS_DOUBLY
+
+  ! this should probably not be documented
+  ! as it is defined twice.
+  interface assignment(=)
+    module procedure set_data_
+  end interface
+
+  !> Query number of currently stored elements in this list
   !!
-  !! In a single-linked list this may return
-  !! different sizes dependent on where the list
-  !! is counted.
+#ifdef BUD_LIST_IS_DOUBLY
+  !! Will count all previous and following elements.
+#else
+  !! Will only count elements in front of the element.
 #endif
   interface nodes
     module procedure size_llist_
@@ -187,14 +225,11 @@
   end interface
   public :: size
 
-
-  ! this should probably not be documented
-  ! as it is defined twice.
-  interface assignment(=)
-    module procedure set_data_
-  end interface
-
-  !> Set data for a node
+  
+  !> Overwrite/Set data at an element in the list
+  !!
+  !! Assign the data at the index or head of the
+  !! linked list.
   interface set_data
     module procedure set_data_
     module procedure set_data_idx_
@@ -204,7 +239,7 @@
   
   !> Add a new element to the head of the linked list
   !!
-  !! @iSee add
+  !! Possibly assign data to the new node.
   !!
   !! @note
   !! One cannot push elements in the middle of the stack.
@@ -215,17 +250,28 @@
   public :: add_node
   
 
-  !> Retrieve the data/node from the linked list
-  interface get_node
-    module procedure get_node_data_idx_
-  end interface
-  public :: get_node
-
-  !> Retrieve the data/node from the linked list
+  !> Query data from head/node in the list
+  !!
+  !! Possibly retrieve via index, head if not supplied.
+#ifdef BUD_LIST_IS_DOUBLY
+  !! If the index is negative it will correspond to the
+  !! negative elements.
+  !! The index will correspond to a round-robin index
+  !! of the linked list.
+#else
+  !! If the requested index is beyond the number of
+  !! stored nodes `D` will be un-initialized upon return.
+#endif
   interface get_data
     module procedure get_node_data_idx_
   end interface
   public :: get_data
+
+  !> @iSee get_data
+  interface get_node
+    module procedure get_node_data_idx_
+  end interface
+  public :: get_node
 
 
   !> Set the head of the linked list to the indexed node
@@ -235,7 +281,10 @@
   public :: set_head
 
 
-  !> Set the head of the linked list to the indexed node
+  !> Forward iterator for a linked list from the head
+  !!
+  !! Will step an iterator that will be connected to a
+  !! linked list.
   interface itt_step
     module procedure itt_step_
   end interface
@@ -246,6 +295,8 @@
   !!
   !! This reorders the linked list in case
   !! the deleted node is not the last node.
+  !!
+  !! I.e. the node is removed entirely from the list.
   interface remove_node
     module procedure remove_node_
   end interface
@@ -254,18 +305,30 @@
   !> Remove data contained at a specific node
   !!
   !! The node is preserved in the linked list.
+  !!
+  !! I.e. _only_ the data is deleted, not the node.
   interface remove_node_data
     module procedure remove_node_data_
   end interface
   public :: remove_node_data
 
-  !> Deep-copy a list to another list
+  !> Copy a linked list to another linked list
+  !!
+  !! This will assign the node data to the new
+  !! linked list nodes.
   interface copy_list
     module procedure copy_list_
   end interface
   public :: copy_list
 
-  !> Print information about the @bud
+  !> Print, to std-out, some basic information of the data-container
+  !!
+  !! Print out XML-like information regarding the data-container.
+  !!
+  !! @wanted
+  !! Retrieval function of the string that represents the data.
+  !! This will enable the parent program to show it in the way it wants.
+  !!
   interface print
     module procedure print_
   end interface
@@ -273,6 +336,8 @@
   
   ! all default reference counted stuff
 # include "bud_common.inc"
+
+  !> @cond BUD_DEVELOPER
   
   pure subroutine delete_data(D)
     type(BUD_TYPE_NAME_), intent(inout) :: D
@@ -336,10 +401,10 @@
 
   end subroutine delete_data
 
+  !> @endcond BUD_DEVELOPER
 
-  !> Internal initialization of linked list BUD_LIST_TYPE
-  !!
-  !! @param[inout] this new @bud upon exit
+
+  !> @param[inout] this initialized linked list upon exit
   subroutine new_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
@@ -349,10 +414,8 @@
     
   end subroutine new_
 
-  !> Internal initialization of linked list BUD_LIST_TYPE
-  !!
   !! @param[inout] this new @bud upon exit
-  !! @param[in] D stored data in the first node
+  !! @param[in] D stored data in the first (head) node
   subroutine new_data_(this, D)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     type(BUD_LIST_TYPE), intent(in) :: D
@@ -365,8 +428,8 @@
     
   end subroutine new_data_
 
-  ! ********
-  !   Internal routines
+  !> @cond BUD_DEVELOPER
+  
   subroutine get_ll_headp(this, head)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     type(BUD_LINKED_LIST_NAME), pointer :: head
@@ -477,21 +540,12 @@
     nullify(tmp)
 
   end subroutine append_node
-    
 
-
-  ! ********
+  !> @endcond BUD_DEVELOPER
   
   
-
-  !> Query number of currently stored elements in this list
-  !!
-#ifdef BUD_LIST_IS_DOUBLY
-  !! Will count all previous and following elements.
-#endif
-  !!
-  !! @param[inout] this @bud that is checked
-  !! @return number of currently nodes
+  !> @param[inout] this linked list that is queried
+  !! @return number of nodes in the list
   function size_llist_(this) result (nnodes)
     BUD_CLASS(BUD_TYPE_NAME), intent(in), target :: this
     integer :: nnodes
@@ -518,9 +572,7 @@
   end function size_llist_
 
     
-  !> Add an empty node to the end of the linked list
-  !!
-  !! @param[inout] this @bud that is added to
+  !> @param[inout] this add a new element to the linked list
   subroutine add_node_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     type(BUD_LINKED_LIST_NAME), pointer :: tail
@@ -547,11 +599,9 @@
     
   end subroutine add_node_
 
-  
-  !> Add new node with to the end of the linked list
-  !!
-  !! @param[inout] this @bud that is added to
-  !! @param[in] item node added to the stack
+
+  !> @param[inout] this add a new element to the linked list
+  !! @param[in] D stored data at the new node
   subroutine add_node_data_(this, D)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     type(BUD_LIST_TYPE), intent(in) :: D
@@ -568,7 +618,8 @@
   end subroutine add_node_data_
 
 
-  !> Attach BUD_LIST_TYPE to current node
+  !> @param[inout] this linked list item where the data is overwritten
+  !! @param[in] D item to be stored in the head of `this`
   subroutine set_data_(this, D)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     type(BUD_LIST_TYPE), intent(in) :: D
@@ -579,7 +630,9 @@
     
   end subroutine set_data_
 
-  !> Attach BUD_LIST_TYPE to current node
+  !> @param[inout] this linked list item where the data is overwritten
+  !! @param[in] D item to be stored in the head of `this`
+  !! @param[in] index index of element in linked list to be stored
   subroutine set_data_idx_(this, D, index)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     type(BUD_LIST_TYPE), intent(in) :: D
@@ -605,14 +658,9 @@
   end subroutine set_head_idx_
 
 
-  !> Query data from indexed node in the list
-  !!
-  !! If the requested index is beyond the number of
-  !! stored nodes `D` will be un-initialized upon return.
-  !!
-  !! @param[in] this @bud to retrieve node from
-  !! @param[inout] D returned @bud stored in node `i`
-  !! @param[in] index @opt=`1` index of element to return. May be negative to offset from the head
+  !> @param[in] this retrieve data from this linked list with associated head
+  !! @param[inout] D the data stored at the element in the linked list
+  !! @param[in] index @opt=`1` index of element to return. May be negative to offset from the head for doubly linked lists
   subroutine get_node_data_idx_(this, D, index)
     BUD_CLASS(BUD_TYPE_NAME), intent(in), target :: this
     type(BUD_LIST_TYPE), intent(inout) :: D
@@ -630,13 +678,7 @@
   end subroutine get_node_data_idx_
 
 
-
-  !> Forward iterator for a linked list from the head
-  !!
-  !! Will step an itterator that will be connected to a
-  !! linked list.
-  !!
-  !! @param[in] this the linked list to be iterated
+  !> @param[in] this the linked list to be iterated
   !! @param[inout] itt the itterator container
   !! @return .true. if the next element can be reached
   function itt_step_(this, itt) result(itterated)
@@ -681,11 +723,9 @@
   end function itt_step_
 
 
-  !> Delete specific node in a linked list
-  !!
-  !! The deletion process deletes the node but re-creates
-  !! the connections such that the linked list items are
-  !! preserved.
+  !> @param[inout] this the linked list which should get a node removed
+  !> @param[in] index the index of the node that should be removed from
+  !!            the linked list
   subroutine remove_node_(this, index)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout), target :: this
     integer, intent(in) :: index
@@ -727,7 +767,9 @@
     
   end subroutine remove_node_
 
-  !> Delete specific data in node in a linked list
+  !> @param[inout] this the linked list which should get the data in a node removed
+  !> @param[in] index the index of the node where the contained data should
+  !!            be removed
   subroutine remove_node_data_(this, index)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout), target :: this
     integer, intent(in), optional :: index
@@ -744,8 +786,10 @@
   end subroutine remove_node_data_
 
 
+  !> @param[inout] from the linked list that is the original list
+  !! @param[inout] to a copy of `from` upon exit
   subroutine copy_list_(from, to)
-    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to, from
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: from, to
     type(BUD_LINKED_LIST_NAME), pointer :: t, f
 
     if ( .not. is_initd(from) ) then
@@ -799,15 +843,7 @@
   end subroutine copy_list_
   
   
-  !> Print, to std-out, some basic information of the data-container
-  !!
-  !! Print out XML-like information regarding the data-container.
-  !!
-  !! @wanted
-  !! Retrieval function of the string that represents the data.
-  !! This will enable the parent program to show it in the way it wants.
-  !!
-  !! @param[in] this data type
+  !> @param[in] this linked list
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
   subroutine print_(this, info, indent)
@@ -851,7 +887,7 @@
     end do
     lindent = lindent - 2 ! go back to requested indentation
     write(fmt, '(a,i0,a)') '(t',lindent,',a,i0,a)'
-    write(*,fmt) " <llist-refs: ", get_refs(this), ">>"
+    write(*,fmt) " <llist-refs: ", references(this), ">>"
     
   end subroutine print_
 
