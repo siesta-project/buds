@@ -1,7 +1,6 @@
 .PHONY: doc
-.NOTPARALLEL: doc
-doc:
-	doc/make_doc.sh
+doc: $(OBJS:.o=.f90)
+	@doc/make_doc.sh
 
 
 # Local Variables:

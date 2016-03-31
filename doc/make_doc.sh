@@ -46,18 +46,9 @@ fi
 # Start on the actual creation of the documentation
 # We create a temporary directory
 rm -rf $_DOC
-mkdir -p $_DOC
-pushd $_DOC
 
-for f in ../src/*.F90
-do
-    PREFIX=" " ../tools/pp.sh $f
-done
-    
 # Now we can create the documentation
 {
-    cat ../doc/Doxyfile
-    echo "INPUT = ../README.md ./ ../doc/DEV.md"
+    cat doc/Doxyfile
+#    echo "INPUT = ../README.md ./ ../doc/DEV.md"
 } | doxygen -
-
-popd
