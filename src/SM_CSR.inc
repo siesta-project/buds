@@ -63,6 +63,9 @@
 #endif
   end type BUD_TYPE_NAME
 
+  
+  !> @cond BUD_DEVELOPER
+  
   !> @bud container for BUD_TYPE_NAME
   !!
   !! Contains the sparsity pattern for a CSR matrix.
@@ -86,6 +89,9 @@
 #   include "bud_common_type_.inc"
 
   end type BUD_TYPE_NAME_
+
+  !> @endcond BUD_DEVELOPER
+  
   
   !> Create new @bud instances
   interface new
@@ -181,6 +187,8 @@
   ! Note that 'CONTAINS' is present in this include file.
 # include "bud_common.inc"
 
+
+  !> @cond BUD_DEVELOPER
   
   !> Internal routine for cleaning up the data container.
   !!
@@ -204,6 +212,8 @@
     nullify(this%col)
     
   end subroutine delete_data
+  
+  !> @endcond BUD_DEVELOPER
 
   
   !> Create a new @bud allocating room or specific size
@@ -615,7 +625,7 @@
     
     write(*,fmt) "<", trim(name), " rows=", this%D%nr, &
       ", cols=", this%D%nc, ", nnzs=",this%D%nz, &
-      ", refs: ", get_refs(this), ">"
+      ", refs: ", references(this), ">"
     
   end subroutine print_
 
@@ -630,6 +640,7 @@
 #undef BUD_TYPE_VAR
 #undef BUD_TYPE_VAR_PREC
 
+  
 ! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings

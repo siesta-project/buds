@@ -3,12 +3,22 @@
 ! Get default commands
 #include "bud_utils.inc"
 
+!> @defgroup bud-intrinsic Intrinsic @buds
+!!
+!! Intrinsic buds for usage and reference (best viewed at level 2).
+
 # define BUD_MOD_NAME BUD_CC2(BUD_MOD,_utils)
-!> Generic utility functions used throughout
+
+
+!> @defgroup utility Utilities for generic usage in different @buds
+!! @ingroup bud-intrinsic
+!!
+!! Generic utility functions used throughout
 !!
 !! Several utility functions which enables
 !! a large variety of optimized algorithms used in various
 !! routines in the bud library.
+!! @{
 module BUD_MOD_NAME
 
   ! Include basic stuff
@@ -186,7 +196,7 @@ contains
 # include "UNIQ_integer.inc"
 
 end module
-
+!> @}
 
 ! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts

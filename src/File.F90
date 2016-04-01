@@ -8,8 +8,9 @@
 !  - BUD_TYPE_NEW the routine name for creating a new type
   
 #include "bud_utils.inc"
-  
-  ! Define default variable for the file
+
+
+! Define default variable for the file
 # define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,File)
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,File)
 # define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,File)
@@ -18,12 +19,16 @@
 #define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
 #define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
 
-!> @bud for performing file operations such as open/close/delete etc.
+!> @defgroup file File
+!! @ingroup bud-intrinsic
 !!
-!! This module exposes functionality regarding files.
+!! Perform file operations such as open/close/delete etc.
+!!
+!! Exposes functionality regarding files.
 !! It allows interaction with the files in a standard way
 !! by opening, closing, deleting files in a simple and clean
 !! interface.
+!! @{
 module BUD_MOD_NAME
 
   ! This *MUST* be the first statement
@@ -209,6 +214,12 @@ module BUD_MOD_NAME
   end interface
   public :: get_unit
 
+  !> @iSee #get_unit
+  interface unit
+    module procedure get_unit_
+  end interface
+  public :: unit
+
   !> Query whether file is open
   !!
   !! Checks whether the file is opened by `open`.
@@ -275,6 +286,17 @@ module BUD_MOD_NAME
   end interface
   public :: file_delete
 
+  !> Print, to std-out, some basic information of the data-container
+  !!
+  !! Print out XML-like information regarding the data-container.
+  !!
+  !! @wanted
+  !! Retrieval function of the string that represents the data.
+  !! This will enable the parent program to show it in the way it wants.
+  interface print
+    module procedure print_
+  end interface
+  public :: print
   
   ! Include common data routines
   ! Note that 'CONTAINS' is present in this include file.
@@ -286,7 +308,7 @@ module BUD_MOD_NAME
 
   !> @cond BUD_DEVELOPER
 
-  
+
   !> Internal routine for cleaning up the data container.
   !!
   !! @dev_note
@@ -665,15 +687,7 @@ module BUD_MOD_NAME
   end subroutine file_delete_
 
   
-  !> Print, to std-out, some basic information of the data-container
-  !!
-  !! Print out XML-like information regarding the data-container.
-  !!
-  !! @wanted
-  !! Retrieval function of the string that represents the data.
-  !! This will enable the parent program to show it in the way it wants.
-  !!
-  !! @param[in] this data type
+  !> @param[in] this data type
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
   subroutine print_(this, info, indent)
@@ -707,27 +721,29 @@ module BUD_MOD_NAME
       ", open=", is_open(this), &
       ", formatted=", is_formatted(this), &
       ", exists=", exists(this), &
-      ", refs: ", get_refs(this), ">"
+      ", refs: ", references(this), ">"
 
     call stat_reset_(this)
 
   end subroutine print_
 
 end module
+!> @}
 
-  ! project-bud -- local file settings
-  !     Anything below this line may be overwritten by scripts
-  !     Below are non-editable settings
 
-  ! Local Variables:
-  !  mode: f90
-  !  f90-if-indent: 2
-  !  f90-type-indent: 2
-  !  f90-associate-indent: 2
-  !  f90-continuation-indent: 2
-  !  f90-structure-indent: 2
-  !  f90-critical-indent: 2
-  !  f90-program-indent: 2
-  !  f90-do-indent: 2
-  ! End:
+! project-bud -- local file settings
+!     Anything below this line may be overwritten by scripts
+!     Below are non-editable settings
+
+! Local Variables:
+!  mode: f90
+!  f90-if-indent: 2
+!  f90-type-indent: 2
+!  f90-associate-indent: 2
+!  f90-continuation-indent: 2
+!  f90-structure-indent: 2
+!  f90-critical-indent: 2
+!  f90-program-indent: 2
+!  f90-do-indent: 2
+! End:
 

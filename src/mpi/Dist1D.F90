@@ -3,9 +3,19 @@
 ! Get default commands
 #include "bud_utils.inc"
 
-! Integer (int)
+!> @addtogroup bud-intrinsic
+
+!> @defgroup dist-1d Parallel distribution (1D)
+!! @ingroup bud-intrinsic
+!!
+!! A distribution implementation of various kinds.
+!!
+!! @{
+
 # define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,iDist1D)
-!> @file BUD_MOD_NAME
+!> @defgroup BUD_MOD_NAME Integer (int)
+!! `integer(selected_int_kind(9))` data type
+!! @{
 module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iDist1D)
 # define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,iDist1D)
@@ -13,10 +23,12 @@ module BUD_MOD_NAME
 # define BUD_PREC ii_
 #include "Dist1D.inc"
 end module
+!> @}
 
-! Integer (long)
 # define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,lDist1D)
-!> @file BUD_MOD_NAME
+!> @defgroup BUD_MOD_NAME Integer (long)
+!! `integer(selected_int_kind(18))` data type
+!! @{
 module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,lDist1D)
 # define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,lDist1D)
@@ -24,6 +36,10 @@ module BUD_MOD_NAME
 # define BUD_PREC il_
 #include "Dist1D.inc"
 end module
+!> @}
+
+! GROUP dist-1d
+!> @}
 
 
 ! project-bud -- local file settings

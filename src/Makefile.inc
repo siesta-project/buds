@@ -4,6 +4,7 @@ SRC_DIR = $(TOP_DIR)/src
 INC += -I$(SRC_DIR)
 
 
+
 ARRAY_OBJS = \
 	bud_Array1D.o \
 	bud_Array2D.o \
@@ -16,15 +17,13 @@ $(SRC_DIR)/bud_Array1D.f90: $(SRC_DIR)/Array1D.F90
 	$(CPP) $(INC) $(CPPFLAGS) $< > $@
 $(SRC_DIR)/bud_Array2D.f90: _TMP_FILE=$(SRC_DIR)/Array2D.F90
 $(SRC_DIR)/bud_Array2D.f90: $(SRC_DIR)/Array1D.F90
-	@echo " !> @cond DOC_ALL" > $(_TMP_FILE)
-	@sed -e 's/\(define BUD_DIM\) 1/\1 2/g;s/Array1D/Array2D/g' $(SRC_DIR)/Array1D.F90 >> $(_TMP_FILE)
-	@echo " !> @endcond DOC_ALL" >> $(_TMP_FILE)
+	@rm $(_TMP_FILE)
+	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/Array1D/Array2D/g' $(SRC_DIR)/Array1D.F90 >> $(_TMP_FILE)
 	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
 $(SRC_DIR)/bud_Array3D.f90: _TMP_FILE=$(SRC_DIR)/Array3D.F90
 $(SRC_DIR)/bud_Array3D.f90: $(SRC_DIR)/Array1D.F90
-	@echo " !> @cond DOC_ALL" > $(_TMP_FILE)
-	@sed -e 's/\(define BUD_DIM\) 1/\1 3/g;s/Array1D/Array3D/g' $(SRC_DIR)/Array1D.F90 >> $(_TMP_FILE)
-	@echo " !> @endcond DOC_ALL" >> $(_TMP_FILE)
+	@rm $(_TMP_FILE)
+	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/Array1D/Array3D/g' $(SRC_DIR)/Array1D.F90 >> $(_TMP_FILE)
 	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
 
 
@@ -39,15 +38,14 @@ $(SRC_DIR)/bud_Item_Array1D.f90: $(SRC_DIR)/Item_Array1D.F90
 	$(CPP) $(INC) $(CPPFLAGS) $< > $@
 $(SRC_DIR)/bud_Item_Array2D.f90: _TMP_FILE=$(SRC_DIR)/Item_Array2D.F90
 $(SRC_DIR)/bud_Item_Array2D.f90: $(SRC_DIR)/Item_Array1D.F90
-	@echo " !> @cond DOC_ALL" > $(_TMP_FILE)
-	@sed -e 's/Array1D/Array2D/g' $(SRC_DIR)/Item_Array1D.F90 >> $(_TMP_FILE)
+	@rm $(_TMP_FILE)
+	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/Array1D/Array2D/g' $(SRC_DIR)/Item_Array1D.F90 >> $(_TMP_FILE)
 	@echo " !> @endcond DOC_ALL" >> $(_TMP_FILE)
 	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
 $(SRC_DIR)/bud_Item_Array3D.f90: _TMP_FILE=$(SRC_DIR)/Item_Array3D.F90
 $(SRC_DIR)/bud_Item_Array3D.f90: $(SRC_DIR)/Item_Array1D.F90
-	@echo " !> @cond DOC_ALL" > $(_TMP_FILE)
-	@sed -e 's/Array1D/Array3D/g' $(SRC_DIR)/Item_Array1D.F90 >> $(_TMP_FILE)
-	@echo " !> @endcond DOC_ALL" >> $(_TMP_FILE)
+	@rm $(_TMP_FILE)
+	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/Array1D/Array3D/g' $(SRC_DIR)/Item_Array1D.F90 >> $(_TMP_FILE)
 	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
 
 
@@ -62,15 +60,13 @@ $(SRC_DIR)/bud_C2_Array1D.f90: $(SRC_DIR)/C2_Array1D.F90
 	$(CPP) $(INC) $(CPPFLAGS) $< > $@
 $(SRC_DIR)/bud_C2_Array2D.f90: _TMP_FILE=$(SRC_DIR)/C2_Array2D.F90
 $(SRC_DIR)/bud_C2_Array2D.f90: $(SRC_DIR)/C2_Array1D.F90
-	@echo " !> @cond DOC_ALL" > $(_TMP_FILE)
-	@sed -e 's/Array1D/Array2D/g' $(SRC_DIR)/C2_Array1D.F90 >> $(_TMP_FILE)
-	@echo " !> @endcond DOC_ALL" >> $(_TMP_FILE)
+	@rm $(_TMP_FILE)
+	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/Array1D/Array2D/g' $(SRC_DIR)/C2_Array1D.F90 >> $(_TMP_FILE)
 	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
 $(SRC_DIR)/bud_C2_Array3D.f90: _TMP_FILE=$(SRC_DIR)/C2_Array3D.F90
 $(SRC_DIR)/bud_C2_Array3D.f90: $(SRC_DIR)/C2_Array1D.F90
-	@echo " !> @cond DOC_ALL" > $(_TMP_FILE)
-	@sed -e 's/Array1D/Array3D/g' $(SRC_DIR)/C2_Array1D.F90 >> $(_TMP_FILE)
-	@echo " !> @endcond DOC_ALL" >> $(_TMP_FILE)
+	@rm $(_TMP_FILE)
+	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/Array1D/Array3D/g' $(SRC_DIR)/C2_Array1D.F90 >> $(_TMP_FILE)
 	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
 
 
@@ -85,15 +81,13 @@ $(SRC_DIR)/bud_FS_Array1D.f90: $(SRC_DIR)/FS_Array1D.F90
 	$(CPP) $(INC) $(CPPFLAGS) $< > $@
 $(SRC_DIR)/bud_FS_Array2D.f90: _TMP_FILE=$(SRC_DIR)/FS_Array2D.F90
 $(SRC_DIR)/bud_FS_Array2D.f90: $(SRC_DIR)/FS_Array1D.F90
-	@echo " !> @cond DOC_ALL" > $(_TMP_FILE)
-	@sed -e 's/Array1D/Array2D/g' $(SRC_DIR)/FS_Array1D.F90 >> $(_TMP_FILE)
-	@echo " !> @endcond DOC_ALL" >> $(_TMP_FILE)
+	@rm $(_TMP_FILE)
+	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/Array1D/Array2D/g' $(SRC_DIR)/FS_Array1D.F90 >> $(_TMP_FILE)
 	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
 $(SRC_DIR)/bud_FS_Array3D.f90: _TMP_FILE=$(SRC_DIR)/FS_Array3D.F90
 $(SRC_DIR)/bud_FS_Array3D.f90: $(SRC_DIR)/FS_Array1D.F90
-	@echo " !> @cond DOC_ALL" > $(_TMP_FILE)
-	@sed -e 's/Array1D/Array3D/g' $(SRC_DIR)/FS_Array1D.F90 >> $(_TMP_FILE)
-	@echo " !> @endcond DOC_ALL" >> $(_TMP_FILE)
+	@rm $(_TMP_FILE)
+	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/Array1D/Array3D/g' $(SRC_DIR)/FS_Array1D.F90 >> $(_TMP_FILE)
 	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
 
 
@@ -108,15 +102,13 @@ $(SRC_DIR)/bud_LL_Array1D.f90: $(SRC_DIR)/LL_Array1D.F90
 	$(CPP) $(INC) $(CPPFLAGS) $< > $@
 $(SRC_DIR)/bud_LL_Array2D.f90: _TMP_FILE=$(SRC_DIR)/LL_Array2D.F90
 $(SRC_DIR)/bud_LL_Array2D.f90: $(SRC_DIR)/LL_Array1D.F90
-	@echo " !> @cond DOC_ALL" > $(_TMP_FILE)
-	@sed -e 's/Array1D/Array2D/g' $(SRC_DIR)/LL_Array1D.F90 >> $(_TMP_FILE)
-	@echo " !> @endcond DOC_ALL" >> $(_TMP_FILE)
+	@rm $(_TMP_FILE)
+	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/Array1D/Array2D/g' $(SRC_DIR)/LL_Array1D.F90 >> $(_TMP_FILE)
 	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
 $(SRC_DIR)/bud_LL_Array3D.f90: _TMP_FILE=$(SRC_DIR)/LL_Array3D.F90
 $(SRC_DIR)/bud_LL_Array3D.f90: $(SRC_DIR)/LL_Array1D.F90
-	@echo " !> @cond DOC_ALL" > $(_TMP_FILE)
-	@sed -e 's/Array1D/Array3D/g' $(SRC_DIR)/LL_Array1D.F90 >> $(_TMP_FILE)
-	@echo " !> @endcond DOC_ALL" >> $(_TMP_FILE)
+	@rm $(_TMP_FILE)
+	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/Array1D/Array3D/g' $(SRC_DIR)/LL_Array1D.F90 >> $(_TMP_FILE)
 	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
 
 
@@ -131,15 +123,13 @@ $(SRC_DIR)/bud_FS_C2_Array1D.f90: $(SRC_DIR)/FS_C2_Array1D.F90
 	$(CPP) $(INC) $(CPPFLAGS) $< > $@
 $(SRC_DIR)/bud_FS_C2_Array2D.f90: _TMP_FILE=$(SRC_DIR)/FS_C2_Array2D.F90
 $(SRC_DIR)/bud_FS_C2_Array2D.f90: $(SRC_DIR)/FS_C2_Array1D.F90
-	@echo " !> @cond DOC_ALL" > $(_TMP_FILE)
-	@sed -e 's/Array1D/Array2D/g' $(SRC_DIR)/FS_C2_Array1D.F90 >> $(_TMP_FILE)
-	@echo " !> @endcond DOC_ALL" >> $(_TMP_FILE)
+	@rm $(_TMP_FILE)
+	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/Array1D/Array2D/g' $(SRC_DIR)/FS_C2_Array1D.F90 >> $(_TMP_FILE)
 	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
 $(SRC_DIR)/bud_FS_C2_Array3D.f90: _TMP_FILE=$(SRC_DIR)/FS_C2_Array3D.F90
 $(SRC_DIR)/bud_FS_C2_Array3D.f90: $(SRC_DIR)/FS_C2_Array1D.F90
-	@echo " !> @cond DOC_ALL" > $(_TMP_FILE)
-	@sed -e 's/Array1D/Array3D/g' $(SRC_DIR)/FS_C2_Array1D.F90 >> $(_TMP_FILE)
-	@echo " !> @endcond DOC_ALL" >> $(_TMP_FILE)
+	@rm $(_TMP_FILE)
+	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/Array1D/Array3D/g' $(SRC_DIR)/FS_C2_Array1D.F90 >> $(_TMP_FILE)
 	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
 
 

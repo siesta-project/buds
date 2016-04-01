@@ -1530,19 +1530,19 @@
           ", BCF block-size=", this%D%BS, &
           ", default-ng=", this%D%ng, &
           ", P=",this%D%P, ", NP=",this%D%NP, &
-          ", refs: ", get_refs(this), ">"
+          ", refs: ", references(this), ">"
       case ( DIST_BLOCK_FIRST ) 
         write(*,fmt) "<", trim(name), " FakeComm", &
           ", BF block-size=", this%D%BS, &
           ", default-ng=", this%D%ng, &
           ", P=",this%D%P, ", NP=",this%D%NP, &
-          ", refs: ", get_refs(this), ">"
+          ", refs: ", references(this), ">"
       case ( DIST_BLOCK_LAST ) 
         write(*,fmt) "<", trim(name), " FakeComm", &
           ", BL block-size=", this%D%BS, &
           ", default-ng=", this%D%ng, &
           ", P=",this%D%P, ", NP=",this%D%NP, &
-          ", refs: ", get_refs(this), ">"
+          ", refs: ", references(this), ">"
       case default
         write(*,'(a,i0,a)') "<Not implemented distribution: ",this%D%dist,">"
       end select
@@ -1555,19 +1555,19 @@
           ", BCF block-size=", this%D%BS, &
           ", default-ng=", this%D%ng, &
           ", P=",this%D%P, ", NP=",this%D%NP, &
-          ", refs: ", get_refs(this), ">"
+          ", refs: ", references(this), ">"
       case ( DIST_BLOCK_FIRST ) 
         write(*,fmt) "<", trim(name), " Comm=", this%D%Comm, &
           ", BF block-size=", this%D%BS, &
           ", default-ng=", this%D%ng, &
           ", P=",this%D%P, ", NP=",this%D%NP, &
-          ", refs: ", get_refs(this), ">"
+          ", refs: ", references(this), ">"
       case ( DIST_BLOCK_LAST ) 
         write(*,fmt) "<", trim(name), " Comm=", this%D%Comm, &
           ", BL block-size=", this%D%BS, &
           ", default-ng=", this%D%ng, &
           ", P=",this%D%P, ", NP=",this%D%NP, &
-          ", refs: ", get_refs(this), ">"
+          ", refs: ", references(this), ">"
 
       case default
         write(*,'(a,i0,a)') "<Not implemented distribution: ",this%D%dist,">"

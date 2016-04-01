@@ -1,6 +1,17 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
-
+  
 #include "bud_utils.inc"
+  
+  ! The following pre-processor variables are currently used when
+  ! included:
+  !  - BUD_MOD_NAME of the module
+  !  - BUD_TYPE_NAME of the type
+  !  - BUD_TYPE_NAME_, internal data pointer of the type
+  !  - BUD_TYPE_NAME_STR, the routine name in "string" format (for IO)
+  !  - BUD_TYPE_NEW, the routine name for creating a new type
+  !  - BUD_TYPE_VAR, the variable type contained in the array
+  !  - BUD_TYPE_VAR_PREC, the precision specifier for the array
+
 
 #define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
 #define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
@@ -13,19 +24,6 @@
   !!
   !! @note
   !! This documentation is duplicated in all types with different precision.
-  !!
-  !! @dev_note
-  !! The following pre-processor variables are currently used when
-  !! included:
-  !!  - _BUD_MOD_NAME of the module
-  !!  - _BUD_TYPE_NAME of the type
-  !!  - _BUD_TYPE_NAME_, internal data pointer of the type
-  !!  - _BUD_TYPE_NAME_STR, the routine name in "string" format (for IO)
-  !!  - _BUD_TYPE_NEW, the routine name for creating a new type
-  !!  - _BUD_TYPE_VAR, the variable type contained in the array
-  !!  - _BUD_TYPE_VAR_PREC, the precision specifier for the array
-  !! If you add any new dependencies be sure to undefine the variable
-  !! at the bottom of this file.
 
   ! This *MUST* be the first statement
   ! Common parameters and variables used
@@ -48,7 +46,7 @@
 
   !> @bud variable
   !!
-  !! Handler for the pointer type stored
+  !! Handler for the array type stored
   type BUD_TYPE_NAME
     !> Stored pointer which contains the reference counting etc.
     type(BUD_TYPE_NAME_), pointer :: D => null()
@@ -61,6 +59,8 @@
 #endif
   end type BUD_TYPE_NAME
 
+  !> @cond BUD_DEVELOPER
+  
   !> @bud container for BUD_TYPE_NAME
   !!
   !! Contains an array of BUD_DIM dimensions.
@@ -79,6 +79,7 @@
 
   end type BUD_TYPE_NAME_
 
+  !> @endcond BUD_DEVELOPER
   
   !> Create new @bud instances
   interface new
@@ -93,6 +94,7 @@
   end interface
   public :: BUD_TYPE_NEW
 
+
   !> Retrieve pointer/value to/in the stored array
   !!
   !! With a `=>` a pointer to the stored array is returned.
@@ -102,24 +104,15 @@
   !! @note
   !! For excessive access to the array one should retrieve
   !! a pointer, and then access the elements in that array.
-  interface getp
+  interface valuep
     module procedure get_arrayp_
   end interface
-  public :: getp
+  public :: valuep
 
-  interface get_arrayp
-    module procedure get_arrayp_
-  end interface
-  public :: get_arrayp
-
-  interface get
+  interface value
     module procedure get_array_idx_
   end interface
-  public :: get
-  interface get_array
-    module procedure get_array_idx_
-  end interface
-  public :: get_array
+  public :: value
 
 
   !> Number of elements is the stored array (same as regular `size`)
@@ -481,7 +474,7 @@
 #if BUD_DIM > 3
       " d4=",d4, &
 #endif
-      ", refs: ", get_refs(this), ">"
+      ", refs: ", references(this), ">"
 
   end subroutine print_
 
