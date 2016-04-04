@@ -3,10 +3,12 @@
 ! Get default commands
 #include "bud_utils.inc"
 
-!> @addtogroup bud-intrinsic
-
-!> @defgroup sm-csr Sparse matrix (CSR)
+!> @addtogroup sm Sparse matrix
 !! @ingroup bud-intrinsic
+!!
+!! @{
+
+!> @defgroup sm-csr Compressed Sparse Row (CSR)
 !!
 !! A sparse matrix implementation.
 !!
@@ -14,6 +16,7 @@
 !! and does not contain the actual sparse data.
 !!
 !! @{
+
 
 # define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,iSM_CSR)
 !> @defgroup BUD_MOD_NAME Integer (int)
@@ -42,6 +45,9 @@ end module
 !> @}
 
 ! GROUP sm-csr
+!> @}
+
+! GROUP sm
 !> @}
 
 

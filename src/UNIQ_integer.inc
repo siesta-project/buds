@@ -60,7 +60,7 @@ end function
 !> @param[in] n size of array 
 !! @param[in] array sorted array where we count unique numbers
 !! @param[in] pvt pivoting array that creates a sorted array
-!! @param[out] nuniq number of unique values in sorted array
+!! @return number of unique values in sorted array
 pure function BUD_CC2(nuniq_pvt_,BUD_PREC)(n, array, pvt) result(nuniq)
   integer(BUD_PREC), intent(in) :: n, array(n), pvt(n)
   integer(BUD_PREC) :: nuniq
