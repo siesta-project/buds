@@ -133,12 +133,18 @@ $(SRC_DIR)/bud_FS_C2_Array3D.f90: $(SRC_DIR)/FS_C2_Array1D.F90
 
 
 SM_OBJS = \
-	bud_SM_CSR.o
+	bud_SM_CSR.o \
+	bud_SM_CSR0.o \
+	bud_SM_CSR_C.o
 SM_OBJS := $(addprefix $(SRC_DIR)/,$(SM_OBJS))
 $(SM_OBJS:.o=.f90): $(SRC_DIR)/SM_common.inc $(SRC_DIR)/SM_CSR.inc
 $(SM_OBJS): $(SRC_DIR)/SM_common.inc $(SRC_DIR)/SM_CSR.inc
 SRC_OBJS += $(SM_OBJS)
 $(SRC_DIR)/bud_SM_CSR.f90: $(SRC_DIR)/SM_CSR.F90
+	$(CPP) $(INC) $(CPPFLAGS) $< > $@
+$(SRC_DIR)/bud_SM_CSR0.f90: $(SRC_DIR)/SM_CSR0.F90
+	$(CPP) $(INC) $(CPPFLAGS) $< > $@
+$(SRC_DIR)/bud_SM_CSR_C.f90: $(SRC_DIR)/SM_CSR_C.F90
 	$(CPP) $(INC) $(CPPFLAGS) $< > $@
 
 
