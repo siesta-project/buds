@@ -1,4 +1,4 @@
-# Contributors
+# Contributors  {#contrib}
 
 buds have been developed by the following list of people:
 
@@ -15,4 +15,13 @@ buds have been developed by the following list of people:
   + Item_Array
   + LL_Array
   + SM_CSR
+  + SM_CSR_C
+  + SM_CSR0
 
+
+# Acknowledgements  {#contribAcknow}
+
+The basic concept of the reference counted mechanisms is inspired by
+the FLIBS project by Arjen Markus as well as minor things from the PyF95 project.
+
+The initial draft of this library was created by Alberto Garcia.

@@ -1,4 +1,8 @@
-# Development of buds
+# Development  {#devel}
+
+- @ref develNotes
+- @ref develNew
+
 
 A short introduction to the buds library and how it may be
 extended can be found in this section.
@@ -6,13 +10,13 @@ extended can be found in this section.
 We highly welcome suggestions, issues and/or bug-fixes.
 Anybody is encouraged to contribute via the github development page:
 
-- [General development repository][buds]
+- [Development repository][buds]
 - [Reporting issues/bugs][issues]
 - [Creating pull-requests for buds][pr]
 
 Please do not hesitate to contribute!
 
-## Notes for developers
+# Notes for developers  {#develNotes}
 
 The library is heavily pasted with pre-processor statements
 which, sadly, is not well-supported in a large range of
@@ -28,7 +32,9 @@ These guide-lines for the code __must__ be followed:
 
 - Pre-processor variables __must__ adhere to these rules:
   1. Prefix with `BUD_` which ensures no name-clashing with
-     parenting libraries/applications.
+  parenting libraries/applications.
+  2. Ensure the implementation files contain an `#undef` statement
+  to limit warnings when compiled.
 
 - All public routines/functions __must__ be interfaced. I.e.
   no routines/functions may be made public.
@@ -56,9 +62,9 @@ These guide-lines for the code __must__ be followed:
 		end interface
 ~~~~~~~~~~~
     
-  + Prefer to add contribution statements in the CONTRIBUTORS.md file
+  + Add contribution statements in the `CONTRIBUTORS.md` file
 	which ensures a resulting documentation to be short and concise.  
-    In the CONTRIBUTORS.md file you may add any information and specifics
+    In the `CONTRIBUTORS.md` file you may add any information and specifics
 	of what has been implemented by specific authors.
   + Do __not__ use the `\@date` marker as it clutters the documentation.
   + Use `\@opt` to denote optional arguments, for instance:
@@ -88,7 +94,7 @@ These guide-lines for the code __must__ be followed:
   function name as a local variable.  
   It also helps understanding the code *in-line*.
   
-## Creating a new bud
+# Creating a new bud  {#develNew}
 
 A short description of the required steps needed to
 create a custom bud type is listed here:
@@ -153,12 +159,6 @@ create a custom bud type is listed here:
    that name-clashes are never encountered.
 
 
-## Acknowledgements
-
-The basic concept of the reference counted mechanisms is inspired by
-the FLIBS project by Arjen Markus as well as minor things from the PyF95 project.
-
-The initial draft of this library was created by Alberto Garcia.
 
 
 [buds]: https://github.com/siesta-project/buds
