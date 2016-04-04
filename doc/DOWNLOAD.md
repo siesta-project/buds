@@ -4,7 +4,7 @@ The __buds__ library may be downloaded from the development Github page [here][b
 
 The current release can be found here:
 
-- [0.1.tar.gz][buds-currel]
+- [buds-0.1.tar.gz][buds-currel]
 
 Previous releases can be found [here][buds-rels] but they are not
 supported.  
