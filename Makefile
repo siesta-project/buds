@@ -2,12 +2,10 @@ TOP_DIR ?= .
 
 # the default target
 .PHONY: default
-.NOTPARALLEL: default
 default: libs
 
 # the default target
 .PHONY: all
-.NOTPARALLEL: all
 all: static shared
 
 # Common makefile stuff:
@@ -85,7 +83,6 @@ endif
 
 # Now create the actual compilation make file
 .PHONY: lib libs
-#.NOTPARALLEL: lib libs shared static
 lib: libs
 
 # Define default library creations
