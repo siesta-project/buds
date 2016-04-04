@@ -107,6 +107,16 @@ else
 endif
 
 
+# Define the object-oriented programming for
+# the buds
+ifeq ($(OO),0)
+  PPFLAGS += -DBUD_FORTRAN=1995
+endif
+ifeq ($(OO),no)
+  PPFLAGS += -DBUD_FORTRAN=1995
+endif
+
+
 # Generic compiler options
 CC := $(V_CC)
 CXX := $(V_CXX)
@@ -131,6 +141,11 @@ endif
 
 # Add to includes the mod directory
 INC += $(V_FC_MODDIR)$(BUDS_MODDIR)
+
+# Add the definitions
+FPPFLAGS += $(PPFLAGS)
+CPPFLAGS += $(PPFLAGS)
+
 
 # Define the compilation options:
 .F90.o:
