@@ -208,7 +208,7 @@ module BUD_MOD_NAME
   !! 
   !! Retrieve the unit of the file in case it is
   !! opened.  
-  !! If the file is not opened, -1 will be returned.
+  !! If the file is not opened, `-1` will be returned.
   interface get_unit
     module procedure get_unit_
   end interface
@@ -563,6 +563,7 @@ module BUD_MOD_NAME
 
   
   !> @param[inout] this file @bud
+  !! @param[in] D (dummy argument which should _NEVER_ be used, forces explicit interface usage)
   !! @param[in] form @opt='FORMATTED' format of opened file
   !! @param[in] access @opt='SEQUENTIAL' file access pattern
   !! @param[in] action @opt='READWRITE' file R/W access

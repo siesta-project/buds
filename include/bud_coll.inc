@@ -10,14 +10,20 @@
   !  - BUD_COLL_3, name of the third @bud (need not be used)
   !  - BUD_COLL_4, name of the fourth @bud (need not be used)
   !  - BUD_COLL_5, name of the fifth @bud (need not be used)
+  !  - BUD_COLL_6, name of the sixth @bud (need not be used)
   !  - BUD_COLL_SAME, 0 if all contained @buds are individual, else 1.
 
 #ifndef BUD_COLL_3
 # undef BUD_COLL_4
 # undef BUD_COLL_5
+# undef BUD_COLL_6
 #endif
 #ifndef BUD_COLL_4
 # undef BUD_COLL_5
+# undef BUD_COLL_6
+#endif
+#ifndef BUD_COLL_5
+# undef BUD_COLL_6
 #endif
 
   ! Include the common utilities
@@ -131,6 +137,28 @@
 # endif
 #endif
 
+#ifdef BUD_COLL_6
+# if BUD_TYPE_NAME == BUD_COLL_6
+#  define BUD_COLL_SAME 1
+# endif
+# if BUD_COLL_1 == BUD_COLL_6
+#  define BUD_COLL_SAME 1
+# endif
+# if BUD_COLL_2 == BUD_COLL_6
+#  define BUD_COLL_SAME 1
+# endif
+# if BUD_COLL_3 == BUD_COLL_6
+#  define BUD_COLL_SAME 1
+# endif
+# if BUD_COLL_4 == BUD_COLL_6
+#  define BUD_COLL_SAME 1
+# endif
+# if BUD_COLL_5 == BUD_COLL_6
+#  define BUD_COLL_SAME 1
+# endif
+#endif
+
+  
 #ifndef BUD_COLL_SAME
 # define BUD_COLL_SAME 0
 #endif
@@ -150,6 +178,9 @@
 #ifdef BUD_COLL_5
   !!  5. BUD_COLL_5
 #endif
+#ifdef BUD_COLL_6
+  !!  6. BUD_COLL_6
+#endif
   !!
 #if BUD_COLL_SAME == 0
   !! None of the contained elements are the same.
@@ -163,8 +194,10 @@
   type BUD_TYPE_NAME
 
     !> @cond BUD_DEVELOPER
+    
     !> Stored pointer which contains the reference counting etc.
     type(BUD_TYPE_NAME_), pointer :: D => null()
+
     !> @endcond BUD_DEVELOPER
 
 #if BUD_FORTRAN >= 2003
@@ -213,6 +246,14 @@
     !> @iSee #_elem5
     procedure, public :: set_elem5 => set_elem5_
 #endif
+#ifdef BUD_COLL_6
+    !> @iSee #get_elem6
+    procedure, public :: get_elem6 => get_elem6_
+    !> @iSee #get_elem6p
+    procedure, public :: get_elem6p=> get_elem6p_
+    !> @iSee #_elem6
+    procedure, public :: set_elem6 => set_elem6_
+#endif
 
 #endif
   end type BUD_TYPE_NAME
@@ -225,7 +266,7 @@
   !! @details
   !! Container for the data in the @bud.
   !!
-  !! The container handles a collection of up to 5 elements.
+  !! The container handles a collection of up to 6 elements.
   !! Each element is stored via numeric sequences
   !! Hence the first item is `e1`, second is `e2` etc.
   !!
@@ -237,8 +278,11 @@
 #endif
 #ifndef BUD_COLL_5
   !! This @bud is a collection of 4 elements:
-#else
+#endif
+#ifndef BUD_COLL_6
   !! This @bud is a collection of 5 elements:
+#else
+  !! This @bud is a collection of 6 elements:
 #endif
   !! 1. BUD_COLL_1
   !! 2. BUD_COLL_2
@@ -250,6 +294,9 @@
 #endif
 #ifdef BUD_COLL_5
   !! 5. BUD_COLL_5
+#endif
+#ifdef BUD_COLL_6
+  !! 6. BUD_COLL_6
 #endif
   type BUD_TYPE_NAME_    
 
@@ -268,6 +315,10 @@
 #ifdef BUD_COLL_5
     !> Fifth element of collection (BUD_COLL_5)
     type(BUD_COLL_5) :: e5
+#endif
+#ifdef BUD_COLL_6
+    !> Sixth element of collection (BUD_COLL_6)
+    type(BUD_COLL_6) :: e6
 #endif
     
     ! Consistent data in the reference counted object
@@ -311,6 +362,9 @@
 #ifdef BUD_COLL_5
     module procedure BUD_CC3(get_elem,5,_assign_)
 #endif
+#ifdef BUD_COLL_6
+    module procedure BUD_CC3(get_elem,6,_assign_)
+#endif
     module procedure BUD_CC3(set_elem,1,_)
     module procedure BUD_CC3(set_elem,2,_)
 #ifdef BUD_COLL_3
@@ -321,6 +375,9 @@
 #endif
 #ifdef BUD_COLL_5
     module procedure BUD_CC3(set_elem,5,_)
+#endif
+#ifdef BUD_COLL_6
+    module procedure BUD_CC3(set_elem,6,_)
 #endif
   end interface
 
@@ -336,6 +393,9 @@
 #ifdef BUD_COLL_5
     module procedure BUD_CC3(get_elem,5,_)
 #endif
+#ifdef BUD_COLL_6
+    module procedure BUD_CC3(get_elem,6,_)
+#endif
   end interface
 
   interface set
@@ -349,6 +409,9 @@
 #endif
 #ifdef BUD_COLL_5
     module procedure BUD_CC3(set_elem,5,_)
+#endif
+#ifdef BUD_COLL_6
+    module procedure BUD_CC3(set_elem,6,_)
 #endif
   end interface
 
@@ -459,6 +522,21 @@
   public :: get_elem5p
 #endif
 
+#ifdef BUD_COLL_6
+  interface get_elem6
+    module procedure get_elem6_
+  end interface
+  public :: get_elem6
+  interface set_elem6
+    module procedure set_elem6_
+  end interface
+  public :: set_elem6
+  interface get_elem6p
+    module procedure get_elem6p_
+  end interface
+  public :: get_elem6p
+#endif
+
   !> @endcond BUD_DEVELOPER
 
   !> Print, to std-out, some basic information of the data-container
@@ -492,6 +570,9 @@
 #ifdef BUD_COLL_5
     call delete(D%e5)
 #endif
+#ifdef BUD_COLL_6
+    call delete(D%e6)
+#endif
     
   end subroutine delete_data
 
@@ -520,6 +601,9 @@
 #ifdef BUD_COLL_5
   !! @param[in] E fifth element in the @bud
 #endif
+#ifdef BUD_COLL_6
+  !! @param[in] F sixth element in the @bud
+#endif
   subroutine new_data_(this, a, b &
 #ifdef BUD_COLL_3
     , c &
@@ -529,6 +613,9 @@
 #endif
 #ifdef BUD_COLL_5
     , e &
+#endif
+#ifdef BUD_COLL_6
+    , f &
 #endif
     )
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
@@ -542,6 +629,9 @@
 #endif
 #ifdef BUD_COLL_5
     type(BUD_COLL_5), intent(in) :: e
+#endif
+#ifdef BUD_COLL_6
+    type(BUD_COLL_6), intent(in) :: f
 #endif
 
     call new(this)
@@ -557,6 +647,9 @@
 #endif
 #ifdef BUD_COLL_5
     this%D%e5 = e
+#endif
+#ifdef BUD_COLL_6
+    this%D%e6 = f
 #endif
     
   end subroutine new_data_
@@ -582,6 +675,11 @@
 #ifdef BUD_COLL_5
 # define BUD_COLL_NUM 5
 # define BUD_COLL_CURRENT BUD_COLL_5
+# include "bud_coll_elem.inc"
+#endif
+#ifdef BUD_COLL_6
+# define BUD_COLL_NUM 6
+# define BUD_COLL_CURRENT BUD_COLL_6
 # include "bud_coll_elem.inc"
 #endif
 
@@ -625,6 +723,9 @@
 #ifdef BUD_COLL_5
     call print(this%D%e5, indent = lindent)
 #endif
+#ifdef BUD_COLL_6
+    call print(this%D%e6, indent = lindent)
+#endif
     lindent = lindent - 2 ! go back to requested indentation
     write(fmt, '(a,i0,a)') '(t',lindent,',a,i0,a)'
     write(*,fmt) " <coll-refs: ", references(this), ">>"
@@ -642,6 +743,7 @@
 #undef BUD_COLL_3
 #undef BUD_COLL_4
 #undef BUD_COLL_5
+#undef BUD_COLL_6
 #undef BUD_COLL_ALL_SAME
 
   ! project-bud -- local file settings

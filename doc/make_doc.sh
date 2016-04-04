@@ -26,7 +26,7 @@ fi
 
 # Assert that the used executables are available:
 _fail=""
-for exe in doxygen dot
+for exe in doxygen
 do
     which $exe > /dev/null
     if [[ $? -ne 0 ]]; then
@@ -42,6 +42,13 @@ if [[ -n "$_fail" ]]; then
     exit 1
 fi
 
+# Check whether we should use dot
+which dot > /dev/null
+if [[ $? -ne 0 ]]; then
+    have_dot="HAVE_DOT = NO"
+else
+    have_dot="HAVE_DOT = YES"
+fi
 
 # Start on the actual creation of the documentation
 # We create a temporary directory
@@ -50,5 +57,5 @@ rm -rf $_DOC
 # Now we can create the documentation
 {
     cat doc/Doxyfile
-#    echo "INPUT = ../README.md ./ ../doc/DEV.md"
+    echo "$have_dot"
 } | doxygen -

@@ -40,7 +40,6 @@ $(SRC_DIR)/bud_Item_Array2D.f90: _TMP_FILE=$(SRC_DIR)/Item_Array2D.F90
 $(SRC_DIR)/bud_Item_Array2D.f90: $(SRC_DIR)/Item_Array1D.F90
 	@rm $(_TMP_FILE)
 	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/Array1D/Array2D/g' $(SRC_DIR)/Item_Array1D.F90 >> $(_TMP_FILE)
-	@echo " !> @endcond DOC_ALL" >> $(_TMP_FILE)
 	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
 $(SRC_DIR)/bud_Item_Array3D.f90: _TMP_FILE=$(SRC_DIR)/Item_Array3D.F90
 $(SRC_DIR)/bud_Item_Array3D.f90: $(SRC_DIR)/Item_Array1D.F90
