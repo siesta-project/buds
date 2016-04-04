@@ -130,7 +130,7 @@ create a custom bud type is listed here:
 ~~~~~~~{.f90}
 	type BUD_TYPE_NAME_
      <contained data>
-    #include "buds_common_type.inc"
+    #include "buds_common_type_.inc"
     end type
 ~~~~~~~
 
