@@ -1,6 +1,0 @@
-doc/html/**
-doc/latex/**
-*.mod
-*.MOD
-*.o
-*.a
