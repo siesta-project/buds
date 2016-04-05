@@ -568,8 +568,8 @@
     integer, intent(in), optional :: indent
 
     integer :: lindent
-    integer :: i, nel
-
+    integer :: i
+    
     ! 4-byte variable
     character(len=32) :: fmt
     character(len=256) :: name

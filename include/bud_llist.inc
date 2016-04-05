@@ -948,9 +948,7 @@
     integer, intent(in), optional :: indent
 
     integer :: lindent
-    integer :: i, nel
     type(BUD_LINKED_LIST_NAME), pointer :: node
-    type(BUD_LIST_TYPE) :: empty
 
     ! 4-byte variable
     character(len=32) :: fmt
