@@ -1,0 +1,26 @@
+language: fortran
+
+sudo: false
+
+notifications:
+  email:
+     recipients:
+       - nickpapior@gmail.com
+     on_failure: always
+     on_success: change
+
+install:
+  - make OPT=debug
+
+script:
+  - make OPT=debug test
+
+
+#
+# These are setup scripts:
+#
+
+addons:
+  apt:
+    packages: &common_packages
+      - gfortran
