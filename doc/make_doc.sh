@@ -24,12 +24,19 @@ if [[ $(dirname $_sd) != $_cwd ]]; then
     exit 1
 fi
 
+function have_exe {
+    local exe=$1
+    shift
+    which $exe > /dev/null
+    printf "%d" $?
+}
+    
+
 # Assert that the used executables are available:
 _fail=""
 for exe in doxygen
 do
-    which $exe > /dev/null
-    if [[ $? -ne 0 ]]; then
+    if [[ $(have_exe $exe) -ne 0 ]]; then
 	_fail="$_fail $exe"
     fi
 done
@@ -43,11 +50,10 @@ if [[ -n "$_fail" ]]; then
 fi
 
 # Check whether we should use dot
-which dot > /dev/null
-if [[ $? -ne 0 ]]; then
-    have_dot="HAVE_DOT = NO"
-else
+if [[ $(have_exe dot) -eq 0 ]]; then
     have_dot="HAVE_DOT = YES"
+else
+    have_dot="HAVE_DOT = NO"
 fi
 
 # Start on the actual creation of the documentation
@@ -59,3 +65,19 @@ rm -rf $_DOC
     cat doc/Doxyfile
     echo "$have_dot"
 } | doxygen -
+
+
+
+###################
+# Post-processing #
+###################
+pushd $_DOC
+
+# if we have optipng we optimize the PNG's
+# to reduce webpage size.
+if [[ $(have_exe optipng) -eq 0 ]]; then
+    find ./ -name "*.png" | \
+	xargs -n 1 -P 4 optipng -o7
+fi
+
+popd
