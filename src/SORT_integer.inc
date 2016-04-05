@@ -111,7 +111,9 @@ contains
     !lA = lA - 1
 
     ! Copy the mid to the front of the sarray
-    sarray(sF+P:sA+P-1) = sarray(sF:sA-1)
+    do lA = sA - 1 , sF , - 1
+      sarray(lA+P) = sarray(lA)
+    end do
     sarray(sF:sF+P-1)   = array(sA:sA+P-1)
 
   end subroutine insert_mid
@@ -154,7 +156,9 @@ contains
     P = lA - sA
 
     ! Copy over the values
-    sarray(P+1:P+sA-1) = sarray(1:sA-1)
+    do i = sA - 1 , 1 , - 1
+      sarray(P+i) = sarray(i)
+    end do
     sarray(1:P)        = array(sA:lA-1)
 
   end subroutine insert_front
