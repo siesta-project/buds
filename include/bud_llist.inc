@@ -7,7 +7,8 @@
   !  - BUD_TYPE_NAME_STR, the routine name in "string" format (for IO)
   !  - BUD_TYPE_NEW, the routine name for creating a new type
   !  - BUD_LIST_TYPE, the variable type contained in the linked list
-  !  - BUD_LINKED_LIST_NAME, the name of the self-contained linked list
+  !  - BUD_LIST_DOUBLY, if /= 0 the linked list is doubly connected
+  !  - BUD_LINKED_LIST_NAME, the name of the self-contained linked list (not required to be set)
 
   ! Include the common utilities
 #include "bud_utils.inc"
@@ -24,8 +25,8 @@
 
   ! We default the linked list to be a doubly
   ! linked list
-#ifndef BUD_LIST_SINGLY_DOUBLY
-# define BUD_LIST_SINGLY_DOUBLY 2
+#ifndef BUD_LIST_DOUBLY
+# define BUD_LIST_DOUBLY 1
 #endif
 
 #ifndef BUD_LINKED_LIST_NAME
@@ -33,11 +34,8 @@
 #endif
 
   ! Create internal flag
-#if BUD_LIST_SINGLY_DOUBLY == 2
-# define BUD_LIST_IS_DOUBLY
-#else
-# undef BUD_LIST_IS_DOUBLY
-# error "Currently single linked lists are not implemented"
+#if BUD_LIST_DOUBLY != 1
+# error "Currently only doubly linked lists are implemented"
 #endif
 
   !> @cond BUD_DOC_INC
@@ -57,14 +55,21 @@
 
   !> @endcond BUD_DOC_INC
 
-  !> Linked list with element contained BUD_LIST_TYPE
+  !> Linked list with each node containing BUD_LIST_TYPE
   !!
-  !! A direct linked list with contained element (BUD_LIST_TYPE).
-  !!
-#ifdef BUD_LIST_IS_DOUBLY
-  !! This linked list is doubly connected (both backwards and
-  !! forward itterable).
+#ifdef BUD_LIST_DOUBLY
+  !! This data container holds 3 variables (doubly linked list):
+  !!  1. The data of the current item
+  !!  2. The next target
+  !!  3. The previous target
+#else
+  !! This data container holds 2 variables (single linked list):
+  !!  1. The data of the current item
+  !!  2. The next target
 #endif
+  !!
+  !! The data in each node does not necessarily require to be
+  !! populated and they can as such be used as "empty" nodes.
   type BUD_TYPE_NAME
 
     !> @cond BUD_DEVELOPER
@@ -80,7 +85,7 @@
 
     procedure, private :: new_
     procedure, private :: new_data_
-    !> @iSee #new
+    !> @iSee new
     generic, public :: new => new_, new_data_
 
     !> @iSee #nodes
@@ -119,8 +124,10 @@
     !> @iSee #copy_list
     procedure, public :: copy => copy_list_
 
+    procedure, private :: itt_step_
+    procedure, private :: itt_step_i_
     !> @iSee #itt_step
-    procedure, public :: itt_step => itt_step_
+    generic, public :: itt_step => itt_step_, itt_step_i_
     
 #endif
   end type BUD_TYPE_NAME
@@ -128,20 +135,9 @@
 
   !> @cond BUD_DOC_INC
   
-  !> @bud container for BUD_TYPE_NAME_
+  !> Linked list container for BUD_TYPE_NAME
   !!
   !! The actual data container for the linked list.
-  !!
-#ifdef BUD_LIST_IS_DOUBLY
-  !! This data container holds 3 variables,
-  !!  1. The data of the current item
-  !!  2. The next target
-  !!  3. The previous target
-#else
-  !! This data container holds 2 variables,
-  !!  1. The data of the current item
-  !!  2. The next target
-#endif
   !!
   !! @dev-note
   !! There are various ways to implement a linked-list
@@ -168,7 +164,7 @@
 
   type BUD_LINKED_LIST_NAME
 
-#ifdef BUD_LIST_IS_DOUBLY
+#ifdef BUD_LIST_DOUBLY
     !> Previous node in the linked list
     type(BUD_LINKED_LIST_NAME), pointer :: prev => null()
 #endif
@@ -184,9 +180,13 @@
 
   !> @endcond BUD_DOC_INC
 
-  !> Initialize new linked list.
+  !> Create a new linked list with 1 node.
   !!
-  !! Possibly add the initial data in the head segment.
+  !! The linked list `head` will be at the initial
+  !! node.
+  !!
+  !! One may later use #set_head to change the
+  !! head of the linked list.
   interface new
     module procedure new_
     module procedure new_data_
@@ -207,9 +207,9 @@
     module procedure set_data_
   end interface
 
-  !> Query number of currently stored elements in this list
+  !> Query number of currently stored nodes in the linked list
   !!
-#ifdef BUD_LIST_IS_DOUBLY
+#ifdef BUD_LIST_DOUBLY
   !! Will count all previous and following elements.
 #else
   !! Will only count elements in front of the element.
@@ -237,12 +237,18 @@
   public :: set_data
 
   
-  !> Add a new element to the head of the linked list
+  !> Add a new node to the end of the linked list
   !!
   !! Possibly assign data to the new node.
   !!
-  !! @note
-  !! One cannot push elements in the middle of the stack.
+  !! One cannot add elements in the middle of the stack.
+  !!
+#ifdef BUD_LIST_DOUBLY
+  !! A doubly linked list may create circular lists
+  !! which is a valid linked list.
+  !! Adding a node on a circular list will add the
+  !! node right before the `head`.
+#endif
   interface add_node
     module procedure add_node_
     module procedure add_node_data_
@@ -250,17 +256,22 @@
   public :: add_node
   
 
-  !> Query data from head/node in the list
+  !> Query data from node in the linked list
   !!
-  !! Possibly retrieve via index, head if not supplied.
-#ifdef BUD_LIST_IS_DOUBLY
+  !! Retrieve the contained `BUD_LIST_TYPE` via index specification,
+  !! or the `head` if the index is not specified.
+  !!
+  !! @note
+#ifdef BUD_LIST_DOUBLY
   !! If the index is negative it will correspond to the
-  !! negative elements.
-  !! The index will correspond to a round-robin index
-  !! of the linked list.
+  !! previous elements.
+  !! If the linked list is circular the node will _always_
+  !! be found and will correspond to the element `mod(idx, nodes(this))`.
+  !! For non-circular list specifying an index outside the previous/next
+  !! number of nodes will return an un-initialized `BUD_LIST_TYPE`.
 #else
   !! If the requested index is beyond the number of
-  !! stored nodes `D` will be un-initialized upon return.
+  !! stored nodes the `BUD_LIST_TYPE` will be un-initialized.
 #endif
   interface get_data
     module procedure get_node_data_idx_
@@ -275,18 +286,25 @@
 
 
   !> Set the head of the linked list to the indexed node
+  !!
+  !! This will change the head of the linked list.
+  !!
+  !! If you want to preserve two linked lists with different heads
+  !! the linked list _has_ to be copied (#copy) before the head may
+  !! be changed.
   interface set_head
     module procedure set_head_idx_
   end interface
   public :: set_head
 
 
-  !> Forward iterator for a linked list from the head
+  !> Itterator Forward iterator for a linked list from the head
   !!
   !! Will step an iterator that will be connected to a
   !! linked list.
   interface itt_step
     module procedure itt_step_
+    module procedure itt_step_i_
   end interface
   public :: itt_step
 
@@ -363,7 +381,7 @@
     ! need not do anything
     if ( associated(head) ) then
       
-#ifdef BUD_LIST_IS_DOUBLY
+#ifdef BUD_LIST_DOUBLY
       do while ( associated(head%prev) )
         if ( associated(head%prev, D%ll) ) exit
         head => head%prev
@@ -440,7 +458,7 @@
     end if
 
     head => this%D%head
-#ifdef BUD_LIST_IS_DOUBLY
+#ifdef BUD_LIST_DOUBLY
     do while ( associated(head%prev) )
       head => head%prev
       if ( associated(head, this%D%head) ) exit
@@ -490,7 +508,7 @@
 
     node => this%D%head
 
-#ifdef BUD_LIST_IS_DOUBLY
+#ifdef BUD_LIST_DOUBLY
     do while ( lindex < 0 .and. associated(node%prev) )
       node => node%prev
       lindex = lindex + 1
@@ -527,7 +545,7 @@
     tmp%next => ll%next
 
     ! instantiate pointers
-#ifdef BUD_LIST_IS_DOUBLY
+#ifdef BUD_LIST_DOUBLY
     ! setup previous links
     tmp%prev => ll
     if ( associated(ll%next) ) then
@@ -722,8 +740,86 @@
 
   end function itt_step_
 
+  !> @param[in] this the linked list to be iterated
+  !! @param[inout] itt the itterator container
+  !! @param[in] i the number of elements that should be stepped (the first iteration will _always_ be the head)
+  !! @return .true. if the next element can be reached
+  function itt_step_i_(this, itt, i) result(itterated)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: itt
+    integer, intent(in) :: i
+    logical :: itterated
+    integer :: is
 
-  !> @param[inout] this the linked list which should get a node removed
+    itterated = .false.
+    if ( .not. is_initd(this) ) then
+      call delete(itt)
+      return
+    end if
+
+    is = 0
+
+    ! check whether the itterator is currently
+    ! being used
+    if ( .not. is_initd(itt) ) then
+
+      ! we are starting a new itterator
+      call new(itt)
+
+      itt%D%head => this%D%head
+      
+      itterated = associated(itt%D%head)
+      
+    else if ( i > 0 ) then
+
+      do while ( is /= i )
+        is = is + 1
+        itt%D%head => itt%D%head%next
+        
+        itterated = associated(itt%D%head)
+
+        if ( itterated ) then
+          itterated = .not. associated(itt%D%head, this%D%head)
+        end if
+        if ( .not. itterated ) exit
+
+      end do
+
+    else if ( i < 0 ) then
+
+#ifdef BUD_LIST_DOUBLY
+      do while ( is /= i )
+        is = is - 1
+        
+        itt%D%head => itt%D%head%prev
+        
+        itterated = associated(itt%D%head)
+
+        if ( itterated ) then
+          itterated = .not. associated(itt%D%head, this%D%head)
+        end if
+        if ( .not. itterated ) exit
+
+      end do
+#endif
+      
+    end if
+
+    if ( .not. itterated ) then
+      
+      ! be sure to not accidentially delete the
+      ! looped construct
+      nullify(itt%D%head)
+      
+      ! we are at the end of the linked list
+      call delete(itt)
+      
+    end if
+
+  end function itt_step_i_
+
+
+  !> @param[inout] this linked list which should get a node removed
   !> @param[in] index the index of the node that should be removed from
   !!            the linked list
   subroutine remove_node_(this, index)
@@ -733,12 +829,12 @@
 
     if ( .not. is_initd(this) ) return
 
-#ifdef BUD_LIST_IS_DOUBLY
-    ! For a doubly list this procedure is very
-    ! easy
+#ifdef BUD_LIST_DOUBLY
+    ! For a doubly list this procedure is very easy
 
     ! Find the node
     call get_ll_idxp(this, node, index)
+    
     ! Quick return if the node does not exist
     if ( .not. associated(node) ) return
 
@@ -809,14 +905,14 @@
       f => f%next
 
       allocate(t%next)
-#ifdef BUD_LIST_IS_DOUBLY
+#ifdef BUD_LIST_DOUBLY
       t%next%prev => t
 #endif
       t => t%next
       t%D = f%D
 
       ! check for circular list
-#ifdef BUD_LIST_IS_DOUBLY
+#ifdef BUD_LIST_DOUBLY
       ! In this case we have already progressed
       ! the entire list
       ! Hence we should return and NOT perform
@@ -826,7 +922,7 @@
       
     end do
 
-#ifdef BUD_LIST_IS_DOUBLY
+#ifdef BUD_LIST_DOUBLY
     f => from%D%head
     t => to%D%head
     do while ( associated(f%prev) )
@@ -897,9 +993,8 @@
 #undef BUD_TYPE_NAME_STR
 #undef BUD_TYPE_NEW
 #undef BUD_LIST_TYPE
-#undef BUD_LIST_SINGLY_DOUBLY
-#undef BUD_LIST_IS_DOUBLY
 #undef BUD_LINKED_LIST_NAME
+#undef BUD_LIST_DOUBLY
 
   ! project-buds -- local file settings
   !     Anything below this line may be overwritten by scripts
