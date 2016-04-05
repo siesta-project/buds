@@ -1,0 +1,11 @@
+<map id="Collection of 2 Array 3D" name="Collection of 2 Array 3D">
+<area shape="rect" id="node1" href="$group__bud__C2__zArray3D.html" title="complex(selected_real_kind(15)) data type " alt="" coords="411,5,535,32"/>
+<area shape="rect" id="node2" href="$group__bud__C2__rArray3D.html" title="real(selected_real_kind(6)) data type " alt="" coords="429,56,516,83"/>
+<area shape="rect" id="node3" href="$group__bud__C2__sArray3D.html" title="integer(selected_int_kind(4)) data type " alt="" coords="421,107,524,133"/>
+<area shape="rect" id="node4" href="$group__bud__C2__iArray3D.html" title="integer(selected_int_kind(9)) data type " alt="" coords="429,157,517,184"/>
+<area shape="rect" id="node5" href="$group__bud__C2__dArray3D.html" title="real(selected_real_kind(15)) data type " alt="" coords="423,208,522,235"/>
+<area shape="rect" id="node6" href="$group__c2-array.html" title="bud containing a collection of 2 Array buds. " alt="" coords="5,183,152,209"/>
+<area shape="rect" id="node7" href="$group__bud__C2__bArray3D.html" title="logical data type " alt="" coords="441,259,504,285"/>
+<area shape="rect" id="node8" href="$group__bud__C2__cArray3D.html" title="complex(selected_real_kind(6)) data type " alt="" coords="417,309,528,336"/>
+<area shape="rect" id="node10" href="$group__bud__C2__lArray3D.html" title="integer(selected_int_kind(18)) data type " alt="" coords="423,360,522,387"/>
+</map>

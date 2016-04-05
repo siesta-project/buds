@@ -1,0 +1,11 @@
+<map id="Array 1D" name="Array 1D">
+<area shape="rect" id="node1" href="$group__bud__cArray1D.html" title="complex(selected_real_kind(6)) data type " alt="" coords="236,5,347,32"/>
+<area shape="rect" id="node2" href="$group__bud__bArray1D.html" title="logical data type " alt="" coords="260,56,323,83"/>
+<area shape="rect" id="node3" href="$group__bud__iArray1D.html" title="integer(selected_int_kind(9)) data type " alt="" coords="247,107,335,133"/>
+<area shape="rect" id="node4" href="$group__bud__dArray1D.html" title="real(selected_real_kind(15)) data type " alt="" coords="242,157,341,184"/>
+<area shape="rect" id="node5" href="$group__bud__sArray1D.html" title="integer(selected_int_kind(4)) data type " alt="" coords="240,208,343,235"/>
+<area shape="rect" id="node6" href="$group__bud__rArray1D.html" title="real(selected_real_kind(6)) data type " alt="" coords="248,259,335,285"/>
+<area shape="rect" id="node7" href="$group__bud__lArray1D.html" title="integer(selected_int_kind(18)) data type " alt="" coords="242,309,341,336"/>
+<area shape="rect" id="node8" href="$group__bud__zArray1D.html" title="complex(selected_real_kind(15)) data type " alt="" coords="229,360,353,387"/>
+<area shape="rect" id="node9" href="$group__array.html" title="bud containing an intrinsic fortran array. " alt="" coords="5,183,59,209"/>
+</map>
