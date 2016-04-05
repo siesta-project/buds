@@ -20,7 +20,7 @@ V_CXXFLAGS =
 V_FCFLAGS =
 
 # default compiler flags for debugging
-V_FLAGS_debug = -g -fbacktrace -fbounds-check
+V_FLAGS_debug = -g -fbacktrace -fbounds-check -Wunused-variable -Warray-temporaries
 V_CFLAGS_debug = $(V_FLAGS_debug)
 V_CXXFLAGS_debug = $(V_FLAGS_debug)
 V_FCFLAGS_debug = $(V_FLAGS_debug)
