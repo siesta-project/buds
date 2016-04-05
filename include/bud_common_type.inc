@@ -5,14 +5,14 @@
   
 #if BUD_FORTRAN >= 2003
   
-#ifndef BUD_NO_DELETE
+# ifndef BUD_NO_DELETE
   !> @iSee delete
   procedure, public :: delete => delete_
-#endif
-#ifndef BUD_NO_NULLIFY
+# endif
+# ifndef BUD_NO_NULLIFY
   !> @iSee nullify
   procedure, public :: nullify => nullify_
-#endif
+# endif
 
   !> @iSee initialize
   procedure, public :: initialize => initialize_
@@ -33,12 +33,13 @@
   !> @iSee references
   procedure, public :: refs => references_
 
-#ifndef BUD_NO_PRINT
+# ifndef BUD_NO_PRINT
   !> @iSee print
   procedure, public :: print => print_
-#endif
+# endif
 
 #endif
+
   
 ! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts

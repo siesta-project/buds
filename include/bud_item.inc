@@ -8,6 +8,7 @@
   !  - BUD_TYPE_NEW, the routine name for creating a new type
   !  - BUD_ITEM_TYPE, the @bud contained in the single item
 
+  
   ! Include the common utilities
 #include "bud_utils.inc"
 
@@ -22,11 +23,15 @@
 #include "bud_common_declarations.inc"
 
 
-  !> @bud containing another @bud.
+  !> Item wrapper for a @bud
   !!
   !! This wrapper type contains another @bud. It may
-  !! be used as a container for sub-partitining but will
-  !! in many cases be a sub-optimal solution.
+  !! be used as a container for sub-partitining.
+  !!
+  !! Generally you need (should) not use this Item type
+  !! unless you have a specific use case.
+  !! The direct data storage of a @bud is more efficient
+  !! and requires fewer additional wrapper functions.
   type BUD_TYPE_NAME
 
     !> @cond BUD_DEVELOPER
@@ -42,17 +47,17 @@
 
     procedure, private :: new_
     procedure, private :: new_data_
-    !> @iSee #new
+    !> @iSee new
     generic, public :: new => new_, new_data_
 
-    !> @iSee #set_data
+    !> @iSee set_data
     procedure, public :: set => set_data_
-    !> @iSee #set_data
+    !> @iSee set_data
     procedure, public :: set_data => set_data_
 
-    !> @iSee #get_data
+    !> @iSee get_data
     procedure, public :: get => get_data_
-    !> @iSee #get_data
+    !> @iSee get_data
     procedure, public :: get_data => get_data_
 
 #endif
@@ -83,9 +88,12 @@
   !!
   !! Initialize the object and prepare it for use.
   !!
-  !! There are two variants, one where the contained item
-  !! is initially un-initialized and one where the contained item
-  !! is passed and stored by reference.
+  !! There are two variants:
+  !!  1. no passed BUD_ITEM_TYPE, and 
+  !!  2. passed BUD_ITEM_TYPE
+  !! which either initializes the object with
+  !! an empty contained BUD_ITEM_TYPE or with a reference to the passed
+  !! type.
   interface new
     module procedure new_
     module procedure new_data_
@@ -102,32 +110,33 @@
 
   !> Store BUD_ITEM_TYPE in the @bud
   !!
-  !! Will store the passed BUD_ITEM_TYPE in the @bud
+  !! Stores passed BUD_ITEM_TYPE in the @bud.
   !!
-  !! This will increment the passed items reference counter.
+  !! The currently stored BUD_ITEM_TYPE will be deleted
+  !! before assigning the passed BUD_ITEM_TYPE.
   !!
-  !! If the current container is un-initialized it will be
-  !! created with the item, @isee new.
+  !! If the passed item is not initialized, so will the
+  !! contained @bud.
   interface set_data
     module procedure set_data_
   end interface
   public :: set_data
-  !> @iSee #set_data
+  !> @iSee set_data
   interface set
     module procedure set_data_
   end interface
   public :: set
 
 
-  !> Retrieve BUD_ITEM_TYPE from @bud
+  !> Retrieve a reference counted BUD_ITEM_TYPE from @bud
   !!
-  !! Returns the contained @bud by setting the
-  !! passed item to the stored item.
+  !! Returns the contained @bud by using a reference counter
+  !! pointing to the currently contained BUD_ITEM_TYPE.
   interface get_data
     module procedure get_data_
   end interface
   public :: get_data
-  !> @iSee #get_data
+  !> @iSee get_data
   interface get
     module procedure get_data_
   end interface
@@ -167,7 +176,7 @@
 
   !> @endcond BUD_DEVELOPER
 
-  !> @param[inout] this @bud that is initialized
+  !> @param[inout] this type to be initialized 
   subroutine new_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
@@ -177,8 +186,8 @@
     
   end subroutine new_
 
-  !> @param[inout] this @bud that is initialized
-  !! @param[in] item stored BUD_ITEM_TYPE in the item
+  !> @param[inout] this type to be initialized
+  !! @param[in] item BUD_ITEM_TYPE to be referenced in the item
   subroutine new_data_(this, item)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     BUD_CLASS(BUD_ITEM_TYPE), intent(in) :: item
@@ -190,8 +199,8 @@
   end subroutine new_data_
 
 
-  !> @param[inout] this item to store @bud-data in
-  !! @param[in] item @bud which will be contained in `this`
+  !> @param[inout] this @bud to contain a reference to `item`
+  !! @param[in] item BUD_ITEM_TYPE to store in `this`
   subroutine set_data_(this, item)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     type(BUD_ITEM_TYPE), intent(in) :: item

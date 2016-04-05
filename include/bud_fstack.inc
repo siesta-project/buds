@@ -23,16 +23,17 @@
 
   !> @cond BUD_DOC_INC
 
-  !> @defgroup bud-fstack Finite stack with reference counting
+  !> @defgroup bud-fstack Finite stack of arbitrary @bud
   !!
-  !! @details
   !! The finite stack implementation is an extension of the regular
   !! reference counted objects.
   !!
   !! A stack is a "push-pop" sequence of @buds.
-  !! A finite stack pushes new values at the top, if the stack is
+  !! A `push` of a new @bud is inserted at the top, if the stack is
   !! full the oldest entry is deleted and removed from the stack.
-  !! A pop of a value removes the entry from the top of the stack.
+  !!
+  !! A `pop` of a @bud removes the top entry of the stack and possibly
+  !! returns the @bud.
   !!
   !! @note
   !! A type need not have _all_ these routines available if so desired.
@@ -98,8 +99,8 @@
     !> Maximum number of elements that can be stored in this stack.
     !!
     !! @note
-    !! There is little to no memory overhead of maxing this excessively
-    !! large as all elements which have not been assigned are
+    !! There is little to no memory overhead of having an excessively
+    !! large `max` as all elements which have not been assigned are
     !! allocations of data-pointers.
     !!
     !! Hence creating extreme stacks may still be memory efficient.

@@ -11,7 +11,6 @@
 
   !> \defgroup buds-utils Preprocessor utility functions
   !!
-  !! @details
   !! Documentation of utility functions that may be
   !! used by adding this to a @bud
   !! \code{.f90}
@@ -20,6 +19,10 @@
   !!
   !! These preprocessor macros may be used to easily
   !! concatenate or stringify macros or constants.
+  !!
+  !! This include file also contains
+  !! default preprocessor definitions of the
+  !! prefix for modules etc.
   !!
   !! @{
   
@@ -32,10 +35,15 @@
   !! The name for creating a new @bud
 #define BUD_NEW new
   !> \def BUD_MOD
-  !! The prefix used for @bud modules
+  !! The prefix used for @bud modules.
+  !!
+  !! Defaulted to `new`
+  
 #define BUD_MOD bud
   !> \def BUD_TYPE
   !! The prefix used for @bud types, this should generally not be altered.
+  !!
+  !! Default to `` (empty).
 #define BUD_TYPE 
 
   !> \def BUD_FORTRAN
@@ -73,22 +81,21 @@
 
   !> \def BUD_CC2(a,b)
   !! Concatenate two arguments \a a and \a b.
+#define BUD_CC2(a,b) BUD_CCX2(a,b)
+#define BUD_CCX2(a,b) a ## b
   
   !> \def BUD_CC3(a,b,c)
   !! Concatenate three arguments \a a, \a b and \a c.
+#define BUD_CC3(a,b,c) BUD_CCX3(a,b,c)
+#define BUD_CCX3(a,b,c) a ## b ## c
   
   !> \def BUD_CC4(a,b,c,d)
   !! Concatenate four arguments \a a, \a b, \a c and \a d.
+#define BUD_CC4(a,b,c,d) BUD_CCX4(a,b,c,d)
+#define BUD_CCX4(a,b,c,d) a ## b ## c ## d
   
   !> \def BUD_CC5(a,b,c,d,e)
   !! Concatenate five arguments \a a, \a b, \a c, \a d and \a e.
-
-#define BUD_CC2(a,b) BUD_CCX2(a,b)
-#define BUD_CCX2(a,b) a ## b
-#define BUD_CC3(a,b,c) BUD_CCX3(a,b,c)
-#define BUD_CCX3(a,b,c) a ## b ## c
-#define BUD_CC4(a,b,c,d) BUD_CCX4(a,b,c,d)
-#define BUD_CCX4(a,b,c,d) a ## b ## c ## d
 #define BUD_CC5(a,b,c,d,e) BUD_CCX5(a,b,c,d,e)
 #define BUD_CCX5(a,b,c,d,e) a ## b ## c ## d ## e
 
