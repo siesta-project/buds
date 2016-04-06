@@ -69,6 +69,8 @@ rm -rf $_DOC
 # Now we can create the documentation
 {
     cat doc/Doxyfile
+    # Insert correct documentation version
+    echo "PROJECT_NUMBER = $doc_version"
     echo "$have_dot"
 } | doxygen -
 
