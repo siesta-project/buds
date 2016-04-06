@@ -33,7 +33,7 @@ ITEM_ARRAY_OBJS = \
 	bud_Item_Array3D.o
 ITEM_ARRAY_OBJS := $(addprefix $(SRC_DIR)/,$(ITEM_ARRAY_OBJS))
 $(ITEM_ARRAY_OBJS): $(ARRAY_OBJS)
-SRC_OBJS += $(ITEM_ARRAY_OBJS)
+#SRC_OBJS += $(ITEM_ARRAY_OBJS)
 $(SRC_DIR)/bud_Item_Array1D.f90: $(SRC_DIR)/Item_Array1D.F90
 	$(CPP) $(INC) $(CPPFLAGS) $< > $@
 $(SRC_DIR)/bud_Item_Array2D.f90: _TMP_FILE=$(SRC_DIR)/Item_Array2D.F90
@@ -54,7 +54,7 @@ C_ARRAY_OBJS = \
 	bud_C2_Array3D.o
 C_ARRAY_OBJS := $(addprefix $(SRC_DIR)/,$(C_ARRAY_OBJS))
 $(C_ARRAY_OBJS): $(ARRAY_OBJS)
-SRC_OBJS += $(C_ARRAY_OBJS)
+#SRC_OBJS += $(C_ARRAY_OBJS)
 $(SRC_DIR)/bud_C2_Array1D.f90: $(SRC_DIR)/C2_Array1D.F90
 	$(CPP) $(INC) $(CPPFLAGS) $< > $@
 $(SRC_DIR)/bud_C2_Array2D.f90: _TMP_FILE=$(SRC_DIR)/C2_Array2D.F90
@@ -117,7 +117,7 @@ FS_C_ARRAY_OBJS = \
 	bud_FS_C2_Array3D.o
 FS_C_ARRAY_OBJS := $(addprefix $(SRC_DIR)/,$(FS_C_ARRAY_OBJS))
 $(FS_C_ARRAY_OBJS): $(C_ARRAY_OBJS)
-SRC_OBJS += $(FS_C_ARRAY_OBJS)
+#SRC_OBJS += $(FS_C_ARRAY_OBJS)
 $(SRC_DIR)/bud_FS_C2_Array1D.f90: $(SRC_DIR)/FS_C2_Array1D.F90
 	$(CPP) $(INC) $(CPPFLAGS) $< > $@
 $(SRC_DIR)/bud_FS_C2_Array2D.f90: _TMP_FILE=$(SRC_DIR)/FS_C2_Array2D.F90
