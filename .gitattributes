@@ -1,0 +1,4 @@
+doc/* linguist-documentation
+**/*.md linguist-documentation
+include/*.inc linguist-language=FORTRAN
+src/**/*.inc linguist-language=FORTRAN
