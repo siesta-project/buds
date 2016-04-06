@@ -16,6 +16,12 @@ _sd="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Get the calling directory
 _cwd=`pwd`
 
+# Get latest tag version on master
+tag=`git describe --abbrev=1`
+doc_version=${tag%-*}
+doc_version=${doc_version//-/+}
+
+
 if [[ $(dirname $_sd) != $_cwd ]]; then
     echo "$0 must be called from this directory:"
     echo "  $(dirname $_sd)"
@@ -68,10 +74,14 @@ rm -rf $_DOC
 
 
 
+
 ###################
 # Post-processing #
 ###################
 pushd $_DOC
+
+# Insert the version string in the version
+sed -i -e "s/BUDS_VERSION/$doc_version/g" html/index.html
 
 # if we have optipng we optimize the PNG's
 # to reduce webpage size.
