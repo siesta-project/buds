@@ -24,7 +24,8 @@
 !! \code{.f90}
 !!   integer :: nr, nz, ir, idx
 !!   integer, pointer, contiguous :: rptr(:), col(:)
-!!   call attach(this, nr=nr, nz=nz, rptr, col)
+!!
+!!   call attach(this, nr=nr, nz=nz, rptr=rptr, col=col)
 !!
 !!   do ir = 1 , nr
 !!     do idx = rptr(ir) , rptr(ir+1) - 1
@@ -33,7 +34,7 @@
 !!   end do
 !! \endcode
 !!
-!! There are no data-consistency checkings performed (for performance
+!! There are no data-consistency checks performed (for performance
 !! reasons) hence you *can* end up with multiple entries for the
 !! same matrix element.
 !! In such cases the developer must take care of these.

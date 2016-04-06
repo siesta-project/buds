@@ -8,29 +8,29 @@
 !!
 !! @{
 
-!> @defgroup sm-csr0 Compressed Sparse Row (CSR 0-based row pointer)
+!> @defgroup sm-csc0 Compressed Sparse Column (CSC 0-based column pointer)
 !!
-!! A compressed sparse row matrix implementation using
-!! a 0-based row-pointer.
+!! A compressed sparse column matrix implementation using
+!! a 0-based column-pointer.
 !!
 !! This only contains the indices for the sparse matrix, the
 !! data for the sparse matrix should be contained in an additional
 !! data array of the corresponding data type.
 !!
-!! The CSR sparsity pattern stored *must* be sorted in each
-!! row such that the columns are consecutively aligned.
+!! The CSC sparsity pattern stored can be sorted in each
+!! column such that the rows are consecutively aligned.
 !! This will help ensure a fast access pattern in the matrix
-!! with a row-based access pattern.
+!! with a column-based access pattern.
 !!
 !! \code{.f90}
-!!   integer :: nr, nz, ir, idx
-!!   integer, pointer, contiguous :: rptr(:), col(:)
+!!   integer :: nc, nz, ic, idx
+!!   integer, pointer, contiguous :: cptr(:), row(:)
 !!
-!!   call attach(this, nr=nr, nz=nz, rptr=rptr, col=col)
+!!   call attach(this, nr=nc, nz=nz, cptr=cptr, row=row)
 !!
-!!   do ir = 1 , nr
-!!     do idx = rptr(ir) + 1, rptr(ir+1)
-!!       ! access M(ir,col(idx))
+!!   do ic = 1 , nc
+!!     do idx = cptr(ic) + 1 , cptr(ic+1)
+!!       ! access M(row(idx),ic)
 !!     end do
 !!   end do
 !! \endcode
@@ -40,45 +40,38 @@
 !! same matrix element.
 !! In such cases the developer must take care of these.
 !!
-!! @note
-!! This sparsity pattern is a slight variation of the
-!! regular CSR format.
-!! Currently these software packages relies on this
-!! special format:
-!!   - [SIESTA](http://departments.icmab.es/leem/siesta/)
-!!
 !! @{
 
 
-# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,iSM_CSR0)
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,iSM_CSC)
 !> @defgroup BUD_MOD_NAME Integer (int)
 !! `integer(selected_int_kind(9))` data type
 !! @{
 module BUD_MOD_NAME
-# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iSM_CSR0)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,iSM_CSR0)
+# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iSM_CSC)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,iSM_CSC)
 # define BUD_TYPE_VAR integer
 # define BUD_TYPE_VAR_PREC ii_
-# define BUD_SM_CSR 1
-#include "SM_CSR.inc"
+# define BUD_SM_CSC 1
+#include "SM_CSC.inc"
 end module
 !> @}
 
-# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,lSM_CSR0)
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,lSM_CSC)
 !> @defgroup BUD_MOD_NAME Integer (long)
 !! `integer(selected_int_kind(18))` data type
 !! @{
 module BUD_MOD_NAME
-# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,lSM_CSR0)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,lSM_CSR0)
+# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,lSM_CSC)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,lSM_CSC)
 # define BUD_TYPE_VAR integer
 # define BUD_TYPE_VAR_PREC il_
-# define BUD_SM_CSR 1
-#include "SM_CSR.inc"
+# define BUD_SM_CSC 1
+#include "SM_CSC.inc"
 end module
 !> @}
 
-! GROUP sm-csr0
+! GROUP sm-csc0
 !> @}
 
 ! GROUP sm

@@ -10,48 +10,32 @@
   !
   ! Additionally the CSR matrix format may be
   ! controlled via these flags:
-  !  - BUD_SM_CSR
+  !  - BUD_SM_CSC
   !    case ( 0 ) ! default
-  !      standard CSR format (MKL-SpBLAS)
+  !      standard CSC format (MKL-SpBLAS)
   !    case ( 1 )
-  !      zero based pointer CSR format
+  !      zero based pointer CSC format
   !      The row-pointer is zero based
   !      This will have an additional array with
   !      the number of non-zero elements per row
   !        (this is equivalent to the SIESTA sparsity)
   !      This does not allow C-interoperability (do NOT set
   !      BUD_SM_INTEROP_C in this case)
-  !      
-  !  - BUD_SM_INTEROP_C=0|1
-  !    Use C-indexing with BUD_SM_INTEROP_C == 1
-  !    All subsequent operations correspond to a
-  !    C-index method.
-  !    Cannot be used together with BUD_SM_CSR == 1
-
-#ifndef BUD_SM_CSR
-# define BUD_SM_CSR 0
+  !
+  ! Currently this sparse matrix is not allowed
+  ! to be used in C-interoperability
+  
+#ifndef BUD_SM_CSC
+# define BUD_SM_CSC 0
 #endif
 
-#if BUD_SM_CSR == 0
-#elif BUD_SM_CSR == 1
-#ifdef BUD_SM_INTEROP_C
-# error "SM_INTEROP_C may not be defined when using SM_CSR == 1"
-#endif
+#if BUD_SM_CSC == 0
+#elif BUD_SM_CSC == 1
 #else
-# error "SM_CSR *MUST* be either 0 or 1"
+# error "SM_CSC *MUST* be either 0 or 1"
 #endif
 
-#ifndef BUD_SM_INTEROP_C
-# define BUD_SM_INTEROP_C 0
-#endif
-
-#if BUD_SM_INTEROP_C == 0
 # define BUD_SM_MOD modp
-#elif BUD_SM_INTEROP_C == 1
-# define BUD_SM_MOD mod
-#else
-# error "SM_INTEROP_C *MUST* be either 0 or 1"
-#endif
 
 #include "bud_utils.inc"
   
@@ -112,19 +96,19 @@
     procedure, public :: mat_sort => sort_
 
     !> @iSee #mat_pointerp
-    procedure, public :: pointerp => get_row_offsetp_
+    procedure, public :: pointerp => get_col_offsetp_
     !> @iSee #mat_pointerp
-    procedure, public :: mat_pointerp => get_row_offsetp_
+    procedure, public :: mat_pointerp => get_col_offsetp_
 
     !> @iSee #mat_pointerp
-    procedure, public :: offsetp => get_row_offsetp_
+    procedure, public :: offsetp => get_col_offsetp_
     !> @iSee #mat_pointerp
-    procedure, public :: mat_offsetp => get_row_offsetp_
+    procedure, public :: mat_offsetp => get_col_offsetp_
 
-    !> @iSee #mat_columnp
-    procedure, public :: columnp => get_columnp_
-    !> @iSee #mat_columnp
-    procedure, public :: mat_columnp => get_columnp_
+    !> @iSee #mat_rowp
+    procedure, public :: rowp => get_rowp_
+    !> @iSee #mat_rowp
+    procedure, public :: mat_rowp => get_rowp_
 
     !> @iSee #attach
     procedure, public :: attach => attach_
@@ -147,16 +131,16 @@
     !> Number of non-zero elements in the sparse matrix
     integer(BUD_TYPE_VAR_PREC) :: nz = 0
 
-    !> Index of the equivalent row (size `nr+1`)
-    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: rptr(:) => null()
+    !> Index of the equivalent column (size `nr+1`)
+    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: cptr(:) => null()
 
-#if BUD_SM_CSR == 1
-    !> Number of non-zero elements per row (`nrow(i)=rptr(i+1)-rptr(i)`)
-    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: nrow(:) => null()
+#if BUD_SM_CSC == 1
+    !> Number of non-zero elements per column (`ncol(i)=cptr(i+1)-cptr(i)`)
+    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: ncol(:) => null()
 #endif
 
-    !> The column index of the equivalent sparse matrix (size `nz`)
-    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: col(:) => null()
+    !> The row index of the equivalent sparse matrix (size `nz`)
+    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: row(:) => null()
 
 
     ! Consistent data in the reference counted object
@@ -197,16 +181,12 @@
 !!$    module procedure assoc_
 !!$  end interface BUD_TYPE_ASSOC
 
-
+  
   !> Fold a sparse matrix to form a smaller sparse matrix
   !!
-#if BUD_SM_CSR == 0
-# if BUD_SM_INTEROP_C == 0
+#if BUD_SM_CSC == 0
   !! Reduce the size of a sparse matrix by folding `ir -> mod(ir-1, nnr) + 1`
-# else
-  !! Reduce the size of a sparse matrix by folding `ir -> mod(ir, nnr)`
-# endif
-#elif BUD_SM_CSR == 1
+#elif BUD_SM_CSC == 1
   !! Reduce the size of a sparse matrix by folding `ir -> mod(ir-1, nnr) + 1`
 #endif
   !! with `nnr` being the new number of rows.
@@ -230,12 +210,12 @@
     module procedure fold_
   end interface 
   public :: mat_fold
+
   
-  
-  !> Sorts columns in the sparse pattern
+  !> Sorts rows in the sparse pattern
   !!
-  !! Sorts the sparse matrix such that the column
-  !! index is always increasing for each row.
+  !! Sorts the sparse matrix such that the row
+  !! index is always increasing for each column.
   !! This will generally allow faster access patterns.
   !!
   !! @note
@@ -253,44 +233,40 @@
   public :: mat_sort
 
 
-  !> Retrieve a pointer to the row offsets/pointers
+  !> Retrieve a pointer to the column offsets/pointers
   !!
-  !! A pointer with the row offsets.
+  !! A pointer with the column offsets.
   !!
-#if BUD_SM_CSR == 0
-# if BUD_SM_INTEROP_C == 0
-  !! `M(ir,col(pointer(ir)))` is the first sparse
-  !! element in row `ir`.
-# else
-  !! `M(ir,col(pointer(ir)+1))` is the first sparse
-  !! element in row `ir`.
-# endif
-#elif BUD_SM_CSR == 1
-  !! `M(ir,col(pointer(ir)+1))` is the first sparse
-  !! element in row `ir`.
+#if BUD_SM_CSC == 0
+  !! `M(row(pointer(ic)),ic)` is the first sparse
+  !! element in column `ic`.
+#elif BUD_SM_CSC == 1
+  !! `M(row(pointer(ic)+1),ic)` is the first sparse
+  !! element in column `ic`.
 #endif
   interface mat_pointerp
-    module procedure get_row_offsetp_
+    module procedure get_col_offsetp_
   end interface
   public :: mat_pointerp
 
   !> @iSee #mat_pointerp
   interface mat_offsetp
-    module procedure get_row_offsetp_
+    module procedure get_col_offsetp_
   end interface
   public :: mat_offsetp
 
   
-  !> Retrieve a pointer to the column indices
-  interface mat_columnp
-    module procedure get_columnp_
+  !> Retrieve a pointer to the row indices
+  interface mat_rowp
+    module procedure get_rowp_
   end interface
-  public :: mat_columnp
+  public :: mat_rowp
+  
 
   
   ! Include the common elements of a sparsity method
-  ! This includes "bud_common.inc"
 # include "SM_common.inc"
+
   
 
   !> @cond BUD_DEVELOPER
@@ -310,16 +286,15 @@
 
     ! Currently we do not allow external memory
     ! tracking.
-    if ( .not. associated(this%col) ) return
-    deallocate(this%rptr)
-    nullify(this%rptr)
-    deallocate(this%col)
-    nullify(this%col)
+    if ( .not. associated(this%row) ) return
+    deallocate(this%cptr)
+    nullify(this%cptr)
+    deallocate(this%row)
+    nullify(this%row)
 #if BUD_SM_CSR == 1
-    deallocate(this%nrow)
-    nullify(this%nrow)
+    deallocate(this%ncol)
+    nullify(this%ncol)
 #endif
-
     
   end subroutine delete_data
   
@@ -340,12 +315,12 @@
     this%D%nc = nc
     this%D%nz = nz
     
-    allocate(this%D%rptr(nr+1))
-#if BUD_SM_CSR == 1
-    allocate(this%D%nrow(nr))
+    allocate(this%D%cptr(nc+1))
+#if BUD_SM_CSC == 1
+    allocate(this%D%ncol(nc))
 #endif
 
-    allocate(this%D%col(nz))
+    allocate(this%D%row(nz))
 
   end subroutine new_dim_
 
@@ -354,37 +329,30 @@
   !! @param[in] nr number of rows of the matrix
   !! @param[in] nc number of columns of the matrix
   !! @param[in] nz number of non-zero elements of the matrix
-  !! @param[in] rptr row pointers (at least size `nr`)
-  !! @param[in] col column indices for the sparse elements
-  subroutine new_copy_(this, nr, nc, nz, rptr, col)
+  !! @param[in] cptr column pointers (at least size `nc`)
+  !! @param[in] row row-indices for the sparse elements
+  subroutine new_copy_(this, nr, nc, nz, cptr, row)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     ! sizes
     integer(BUD_TYPE_VAR_PREC), intent(in) :: nr, nc, nz
     ! limiting ptr
-    integer(BUD_TYPE_VAR_PREC), intent(in) :: rptr(nr), col(nz)
+    integer(BUD_TYPE_VAR_PREC), intent(in) :: cptr(nc), row(nz)
 
-#if BUD_SM_CSR == 1
-    integer(BUD_TYPE_VAR_PREC) :: ir
+#if BUD_SM_CSC == 1
+    integer(BUD_TYPE_VAR_PREC) :: ic
 #endif
 
     ! Copy over information
-#if BUD_SM_CSR == 0
+#if BUD_SM_CSC == 0
     ! It must be based on the starting index
-# if BUD_SM_INTEROP_C == 0
-    if ( rptr(1) /= 1 ) then
+    if ( cptr(1) /= 1 ) then
       call delete(this)
       return
     end if
-# else
-    if ( rptr(1) /= 0 ) then
-      call delete(this)
-      return
-    end if
-# endif
     
-#elif BUD_SM_CSR == 1
+#elif BUD_SM_CSC == 1
     ! It must be 0-based
-    if ( rptr(1) /= 0 ) then
+    if ( cptr(1) /= 0 ) then
       call delete(this)
       return
     end if
@@ -394,28 +362,24 @@
     call new(this, nr, nc, nz)
 
     ! Copy pointers
-    this%D%rptr(1:this%D%nr) = rptr
+    this%D%cptr(1:this%D%nc) = cptr
 
     ! create last pointer (to one plus number of elements)
     ! This ensures simple loops without taking care of
     ! the last index
-#if BUD_SM_CSR == 0
-# if BUD_SM_INTEROP_C == 0
-    this%D%rptr(this%D%nr+1) = this%D%nz + 1
-# else
-    this%D%rptr(this%D%nr+1) = this%D%nz
-# endif
+#if BUD_SM_CSC == 0
+    this%D%cptr(this%D%nc+1) = this%D%nz + 1
     
-#elif BUD_SM_CSR == 1
-    this%D%rptr(this%D%nr+1) = this%D%nz
+#elif BUD_SM_CSC == 1
+    this%D%cptr(this%D%nc+1) = this%D%nz
 
-    do ir = 1 , nr
-      this%D%nrow(ir) = this%D%rptr(ir+1) - this%D%rptr(ir)
+    do ic = 1 , nc
+      this%D%ncol(ic) = this%D%cptr(ic+1) - this%D%cptr(ic)
     end do
     
 #endif
 
-    this%D%col = col
+    this%D%row = row
 
   end subroutine new_copy_
 
@@ -424,22 +388,14 @@
   !! @param[out] nr @opt number of rows in SM
   !! @param[out] nc @opt number of columns in SM
   !! @param[out] nz @opt number of non-zero elements in SM
-#if BUD_SM_CSR == 0
-# if BUD_SM_INTEROP_C == 0
-  !! @param[out] rptr @opt row pointer (`rptr(2)` is starting index of `ir=2`)
-# else
-  !! @param[out] rptr @opt row pointer (`rptr(2)+1` is starting C-index of `ir=2`)
-# endif
-#elif BUD_SM_CSR == 1
-  !! @param[out] rptr @opt row pointer (`rptr(2)+1` is starting index of `ir=2`)
+  !! @param[out] cptr @opt column pointer (`cptr(2)` is starting index of `ic=2`)
+  !! @param[out] row @opt row index
+#if BUD_SM_CSC == 1
+  !! @param[out] ncol @opt number of non-zero elements per column
 #endif
-  !! @param[out] col @opt column index
-#if BUD_SM_CSR == 1
-  !! @param[out] nrow @opt number of non-zero elements per row
-#endif
-  subroutine attach_(this, D, nr, nc, nz, rptr, col &
-#if BUD_SM_CSR == 1
-    , nrow &
+  subroutine attach_(this, D, nr, nc, nz, cptr, row &
+#if BUD_SM_CSC == 1
+    , ncol &
 #endif
     )
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
@@ -447,18 +403,18 @@
     ! wanted information.
     logical, intent(in), optional :: D
     integer(BUD_TYPE_VAR_PREC), intent(out), optional :: nr, nc, nz
-    integer(BUD_TYPE_VAR_PREC), intent(out), pointer, contiguous, optional :: rptr(:), col(:)
-#if BUD_SM_CSR == 1
-    integer(BUD_TYPE_VAR_PREC), intent(out), pointer, contiguous, optional :: nrow(:)
+    integer(BUD_TYPE_VAR_PREC), intent(out), pointer, contiguous, optional :: cptr(:), row(:)
+#if BUD_SM_CSC == 1
+    integer(BUD_TYPE_VAR_PREC), intent(out), pointer, contiguous, optional :: ncol(:)
 #endif
 
     if ( present(nr) ) nr = this%D%nr
     if ( present(nc) ) nc = this%D%nc
     if ( present(nz) ) nz = this%D%nz
-    if ( present(rptr) ) rptr => this%D%rptr
-    if ( present(col) ) col => this%D%col
-#if BUD_SM_CSR == 1
-    if ( present(nrow) ) nrow => this%D%nrow
+    if ( present(cptr) ) cptr => this%D%cptr
+    if ( present(row) ) row => this%D%row
+#if BUD_SM_CSC == 1
+    if ( present(ncol) ) ncol => this%D%ncol
 #endif
     
   end subroutine attach_
@@ -483,17 +439,17 @@
 
     type(BUD_TYPE_NAME) :: tmp
 
-    if ( nr == mat_rows(from) ) then
+    if ( nc == mat_cols(from) ) then
       
       ! Fast-skip to the easier code if input
       ! is easy.
-      call fold_col_only(from, nc, to, single = single)
+      call fold_row_only(from, nr, to, single = single)
       
     else
 
       call delete(to)
-      call fold_row_only(from, nr, tmp)
-      call fold_col_only(tmp, nc, to, single = single)
+      call fold_col_only(from, nc, tmp)
+      call fold_row_only(tmp, nr, to, single = single)
       call delete(tmp)
       
     end if
@@ -502,15 +458,15 @@
 
 
   !> @param[in] from the originating sparse pattern
-  !! @param[in] nc new number of columns in the sparse pattern
+  !! @param[in] nr new number of rows in the sparse pattern
   !! @param[inout] to the resulting sparse pattern
   !! @param[in] single @opt=.false. if .true.: will compress equivalent entries
   !!                  to a single entry, no double entries will be found subsequently.
-  subroutine fold_col_only(from, nc, to, single)
+  subroutine fold_row_only(from, nr, to, single)
     use BUD_CC2(BUD_MOD, _utils), only: sort_quick, modp
 
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
-    integer(BUD_TYPE_VAR_PREC), intent(in) :: nc
+    integer(BUD_TYPE_VAR_PREC), intent(in) :: nr
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
     logical, intent(in), optional :: single
 
@@ -519,13 +475,13 @@
 
     ! from array elements
     integer(BUD_TYPE_VAR_PREC) :: fnr, fnc, fnz
-    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: fptr(:), fcol(:), fsol(:)
-    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: tptr(:), tcol(:)
+    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: fptr(:), frow(:), fsow(:)
+    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: tptr(:), trow(:)
     
-    integer(BUD_TYPE_VAR_PREC) :: ir, i, ptr
+    integer(BUD_TYPE_VAR_PREC) :: ic, i, ptr
     integer(BUD_TYPE_VAR_PREC), pointer :: ind
 
-    integer(BUD_TYPE_VAR_PREC), allocatable :: tmpcol(:)
+    integer(BUD_TYPE_VAR_PREC), allocatable :: tmprow(:)
 
     lsingle = .false.
     if ( present(single) ) lsingle = single
@@ -534,7 +490,7 @@
     ! Initialize the arrays from the originating
     ! sparse pattern
     call attach(from, nr=fnr, nc=fnc, nz=fnz, &
-      rptr=fptr, col=fcol)
+      cptr=fptr, row=frow)
 
     if ( .not. lsingle ) then
       ! Here we do allow dublicate entries
@@ -542,60 +498,41 @@
       ! responsibility of the programmer.
       
       ! Create new folded matrix
-      call new(to, fnr, nc, fnz)
+      call new(to, nr, fnc, fnz)
 
-      call attach(to, rptr=tptr, col=tcol)
+      call attach(to, cptr=tptr, row=trow)
       
-#if BUD_SM_CSR == 0
-# if BUD_SM_INTEROP_C == 0
+#if BUD_SM_CSC == 0
 
       tptr(1) = 1
       ptr = 0
       
-      ! loop on the folded rows
-      do ir = 1 , fnr
-        ! loop on entries in the current (old) row
-        do i = fptr(ir) , fptr(ir+1) - 1
+      ! loop on the folded columns
+      do ic = 1 , fnc
+        ! loop on entries in the current (old) column
+        do i = fptr(ic) , fptr(ic+1) - 1
           ptr = ptr + 1
-          tcol(ptr) = BUD_SM_MOD(fcol(i), nc)
+          trow(ptr) = BUD_SM_MOD(frow(i), nr)
         end do
         ! update the following pointer
-        tptr(ir+1) = ptr + 1
+        tptr(ic+1) = ptr + 1
         
       end do
-# else 
+
+#elif BUD_SM_CSC == 1
 
       tptr(1) = 0
       ptr = 0
       
-      ! loop on the folded rows
-      do ir = 1 , fnr
-        ! loop on entries in the current (old) row
-        do i = fptr(ir) + 1 , fptr(ir+1)
+      ! loop on the folded columns
+      do ic = 1 , fnc
+        ! loop on entries in the current (old) column
+        do i = fptr(ic) + 1 , fptr(ic+1)
           ptr = ptr + 1
-          tcol(ptr) = BUD_SM_MOD(fcol(i), nc)
+          trow(ptr) = BUD_SM_MOD(frow(i), nr)
         end do
         ! update the following pointer
-        tptr(ir+1) = ptr
-        
-      end do
-
-# endif
-      
-#elif BUD_SM_CSR == 1
-
-      tptr(1) = 0
-      ptr = 0
-      
-      ! loop on the folded rows
-      do ir = 1 , fnr
-        ! loop on entries in the current (old) row
-        do i = fptr(ir) + 1 , fptr(ir+1)
-          ptr = ptr + 1
-          tcol(ptr) = BUD_SM_MOD(fcol(i), nc)
-        end do
-        ! update the following pointer
-        tptr(ir+1) = ptr
+        tptr(ic+1) = ptr
         
       end do
 
@@ -606,46 +543,45 @@
       ! by removing all dublicated entries
 
       ! First calculate the size of the matrix
-      nullify(tptr,tcol)
-      allocate(tptr(fnr+1),tcol(fnz))
-      allocate(tmpcol(fptr(2)-fptr(1)))
+      nullify(tptr,trow)
+      allocate(tptr(fnc+1),trow(fnz))
+      allocate(tmprow(fptr(2)-fptr(1)))
 
-#if BUD_SM_CSR == 0
-# if BUD_SM_INTEROP_C == 0
+#if BUD_SM_CSC == 0
       
       tptr(1) = 1
       
-      ! loop on the new rows
-      do ir = 1 , fnr
-        ! point to the following rows pointer
+      ! loop on the new columns
+      do ic = 1 , fnc
+        ! point to the following columns pointer
         ! this enables to count the number of entries
-        ! in the current row as:
-        !   number entries = tptr(ir+1) - tptr(ir)
-        ind => tptr(ir+1)
+        ! in the current column as:
+        !   number entries = tptr(ic+1) - tptr(ic)
+        ind => tptr(ic+1)
         
-        ! initialize counter for the following row
+        ! initialize counter for the following column
         ! (i.e. count number of entries)
-        ind = tptr(ir)
+        ind = tptr(ic)
 
         ! ensure pivoting array long enough
-        call realloc_tmpcol(ir)
+        call realloc_tmprow(ic)
 
-        ! Point to the current column indices
-        fsol => fcol(fptr(ir):)
+        ! Point to the current row indices
+        fsow => frow(fptr(ic):)
           
         ! Create pivoting array so that we
         ! may easily find the reduced sparsity pattern
-        call sort_quick(fptr(ir+1)-fptr(ir), &
-          fsol, tmpcol )
+        call sort_quick(fptr(ic+1)-fptr(ic), &
+          fsow, tmprow )
 
         ! initialize the first element
-        tcol(ind) = BUD_SM_MOD(fsol(tmpcol(1)), nc)
+        trow(ind) = BUD_SM_MOD(fsow(tmprow(1)), nr)
         ind = ind + 1
-        do i = 2 , fptr(ir+1) - fptr(ir)
+        do i = 2 , fptr(ic+1) - fptr(ic)
           ! loop on entries in the current (old) row
           ! check that the variable does not exist
-          if ( fsol(tmpcol(i-1)) /= fsol(tmpcol(i)) ) then
-            tcol(ind) = BUD_SM_MOD(fsol(tmpcol(i)), nc)
+          if ( fsow(tmprow(i-1)) /= fsow(tmprow(i)) ) then
+            trow(ind) = BUD_SM_MOD(fsow(tmprow(i)), nr)
             ind = ind + 1
           end if
         end do
@@ -653,80 +589,44 @@
       end do
 
       ! ensure de-allocation
-      deallocate(tmpcol)
+      deallocate(tmprow)
       
       ! create the new sparsity pattern
-      !> TODO check that the last row has > 0 elements
+      !> TODO check that the last column has > 0 elements
       !! this will justify the `-1` below
-      call new(to, fnr, nc, tptr(fnr+1)-1, tptr, tcol)
+      call new(to, nr, fnc, tptr(fnc+1)-1, tptr, trow)
 
-# else
+#elif BUD_SM_CSC == 1
 
       tptr(1) = 0
       
-      ! loop on the new rows
-      do ir = 1 , fnr
-        ind => tptr(ir+1)
-        
-        ind = tptr(ir)
+      do ic = 1 , fnc
+        ind => tptr(ic+1)
+        ind = tptr(ic)
 
-        call realloc_tmpcol(ir)
+        call realloc_tmprow(ic)
 
-        fsol => fcol(fptr(ir)+1:)
+        fsow => frow(fptr(ic)+1:)
           
-        call sort_quick(fptr(ir+1)-fptr(ir), &
-          fsol, tmpcol )
+        call sort_quick(fptr(ic+1)-fptr(ic), &
+          fsow, tmprow )
 
         ind = ind + 1
-        tcol(ind) = BUD_SM_MOD(fsol(tmpcol(1)), nc)
-        do i = 2 , fptr(ir+1) - fptr(ir)
-          if ( fsol(tmpcol(i-1)) /= fsol(tmpcol(i)) ) then
+        trow(ind) = BUD_SM_MOD(fsow(tmprow(1)), nr)
+        do i = 2 , fptr(ic+1) - fptr(ic)
+          if ( fsow(tmprow(i-1)) /= fsow(tmprow(i)) ) then
             ind = ind + 1
-            tcol(ind) = BUD_SM_MOD(fsol(tmpcol(i)), nc)
+            trow(ind) = BUD_SM_MOD(fsow(tmprow(i)), nr)
           end if
         end do
 
       end do
 
       ! ensure de-allocation
-      deallocate(tmpcol)
+      deallocate(tmprow)
       
       ! create the new sparsity pattern
-      call new(to, fnr, nc, tptr(fnr+1), tptr, tcol)
-
-# endif
-      
-#elif BUD_SM_CSR == 1
-
-      tptr(1) = 0
-      
-      do ir = 1 , fnr
-        ind => tptr(ir+1)
-        ind = tptr(ir)
-
-        call realloc_tmpcol(ir)
-
-        fsol => fcol(fptr(ir)+1:)
-          
-        call sort_quick(fptr(ir+1)-fptr(ir), &
-          fsol, tmpcol )
-
-        ind = ind + 1
-        tcol(ind) = BUD_SM_MOD(fsol(tmpcol(1)), nc)
-        do i = 2 , fptr(ir+1) - fptr(ir)
-          if ( fsol(tmpcol(i-1)) /= fsol(tmpcol(i)) ) then
-            ind = ind + 1
-            tcol(ind) = BUD_SM_MOD(fsol(tmpcol(i)), nc)
-          end if
-        end do
-
-      end do
-
-      ! ensure de-allocation
-      deallocate(tmpcol)
-      
-      ! create the new sparsity pattern
-      call new(to, fnr, nc, tptr(fnr+1), tptr, tcol)
+      call new(to, nr, fnc, tptr(fnc+1), tptr, trow)
 
 #endif
       
@@ -734,134 +634,113 @@
 
   contains
 
-    ! Reallocate the temporary column indices in
+    ! Reallocate the temporary row indices in
     ! a sorted array
-    subroutine realloc_tmpcol(ir)
-      integer(BUD_TYPE_VAR_PREC), intent(in) :: ir
+    subroutine realloc_tmprow(ic)
+      integer(BUD_TYPE_VAR_PREC), intent(in) :: ic
       integer(BUD_TYPE_VAR_PREC) :: n
-      n = fptr(ir+1) - fptr(ir)
-      if ( n > size(tmpcol) ) then
-        deallocate(tmpcol)
-        allocate(tmpcol(n))
+      n = fptr(ic+1) - fptr(ic)
+      if ( n > size(tmprow) ) then
+        deallocate(tmprow)
+        allocate(tmprow(n))
       end if
-    end subroutine realloc_tmpcol
+    end subroutine realloc_tmprow
     
-  end subroutine fold_col_only
+  end subroutine fold_row_only
 
 
   !> @param[in] from the originating sparse pattern
-  !! @param[in] nr new number of rows in the sparse pattern
+  !! @param[in] nc new number of columns in the sparse pattern
   !! @param[inout] to the resulting sparse pattern
-  subroutine fold_row_only(from, nr, to)
+  subroutine fold_col_only(from, nc, to)
     use BUD_CC2(BUD_MOD, _utils), only: modp
     
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
-    integer(BUD_TYPE_VAR_PREC), intent(in) :: nr
+    integer(BUD_TYPE_VAR_PREC), intent(in) :: nc
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
 
     ! from array elements
     integer(BUD_TYPE_VAR_PREC) :: fnr, fnc, fnz
-    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: fptr(:), fcol(:)
-    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: tptr(:), tcol(:)
+    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: fptr(:), frow(:)
+    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: tptr(:), trow(:)
     
-    integer(BUD_TYPE_VAR_PREC) :: r, ir, i
+    integer(BUD_TYPE_VAR_PREC) :: c, ic, i
     integer(BUD_TYPE_VAR_PREC), pointer :: ind
 
     ! Initialize the arrays from the originating
     ! sparse pattern
     call attach(from, nr=fnr, nc=fnc, nz=fnz, &
-      rptr=fptr, col=fcol)
+      cptr=fptr, row=frow)
 
     ! Here we do allow dublicate entries
     ! Sorting out these values will be the
     ! responsibility of the programmer.
     
     ! Create new folded matrix
-    call new(to, nr, fnc, fnz)
+    call new(to, fnr, nc, fnz)
     
-    call attach(to, rptr=tptr, col=tcol)
+    call attach(to, cptr=tptr, row=trow)
       
-#if BUD_SM_CSR == 0
-# if BUD_SM_INTEROP_C == 0
-    
+#if BUD_SM_CSC == 0
     tptr(1) = 1
 
-    ! loop on folded rows
-    do r = 1 , nr
-      ind => tptr(r+1)
-      ind = tptr(r)
-      ! loop on old rows
-      do ir = r , fnr , nr
-        ! loop on entries in the current (old) row
-        do i = fptr(ir) , fptr(ir+1) - 1
-          tcol(ind) = BUD_SM_MOD(fcol(i), fnc)
+    ! loop on folded columns
+    do c = 1 , nc
+      ind => tptr(c+1)
+      ind = tptr(c)
+      ! loop on old columns
+      do ic = c , fnc , nc
+        ! loop on entries in the current (old) column
+        do i = fptr(ic) , fptr(ic+1) - 1
+          trow(ind) = BUD_SM_MOD(frow(i), fnr)
           ind = ind + 1
         end do
       end do
     end do
     
-# else 
-    
-    tptr(1) = 0
-
-    ! loop on folded rows
-    do r = 1 , nr
-      ind => tptr(r+1)
-      ind = tptr(r)
-      ! loop on old rows
-      do ir = r , fnr , nr
-        ! loop on entries in the current (old) row
-        do i = fptr(ir) + 1 , fptr(ir+1)
-          ind = ind + 1
-          tcol(ind) = BUD_SM_MOD(fcol(i), fnc)
-        end do
-      end do
-    end do
-# endif
-    
-#elif BUD_SM_CSR == 1
+#elif BUD_SM_CSC == 1
 
     tptr(1) = 0
-
-    ! loop on folded rows
-    do r = 1 , nr
-      ind => tptr(r+1)
-      ind = tptr(r)
-      ! loop on old rows
-      do ir = r , fnr , nr
-        ! loop on entries in the current (old) row
-        do i = fptr(ir) + 1 , fptr(ir+1)
+    
+    ! loop on folded columns
+    do c = 1 , nc
+      ind => tptr(c+1)
+      ind = tptr(c)
+      ! loop on old columns
+      do ic = c , fnc , nc
+        ! loop on entries in the current (old) column
+        do i = fptr(ic) + 1 , fptr(ic+1)
           ind = ind + 1
-          tcol(ind) = BUD_SM_MOD(fcol(i), fnc)
+          trow(ind) = BUD_SM_MOD(frow(i), fnr)
         end do
       end do
     end do
-
+    
 #endif
     
-  end subroutine fold_row_only
+  end subroutine fold_col_only
 
 
   !> @param[in] this sparse matrix
-  !! @return a pointer to the row offsets for the sparse matrix (contiguous)
-  function get_row_offsetp_(this) result(rptr)
+  !! @return a pointer to the column offsets for the sparse matrix (contiguous)
+  function get_col_offsetp_(this) result(cptr)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: rptr(:)
+    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: cptr(:)
     
-    rptr => this%D%rptr
+    cptr => this%D%cptr
     
-  end function get_row_offsetp_
+  end function get_col_offsetp_
 
   
   !> @param[in] this sparse matrix
-  !! @return a pointer to the column indices for the sparse matrix (contiguous)
-  function get_columnp_(this) result(col)
+  !! @return a pointer to the row indices for the sparse matrix (contiguous)
+  function get_rowp_(this) result(row)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: col(:)
+    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: row(:)
 
-    col => this%D%col
+    row => this%D%row
     
-  end function get_columnp_
+  end function get_rowp_
 
   
   !> @param[in] this sparse pattern to sort (in-place)
@@ -877,14 +756,14 @@
     integer(BUD_TYPE_VAR_PREC), intent(out), target, optional :: pvt(:)
 
     ! Local variables
-    integer(BUD_TYPE_VAR_PREC) :: ir, nr, nz, ptr
-    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: rptr(:), col(:), tvt(:)
+    integer(BUD_TYPE_VAR_PREC) :: ic, nc, nz, ptr
+    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: cptr(:), row(:), tvt(:)
 
     ! Initialize error
     err = 0
     
     ! Get sparse matrix array
-    call attach(this, nr=nr, nz=nz, rptr=rptr, col=col)
+    call attach(this, nc=nc, nz=nz, cptr=cptr, row=row)
 
     if ( present(pvt) ) then
       
@@ -894,43 +773,35 @@
         return
       end if
 
-      do ir = 1 , nr
+      do ic = 1 , nc
         
-        nz = rptr(ir+1) - rptr(ir)
-#if BUD_SM_CSR == 0
-# if BUD_SM_INTEROP_C == 0
-        ptr = rptr(ir) - 1
-# else
-        ptr = rptr(ir)
-# endif
-#elif BUD_SM_CSR == 1
-        ptr = rptr(ir)
+        nz = cptr(ic+1) - cptr(ic)
+#if BUD_SM_CSC == 0
+        ptr = cptr(ic) - 1
+#elif BUD_SM_CSC == 1
+        ptr = cptr(ic)
 #endif
 
         ! get pivoting array
         tvt => pvt(ptr+1:)
-
-        call sort_quick(nz, col(ptr+1:), tvt)
-        col(ptr+1:ptr+nz) = col(ptr+tvt(1:nz))
+        
+        call sort_quick(nz, row(ptr+1:), tvt)
+        row(ptr+1:ptr+nz) = row(ptr+tvt(1:nz))
 
       end do
 
     else
 
-      do ir = 1 , nr
+      do ic = 1 , nc
         
-        nz = rptr(ir+1) - rptr(ir)
-#if BUD_SM_CSR == 0
-# if BUD_SM_INTEROP_C == 0
-        ptr = rptr(ir) - 1
-# else
-        ptr = rptr(ir)
-# endif
-#elif BUD_SM_CSR == 1
-        ptr = rptr(ir)
+        nz = cptr(ic+1) - cptr(ic)
+#if BUD_SM_CSC == 0
+        ptr = cptr(ic) - 1
+#elif BUD_SM_CSC == 1
+        ptr = cptr(ic)
 #endif
         
-        call sort_quick(nz, col(ptr+1:ptr+nz))
+        call sort_quick(nz, row(ptr+1:ptr+nz))
 
       end do
       
@@ -942,21 +813,9 @@
 #ifdef DO_NOT_USE
   
   !> @param[in] this the sparse matrix (sorted, @isee #sort)
-#if BUD_SM_CSR == 0 && BUD_SM_INTEROP_C == 1
-  !! @param[in] ir row index (0-based)
-#else
   !! @param[in] ir row index (1-based)
-#endif
-#if BUD_SM_CSR == 0 && BUD_SM_INTEROP_C == 1
-  !! @param[in] ic column index (0-based)
-#else
   !! @param[in] ic column index (1-based)
-#endif
-#if BUD_SM_CSR == 0 && BUD_SM_INTEROP_C == 1
-  !! @return the sparse index of `M(ir,ic)`, `<0` if `M(ir,ic) = 0` (0-based)
-#else
   !! @return the sparse index of `M(ir,ic)`, `<0` if `M(ir,ic) = 0` (1-based)
-#endif
   pure function index_(this, ir, ic) result(idx)
     use BUD_CC2(BUD_MOD, _utils), only: find_bin
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
@@ -964,23 +823,15 @@
     integer(BUD_TYPE_VAR_PREC), intent(in) :: ic
     integer(BUD_TYPE_VAR_PREC) :: idx
 
-#if BUD_SM_CSR == 0
-# if BUD_SM_INTEROP_C == 0
-    call find_bin(this%D%rptr(ir+1)-this%D%rptr(ir), &
-      this%D%col(this%D%rptr(ir):), ic, idx)
-    if ( idx > 0 ) idx = this%D%rptr(ir) - 1 + idx
+#if BUD_SM_CSC == 0
+    call find_bin(this%D%cptr(ic+1)-this%D%cptr(ic), &
+      this%D%row(this%D%cptr(ic):), ir, idx)
+    if ( idx > 0 ) idx = this%D%cptr(ic) - 1 + idx
     
-# else
-    call find_bin(this%D%rptr(ir+2)-this%D%rptr(ir+1), &
-      this%D%col(this%D%rptr(ir+1)+1:), ic, idx)
-    if ( idx > 0 ) idx = this%D%rptr(ir+1) + idx - 1
-    
-# endif
-
-#elif BUD_SM_CSR == 1
-    call find_bin(this%D%nrow(ir), &
-      this%D%col(this%D%rptr(ir)+1:), ic, idx)
-    if ( idx > 0 ) idx = this%D%rptr(ir) + idx
+#elif BUD_SM_CSC == 1
+    call find_bin(this%D%ncol(ic), &
+      this%D%row(this%D%cptr(ic)+1:), ir, idx)
+    if ( idx > 0 ) idx = this%D%cptr(ic) + idx
     
 #endif
     
@@ -1036,8 +887,7 @@
 #undef BUD_TYPE_VAR_PREC
 
   ! Control variables
-#undef BUD_SM_CSR
-#undef BUD_SM_INTEROP_C
+#undef BUD_SM_CSC
 #undef BUD_SM_MOD
 
   
