@@ -14,7 +14,14 @@
 <script type="text/javascript">
   $(document).ready(function() { init_search(); });
 </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="extra_stylesheet.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -89,7 +96,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>A compressed sparse row matrix implementation. </p>
 <p>This only contains the indices for the sparse matrix, the data for the sparse matrix should be contained in an additional data array of the corresponding data type.</p>
 <p>The CSR sparsity pattern stored <em>must</em> be sorted in each row such that the columns are consecutively aligned. This will help ensure a fast access pattern in the matrix with a row-based access pattern.</p>
-<div class="fragment"><div class="line"><span class="keywordtype">integer</span> :: nr, nz, ir, idx</div><div class="line"><span class="keywordtype">integer</span>, <span class="keywordtype">pointer</span>, <span class="keywordtype">contiguous</span> :: rptr(:), col(:)</div><div class="line"><span class="keyword">call </span><a class="code" href="interfacebud__ldist1d_1_1attach.html">attach</a>(this, nr=nr, nz=nz, rptr, col)</div><div class="line"></div><div class="line"><span class="keywordflow">do</span> ir = 1 , nr</div><div class="line"><span class="keywordflow">do</span> idx = rptr(ir) , rptr(ir+1) - 1</div><div class="line"><span class="comment">! access M(ir,col(idx))</span></div><div class="line"><span class="keywordflow">end do</span></div><div class="line"><span class="keyword">end </span>do</div></div><!-- fragment --><p>There are no data-consistency checkings performed (for performance reasons) hence you <em>can</em> end up with multiple entries for the same matrix element. In such cases the developer must take care of these.</p>
+<div class="fragment"><div class="line"><span class="keywordtype">integer</span> :: nr, nz, ir, idx</div><div class="line"><span class="keywordtype">integer</span>, <span class="keywordtype">pointer</span>, <span class="keywordtype">contiguous</span> :: rptr(:), col(:)</div><div class="line"></div><div class="line"><span class="keyword">call </span><a class="code" href="interfacebud__ldist1d_1_1attach.html">attach</a>(this, nr=nr, nz=nz, rptr=rptr, col=col)</div><div class="line"></div><div class="line"><span class="keywordflow">do</span> ir = 1 , nr</div><div class="line"><span class="keywordflow">do</span> idx = rptr(ir) , rptr(ir+1) - 1</div><div class="line"><span class="comment">! access M(ir,col(idx))</span></div><div class="line"><span class="keywordflow">end do</span></div><div class="line"><span class="keyword">end </span>do</div></div><!-- fragment --><p>There are no data-consistency checks performed (for performance reasons) hence you <em>can</em> end up with multiple entries for the same matrix element. In such cases the developer must take care of these.</p>
 <p><b>Note</b> This sparsity pattern is constructed to conform with the MKL Sparse BLAS library. The sparsity pattern is 1-based and is the 3-array variant of the CSR format. The 3-array variant can be used in the 4-array input without changing any array elements and/or extra memory allocation. To be compatible with the MKL Sparse BLAS library the sparsity pattern <em>must</em> contain the diagonal elements. </p>
 <div class="dynheader">
 Collaboration diagram for Compressed Sparse Row (CSR):</div>
@@ -115,7 +122,7 @@ Modules</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 5 2016 09:53:16 for buds by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 6 2016 14:33:55 for buds by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

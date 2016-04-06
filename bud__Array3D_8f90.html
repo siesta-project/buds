@@ -14,7 +14,14 @@
 <script type="text/javascript">
   $(document).ready(function() { init_search(); });
 </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="extra_stylesheet.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -102,30 +109,28 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Types</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">type &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbud__barray3d_1_1barray3d.html">barray3d</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">bud variable  <a href="structbud__barray3d_1_1barray3d.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array data type.  <a href="structbud__barray3d_1_1barray3d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__barray3d_1_1new.html">new</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new bud instances.  <a href="interfacebud__barray3d_1_1new.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new bArray3D.  <a href="interfacebud__barray3d_1_1new.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__barray3d_1_1new__barray3d.html">new_barray3d</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new bud instances.  <a href="interfacebud__barray3d_1_1new__barray3d.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #new  <a href="interfacebud__barray3d_1_1new__barray3d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__barray3d_1_1valuep.html">valuep</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer/value to/in the stored array.  <a href="interfacebud__barray3d_1_1valuep.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__barray3d_1_1value.html">value</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__barray3d_1_1arrayp.html">arrayp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer to array in the bud.  <a href="interfacebud__barray3d_1_1arrayp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__barray3d_1_1size.html">size</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of elements is the stored array (same as regular <code>size</code>)  <a href="interfacebud__barray3d_1_1size.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query dimension of array (or total size)  <a href="interfacebud__barray3d_1_1size.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__barray3d_1_1init__array.html">init_array</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize all values in the array to a specific value.  <a href="interfacebud__barray3d_1_1init__array.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize array values to a specific value.  <a href="interfacebud__barray3d_1_1init__array.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__barray3d_1_1print.html">print</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print information about the bud.  <a href="interfacebud__barray3d_1_1print.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="interfacebud__barray3d_1_1print.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__barray3d_1_1assignment_07_0A_08.html">assignment(=)</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for clearing the data container in the bud.  <a href="interfacebud__barray3d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment of bud to another bud.  <a href="interfacebud__barray3d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__barray3d_1_1initialize.html">initialize</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization of data container.  <a href="interfacebud__barray3d_1_1initialize.html#details">More...</a><br /></td></tr>
@@ -143,7 +148,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether two buds point to the same data (function)  <a href="interfacebud__barray3d_1_1is__same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__barray3d_1_1same.html">same</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__barray3d_1_1is__same.html" title="Check whether two buds point to the same data (function) ">is_same</a>  <a href="interfacebud__barray3d_1_1same.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #is_same  <a href="interfacebud__barray3d_1_1same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__barray3d_1_1delete.html">delete</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the bud by decreasing references to the underlying data.  <a href="interfacebud__barray3d_1_1delete.html#details">More...</a><br /></td></tr>
@@ -155,33 +160,31 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of references to the bud.  <a href="interfacebud__barray3d_1_1references.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__barray3d_1_1refs.html">refs</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> references  <a href="interfacebud__barray3d_1_1refs.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #references  <a href="interfacebud__barray3d_1_1refs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">type &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbud__sarray3d_1_1sarray3d.html">sarray3d</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">bud variable  <a href="structbud__sarray3d_1_1sarray3d.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array data type.  <a href="structbud__sarray3d_1_1sarray3d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__sarray3d_1_1new.html">new</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new bud instances.  <a href="interfacebud__sarray3d_1_1new.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new sArray3D.  <a href="interfacebud__sarray3d_1_1new.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__sarray3d_1_1new__sarray3d.html">new_sarray3d</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new bud instances.  <a href="interfacebud__sarray3d_1_1new__sarray3d.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #new  <a href="interfacebud__sarray3d_1_1new__sarray3d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__sarray3d_1_1valuep.html">valuep</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer/value to/in the stored array.  <a href="interfacebud__sarray3d_1_1valuep.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__sarray3d_1_1value.html">value</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__sarray3d_1_1arrayp.html">arrayp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer to array in the bud.  <a href="interfacebud__sarray3d_1_1arrayp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__sarray3d_1_1size.html">size</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of elements is the stored array (same as regular <code>size</code>)  <a href="interfacebud__sarray3d_1_1size.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query dimension of array (or total size)  <a href="interfacebud__sarray3d_1_1size.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__sarray3d_1_1init__array.html">init_array</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize all values in the array to a specific value.  <a href="interfacebud__sarray3d_1_1init__array.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize array values to a specific value.  <a href="interfacebud__sarray3d_1_1init__array.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__sarray3d_1_1print.html">print</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print information about the bud.  <a href="interfacebud__sarray3d_1_1print.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="interfacebud__sarray3d_1_1print.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__sarray3d_1_1assignment_07_0A_08.html">assignment(=)</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for clearing the data container in the bud.  <a href="interfacebud__sarray3d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment of bud to another bud.  <a href="interfacebud__sarray3d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__sarray3d_1_1initialize.html">initialize</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization of data container.  <a href="interfacebud__sarray3d_1_1initialize.html#details">More...</a><br /></td></tr>
@@ -199,7 +202,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether two buds point to the same data (function)  <a href="interfacebud__sarray3d_1_1is__same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__sarray3d_1_1same.html">same</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__sarray3d_1_1is__same.html" title="Check whether two buds point to the same data (function) ">is_same</a>  <a href="interfacebud__sarray3d_1_1same.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #is_same  <a href="interfacebud__sarray3d_1_1same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__sarray3d_1_1delete.html">delete</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the bud by decreasing references to the underlying data.  <a href="interfacebud__sarray3d_1_1delete.html#details">More...</a><br /></td></tr>
@@ -211,33 +214,31 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of references to the bud.  <a href="interfacebud__sarray3d_1_1references.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__sarray3d_1_1refs.html">refs</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> references  <a href="interfacebud__sarray3d_1_1refs.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #references  <a href="interfacebud__sarray3d_1_1refs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">type &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbud__iarray3d_1_1iarray3d.html">iarray3d</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">bud variable  <a href="structbud__iarray3d_1_1iarray3d.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array data type.  <a href="structbud__iarray3d_1_1iarray3d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__iarray3d_1_1new.html">new</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new bud instances.  <a href="interfacebud__iarray3d_1_1new.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new iArray3D.  <a href="interfacebud__iarray3d_1_1new.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__iarray3d_1_1new__iarray3d.html">new_iarray3d</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new bud instances.  <a href="interfacebud__iarray3d_1_1new__iarray3d.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #new  <a href="interfacebud__iarray3d_1_1new__iarray3d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__iarray3d_1_1valuep.html">valuep</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer/value to/in the stored array.  <a href="interfacebud__iarray3d_1_1valuep.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__iarray3d_1_1value.html">value</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__iarray3d_1_1arrayp.html">arrayp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer to array in the bud.  <a href="interfacebud__iarray3d_1_1arrayp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__iarray3d_1_1size.html">size</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of elements is the stored array (same as regular <code>size</code>)  <a href="interfacebud__iarray3d_1_1size.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query dimension of array (or total size)  <a href="interfacebud__iarray3d_1_1size.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__iarray3d_1_1init__array.html">init_array</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize all values in the array to a specific value.  <a href="interfacebud__iarray3d_1_1init__array.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize array values to a specific value.  <a href="interfacebud__iarray3d_1_1init__array.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__iarray3d_1_1print.html">print</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print information about the bud.  <a href="interfacebud__iarray3d_1_1print.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="interfacebud__iarray3d_1_1print.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__iarray3d_1_1assignment_07_0A_08.html">assignment(=)</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for clearing the data container in the bud.  <a href="interfacebud__iarray3d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment of bud to another bud.  <a href="interfacebud__iarray3d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__iarray3d_1_1initialize.html">initialize</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization of data container.  <a href="interfacebud__iarray3d_1_1initialize.html#details">More...</a><br /></td></tr>
@@ -255,7 +256,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether two buds point to the same data (function)  <a href="interfacebud__iarray3d_1_1is__same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__iarray3d_1_1same.html">same</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__iarray3d_1_1is__same.html" title="Check whether two buds point to the same data (function) ">is_same</a>  <a href="interfacebud__iarray3d_1_1same.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #is_same  <a href="interfacebud__iarray3d_1_1same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__iarray3d_1_1delete.html">delete</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the bud by decreasing references to the underlying data.  <a href="interfacebud__iarray3d_1_1delete.html#details">More...</a><br /></td></tr>
@@ -267,33 +268,31 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of references to the bud.  <a href="interfacebud__iarray3d_1_1references.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__iarray3d_1_1refs.html">refs</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> references  <a href="interfacebud__iarray3d_1_1refs.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #references  <a href="interfacebud__iarray3d_1_1refs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">type &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbud__larray3d_1_1larray3d.html">larray3d</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">bud variable  <a href="structbud__larray3d_1_1larray3d.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array data type.  <a href="structbud__larray3d_1_1larray3d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__larray3d_1_1new.html">new</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new bud instances.  <a href="interfacebud__larray3d_1_1new.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new lArray3D.  <a href="interfacebud__larray3d_1_1new.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__larray3d_1_1new__larray3d.html">new_larray3d</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new bud instances.  <a href="interfacebud__larray3d_1_1new__larray3d.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #new  <a href="interfacebud__larray3d_1_1new__larray3d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__larray3d_1_1valuep.html">valuep</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer/value to/in the stored array.  <a href="interfacebud__larray3d_1_1valuep.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__larray3d_1_1value.html">value</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__larray3d_1_1arrayp.html">arrayp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer to array in the bud.  <a href="interfacebud__larray3d_1_1arrayp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__larray3d_1_1size.html">size</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of elements is the stored array (same as regular <code>size</code>)  <a href="interfacebud__larray3d_1_1size.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query dimension of array (or total size)  <a href="interfacebud__larray3d_1_1size.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__larray3d_1_1init__array.html">init_array</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize all values in the array to a specific value.  <a href="interfacebud__larray3d_1_1init__array.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize array values to a specific value.  <a href="interfacebud__larray3d_1_1init__array.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__larray3d_1_1print.html">print</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print information about the bud.  <a href="interfacebud__larray3d_1_1print.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="interfacebud__larray3d_1_1print.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__larray3d_1_1assignment_07_0A_08.html">assignment(=)</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for clearing the data container in the bud.  <a href="interfacebud__larray3d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment of bud to another bud.  <a href="interfacebud__larray3d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__larray3d_1_1initialize.html">initialize</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization of data container.  <a href="interfacebud__larray3d_1_1initialize.html#details">More...</a><br /></td></tr>
@@ -311,7 +310,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether two buds point to the same data (function)  <a href="interfacebud__larray3d_1_1is__same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__larray3d_1_1same.html">same</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__larray3d_1_1is__same.html" title="Check whether two buds point to the same data (function) ">is_same</a>  <a href="interfacebud__larray3d_1_1same.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #is_same  <a href="interfacebud__larray3d_1_1same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__larray3d_1_1delete.html">delete</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the bud by decreasing references to the underlying data.  <a href="interfacebud__larray3d_1_1delete.html#details">More...</a><br /></td></tr>
@@ -323,33 +322,31 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of references to the bud.  <a href="interfacebud__larray3d_1_1references.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__larray3d_1_1refs.html">refs</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> references  <a href="interfacebud__larray3d_1_1refs.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #references  <a href="interfacebud__larray3d_1_1refs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">type &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbud__rarray3d_1_1rarray3d.html">rarray3d</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">bud variable  <a href="structbud__rarray3d_1_1rarray3d.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array data type.  <a href="structbud__rarray3d_1_1rarray3d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__rarray3d_1_1new.html">new</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new bud instances.  <a href="interfacebud__rarray3d_1_1new.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new rArray3D.  <a href="interfacebud__rarray3d_1_1new.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__rarray3d_1_1new__rarray3d.html">new_rarray3d</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new bud instances.  <a href="interfacebud__rarray3d_1_1new__rarray3d.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #new  <a href="interfacebud__rarray3d_1_1new__rarray3d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__rarray3d_1_1valuep.html">valuep</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer/value to/in the stored array.  <a href="interfacebud__rarray3d_1_1valuep.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__rarray3d_1_1value.html">value</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__rarray3d_1_1arrayp.html">arrayp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer to array in the bud.  <a href="interfacebud__rarray3d_1_1arrayp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__rarray3d_1_1size.html">size</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of elements is the stored array (same as regular <code>size</code>)  <a href="interfacebud__rarray3d_1_1size.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query dimension of array (or total size)  <a href="interfacebud__rarray3d_1_1size.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__rarray3d_1_1init__array.html">init_array</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize all values in the array to a specific value.  <a href="interfacebud__rarray3d_1_1init__array.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize array values to a specific value.  <a href="interfacebud__rarray3d_1_1init__array.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__rarray3d_1_1print.html">print</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print information about the bud.  <a href="interfacebud__rarray3d_1_1print.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="interfacebud__rarray3d_1_1print.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__rarray3d_1_1assignment_07_0A_08.html">assignment(=)</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for clearing the data container in the bud.  <a href="interfacebud__rarray3d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment of bud to another bud.  <a href="interfacebud__rarray3d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__rarray3d_1_1initialize.html">initialize</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization of data container.  <a href="interfacebud__rarray3d_1_1initialize.html#details">More...</a><br /></td></tr>
@@ -367,7 +364,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether two buds point to the same data (function)  <a href="interfacebud__rarray3d_1_1is__same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__rarray3d_1_1same.html">same</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__rarray3d_1_1is__same.html" title="Check whether two buds point to the same data (function) ">is_same</a>  <a href="interfacebud__rarray3d_1_1same.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #is_same  <a href="interfacebud__rarray3d_1_1same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__rarray3d_1_1delete.html">delete</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the bud by decreasing references to the underlying data.  <a href="interfacebud__rarray3d_1_1delete.html#details">More...</a><br /></td></tr>
@@ -379,33 +376,31 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of references to the bud.  <a href="interfacebud__rarray3d_1_1references.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__rarray3d_1_1refs.html">refs</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> references  <a href="interfacebud__rarray3d_1_1refs.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #references  <a href="interfacebud__rarray3d_1_1refs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">type &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbud__darray3d_1_1darray3d.html">darray3d</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">bud variable  <a href="structbud__darray3d_1_1darray3d.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array data type.  <a href="structbud__darray3d_1_1darray3d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__darray3d_1_1new.html">new</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new bud instances.  <a href="interfacebud__darray3d_1_1new.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new dArray3D.  <a href="interfacebud__darray3d_1_1new.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__darray3d_1_1new__darray3d.html">new_darray3d</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new bud instances.  <a href="interfacebud__darray3d_1_1new__darray3d.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #new  <a href="interfacebud__darray3d_1_1new__darray3d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__darray3d_1_1valuep.html">valuep</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer/value to/in the stored array.  <a href="interfacebud__darray3d_1_1valuep.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__darray3d_1_1value.html">value</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__darray3d_1_1arrayp.html">arrayp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer to array in the bud.  <a href="interfacebud__darray3d_1_1arrayp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__darray3d_1_1size.html">size</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of elements is the stored array (same as regular <code>size</code>)  <a href="interfacebud__darray3d_1_1size.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query dimension of array (or total size)  <a href="interfacebud__darray3d_1_1size.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__darray3d_1_1init__array.html">init_array</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize all values in the array to a specific value.  <a href="interfacebud__darray3d_1_1init__array.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize array values to a specific value.  <a href="interfacebud__darray3d_1_1init__array.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__darray3d_1_1print.html">print</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print information about the bud.  <a href="interfacebud__darray3d_1_1print.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="interfacebud__darray3d_1_1print.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__darray3d_1_1assignment_07_0A_08.html">assignment(=)</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for clearing the data container in the bud.  <a href="interfacebud__darray3d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment of bud to another bud.  <a href="interfacebud__darray3d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__darray3d_1_1initialize.html">initialize</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization of data container.  <a href="interfacebud__darray3d_1_1initialize.html#details">More...</a><br /></td></tr>
@@ -423,7 +418,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether two buds point to the same data (function)  <a href="interfacebud__darray3d_1_1is__same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__darray3d_1_1same.html">same</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__darray3d_1_1is__same.html" title="Check whether two buds point to the same data (function) ">is_same</a>  <a href="interfacebud__darray3d_1_1same.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #is_same  <a href="interfacebud__darray3d_1_1same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__darray3d_1_1delete.html">delete</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the bud by decreasing references to the underlying data.  <a href="interfacebud__darray3d_1_1delete.html#details">More...</a><br /></td></tr>
@@ -435,33 +430,31 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of references to the bud.  <a href="interfacebud__darray3d_1_1references.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__darray3d_1_1refs.html">refs</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> references  <a href="interfacebud__darray3d_1_1refs.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #references  <a href="interfacebud__darray3d_1_1refs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">type &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbud__carray3d_1_1carray3d.html">carray3d</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">bud variable  <a href="structbud__carray3d_1_1carray3d.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array data type.  <a href="structbud__carray3d_1_1carray3d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__carray3d_1_1new.html">new</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new bud instances.  <a href="interfacebud__carray3d_1_1new.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new cArray3D.  <a href="interfacebud__carray3d_1_1new.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__carray3d_1_1new__carray3d.html">new_carray3d</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new bud instances.  <a href="interfacebud__carray3d_1_1new__carray3d.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #new  <a href="interfacebud__carray3d_1_1new__carray3d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__carray3d_1_1valuep.html">valuep</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer/value to/in the stored array.  <a href="interfacebud__carray3d_1_1valuep.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__carray3d_1_1value.html">value</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__carray3d_1_1arrayp.html">arrayp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer to array in the bud.  <a href="interfacebud__carray3d_1_1arrayp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__carray3d_1_1size.html">size</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of elements is the stored array (same as regular <code>size</code>)  <a href="interfacebud__carray3d_1_1size.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query dimension of array (or total size)  <a href="interfacebud__carray3d_1_1size.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__carray3d_1_1init__array.html">init_array</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize all values in the array to a specific value.  <a href="interfacebud__carray3d_1_1init__array.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize array values to a specific value.  <a href="interfacebud__carray3d_1_1init__array.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__carray3d_1_1print.html">print</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print information about the bud.  <a href="interfacebud__carray3d_1_1print.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="interfacebud__carray3d_1_1print.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__carray3d_1_1assignment_07_0A_08.html">assignment(=)</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for clearing the data container in the bud.  <a href="interfacebud__carray3d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment of bud to another bud.  <a href="interfacebud__carray3d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__carray3d_1_1initialize.html">initialize</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization of data container.  <a href="interfacebud__carray3d_1_1initialize.html#details">More...</a><br /></td></tr>
@@ -479,7 +472,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether two buds point to the same data (function)  <a href="interfacebud__carray3d_1_1is__same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__carray3d_1_1same.html">same</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__carray3d_1_1is__same.html" title="Check whether two buds point to the same data (function) ">is_same</a>  <a href="interfacebud__carray3d_1_1same.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #is_same  <a href="interfacebud__carray3d_1_1same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__carray3d_1_1delete.html">delete</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the bud by decreasing references to the underlying data.  <a href="interfacebud__carray3d_1_1delete.html#details">More...</a><br /></td></tr>
@@ -491,33 +484,31 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of references to the bud.  <a href="interfacebud__carray3d_1_1references.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__carray3d_1_1refs.html">refs</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> references  <a href="interfacebud__carray3d_1_1refs.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #references  <a href="interfacebud__carray3d_1_1refs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">type &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbud__zarray3d_1_1zarray3d.html">zarray3d</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">bud variable  <a href="structbud__zarray3d_1_1zarray3d.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array data type.  <a href="structbud__zarray3d_1_1zarray3d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__zarray3d_1_1new.html">new</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new bud instances.  <a href="interfacebud__zarray3d_1_1new.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new zArray3D.  <a href="interfacebud__zarray3d_1_1new.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__zarray3d_1_1new__zarray3d.html">new_zarray3d</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new bud instances.  <a href="interfacebud__zarray3d_1_1new__zarray3d.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #new  <a href="interfacebud__zarray3d_1_1new__zarray3d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__zarray3d_1_1valuep.html">valuep</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer/value to/in the stored array.  <a href="interfacebud__zarray3d_1_1valuep.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__zarray3d_1_1value.html">value</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__zarray3d_1_1arrayp.html">arrayp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer to array in the bud.  <a href="interfacebud__zarray3d_1_1arrayp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__zarray3d_1_1size.html">size</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of elements is the stored array (same as regular <code>size</code>)  <a href="interfacebud__zarray3d_1_1size.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query dimension of array (or total size)  <a href="interfacebud__zarray3d_1_1size.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__zarray3d_1_1init__array.html">init_array</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize all values in the array to a specific value.  <a href="interfacebud__zarray3d_1_1init__array.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize array values to a specific value.  <a href="interfacebud__zarray3d_1_1init__array.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__zarray3d_1_1print.html">print</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print information about the bud.  <a href="interfacebud__zarray3d_1_1print.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="interfacebud__zarray3d_1_1print.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__zarray3d_1_1assignment_07_0A_08.html">assignment(=)</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for clearing the data container in the bud.  <a href="interfacebud__zarray3d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment of bud to another bud.  <a href="interfacebud__zarray3d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__zarray3d_1_1initialize.html">initialize</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization of data container.  <a href="interfacebud__zarray3d_1_1initialize.html#details">More...</a><br /></td></tr>
@@ -535,7 +526,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether two buds point to the same data (function)  <a href="interfacebud__zarray3d_1_1is__same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__zarray3d_1_1same.html">same</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__zarray3d_1_1is__same.html" title="Check whether two buds point to the same data (function) ">is_same</a>  <a href="interfacebud__zarray3d_1_1same.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #is_same  <a href="interfacebud__zarray3d_1_1same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__zarray3d_1_1delete.html">delete</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the bud by decreasing references to the underlying data.  <a href="interfacebud__zarray3d_1_1delete.html#details">More...</a><br /></td></tr>
@@ -547,7 +538,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of references to the bud.  <a href="interfacebud__zarray3d_1_1references.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__zarray3d_1_1refs.html">refs</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> references  <a href="interfacebud__zarray3d_1_1refs.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #references  <a href="interfacebud__zarray3d_1_1refs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -589,25 +580,18 @@ Functions/Subroutines</h2></td></tr>
 <tr class="memdesc:ga25470fca998b7f4b0724ed3dedb5284b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for cleaning up the data container.  <a href="group__bud__bArray3D.html#ga25470fca998b7f4b0724ed3dedb5284b">More...</a><br /></td></tr>
 <tr class="separator:ga25470fca998b7f4b0724ed3dedb5284b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5377470bcba6bf14d38b222ead12aa28"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__bArray3D.html#ga5377470bcba6bf14d38b222ead12aa28">new_dim_</a> (this,           d1, d2, d3,           val)</td></tr>
-<tr class="memdesc:ga5377470bcba6bf14d38b222ead12aa28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new bArray3D via dimension sizes.  <a href="group__bud__bArray3D.html#ga5377470bcba6bf14d38b222ead12aa28">More...</a><br /></td></tr>
 <tr class="separator:ga5377470bcba6bf14d38b222ead12aa28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad322f7f0a4726aefcf273e71aec06fa0"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__bArray3D.html#gad322f7f0a4726aefcf273e71aec06fa0">new_copy_</a> (this, array)</td></tr>
-<tr class="memdesc:gad322f7f0a4726aefcf273e71aec06fa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new bArray3D by coping another array.  <a href="group__bud__bArray3D.html#gad322f7f0a4726aefcf273e71aec06fa0">More...</a><br /></td></tr>
 <tr class="separator:gad322f7f0a4726aefcf273e71aec06fa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga14032c6be6e006cabf61bd3b2c709480"><td class="memItemLeft" align="right" valign="top">logical function, dimension(:,:,:), pointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__bArray3D.html#ga14032c6be6e006cabf61bd3b2c709480">get_arrayp_</a> (this)</td></tr>
-<tr class="memdesc:ga14032c6be6e006cabf61bd3b2c709480"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer to data array in bud.  <a href="group__bud__bArray3D.html#ga14032c6be6e006cabf61bd3b2c709480">More...</a><br /></td></tr>
-<tr class="separator:ga14032c6be6e006cabf61bd3b2c709480"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabb2f3cde23db35dec80444384b40e9fa"><td class="memItemLeft" align="right" valign="top">logical function, dimension(:,:,:), pointer, contiguous&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__bArray3D.html#gabb2f3cde23db35dec80444384b40e9fa">get_arrayp_</a> (this)</td></tr>
+<tr class="separator:gabb2f3cde23db35dec80444384b40e9fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga57fe72467d5c2fb03a8bfe8dec9fe664"><td class="memItemLeft" align="right" valign="top">pure logical function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__bArray3D.html#ga57fe72467d5c2fb03a8bfe8dec9fe664">get_array_idx_</a> (this,           i1, i2, i3           )</td></tr>
-<tr class="memdesc:ga57fe72467d5c2fb03a8bfe8dec9fe664"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve value in specific index of data array in the container.  <a href="group__bud__bArray3D.html#ga57fe72467d5c2fb03a8bfe8dec9fe664">More...</a><br /></td></tr>
 <tr class="separator:ga57fe72467d5c2fb03a8bfe8dec9fe664"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8b7a6f062e2dd0216cf6744f72246d75"><td class="memItemLeft" align="right" valign="top">pure integer function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__bArray3D.html#ga8b7a6f062e2dd0216cf6744f72246d75">size_</a> (this, dim)</td></tr>
-<tr class="memdesc:ga8b7a6f062e2dd0216cf6744f72246d75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query size of array.  <a href="group__bud__bArray3D.html#ga8b7a6f062e2dd0216cf6744f72246d75">More...</a><br /></td></tr>
 <tr class="separator:ga8b7a6f062e2dd0216cf6744f72246d75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad44997215751827bee8c533ee05821a6"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__bArray3D.html#gad44997215751827bee8c533ee05821a6">init_array_</a> (this, v)</td></tr>
-<tr class="memdesc:gad44997215751827bee8c533ee05821a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the array in bud to a specific value.  <a href="group__bud__bArray3D.html#gad44997215751827bee8c533ee05821a6">More...</a><br /></td></tr>
 <tr class="separator:gad44997215751827bee8c533ee05821a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad04e50836997dbaea0fe2cfea61043f0"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__bArray3D.html#gad04e50836997dbaea0fe2cfea61043f0">print_</a> (this, info, indent)</td></tr>
-<tr class="memdesc:gad04e50836997dbaea0fe2cfea61043f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="group__bud__bArray3D.html#gad04e50836997dbaea0fe2cfea61043f0">More...</a><br /></td></tr>
 <tr class="separator:gad04e50836997dbaea0fe2cfea61043f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafb3f3565916d07a34b7c1d2bc2c42e94"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__sArray3D.html#gafb3f3565916d07a34b7c1d2bc2c42e94">initialize_</a> (this)</td></tr>
 <tr class="separator:gafb3f3565916d07a34b7c1d2bc2c42e94"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -627,25 +611,18 @@ Functions/Subroutines</h2></td></tr>
 <tr class="memdesc:ga97a963883f3d89bc773c46d6bb9f6d4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for cleaning up the data container.  <a href="group__bud__sArray3D.html#ga97a963883f3d89bc773c46d6bb9f6d4c">More...</a><br /></td></tr>
 <tr class="separator:ga97a963883f3d89bc773c46d6bb9f6d4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7d557b91fa7696bc8c2fb3617b384aad"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__sArray3D.html#ga7d557b91fa7696bc8c2fb3617b384aad">new_dim_</a> (this,           d1, d2, d3,           val)</td></tr>
-<tr class="memdesc:ga7d557b91fa7696bc8c2fb3617b384aad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new sArray3D via dimension sizes.  <a href="group__bud__sArray3D.html#ga7d557b91fa7696bc8c2fb3617b384aad">More...</a><br /></td></tr>
 <tr class="separator:ga7d557b91fa7696bc8c2fb3617b384aad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1166b960b88e0302873c4ced3ba69e6c"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__sArray3D.html#ga1166b960b88e0302873c4ced3ba69e6c">new_copy_</a> (this, array)</td></tr>
-<tr class="memdesc:ga1166b960b88e0302873c4ced3ba69e6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new sArray3D by coping another array.  <a href="group__bud__sArray3D.html#ga1166b960b88e0302873c4ced3ba69e6c">More...</a><br /></td></tr>
 <tr class="separator:ga1166b960b88e0302873c4ced3ba69e6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga77e2a2a850999d28c2bee3a6b5a569f8"><td class="memItemLeft" align="right" valign="top">integer(is_) function, dimension(:,:,:), pointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__sArray3D.html#ga77e2a2a850999d28c2bee3a6b5a569f8">get_arrayp_</a> (this)</td></tr>
-<tr class="memdesc:ga77e2a2a850999d28c2bee3a6b5a569f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer to data array in bud.  <a href="group__bud__sArray3D.html#ga77e2a2a850999d28c2bee3a6b5a569f8">More...</a><br /></td></tr>
-<tr class="separator:ga77e2a2a850999d28c2bee3a6b5a569f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaecd46322271c7739ed2158d5cf339bf3"><td class="memItemLeft" align="right" valign="top">integer(is_) function, dimension(:,:,:), pointer, contiguous&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__sArray3D.html#gaecd46322271c7739ed2158d5cf339bf3">get_arrayp_</a> (this)</td></tr>
+<tr class="separator:gaecd46322271c7739ed2158d5cf339bf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga175729c9fd20247ae10616f2c560a89c"><td class="memItemLeft" align="right" valign="top">pure integer(is_) function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__sArray3D.html#ga175729c9fd20247ae10616f2c560a89c">get_array_idx_</a> (this,           i1, i2, i3           )</td></tr>
-<tr class="memdesc:ga175729c9fd20247ae10616f2c560a89c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve value in specific index of data array in the container.  <a href="group__bud__sArray3D.html#ga175729c9fd20247ae10616f2c560a89c">More...</a><br /></td></tr>
 <tr class="separator:ga175729c9fd20247ae10616f2c560a89c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga49157375741455c54cba15b9d71aec1c"><td class="memItemLeft" align="right" valign="top">pure integer function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__sArray3D.html#ga49157375741455c54cba15b9d71aec1c">size_</a> (this, dim)</td></tr>
-<tr class="memdesc:ga49157375741455c54cba15b9d71aec1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query size of array.  <a href="group__bud__sArray3D.html#ga49157375741455c54cba15b9d71aec1c">More...</a><br /></td></tr>
 <tr class="separator:ga49157375741455c54cba15b9d71aec1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae03823ce3d870303ad94788f87613ec8"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__sArray3D.html#gae03823ce3d870303ad94788f87613ec8">init_array_</a> (this, v)</td></tr>
-<tr class="memdesc:gae03823ce3d870303ad94788f87613ec8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the array in bud to a specific value.  <a href="group__bud__sArray3D.html#gae03823ce3d870303ad94788f87613ec8">More...</a><br /></td></tr>
 <tr class="separator:gae03823ce3d870303ad94788f87613ec8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2f6031b789a3e740df8c390d73b3e8fb"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__sArray3D.html#ga2f6031b789a3e740df8c390d73b3e8fb">print_</a> (this, info, indent)</td></tr>
-<tr class="memdesc:ga2f6031b789a3e740df8c390d73b3e8fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="group__bud__sArray3D.html#ga2f6031b789a3e740df8c390d73b3e8fb">More...</a><br /></td></tr>
 <tr class="separator:ga2f6031b789a3e740df8c390d73b3e8fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafe47b02121f4db84860497a13014d34e"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iArray3D.html#gafe47b02121f4db84860497a13014d34e">initialize_</a> (this)</td></tr>
 <tr class="separator:gafe47b02121f4db84860497a13014d34e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -665,25 +642,18 @@ Functions/Subroutines</h2></td></tr>
 <tr class="memdesc:ga4e5520b3e22a3c727f6e5f5f295af399"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for cleaning up the data container.  <a href="group__bud__iArray3D.html#ga4e5520b3e22a3c727f6e5f5f295af399">More...</a><br /></td></tr>
 <tr class="separator:ga4e5520b3e22a3c727f6e5f5f295af399"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf7615991df959b9741b6b30450f87852"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iArray3D.html#gaf7615991df959b9741b6b30450f87852">new_dim_</a> (this,           d1, d2, d3,           val)</td></tr>
-<tr class="memdesc:gaf7615991df959b9741b6b30450f87852"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new iArray3D via dimension sizes.  <a href="group__bud__iArray3D.html#gaf7615991df959b9741b6b30450f87852">More...</a><br /></td></tr>
 <tr class="separator:gaf7615991df959b9741b6b30450f87852"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga970e0a7436c3c67a210b47dd45547355"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iArray3D.html#ga970e0a7436c3c67a210b47dd45547355">new_copy_</a> (this, array)</td></tr>
-<tr class="memdesc:ga970e0a7436c3c67a210b47dd45547355"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new iArray3D by coping another array.  <a href="group__bud__iArray3D.html#ga970e0a7436c3c67a210b47dd45547355">More...</a><br /></td></tr>
 <tr class="separator:ga970e0a7436c3c67a210b47dd45547355"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga332fdfda91edbb81861e38fda9312b78"><td class="memItemLeft" align="right" valign="top">integer(ii_) function, dimension(:,:,:), pointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iArray3D.html#ga332fdfda91edbb81861e38fda9312b78">get_arrayp_</a> (this)</td></tr>
-<tr class="memdesc:ga332fdfda91edbb81861e38fda9312b78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer to data array in bud.  <a href="group__bud__iArray3D.html#ga332fdfda91edbb81861e38fda9312b78">More...</a><br /></td></tr>
-<tr class="separator:ga332fdfda91edbb81861e38fda9312b78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga535510accf85b1ca42ba50bde945fc22"><td class="memItemLeft" align="right" valign="top">integer(ii_) function, dimension(:,:,:), pointer, contiguous&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iArray3D.html#ga535510accf85b1ca42ba50bde945fc22">get_arrayp_</a> (this)</td></tr>
+<tr class="separator:ga535510accf85b1ca42ba50bde945fc22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga92f8e5defa628ee92d9215c1bcf8bbd2"><td class="memItemLeft" align="right" valign="top">pure integer(ii_) function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iArray3D.html#ga92f8e5defa628ee92d9215c1bcf8bbd2">get_array_idx_</a> (this,           i1, i2, i3           )</td></tr>
-<tr class="memdesc:ga92f8e5defa628ee92d9215c1bcf8bbd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve value in specific index of data array in the container.  <a href="group__bud__iArray3D.html#ga92f8e5defa628ee92d9215c1bcf8bbd2">More...</a><br /></td></tr>
 <tr class="separator:ga92f8e5defa628ee92d9215c1bcf8bbd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga146aa32f20d8def541b71d8bb280796e"><td class="memItemLeft" align="right" valign="top">pure integer function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iArray3D.html#ga146aa32f20d8def541b71d8bb280796e">size_</a> (this, dim)</td></tr>
-<tr class="memdesc:ga146aa32f20d8def541b71d8bb280796e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query size of array.  <a href="group__bud__iArray3D.html#ga146aa32f20d8def541b71d8bb280796e">More...</a><br /></td></tr>
 <tr class="separator:ga146aa32f20d8def541b71d8bb280796e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaae938fe7c56c36be2379d01b5b5ee317"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iArray3D.html#gaae938fe7c56c36be2379d01b5b5ee317">init_array_</a> (this, v)</td></tr>
-<tr class="memdesc:gaae938fe7c56c36be2379d01b5b5ee317"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the array in bud to a specific value.  <a href="group__bud__iArray3D.html#gaae938fe7c56c36be2379d01b5b5ee317">More...</a><br /></td></tr>
 <tr class="separator:gaae938fe7c56c36be2379d01b5b5ee317"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa1ae46bd23657b923509810706a04d20"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iArray3D.html#gaa1ae46bd23657b923509810706a04d20">print_</a> (this, info, indent)</td></tr>
-<tr class="memdesc:gaa1ae46bd23657b923509810706a04d20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="group__bud__iArray3D.html#gaa1ae46bd23657b923509810706a04d20">More...</a><br /></td></tr>
 <tr class="separator:gaa1ae46bd23657b923509810706a04d20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga06bc8f530970347cdcf58c623fe2701f"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lArray3D.html#ga06bc8f530970347cdcf58c623fe2701f">initialize_</a> (this)</td></tr>
 <tr class="separator:ga06bc8f530970347cdcf58c623fe2701f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -703,25 +673,18 @@ Functions/Subroutines</h2></td></tr>
 <tr class="memdesc:ga44c24bf419f915894a6fb3aa25d2893f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for cleaning up the data container.  <a href="group__bud__lArray3D.html#ga44c24bf419f915894a6fb3aa25d2893f">More...</a><br /></td></tr>
 <tr class="separator:ga44c24bf419f915894a6fb3aa25d2893f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac5752b2a294b5eba1016245a3da507ac"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lArray3D.html#gac5752b2a294b5eba1016245a3da507ac">new_dim_</a> (this,           d1, d2, d3,           val)</td></tr>
-<tr class="memdesc:gac5752b2a294b5eba1016245a3da507ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new lArray3D via dimension sizes.  <a href="group__bud__lArray3D.html#gac5752b2a294b5eba1016245a3da507ac">More...</a><br /></td></tr>
 <tr class="separator:gac5752b2a294b5eba1016245a3da507ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga62b155b8bd31a588b9418a59cd16af24"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lArray3D.html#ga62b155b8bd31a588b9418a59cd16af24">new_copy_</a> (this, array)</td></tr>
-<tr class="memdesc:ga62b155b8bd31a588b9418a59cd16af24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new lArray3D by coping another array.  <a href="group__bud__lArray3D.html#ga62b155b8bd31a588b9418a59cd16af24">More...</a><br /></td></tr>
 <tr class="separator:ga62b155b8bd31a588b9418a59cd16af24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabacf57d8d5c97ec08d5db7b20f4f22bf"><td class="memItemLeft" align="right" valign="top">integer(il_) function, dimension(:,:,:), pointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lArray3D.html#gabacf57d8d5c97ec08d5db7b20f4f22bf">get_arrayp_</a> (this)</td></tr>
-<tr class="memdesc:gabacf57d8d5c97ec08d5db7b20f4f22bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer to data array in bud.  <a href="group__bud__lArray3D.html#gabacf57d8d5c97ec08d5db7b20f4f22bf">More...</a><br /></td></tr>
-<tr class="separator:gabacf57d8d5c97ec08d5db7b20f4f22bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8f8ac150a0efb278fdc3f1903f9470e8"><td class="memItemLeft" align="right" valign="top">integer(il_) function, dimension(:,:,:), pointer, contiguous&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lArray3D.html#ga8f8ac150a0efb278fdc3f1903f9470e8">get_arrayp_</a> (this)</td></tr>
+<tr class="separator:ga8f8ac150a0efb278fdc3f1903f9470e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2985de19f335a2da3b388d9110990f77"><td class="memItemLeft" align="right" valign="top">pure integer(il_) function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lArray3D.html#ga2985de19f335a2da3b388d9110990f77">get_array_idx_</a> (this,           i1, i2, i3           )</td></tr>
-<tr class="memdesc:ga2985de19f335a2da3b388d9110990f77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve value in specific index of data array in the container.  <a href="group__bud__lArray3D.html#ga2985de19f335a2da3b388d9110990f77">More...</a><br /></td></tr>
 <tr class="separator:ga2985de19f335a2da3b388d9110990f77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad91b6a8ae2964c5d1556aa16c9cbf5ec"><td class="memItemLeft" align="right" valign="top">pure integer function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lArray3D.html#gad91b6a8ae2964c5d1556aa16c9cbf5ec">size_</a> (this, dim)</td></tr>
-<tr class="memdesc:gad91b6a8ae2964c5d1556aa16c9cbf5ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query size of array.  <a href="group__bud__lArray3D.html#gad91b6a8ae2964c5d1556aa16c9cbf5ec">More...</a><br /></td></tr>
 <tr class="separator:gad91b6a8ae2964c5d1556aa16c9cbf5ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6cf37ecda3f4a44cfa71b5da1444fb02"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lArray3D.html#ga6cf37ecda3f4a44cfa71b5da1444fb02">init_array_</a> (this, v)</td></tr>
-<tr class="memdesc:ga6cf37ecda3f4a44cfa71b5da1444fb02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the array in bud to a specific value.  <a href="group__bud__lArray3D.html#ga6cf37ecda3f4a44cfa71b5da1444fb02">More...</a><br /></td></tr>
 <tr class="separator:ga6cf37ecda3f4a44cfa71b5da1444fb02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac40efe6a1ba10507c2888ea7b9b91528"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lArray3D.html#gac40efe6a1ba10507c2888ea7b9b91528">print_</a> (this, info, indent)</td></tr>
-<tr class="memdesc:gac40efe6a1ba10507c2888ea7b9b91528"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="group__bud__lArray3D.html#gac40efe6a1ba10507c2888ea7b9b91528">More...</a><br /></td></tr>
 <tr class="separator:gac40efe6a1ba10507c2888ea7b9b91528"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaac61156f129ae83a95516933ad3daa04"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#gaac61156f129ae83a95516933ad3daa04">initialize_</a> (this)</td></tr>
 <tr class="separator:gaac61156f129ae83a95516933ad3daa04"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -741,25 +704,18 @@ Functions/Subroutines</h2></td></tr>
 <tr class="memdesc:ga1d1570f310f37ae8502fc84920ca19f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for cleaning up the data container.  <a href="group__bud__rArray3D.html#ga1d1570f310f37ae8502fc84920ca19f7">More...</a><br /></td></tr>
 <tr class="separator:ga1d1570f310f37ae8502fc84920ca19f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9754390209278853b3461e170be51985"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#ga9754390209278853b3461e170be51985">new_dim_</a> (this,           d1, d2, d3,           val)</td></tr>
-<tr class="memdesc:ga9754390209278853b3461e170be51985"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new rArray3D via dimension sizes.  <a href="group__bud__rArray3D.html#ga9754390209278853b3461e170be51985">More...</a><br /></td></tr>
 <tr class="separator:ga9754390209278853b3461e170be51985"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga783fc05198fd5cd5baf2583fb82e08f5"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#ga783fc05198fd5cd5baf2583fb82e08f5">new_copy_</a> (this, array)</td></tr>
-<tr class="memdesc:ga783fc05198fd5cd5baf2583fb82e08f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new rArray3D by coping another array.  <a href="group__bud__rArray3D.html#ga783fc05198fd5cd5baf2583fb82e08f5">More...</a><br /></td></tr>
 <tr class="separator:ga783fc05198fd5cd5baf2583fb82e08f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf3be59058325834e66cd2b82a4ea4503"><td class="memItemLeft" align="right" valign="top">real(rr_) function, dimension(:,:,:), pointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#gaf3be59058325834e66cd2b82a4ea4503">get_arrayp_</a> (this)</td></tr>
-<tr class="memdesc:gaf3be59058325834e66cd2b82a4ea4503"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer to data array in bud.  <a href="group__bud__rArray3D.html#gaf3be59058325834e66cd2b82a4ea4503">More...</a><br /></td></tr>
-<tr class="separator:gaf3be59058325834e66cd2b82a4ea4503"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa06febb747f2090a72fe6b440b935147"><td class="memItemLeft" align="right" valign="top">real(rr_) function, dimension(:,:,:), pointer, contiguous&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#gaa06febb747f2090a72fe6b440b935147">get_arrayp_</a> (this)</td></tr>
+<tr class="separator:gaa06febb747f2090a72fe6b440b935147"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadb2d853d7d1d6733c446723bf895952f"><td class="memItemLeft" align="right" valign="top">pure real(rr_) function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#gadb2d853d7d1d6733c446723bf895952f">get_array_idx_</a> (this,           i1, i2, i3           )</td></tr>
-<tr class="memdesc:gadb2d853d7d1d6733c446723bf895952f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve value in specific index of data array in the container.  <a href="group__bud__rArray3D.html#gadb2d853d7d1d6733c446723bf895952f">More...</a><br /></td></tr>
 <tr class="separator:gadb2d853d7d1d6733c446723bf895952f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacae44f6be8254f76b0d91dcc556e9b1f"><td class="memItemLeft" align="right" valign="top">pure integer function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#gacae44f6be8254f76b0d91dcc556e9b1f">size_</a> (this, dim)</td></tr>
-<tr class="memdesc:gacae44f6be8254f76b0d91dcc556e9b1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query size of array.  <a href="group__bud__rArray3D.html#gacae44f6be8254f76b0d91dcc556e9b1f">More...</a><br /></td></tr>
 <tr class="separator:gacae44f6be8254f76b0d91dcc556e9b1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga72a79503a7335c70ad0da5371ce97c20"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#ga72a79503a7335c70ad0da5371ce97c20">init_array_</a> (this, v)</td></tr>
-<tr class="memdesc:ga72a79503a7335c70ad0da5371ce97c20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the array in bud to a specific value.  <a href="group__bud__rArray3D.html#ga72a79503a7335c70ad0da5371ce97c20">More...</a><br /></td></tr>
 <tr class="separator:ga72a79503a7335c70ad0da5371ce97c20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga26f8d1da096111d6bcd9205a83e88949"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#ga26f8d1da096111d6bcd9205a83e88949">print_</a> (this, info, indent)</td></tr>
-<tr class="memdesc:ga26f8d1da096111d6bcd9205a83e88949"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="group__bud__rArray3D.html#ga26f8d1da096111d6bcd9205a83e88949">More...</a><br /></td></tr>
 <tr class="separator:ga26f8d1da096111d6bcd9205a83e88949"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga23d12ff7ac25fb3a352e0b2ebdf7c720"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__dArray3D.html#ga23d12ff7ac25fb3a352e0b2ebdf7c720">initialize_</a> (this)</td></tr>
 <tr class="separator:ga23d12ff7ac25fb3a352e0b2ebdf7c720"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -779,25 +735,18 @@ Functions/Subroutines</h2></td></tr>
 <tr class="memdesc:ga2dbdac4f3c61358f9ccdec37eba797e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for cleaning up the data container.  <a href="group__bud__dArray3D.html#ga2dbdac4f3c61358f9ccdec37eba797e7">More...</a><br /></td></tr>
 <tr class="separator:ga2dbdac4f3c61358f9ccdec37eba797e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac58d2332f67104a0f4b8f1a575169090"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__dArray3D.html#gac58d2332f67104a0f4b8f1a575169090">new_dim_</a> (this,           d1, d2, d3,           val)</td></tr>
-<tr class="memdesc:gac58d2332f67104a0f4b8f1a575169090"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new dArray3D via dimension sizes.  <a href="group__bud__dArray3D.html#gac58d2332f67104a0f4b8f1a575169090">More...</a><br /></td></tr>
 <tr class="separator:gac58d2332f67104a0f4b8f1a575169090"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab08873ff5c67b72d68973146bfbb89b0"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__dArray3D.html#gab08873ff5c67b72d68973146bfbb89b0">new_copy_</a> (this, array)</td></tr>
-<tr class="memdesc:gab08873ff5c67b72d68973146bfbb89b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new dArray3D by coping another array.  <a href="group__bud__dArray3D.html#gab08873ff5c67b72d68973146bfbb89b0">More...</a><br /></td></tr>
 <tr class="separator:gab08873ff5c67b72d68973146bfbb89b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaba91d694698491d68416c340b5dce8fd"><td class="memItemLeft" align="right" valign="top">real(rd_) function, dimension(:,:,:), pointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__dArray3D.html#gaba91d694698491d68416c340b5dce8fd">get_arrayp_</a> (this)</td></tr>
-<tr class="memdesc:gaba91d694698491d68416c340b5dce8fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer to data array in bud.  <a href="group__bud__dArray3D.html#gaba91d694698491d68416c340b5dce8fd">More...</a><br /></td></tr>
-<tr class="separator:gaba91d694698491d68416c340b5dce8fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab670973ce5824c03e5a7ddeb55ac78af"><td class="memItemLeft" align="right" valign="top">real(rd_) function, dimension(:,:,:), pointer, contiguous&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__dArray3D.html#gab670973ce5824c03e5a7ddeb55ac78af">get_arrayp_</a> (this)</td></tr>
+<tr class="separator:gab670973ce5824c03e5a7ddeb55ac78af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab7f069e526fe203c1fafa499d1938007"><td class="memItemLeft" align="right" valign="top">pure real(rd_) function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__dArray3D.html#gab7f069e526fe203c1fafa499d1938007">get_array_idx_</a> (this,           i1, i2, i3           )</td></tr>
-<tr class="memdesc:gab7f069e526fe203c1fafa499d1938007"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve value in specific index of data array in the container.  <a href="group__bud__dArray3D.html#gab7f069e526fe203c1fafa499d1938007">More...</a><br /></td></tr>
 <tr class="separator:gab7f069e526fe203c1fafa499d1938007"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaeaa3258a2b29310030390554512fcc43"><td class="memItemLeft" align="right" valign="top">pure integer function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__dArray3D.html#gaeaa3258a2b29310030390554512fcc43">size_</a> (this, dim)</td></tr>
-<tr class="memdesc:gaeaa3258a2b29310030390554512fcc43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query size of array.  <a href="group__bud__dArray3D.html#gaeaa3258a2b29310030390554512fcc43">More...</a><br /></td></tr>
 <tr class="separator:gaeaa3258a2b29310030390554512fcc43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0120bc295c330574c61e20e69f8725c2"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__dArray3D.html#ga0120bc295c330574c61e20e69f8725c2">init_array_</a> (this, v)</td></tr>
-<tr class="memdesc:ga0120bc295c330574c61e20e69f8725c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the array in bud to a specific value.  <a href="group__bud__dArray3D.html#ga0120bc295c330574c61e20e69f8725c2">More...</a><br /></td></tr>
 <tr class="separator:ga0120bc295c330574c61e20e69f8725c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8c699b4ca1c69637ca2c3f481ce7dbd6"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__dArray3D.html#ga8c699b4ca1c69637ca2c3f481ce7dbd6">print_</a> (this, info, indent)</td></tr>
-<tr class="memdesc:ga8c699b4ca1c69637ca2c3f481ce7dbd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="group__bud__dArray3D.html#ga8c699b4ca1c69637ca2c3f481ce7dbd6">More...</a><br /></td></tr>
 <tr class="separator:ga8c699b4ca1c69637ca2c3f481ce7dbd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga51fcec365aaee0cd7697040753e1a920"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__cArray3D.html#ga51fcec365aaee0cd7697040753e1a920">initialize_</a> (this)</td></tr>
 <tr class="separator:ga51fcec365aaee0cd7697040753e1a920"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -817,25 +766,18 @@ Functions/Subroutines</h2></td></tr>
 <tr class="memdesc:ga75f6c82dbed4347f84f9188dd612361a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for cleaning up the data container.  <a href="group__bud__cArray3D.html#ga75f6c82dbed4347f84f9188dd612361a">More...</a><br /></td></tr>
 <tr class="separator:ga75f6c82dbed4347f84f9188dd612361a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga506a3d128422f00b26ddd16c1864df97"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__cArray3D.html#ga506a3d128422f00b26ddd16c1864df97">new_dim_</a> (this,           d1, d2, d3,           val)</td></tr>
-<tr class="memdesc:ga506a3d128422f00b26ddd16c1864df97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new cArray3D via dimension sizes.  <a href="group__bud__cArray3D.html#ga506a3d128422f00b26ddd16c1864df97">More...</a><br /></td></tr>
 <tr class="separator:ga506a3d128422f00b26ddd16c1864df97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1ec6c6e9e68bfe3353b07c99efbf2c74"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__cArray3D.html#ga1ec6c6e9e68bfe3353b07c99efbf2c74">new_copy_</a> (this, array)</td></tr>
-<tr class="memdesc:ga1ec6c6e9e68bfe3353b07c99efbf2c74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new cArray3D by coping another array.  <a href="group__bud__cArray3D.html#ga1ec6c6e9e68bfe3353b07c99efbf2c74">More...</a><br /></td></tr>
 <tr class="separator:ga1ec6c6e9e68bfe3353b07c99efbf2c74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga425417005996c9d180f0ec5267e2052b"><td class="memItemLeft" align="right" valign="top">complex(rr_) function, dimension(:,:,:), pointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__cArray3D.html#ga425417005996c9d180f0ec5267e2052b">get_arrayp_</a> (this)</td></tr>
-<tr class="memdesc:ga425417005996c9d180f0ec5267e2052b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer to data array in bud.  <a href="group__bud__cArray3D.html#ga425417005996c9d180f0ec5267e2052b">More...</a><br /></td></tr>
-<tr class="separator:ga425417005996c9d180f0ec5267e2052b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga254c74fb4410f630cc96d482a8a629a7"><td class="memItemLeft" align="right" valign="top">complex(rr_) function, dimension(:,:,:), pointer, contiguous&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__cArray3D.html#ga254c74fb4410f630cc96d482a8a629a7">get_arrayp_</a> (this)</td></tr>
+<tr class="separator:ga254c74fb4410f630cc96d482a8a629a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga60f76113ecbd110e507630fb02df0d76"><td class="memItemLeft" align="right" valign="top">pure complex(rr_) function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__cArray3D.html#ga60f76113ecbd110e507630fb02df0d76">get_array_idx_</a> (this,           i1, i2, i3           )</td></tr>
-<tr class="memdesc:ga60f76113ecbd110e507630fb02df0d76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve value in specific index of data array in the container.  <a href="group__bud__cArray3D.html#ga60f76113ecbd110e507630fb02df0d76">More...</a><br /></td></tr>
 <tr class="separator:ga60f76113ecbd110e507630fb02df0d76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1923d9a0b704e12bd4d2db49886d3d06"><td class="memItemLeft" align="right" valign="top">pure integer function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__cArray3D.html#ga1923d9a0b704e12bd4d2db49886d3d06">size_</a> (this, dim)</td></tr>
-<tr class="memdesc:ga1923d9a0b704e12bd4d2db49886d3d06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query size of array.  <a href="group__bud__cArray3D.html#ga1923d9a0b704e12bd4d2db49886d3d06">More...</a><br /></td></tr>
 <tr class="separator:ga1923d9a0b704e12bd4d2db49886d3d06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab22fcbfcb199cfcde402e783446353bb"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__cArray3D.html#gab22fcbfcb199cfcde402e783446353bb">init_array_</a> (this, v)</td></tr>
-<tr class="memdesc:gab22fcbfcb199cfcde402e783446353bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the array in bud to a specific value.  <a href="group__bud__cArray3D.html#gab22fcbfcb199cfcde402e783446353bb">More...</a><br /></td></tr>
 <tr class="separator:gab22fcbfcb199cfcde402e783446353bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf63acd473dc35f31e0205ddcef3f4027"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__cArray3D.html#gaf63acd473dc35f31e0205ddcef3f4027">print_</a> (this, info, indent)</td></tr>
-<tr class="memdesc:gaf63acd473dc35f31e0205ddcef3f4027"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="group__bud__cArray3D.html#gaf63acd473dc35f31e0205ddcef3f4027">More...</a><br /></td></tr>
 <tr class="separator:gaf63acd473dc35f31e0205ddcef3f4027"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gabda343435ceb259cf505897c0aa6512a"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__zArray3D.html#gabda343435ceb259cf505897c0aa6512a">initialize_</a> (this)</td></tr>
 <tr class="separator:gabda343435ceb259cf505897c0aa6512a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -855,25 +797,18 @@ Functions/Subroutines</h2></td></tr>
 <tr class="memdesc:ga8b03a06eee85a6818ca972fa672101ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for cleaning up the data container.  <a href="group__bud__zArray3D.html#ga8b03a06eee85a6818ca972fa672101ca">More...</a><br /></td></tr>
 <tr class="separator:ga8b03a06eee85a6818ca972fa672101ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0e6dab19ebacb5b07152743886901433"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__zArray3D.html#ga0e6dab19ebacb5b07152743886901433">new_dim_</a> (this,           d1, d2, d3,           val)</td></tr>
-<tr class="memdesc:ga0e6dab19ebacb5b07152743886901433"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new zArray3D via dimension sizes.  <a href="group__bud__zArray3D.html#ga0e6dab19ebacb5b07152743886901433">More...</a><br /></td></tr>
 <tr class="separator:ga0e6dab19ebacb5b07152743886901433"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3a5a9728f4b5cbb141022a5a2e94310c"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__zArray3D.html#ga3a5a9728f4b5cbb141022a5a2e94310c">new_copy_</a> (this, array)</td></tr>
-<tr class="memdesc:ga3a5a9728f4b5cbb141022a5a2e94310c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new zArray3D by coping another array.  <a href="group__bud__zArray3D.html#ga3a5a9728f4b5cbb141022a5a2e94310c">More...</a><br /></td></tr>
 <tr class="separator:ga3a5a9728f4b5cbb141022a5a2e94310c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga03881816f770a5aab1d09c6b190cc8d8"><td class="memItemLeft" align="right" valign="top">complex(rd_) function, dimension(:,:,:), pointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__zArray3D.html#ga03881816f770a5aab1d09c6b190cc8d8">get_arrayp_</a> (this)</td></tr>
-<tr class="memdesc:ga03881816f770a5aab1d09c6b190cc8d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer to data array in bud.  <a href="group__bud__zArray3D.html#ga03881816f770a5aab1d09c6b190cc8d8">More...</a><br /></td></tr>
-<tr class="separator:ga03881816f770a5aab1d09c6b190cc8d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga140219d92a577d148f02ec3a2de96e98"><td class="memItemLeft" align="right" valign="top">complex(rd_) function, dimension(:,:,:), pointer, contiguous&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__zArray3D.html#ga140219d92a577d148f02ec3a2de96e98">get_arrayp_</a> (this)</td></tr>
+<tr class="separator:ga140219d92a577d148f02ec3a2de96e98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga63f13c014c550b28ff3ae3a710680fa8"><td class="memItemLeft" align="right" valign="top">pure complex(rd_) function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__zArray3D.html#ga63f13c014c550b28ff3ae3a710680fa8">get_array_idx_</a> (this,           i1, i2, i3           )</td></tr>
-<tr class="memdesc:ga63f13c014c550b28ff3ae3a710680fa8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve value in specific index of data array in the container.  <a href="group__bud__zArray3D.html#ga63f13c014c550b28ff3ae3a710680fa8">More...</a><br /></td></tr>
 <tr class="separator:ga63f13c014c550b28ff3ae3a710680fa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga335b43f95442e3017118d7b7a2dc6805"><td class="memItemLeft" align="right" valign="top">pure integer function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__zArray3D.html#ga335b43f95442e3017118d7b7a2dc6805">size_</a> (this, dim)</td></tr>
-<tr class="memdesc:ga335b43f95442e3017118d7b7a2dc6805"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query size of array.  <a href="group__bud__zArray3D.html#ga335b43f95442e3017118d7b7a2dc6805">More...</a><br /></td></tr>
 <tr class="separator:ga335b43f95442e3017118d7b7a2dc6805"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga707f60cbccbdecc908f572b0864c3cbf"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__zArray3D.html#ga707f60cbccbdecc908f572b0864c3cbf">init_array_</a> (this, v)</td></tr>
-<tr class="memdesc:ga707f60cbccbdecc908f572b0864c3cbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the array in bud to a specific value.  <a href="group__bud__zArray3D.html#ga707f60cbccbdecc908f572b0864c3cbf">More...</a><br /></td></tr>
 <tr class="separator:ga707f60cbccbdecc908f572b0864c3cbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga16b4de14f68f8dc4012919eed46eca01"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__zArray3D.html#ga16b4de14f68f8dc4012919eed46eca01">print_</a> (this, info, indent)</td></tr>
-<tr class="memdesc:ga16b4de14f68f8dc4012919eed46eca01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="group__bud__zArray3D.html#ga16b4de14f68f8dc4012919eed46eca01">More...</a><br /></td></tr>
 <tr class="separator:ga16b4de14f68f8dc4012919eed46eca01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
@@ -954,7 +889,7 @@ Variables</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 5 2016 09:53:14 for buds by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 6 2016 14:33:54 for buds by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

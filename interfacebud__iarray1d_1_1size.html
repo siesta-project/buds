@@ -14,7 +14,14 @@
 <script type="text/javascript">
   $(document).ready(function() { init_search(); });
 </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="extra_stylesheet.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -98,7 +105,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p>Number of elements is the stored array (same as regular <code>size</code>)  
+<p>Query dimension of array (or total size)  
  <a href="interfacebud__iarray1d_1_1size.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for size:</div>
@@ -111,18 +118,19 @@ Collaboration diagram for size:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:ga084999a05dc00b593b315023a6fbf912"><td class="memItemLeft" align="right" valign="top">pure integer function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iArray1D.html#ga084999a05dc00b593b315023a6fbf912">size_</a> (this, dim)</td></tr>
-<tr class="memdesc:ga084999a05dc00b593b315023a6fbf912"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query size of array.  <a href="group__bud__iArray1D.html#ga084999a05dc00b593b315023a6fbf912">More...</a><br /></td></tr>
 <tr class="separator:ga084999a05dc00b593b315023a6fbf912"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Number of elements is the stored array (same as regular <code>size</code>) </p>
-</div><hr/>The documentation for this interface was generated from the following file:<ul>
+<div class="textblock"><p>Query dimension of array (or total size) </p>
+<p>Returns the size of the array contained.</p>
+<p><b>Note</b> There is no checking of the dimension queried.</p>
+<p>This is equivalent to: </p><div class="fragment"><div class="line">a =&gt; arrayp(this)</div><div class="line">... = <span class="keyword">size</span>(a [,dim=])</div></div><!-- fragment --> </div><hr/>The documentation for this interface was generated from the following file:<ul>
 <li>src/<a class="el" href="bud__Array1D_8f90.html">bud_Array1D.f90</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 5 2016 09:53:18 for buds by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 6 2016 14:33:56 for buds by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

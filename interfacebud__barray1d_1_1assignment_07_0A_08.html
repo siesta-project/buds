@@ -14,7 +14,14 @@
 <script type="text/javascript">
   $(document).ready(function() { init_search(); });
 </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="extra_stylesheet.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -98,7 +105,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p>Internal routine for clearing the data container in the bud.  
+<p>Assignment of bud to another bud.  
  <a href="interfacebud__barray1d_1_1assignment_07_0A_08.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for assignment(=):</div>
@@ -114,8 +121,7 @@ Private Member Functions</h2></td></tr>
 <tr class="separator:ga9521622c2690fb302bc377ee866b8836"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Internal routine for clearing the data container in the bud. </p>
-<p>Assignment of bud to another bud</p>
+<div class="textblock"><p>Assignment of bud to another bud. </p>
 <p><code>lhs</code> is deleted before assignment.</p>
 <p>Make <code>lhs</code> contain the same data as in <code>rhs</code>. Internally a pointer to the same data is created and the reference counter will be incremented.</p>
 <p><code>lhs</code> will be un-associated if <code>rhs</code> is un-associated. </p>
@@ -125,7 +131,7 @@ Private Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 5 2016 09:53:16 for buds by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 6 2016 14:33:56 for buds by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

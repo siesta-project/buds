@@ -14,7 +14,14 @@
 <script type="text/javascript">
   $(document).ready(function() { init_search(); });
 </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="extra_stylesheet.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -92,14 +99,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="typebud__darray1d_1_1darray1d-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">darray1d Type Reference<div class="ingroups"><a class="el" href="group__bud-intrinsic.html">Intrinsic buds</a> &raquo; <a class="el" href="group__array.html">Array</a> &raquo; <a class="el" href="group__array-1.html">Array 1D</a> &raquo; <a class="el" href="group__bud__dArray1D.html">Real (double)</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>bud variable  
+<p>Array data type.  
  <a href="structbud__darray1d_1_1darray1d.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for darray1d:</div>
@@ -144,23 +151,36 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:gae358c840d1cded3554431749fc80862d"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__dArray1D.html#gae358c840d1cded3554431749fc80862d">print</a> =&gt; <a class="el" href="group__bud__dArray1D.html#ga1bc340b943f98cb149d974389f4b3f4e">print_</a></td></tr>
 <tr class="memdesc:gae358c840d1cded3554431749fc80862d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> print  <a href="group__bud__dArray1D.html#gae358c840d1cded3554431749fc80862d">More...</a><br /></td></tr>
 <tr class="separator:gae358c840d1cded3554431749fc80862d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga29c92b47c1b5c832ccfc04a030b7a527"><td class="memItemLeft" align="right" valign="top">generic, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__dArray1D.html#ga29c92b47c1b5c832ccfc04a030b7a527">new</a> =&gt; <a class="el" href="group__bud__dArray1D.html#gae4ccb17dedfbcf6c72880e3448b2985b">new_dim_</a>, <a class="el" href="group__bud__dArray1D.html#gaac88a61af39e60f21877e613e0bc05ee">new_copy_</a></td></tr>
+<tr class="memdesc:ga29c92b47c1b5c832ccfc04a030b7a527"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> new  <a href="group__bud__dArray1D.html#ga29c92b47c1b5c832ccfc04a030b7a527">More...</a><br /></td></tr>
+<tr class="separator:ga29c92b47c1b5c832ccfc04a030b7a527"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga68dff5317c7ec0f6d3b055d8b196ab9b"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__dArray1D.html#ga68dff5317c7ec0f6d3b055d8b196ab9b">arrayp</a> =&gt; <a class="el" href="group__bud__dArray1D.html#ga12d8c78b2f81d93e42775e67872f988a">get_arrayp_</a></td></tr>
+<tr class="memdesc:ga68dff5317c7ec0f6d3b055d8b196ab9b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__dArray1D.html#ga68dff5317c7ec0f6d3b055d8b196ab9b" title="See interface arrayp ">arrayp</a>  <a href="group__bud__dArray1D.html#ga68dff5317c7ec0f6d3b055d8b196ab9b">More...</a><br /></td></tr>
+<tr class="separator:ga68dff5317c7ec0f6d3b055d8b196ab9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga62f40fa1e409acedc14c48e9c3d1af7b"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__dArray1D.html#ga62f40fa1e409acedc14c48e9c3d1af7b">size</a> =&gt; <a class="el" href="group__bud__dArray1D.html#gaa554c2b8223490d278a802d0fc1c3454">size_</a></td></tr>
+<tr class="memdesc:ga62f40fa1e409acedc14c48e9c3d1af7b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__dArray1D.html#ga62f40fa1e409acedc14c48e9c3d1af7b" title="See interface size ">size</a>  <a href="group__bud__dArray1D.html#ga62f40fa1e409acedc14c48e9c3d1af7b">More...</a><br /></td></tr>
+<tr class="separator:ga62f40fa1e409acedc14c48e9c3d1af7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae38c428e60319ca122c8cf9115772bd6"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__dArray1D.html#gae38c428e60319ca122c8cf9115772bd6">init_array</a> =&gt; <a class="el" href="group__bud__dArray1D.html#ga03f324c52d373fb6557f1411e8ec5c7c">init_array_</a></td></tr>
+<tr class="memdesc:gae38c428e60319ca122c8cf9115772bd6"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__dArray1D.html#gae38c428e60319ca122c8cf9115772bd6" title="See interface init_array ">init_array</a>  <a href="group__bud__dArray1D.html#gae38c428e60319ca122c8cf9115772bd6">More...</a><br /></td></tr>
+<tr class="separator:gae38c428e60319ca122c8cf9115772bd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:gaa79d02d0826bbeb9b800db439c471e5c"><td class="memItemLeft" align="right" valign="top">type(darray1d_), pointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__dArray1D.html#gaa79d02d0826bbeb9b800db439c471e5c">d</a> =&gt; null()</td></tr>
-<tr class="memdesc:gaa79d02d0826bbeb9b800db439c471e5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stored pointer which contains the reference counting etc.  <a href="group__bud__dArray1D.html#gaa79d02d0826bbeb9b800db439c471e5c">More...</a><br /></td></tr>
-<tr class="separator:gaa79d02d0826bbeb9b800db439c471e5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:gae4ccb17dedfbcf6c72880e3448b2985b"><td class="memItemLeft" align="right" valign="top">procedure, private&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__dArray1D.html#gae4ccb17dedfbcf6c72880e3448b2985b">new_dim_</a></td></tr>
+<tr class="separator:gae4ccb17dedfbcf6c72880e3448b2985b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaac88a61af39e60f21877e613e0bc05ee"><td class="memItemLeft" align="right" valign="top">procedure, private&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__dArray1D.html#gaac88a61af39e60f21877e613e0bc05ee">new_copy_</a></td></tr>
+<tr class="separator:gaac88a61af39e60f21877e613e0bc05ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>bud variable </p>
-<p>Handler for the array type stored </p>
+<div class="textblock"><p>Array data type. </p>
+<p>This data type contains the reference counted array. </p>
 </div><hr/>The documentation for this type was generated from the following file:<ul>
 <li>src/<a class="el" href="bud__Array1D_8f90.html">bud_Array1D.f90</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 5 2016 09:53:17 for buds by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 6 2016 14:33:56 for buds by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

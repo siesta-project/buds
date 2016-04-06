@@ -14,7 +14,14 @@
 <script type="text/javascript">
   $(document).ready(function() { init_search(); });
 </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="extra_stylesheet.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -102,19 +109,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Types</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">type &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbud__ll__sarray2d_1_1ll__sarray2d.html">ll_sarray2d</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linked list with element contained sArray2D.  <a href="structbud__ll__sarray2d_1_1ll__sarray2d.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linked list with each node containing sArray2D.  <a href="structbud__ll__sarray2d_1_1ll__sarray2d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__sarray2d_1_1new.html">new</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize new linked list.  <a href="interfacebud__ll__sarray2d_1_1new.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new linked list with 1 node.  <a href="interfacebud__ll__sarray2d_1_1new.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__sarray2d_1_1new__ll__sarray2d.html">new_ll_sarray2d</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #new  <a href="interfacebud__ll__sarray2d_1_1new__ll__sarray2d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__sarray2d_1_1assignment_07_0A_08.html">assignment(=)</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for clearing the data container in the bud.  <a href="interfacebud__ll__sarray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment of bud to another bud.  <a href="interfacebud__ll__sarray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__sarray2d_1_1nodes.html">nodes</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of currently stored elements in this list.  <a href="interfacebud__ll__sarray2d_1_1nodes.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of currently stored nodes in the linked list.  <a href="interfacebud__ll__sarray2d_1_1nodes.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__sarray2d_1_1size.html">size</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> nodes  <a href="interfacebud__ll__sarray2d_1_1size.html#details">More...</a><br /></td></tr>
@@ -123,19 +130,19 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrite/Set data at an element in the list.  <a href="interfacebud__ll__sarray2d_1_1set__data.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__sarray2d_1_1add__node.html">add_node</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new element to the head of the linked list.  <a href="interfacebud__ll__sarray2d_1_1add__node.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new node to the end of the linked list.  <a href="interfacebud__ll__sarray2d_1_1add__node.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__sarray2d_1_1get__data.html">get_data</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query data from head/node in the list.  <a href="interfacebud__ll__sarray2d_1_1get__data.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query data from node in the linked list.  <a href="interfacebud__ll__sarray2d_1_1get__data.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__sarray2d_1_1get__node.html">get_node</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__ll__sarray2d_1_1get__data.html" title="Query data from head/node in the list. ">get_data</a>  <a href="interfacebud__ll__sarray2d_1_1get__node.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__ll__sarray2d_1_1get__data.html" title="Query data from node in the linked list. ">get_data</a>  <a href="interfacebud__ll__sarray2d_1_1get__node.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__sarray2d_1_1set__head.html">set_head</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the head of the linked list to the indexed node.  <a href="interfacebud__ll__sarray2d_1_1set__head.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__sarray2d_1_1itt__step.html">itt_step</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward iterator for a linked list from the head.  <a href="interfacebud__ll__sarray2d_1_1itt__step.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Itterator Forward iterator for a linked list from the head.  <a href="interfacebud__ll__sarray2d_1_1itt__step.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__sarray2d_1_1remove__node.html">remove_node</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove a specific node from the linked list.  <a href="interfacebud__ll__sarray2d_1_1remove__node.html#details">More...</a><br /></td></tr>
@@ -150,7 +157,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="interfacebud__ll__sarray2d_1_1print.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__sarray2d_1_1assignment_07_0A_08.html">assignment(=)</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for clearing the data container in the bud.  <a href="interfacebud__ll__sarray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment of bud to another bud.  <a href="interfacebud__ll__sarray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__sarray2d_1_1initialize.html">initialize</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization of data container.  <a href="interfacebud__ll__sarray2d_1_1initialize.html#details">More...</a><br /></td></tr>
@@ -168,7 +175,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether two buds point to the same data (function)  <a href="interfacebud__ll__sarray2d_1_1is__same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__sarray2d_1_1same.html">same</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__ll__sarray2d_1_1is__same.html" title="Check whether two buds point to the same data (function) ">is_same</a>  <a href="interfacebud__ll__sarray2d_1_1same.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #is_same  <a href="interfacebud__ll__sarray2d_1_1same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__sarray2d_1_1delete.html">delete</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the bud by decreasing references to the underlying data.  <a href="interfacebud__ll__sarray2d_1_1delete.html#details">More...</a><br /></td></tr>
@@ -180,22 +187,22 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of references to the bud.  <a href="interfacebud__ll__sarray2d_1_1references.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__sarray2d_1_1refs.html">refs</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> references  <a href="interfacebud__ll__sarray2d_1_1refs.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #references  <a href="interfacebud__ll__sarray2d_1_1refs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">type &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbud__ll__iarray2d_1_1ll__iarray2d.html">ll_iarray2d</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linked list with element contained iArray2D.  <a href="structbud__ll__iarray2d_1_1ll__iarray2d.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linked list with each node containing iArray2D.  <a href="structbud__ll__iarray2d_1_1ll__iarray2d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__iarray2d_1_1new.html">new</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize new linked list.  <a href="interfacebud__ll__iarray2d_1_1new.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new linked list with 1 node.  <a href="interfacebud__ll__iarray2d_1_1new.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__iarray2d_1_1new__ll__iarray2d.html">new_ll_iarray2d</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #new  <a href="interfacebud__ll__iarray2d_1_1new__ll__iarray2d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__iarray2d_1_1assignment_07_0A_08.html">assignment(=)</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for clearing the data container in the bud.  <a href="interfacebud__ll__iarray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment of bud to another bud.  <a href="interfacebud__ll__iarray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__iarray2d_1_1nodes.html">nodes</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of currently stored elements in this list.  <a href="interfacebud__ll__iarray2d_1_1nodes.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of currently stored nodes in the linked list.  <a href="interfacebud__ll__iarray2d_1_1nodes.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__iarray2d_1_1size.html">size</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> nodes  <a href="interfacebud__ll__iarray2d_1_1size.html#details">More...</a><br /></td></tr>
@@ -204,19 +211,19 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrite/Set data at an element in the list.  <a href="interfacebud__ll__iarray2d_1_1set__data.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__iarray2d_1_1add__node.html">add_node</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new element to the head of the linked list.  <a href="interfacebud__ll__iarray2d_1_1add__node.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new node to the end of the linked list.  <a href="interfacebud__ll__iarray2d_1_1add__node.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__iarray2d_1_1get__data.html">get_data</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query data from head/node in the list.  <a href="interfacebud__ll__iarray2d_1_1get__data.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query data from node in the linked list.  <a href="interfacebud__ll__iarray2d_1_1get__data.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__iarray2d_1_1get__node.html">get_node</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__ll__iarray2d_1_1get__data.html" title="Query data from head/node in the list. ">get_data</a>  <a href="interfacebud__ll__iarray2d_1_1get__node.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__ll__iarray2d_1_1get__data.html" title="Query data from node in the linked list. ">get_data</a>  <a href="interfacebud__ll__iarray2d_1_1get__node.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__iarray2d_1_1set__head.html">set_head</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the head of the linked list to the indexed node.  <a href="interfacebud__ll__iarray2d_1_1set__head.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__iarray2d_1_1itt__step.html">itt_step</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward iterator for a linked list from the head.  <a href="interfacebud__ll__iarray2d_1_1itt__step.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Itterator Forward iterator for a linked list from the head.  <a href="interfacebud__ll__iarray2d_1_1itt__step.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__iarray2d_1_1remove__node.html">remove_node</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove a specific node from the linked list.  <a href="interfacebud__ll__iarray2d_1_1remove__node.html#details">More...</a><br /></td></tr>
@@ -231,7 +238,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="interfacebud__ll__iarray2d_1_1print.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__iarray2d_1_1assignment_07_0A_08.html">assignment(=)</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for clearing the data container in the bud.  <a href="interfacebud__ll__iarray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment of bud to another bud.  <a href="interfacebud__ll__iarray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__iarray2d_1_1initialize.html">initialize</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization of data container.  <a href="interfacebud__ll__iarray2d_1_1initialize.html#details">More...</a><br /></td></tr>
@@ -249,7 +256,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether two buds point to the same data (function)  <a href="interfacebud__ll__iarray2d_1_1is__same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__iarray2d_1_1same.html">same</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__ll__iarray2d_1_1is__same.html" title="Check whether two buds point to the same data (function) ">is_same</a>  <a href="interfacebud__ll__iarray2d_1_1same.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #is_same  <a href="interfacebud__ll__iarray2d_1_1same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__iarray2d_1_1delete.html">delete</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the bud by decreasing references to the underlying data.  <a href="interfacebud__ll__iarray2d_1_1delete.html#details">More...</a><br /></td></tr>
@@ -261,22 +268,22 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of references to the bud.  <a href="interfacebud__ll__iarray2d_1_1references.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__iarray2d_1_1refs.html">refs</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> references  <a href="interfacebud__ll__iarray2d_1_1refs.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #references  <a href="interfacebud__ll__iarray2d_1_1refs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">type &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbud__ll__larray2d_1_1ll__larray2d.html">ll_larray2d</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linked list with element contained lArray2D.  <a href="structbud__ll__larray2d_1_1ll__larray2d.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linked list with each node containing lArray2D.  <a href="structbud__ll__larray2d_1_1ll__larray2d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__larray2d_1_1new.html">new</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize new linked list.  <a href="interfacebud__ll__larray2d_1_1new.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new linked list with 1 node.  <a href="interfacebud__ll__larray2d_1_1new.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__larray2d_1_1new__ll__larray2d.html">new_ll_larray2d</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #new  <a href="interfacebud__ll__larray2d_1_1new__ll__larray2d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__larray2d_1_1assignment_07_0A_08.html">assignment(=)</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for clearing the data container in the bud.  <a href="interfacebud__ll__larray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment of bud to another bud.  <a href="interfacebud__ll__larray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__larray2d_1_1nodes.html">nodes</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of currently stored elements in this list.  <a href="interfacebud__ll__larray2d_1_1nodes.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of currently stored nodes in the linked list.  <a href="interfacebud__ll__larray2d_1_1nodes.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__larray2d_1_1size.html">size</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> nodes  <a href="interfacebud__ll__larray2d_1_1size.html#details">More...</a><br /></td></tr>
@@ -285,19 +292,19 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrite/Set data at an element in the list.  <a href="interfacebud__ll__larray2d_1_1set__data.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__larray2d_1_1add__node.html">add_node</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new element to the head of the linked list.  <a href="interfacebud__ll__larray2d_1_1add__node.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new node to the end of the linked list.  <a href="interfacebud__ll__larray2d_1_1add__node.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__larray2d_1_1get__data.html">get_data</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query data from head/node in the list.  <a href="interfacebud__ll__larray2d_1_1get__data.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query data from node in the linked list.  <a href="interfacebud__ll__larray2d_1_1get__data.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__larray2d_1_1get__node.html">get_node</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__ll__larray2d_1_1get__data.html" title="Query data from head/node in the list. ">get_data</a>  <a href="interfacebud__ll__larray2d_1_1get__node.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__ll__larray2d_1_1get__data.html" title="Query data from node in the linked list. ">get_data</a>  <a href="interfacebud__ll__larray2d_1_1get__node.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__larray2d_1_1set__head.html">set_head</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the head of the linked list to the indexed node.  <a href="interfacebud__ll__larray2d_1_1set__head.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__larray2d_1_1itt__step.html">itt_step</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward iterator for a linked list from the head.  <a href="interfacebud__ll__larray2d_1_1itt__step.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Itterator Forward iterator for a linked list from the head.  <a href="interfacebud__ll__larray2d_1_1itt__step.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__larray2d_1_1remove__node.html">remove_node</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove a specific node from the linked list.  <a href="interfacebud__ll__larray2d_1_1remove__node.html#details">More...</a><br /></td></tr>
@@ -312,7 +319,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="interfacebud__ll__larray2d_1_1print.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__larray2d_1_1assignment_07_0A_08.html">assignment(=)</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for clearing the data container in the bud.  <a href="interfacebud__ll__larray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment of bud to another bud.  <a href="interfacebud__ll__larray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__larray2d_1_1initialize.html">initialize</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization of data container.  <a href="interfacebud__ll__larray2d_1_1initialize.html#details">More...</a><br /></td></tr>
@@ -330,7 +337,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether two buds point to the same data (function)  <a href="interfacebud__ll__larray2d_1_1is__same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__larray2d_1_1same.html">same</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__ll__larray2d_1_1is__same.html" title="Check whether two buds point to the same data (function) ">is_same</a>  <a href="interfacebud__ll__larray2d_1_1same.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #is_same  <a href="interfacebud__ll__larray2d_1_1same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__larray2d_1_1delete.html">delete</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the bud by decreasing references to the underlying data.  <a href="interfacebud__ll__larray2d_1_1delete.html#details">More...</a><br /></td></tr>
@@ -342,22 +349,22 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of references to the bud.  <a href="interfacebud__ll__larray2d_1_1references.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__larray2d_1_1refs.html">refs</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> references  <a href="interfacebud__ll__larray2d_1_1refs.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #references  <a href="interfacebud__ll__larray2d_1_1refs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">type &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbud__ll__rarray2d_1_1ll__rarray2d.html">ll_rarray2d</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linked list with element contained rArray2D.  <a href="structbud__ll__rarray2d_1_1ll__rarray2d.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linked list with each node containing rArray2D.  <a href="structbud__ll__rarray2d_1_1ll__rarray2d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__rarray2d_1_1new.html">new</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize new linked list.  <a href="interfacebud__ll__rarray2d_1_1new.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new linked list with 1 node.  <a href="interfacebud__ll__rarray2d_1_1new.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__rarray2d_1_1new__ll__rarray2d.html">new_ll_rarray2d</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #new  <a href="interfacebud__ll__rarray2d_1_1new__ll__rarray2d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__rarray2d_1_1assignment_07_0A_08.html">assignment(=)</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for clearing the data container in the bud.  <a href="interfacebud__ll__rarray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment of bud to another bud.  <a href="interfacebud__ll__rarray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__rarray2d_1_1nodes.html">nodes</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of currently stored elements in this list.  <a href="interfacebud__ll__rarray2d_1_1nodes.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of currently stored nodes in the linked list.  <a href="interfacebud__ll__rarray2d_1_1nodes.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__rarray2d_1_1size.html">size</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> nodes  <a href="interfacebud__ll__rarray2d_1_1size.html#details">More...</a><br /></td></tr>
@@ -366,19 +373,19 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrite/Set data at an element in the list.  <a href="interfacebud__ll__rarray2d_1_1set__data.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__rarray2d_1_1add__node.html">add_node</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new element to the head of the linked list.  <a href="interfacebud__ll__rarray2d_1_1add__node.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new node to the end of the linked list.  <a href="interfacebud__ll__rarray2d_1_1add__node.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__rarray2d_1_1get__data.html">get_data</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query data from head/node in the list.  <a href="interfacebud__ll__rarray2d_1_1get__data.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query data from node in the linked list.  <a href="interfacebud__ll__rarray2d_1_1get__data.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__rarray2d_1_1get__node.html">get_node</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__ll__rarray2d_1_1get__data.html" title="Query data from head/node in the list. ">get_data</a>  <a href="interfacebud__ll__rarray2d_1_1get__node.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__ll__rarray2d_1_1get__data.html" title="Query data from node in the linked list. ">get_data</a>  <a href="interfacebud__ll__rarray2d_1_1get__node.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__rarray2d_1_1set__head.html">set_head</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the head of the linked list to the indexed node.  <a href="interfacebud__ll__rarray2d_1_1set__head.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__rarray2d_1_1itt__step.html">itt_step</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward iterator for a linked list from the head.  <a href="interfacebud__ll__rarray2d_1_1itt__step.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Itterator Forward iterator for a linked list from the head.  <a href="interfacebud__ll__rarray2d_1_1itt__step.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__rarray2d_1_1remove__node.html">remove_node</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove a specific node from the linked list.  <a href="interfacebud__ll__rarray2d_1_1remove__node.html#details">More...</a><br /></td></tr>
@@ -393,7 +400,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="interfacebud__ll__rarray2d_1_1print.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__rarray2d_1_1assignment_07_0A_08.html">assignment(=)</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for clearing the data container in the bud.  <a href="interfacebud__ll__rarray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment of bud to another bud.  <a href="interfacebud__ll__rarray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__rarray2d_1_1initialize.html">initialize</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization of data container.  <a href="interfacebud__ll__rarray2d_1_1initialize.html#details">More...</a><br /></td></tr>
@@ -411,7 +418,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether two buds point to the same data (function)  <a href="interfacebud__ll__rarray2d_1_1is__same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__rarray2d_1_1same.html">same</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__ll__rarray2d_1_1is__same.html" title="Check whether two buds point to the same data (function) ">is_same</a>  <a href="interfacebud__ll__rarray2d_1_1same.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #is_same  <a href="interfacebud__ll__rarray2d_1_1same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__rarray2d_1_1delete.html">delete</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the bud by decreasing references to the underlying data.  <a href="interfacebud__ll__rarray2d_1_1delete.html#details">More...</a><br /></td></tr>
@@ -423,22 +430,22 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of references to the bud.  <a href="interfacebud__ll__rarray2d_1_1references.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__rarray2d_1_1refs.html">refs</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> references  <a href="interfacebud__ll__rarray2d_1_1refs.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #references  <a href="interfacebud__ll__rarray2d_1_1refs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">type &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbud__ll__darray2d_1_1ll__darray2d.html">ll_darray2d</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linked list with element contained dArray2D.  <a href="structbud__ll__darray2d_1_1ll__darray2d.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linked list with each node containing dArray2D.  <a href="structbud__ll__darray2d_1_1ll__darray2d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__darray2d_1_1new.html">new</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize new linked list.  <a href="interfacebud__ll__darray2d_1_1new.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new linked list with 1 node.  <a href="interfacebud__ll__darray2d_1_1new.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__darray2d_1_1new__ll__darray2d.html">new_ll_darray2d</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #new  <a href="interfacebud__ll__darray2d_1_1new__ll__darray2d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__darray2d_1_1assignment_07_0A_08.html">assignment(=)</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for clearing the data container in the bud.  <a href="interfacebud__ll__darray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment of bud to another bud.  <a href="interfacebud__ll__darray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__darray2d_1_1nodes.html">nodes</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of currently stored elements in this list.  <a href="interfacebud__ll__darray2d_1_1nodes.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of currently stored nodes in the linked list.  <a href="interfacebud__ll__darray2d_1_1nodes.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__darray2d_1_1size.html">size</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> nodes  <a href="interfacebud__ll__darray2d_1_1size.html#details">More...</a><br /></td></tr>
@@ -447,19 +454,19 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrite/Set data at an element in the list.  <a href="interfacebud__ll__darray2d_1_1set__data.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__darray2d_1_1add__node.html">add_node</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new element to the head of the linked list.  <a href="interfacebud__ll__darray2d_1_1add__node.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new node to the end of the linked list.  <a href="interfacebud__ll__darray2d_1_1add__node.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__darray2d_1_1get__data.html">get_data</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query data from head/node in the list.  <a href="interfacebud__ll__darray2d_1_1get__data.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query data from node in the linked list.  <a href="interfacebud__ll__darray2d_1_1get__data.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__darray2d_1_1get__node.html">get_node</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__ll__darray2d_1_1get__data.html" title="Query data from head/node in the list. ">get_data</a>  <a href="interfacebud__ll__darray2d_1_1get__node.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__ll__darray2d_1_1get__data.html" title="Query data from node in the linked list. ">get_data</a>  <a href="interfacebud__ll__darray2d_1_1get__node.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__darray2d_1_1set__head.html">set_head</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the head of the linked list to the indexed node.  <a href="interfacebud__ll__darray2d_1_1set__head.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__darray2d_1_1itt__step.html">itt_step</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward iterator for a linked list from the head.  <a href="interfacebud__ll__darray2d_1_1itt__step.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Itterator Forward iterator for a linked list from the head.  <a href="interfacebud__ll__darray2d_1_1itt__step.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__darray2d_1_1remove__node.html">remove_node</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove a specific node from the linked list.  <a href="interfacebud__ll__darray2d_1_1remove__node.html#details">More...</a><br /></td></tr>
@@ -474,7 +481,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="interfacebud__ll__darray2d_1_1print.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__darray2d_1_1assignment_07_0A_08.html">assignment(=)</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for clearing the data container in the bud.  <a href="interfacebud__ll__darray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment of bud to another bud.  <a href="interfacebud__ll__darray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__darray2d_1_1initialize.html">initialize</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization of data container.  <a href="interfacebud__ll__darray2d_1_1initialize.html#details">More...</a><br /></td></tr>
@@ -492,7 +499,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether two buds point to the same data (function)  <a href="interfacebud__ll__darray2d_1_1is__same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__darray2d_1_1same.html">same</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__ll__darray2d_1_1is__same.html" title="Check whether two buds point to the same data (function) ">is_same</a>  <a href="interfacebud__ll__darray2d_1_1same.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #is_same  <a href="interfacebud__ll__darray2d_1_1same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__darray2d_1_1delete.html">delete</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the bud by decreasing references to the underlying data.  <a href="interfacebud__ll__darray2d_1_1delete.html#details">More...</a><br /></td></tr>
@@ -504,22 +511,22 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of references to the bud.  <a href="interfacebud__ll__darray2d_1_1references.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__darray2d_1_1refs.html">refs</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> references  <a href="interfacebud__ll__darray2d_1_1refs.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #references  <a href="interfacebud__ll__darray2d_1_1refs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">type &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbud__ll__carray2d_1_1ll__carray2d.html">ll_carray2d</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linked list with element contained cArray2D.  <a href="structbud__ll__carray2d_1_1ll__carray2d.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linked list with each node containing cArray2D.  <a href="structbud__ll__carray2d_1_1ll__carray2d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__carray2d_1_1new.html">new</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize new linked list.  <a href="interfacebud__ll__carray2d_1_1new.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new linked list with 1 node.  <a href="interfacebud__ll__carray2d_1_1new.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__carray2d_1_1new__ll__carray2d.html">new_ll_carray2d</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #new  <a href="interfacebud__ll__carray2d_1_1new__ll__carray2d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__carray2d_1_1assignment_07_0A_08.html">assignment(=)</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for clearing the data container in the bud.  <a href="interfacebud__ll__carray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment of bud to another bud.  <a href="interfacebud__ll__carray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__carray2d_1_1nodes.html">nodes</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of currently stored elements in this list.  <a href="interfacebud__ll__carray2d_1_1nodes.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of currently stored nodes in the linked list.  <a href="interfacebud__ll__carray2d_1_1nodes.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__carray2d_1_1size.html">size</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> nodes  <a href="interfacebud__ll__carray2d_1_1size.html#details">More...</a><br /></td></tr>
@@ -528,19 +535,19 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrite/Set data at an element in the list.  <a href="interfacebud__ll__carray2d_1_1set__data.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__carray2d_1_1add__node.html">add_node</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new element to the head of the linked list.  <a href="interfacebud__ll__carray2d_1_1add__node.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new node to the end of the linked list.  <a href="interfacebud__ll__carray2d_1_1add__node.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__carray2d_1_1get__data.html">get_data</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query data from head/node in the list.  <a href="interfacebud__ll__carray2d_1_1get__data.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query data from node in the linked list.  <a href="interfacebud__ll__carray2d_1_1get__data.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__carray2d_1_1get__node.html">get_node</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__ll__carray2d_1_1get__data.html" title="Query data from head/node in the list. ">get_data</a>  <a href="interfacebud__ll__carray2d_1_1get__node.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__ll__carray2d_1_1get__data.html" title="Query data from node in the linked list. ">get_data</a>  <a href="interfacebud__ll__carray2d_1_1get__node.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__carray2d_1_1set__head.html">set_head</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the head of the linked list to the indexed node.  <a href="interfacebud__ll__carray2d_1_1set__head.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__carray2d_1_1itt__step.html">itt_step</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward iterator for a linked list from the head.  <a href="interfacebud__ll__carray2d_1_1itt__step.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Itterator Forward iterator for a linked list from the head.  <a href="interfacebud__ll__carray2d_1_1itt__step.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__carray2d_1_1remove__node.html">remove_node</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove a specific node from the linked list.  <a href="interfacebud__ll__carray2d_1_1remove__node.html#details">More...</a><br /></td></tr>
@@ -555,7 +562,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="interfacebud__ll__carray2d_1_1print.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__carray2d_1_1assignment_07_0A_08.html">assignment(=)</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for clearing the data container in the bud.  <a href="interfacebud__ll__carray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment of bud to another bud.  <a href="interfacebud__ll__carray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__carray2d_1_1initialize.html">initialize</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization of data container.  <a href="interfacebud__ll__carray2d_1_1initialize.html#details">More...</a><br /></td></tr>
@@ -573,7 +580,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether two buds point to the same data (function)  <a href="interfacebud__ll__carray2d_1_1is__same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__carray2d_1_1same.html">same</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__ll__carray2d_1_1is__same.html" title="Check whether two buds point to the same data (function) ">is_same</a>  <a href="interfacebud__ll__carray2d_1_1same.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #is_same  <a href="interfacebud__ll__carray2d_1_1same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__carray2d_1_1delete.html">delete</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the bud by decreasing references to the underlying data.  <a href="interfacebud__ll__carray2d_1_1delete.html#details">More...</a><br /></td></tr>
@@ -585,22 +592,22 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of references to the bud.  <a href="interfacebud__ll__carray2d_1_1references.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__carray2d_1_1refs.html">refs</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> references  <a href="interfacebud__ll__carray2d_1_1refs.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #references  <a href="interfacebud__ll__carray2d_1_1refs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">type &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbud__ll__zarray2d_1_1ll__zarray2d.html">ll_zarray2d</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linked list with element contained zArray2D.  <a href="structbud__ll__zarray2d_1_1ll__zarray2d.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linked list with each node containing zArray2D.  <a href="structbud__ll__zarray2d_1_1ll__zarray2d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__zarray2d_1_1new.html">new</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize new linked list.  <a href="interfacebud__ll__zarray2d_1_1new.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new linked list with 1 node.  <a href="interfacebud__ll__zarray2d_1_1new.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__zarray2d_1_1new__ll__zarray2d.html">new_ll_zarray2d</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #new  <a href="interfacebud__ll__zarray2d_1_1new__ll__zarray2d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__zarray2d_1_1assignment_07_0A_08.html">assignment(=)</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for clearing the data container in the bud.  <a href="interfacebud__ll__zarray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment of bud to another bud.  <a href="interfacebud__ll__zarray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__zarray2d_1_1nodes.html">nodes</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of currently stored elements in this list.  <a href="interfacebud__ll__zarray2d_1_1nodes.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of currently stored nodes in the linked list.  <a href="interfacebud__ll__zarray2d_1_1nodes.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__zarray2d_1_1size.html">size</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> nodes  <a href="interfacebud__ll__zarray2d_1_1size.html#details">More...</a><br /></td></tr>
@@ -609,19 +616,19 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrite/Set data at an element in the list.  <a href="interfacebud__ll__zarray2d_1_1set__data.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__zarray2d_1_1add__node.html">add_node</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new element to the head of the linked list.  <a href="interfacebud__ll__zarray2d_1_1add__node.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new node to the end of the linked list.  <a href="interfacebud__ll__zarray2d_1_1add__node.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__zarray2d_1_1get__data.html">get_data</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query data from head/node in the list.  <a href="interfacebud__ll__zarray2d_1_1get__data.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query data from node in the linked list.  <a href="interfacebud__ll__zarray2d_1_1get__data.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__zarray2d_1_1get__node.html">get_node</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__ll__zarray2d_1_1get__data.html" title="Query data from head/node in the list. ">get_data</a>  <a href="interfacebud__ll__zarray2d_1_1get__node.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__ll__zarray2d_1_1get__data.html" title="Query data from node in the linked list. ">get_data</a>  <a href="interfacebud__ll__zarray2d_1_1get__node.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__zarray2d_1_1set__head.html">set_head</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the head of the linked list to the indexed node.  <a href="interfacebud__ll__zarray2d_1_1set__head.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__zarray2d_1_1itt__step.html">itt_step</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward iterator for a linked list from the head.  <a href="interfacebud__ll__zarray2d_1_1itt__step.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Itterator Forward iterator for a linked list from the head.  <a href="interfacebud__ll__zarray2d_1_1itt__step.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__zarray2d_1_1remove__node.html">remove_node</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove a specific node from the linked list.  <a href="interfacebud__ll__zarray2d_1_1remove__node.html#details">More...</a><br /></td></tr>
@@ -636,7 +643,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="interfacebud__ll__zarray2d_1_1print.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__zarray2d_1_1assignment_07_0A_08.html">assignment(=)</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for clearing the data container in the bud.  <a href="interfacebud__ll__zarray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment of bud to another bud.  <a href="interfacebud__ll__zarray2d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__zarray2d_1_1initialize.html">initialize</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization of data container.  <a href="interfacebud__ll__zarray2d_1_1initialize.html#details">More...</a><br /></td></tr>
@@ -654,7 +661,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether two buds point to the same data (function)  <a href="interfacebud__ll__zarray2d_1_1is__same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__zarray2d_1_1same.html">same</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__ll__zarray2d_1_1is__same.html" title="Check whether two buds point to the same data (function) ">is_same</a>  <a href="interfacebud__ll__zarray2d_1_1same.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #is_same  <a href="interfacebud__ll__zarray2d_1_1same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__zarray2d_1_1delete.html">delete</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the bud by decreasing references to the underlying data.  <a href="interfacebud__ll__zarray2d_1_1delete.html#details">More...</a><br /></td></tr>
@@ -666,7 +673,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of references to the bud.  <a href="interfacebud__ll__zarray2d_1_1references.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__ll__zarray2d_1_1refs.html">refs</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> references  <a href="interfacebud__ll__zarray2d_1_1refs.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #references  <a href="interfacebud__ll__zarray2d_1_1refs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -723,6 +730,8 @@ Functions/Subroutines</h2></td></tr>
 <tr class="separator:ga5e28ce84c8cb3167c8072609b6b1a482"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1a844135ad191f7b85d3e452e9d48301"><td class="memItemLeft" align="right" valign="top">logical function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__sArray2D.html#ga1a844135ad191f7b85d3e452e9d48301">itt_step_</a> (this, itt)</td></tr>
 <tr class="separator:ga1a844135ad191f7b85d3e452e9d48301"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga538c81919189d3d27b02c544c2e28b4e"><td class="memItemLeft" align="right" valign="top">logical function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__sArray2D.html#ga538c81919189d3d27b02c544c2e28b4e">itt_step_i_</a> (this, itt, i)</td></tr>
+<tr class="separator:ga538c81919189d3d27b02c544c2e28b4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga248160b5cf8a803156e5f4f255c1f7cb"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__sArray2D.html#ga248160b5cf8a803156e5f4f255c1f7cb">remove_node_</a> (this, index)</td></tr>
 <tr class="separator:ga248160b5cf8a803156e5f4f255c1f7cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga63dd2866146724641bd6a0d8543c93d6"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__sArray2D.html#ga63dd2866146724641bd6a0d8543c93d6">remove_node_data_</a> (this, index)</td></tr>
@@ -766,6 +775,8 @@ Functions/Subroutines</h2></td></tr>
 <tr class="separator:gaffcfaf6a79769cdaac691d5175bb87aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga54d5ff7f2a4b848cdc3752e37c7c3490"><td class="memItemLeft" align="right" valign="top">logical function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__iArray2D.html#ga54d5ff7f2a4b848cdc3752e37c7c3490">itt_step_</a> (this, itt)</td></tr>
 <tr class="separator:ga54d5ff7f2a4b848cdc3752e37c7c3490"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5fc1055faad0caf1216276885d115e9f"><td class="memItemLeft" align="right" valign="top">logical function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__iArray2D.html#ga5fc1055faad0caf1216276885d115e9f">itt_step_i_</a> (this, itt, i)</td></tr>
+<tr class="separator:ga5fc1055faad0caf1216276885d115e9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadb770969fe64dfb437166476124c1ef1"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__iArray2D.html#gadb770969fe64dfb437166476124c1ef1">remove_node_</a> (this, index)</td></tr>
 <tr class="separator:gadb770969fe64dfb437166476124c1ef1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad867c34a70a8e3d26095b40ee4752e88"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__iArray2D.html#gad867c34a70a8e3d26095b40ee4752e88">remove_node_data_</a> (this, index)</td></tr>
@@ -809,6 +820,8 @@ Functions/Subroutines</h2></td></tr>
 <tr class="separator:ga6e858b03bfc122cd88f2b65b0cd20428"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0926e29912aee678763d903cfbdca480"><td class="memItemLeft" align="right" valign="top">logical function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__lArray2D.html#ga0926e29912aee678763d903cfbdca480">itt_step_</a> (this, itt)</td></tr>
 <tr class="separator:ga0926e29912aee678763d903cfbdca480"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga25f59a783b0c3d4cc68db33066b0bbca"><td class="memItemLeft" align="right" valign="top">logical function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__lArray2D.html#ga25f59a783b0c3d4cc68db33066b0bbca">itt_step_i_</a> (this, itt, i)</td></tr>
+<tr class="separator:ga25f59a783b0c3d4cc68db33066b0bbca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf05bc09dc7c1c23d602c35eb49794478"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__lArray2D.html#gaf05bc09dc7c1c23d602c35eb49794478">remove_node_</a> (this, index)</td></tr>
 <tr class="separator:gaf05bc09dc7c1c23d602c35eb49794478"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9928665683f96cfa2702ad344dadf00f"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__lArray2D.html#ga9928665683f96cfa2702ad344dadf00f">remove_node_data_</a> (this, index)</td></tr>
@@ -852,6 +865,8 @@ Functions/Subroutines</h2></td></tr>
 <tr class="separator:ga0e29566de8039b824de0b3d1e0d97475"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5db487f21ea3811bf9b89c649dac8858"><td class="memItemLeft" align="right" valign="top">logical function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__rArray2D.html#ga5db487f21ea3811bf9b89c649dac8858">itt_step_</a> (this, itt)</td></tr>
 <tr class="separator:ga5db487f21ea3811bf9b89c649dac8858"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0dee5db468e2d684522878cd2c63a095"><td class="memItemLeft" align="right" valign="top">logical function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__rArray2D.html#ga0dee5db468e2d684522878cd2c63a095">itt_step_i_</a> (this, itt, i)</td></tr>
+<tr class="separator:ga0dee5db468e2d684522878cd2c63a095"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf1b593a43991b2427ad1298941351d3b"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__rArray2D.html#gaf1b593a43991b2427ad1298941351d3b">remove_node_</a> (this, index)</td></tr>
 <tr class="separator:gaf1b593a43991b2427ad1298941351d3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2e26888fb42c147d1697065ba2167250"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__rArray2D.html#ga2e26888fb42c147d1697065ba2167250">remove_node_data_</a> (this, index)</td></tr>
@@ -895,6 +910,8 @@ Functions/Subroutines</h2></td></tr>
 <tr class="separator:gab0f4ad59740f2d7bc220c1f3148e8ef2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0d5e3152b5e295e23d2f6eaa64791c79"><td class="memItemLeft" align="right" valign="top">logical function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__dArray2D.html#ga0d5e3152b5e295e23d2f6eaa64791c79">itt_step_</a> (this, itt)</td></tr>
 <tr class="separator:ga0d5e3152b5e295e23d2f6eaa64791c79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga53f5b5f751e559e75664b28af391ef2f"><td class="memItemLeft" align="right" valign="top">logical function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__dArray2D.html#ga53f5b5f751e559e75664b28af391ef2f">itt_step_i_</a> (this, itt, i)</td></tr>
+<tr class="separator:ga53f5b5f751e559e75664b28af391ef2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga526ebf6996f9cd67a5bd4c8559ac577d"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__dArray2D.html#ga526ebf6996f9cd67a5bd4c8559ac577d">remove_node_</a> (this, index)</td></tr>
 <tr class="separator:ga526ebf6996f9cd67a5bd4c8559ac577d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0ceb41f611b5aba2a78b4447cef00a66"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__dArray2D.html#ga0ceb41f611b5aba2a78b4447cef00a66">remove_node_data_</a> (this, index)</td></tr>
@@ -938,6 +955,8 @@ Functions/Subroutines</h2></td></tr>
 <tr class="separator:gafc020fd553fab58e89ea2527eca175aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1366b25d8dc57886304f4bfcb03005d1"><td class="memItemLeft" align="right" valign="top">logical function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__cArray2D.html#ga1366b25d8dc57886304f4bfcb03005d1">itt_step_</a> (this, itt)</td></tr>
 <tr class="separator:ga1366b25d8dc57886304f4bfcb03005d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1e254cc6a9ecf5f1244baf40c176ca74"><td class="memItemLeft" align="right" valign="top">logical function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__cArray2D.html#ga1e254cc6a9ecf5f1244baf40c176ca74">itt_step_i_</a> (this, itt, i)</td></tr>
+<tr class="separator:ga1e254cc6a9ecf5f1244baf40c176ca74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae8d5bbdefd71a8c5d2c95035a573f68c"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__cArray2D.html#gae8d5bbdefd71a8c5d2c95035a573f68c">remove_node_</a> (this, index)</td></tr>
 <tr class="separator:gae8d5bbdefd71a8c5d2c95035a573f68c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga89a3973c07dead8a0e50a6b2ad2d1fcc"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__cArray2D.html#ga89a3973c07dead8a0e50a6b2ad2d1fcc">remove_node_data_</a> (this, index)</td></tr>
@@ -981,6 +1000,8 @@ Functions/Subroutines</h2></td></tr>
 <tr class="separator:ga43def9eb6c88c61bd2d2a5deb85a4d09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3060f37ada5896b75434654b90b2ec92"><td class="memItemLeft" align="right" valign="top">logical function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__zArray2D.html#ga3060f37ada5896b75434654b90b2ec92">itt_step_</a> (this, itt)</td></tr>
 <tr class="separator:ga3060f37ada5896b75434654b90b2ec92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad944f5ed1c5edf74210532fd8908ca1e"><td class="memItemLeft" align="right" valign="top">logical function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__zArray2D.html#gad944f5ed1c5edf74210532fd8908ca1e">itt_step_i_</a> (this, itt, i)</td></tr>
+<tr class="separator:gad944f5ed1c5edf74210532fd8908ca1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaeeb221e3ce8a8d79f37fd8815b8b1d69"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__zArray2D.html#gaeeb221e3ce8a8d79f37fd8815b8b1d69">remove_node_</a> (this, index)</td></tr>
 <tr class="separator:gaeeb221e3ce8a8d79f37fd8815b8b1d69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaac336f912ca375545494cd5b91f7074f"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__zArray2D.html#gaac336f912ca375545494cd5b91f7074f">remove_node_data_</a> (this, index)</td></tr>
@@ -1059,7 +1080,7 @@ Variables</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 5 2016 09:53:14 for buds by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 6 2016 14:33:55 for buds by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

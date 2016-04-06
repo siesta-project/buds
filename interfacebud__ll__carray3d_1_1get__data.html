@@ -14,7 +14,14 @@
 <script type="text/javascript">
   $(document).ready(function() { init_search(); });
 </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="extra_stylesheet.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -98,7 +105,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p>Query data from head/node in the list.  
+<p>Query data from node in the linked list.  
  <a href="interfacebud__ll__carray3d_1_1get__data.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for get_data:</div>
@@ -114,15 +121,16 @@ Private Member Functions</h2></td></tr>
 <tr class="separator:ga947511b9457fbc9214889c1742d3950e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Query data from head/node in the list. </p>
-<p>Possibly retrieve via index, head if not supplied. If the index is negative it will correspond to the negative elements. The index will correspond to a round-robin index of the linked list. </p>
+<div class="textblock"><p>Query data from node in the linked list. </p>
+<p>Retrieve the contained <code>cArray3D</code> via index specification, or the <code>head</code> if the index is not specified.</p>
+<p><b>Note</b> If the index is negative it will correspond to the previous elements. If the linked list is circular the node will <em>always</em> be found and will correspond to the element <code>mod(idx, nodes(this))</code>. For non-circular list specifying an index outside the previous/next number of nodes will return an un-initialized <code>cArray3D</code>. </p>
 </div><hr/>The documentation for this interface was generated from the following file:<ul>
 <li>src/<a class="el" href="bud__LL__Array3D_8f90.html">bud_LL_Array3D.f90</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 5 2016 09:53:19 for buds by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 6 2016 14:33:57 for buds by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

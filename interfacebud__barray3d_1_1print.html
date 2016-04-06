@@ -14,7 +14,14 @@
 <script type="text/javascript">
   $(document).ready(function() { init_search(); });
 </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="extra_stylesheet.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -98,7 +105,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p>Print information about the bud.  
+<p>Print, to std-out, some basic information of the data-container.  
  <a href="interfacebud__barray3d_1_1print.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for print:</div>
@@ -111,18 +118,19 @@ Collaboration diagram for print:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:gab73a2fb2eb7a2f7ddee01660099f9a2d"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__bArray3D.html#gab73a2fb2eb7a2f7ddee01660099f9a2d">print_</a> (this, info, indent)</td></tr>
-<tr class="memdesc:gab73a2fb2eb7a2f7ddee01660099f9a2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="group__bud__bArray3D.html#gab73a2fb2eb7a2f7ddee01660099f9a2d">More...</a><br /></td></tr>
 <tr class="separator:gab73a2fb2eb7a2f7ddee01660099f9a2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Print information about the bud. </p>
+<div class="textblock"><p>Print, to std-out, some basic information of the data-container. </p>
+<p>Print out XML-like information regarding the data-container.</p>
+<p><b>wanted</b> Retrieval function of the string that represents the data. This will enable the parent program to show it in the way it wants. </p>
 </div><hr/>The documentation for this interface was generated from the following file:<ul>
 <li>src/<a class="el" href="bud__Array3D_8f90.html">bud_Array3D.f90</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 5 2016 09:53:16 for buds by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 6 2016 14:33:56 for buds by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

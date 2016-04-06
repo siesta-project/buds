@@ -14,7 +14,14 @@
 <script type="text/javascript">
   $(document).ready(function() { init_search(); });
 </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="extra_stylesheet.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -98,7 +105,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p>Add a new element to the head of the linked list.  
+<p>Add a new node to the end of the linked list.  
  <a href="interfacebud__ll__zarray2d_1_1add__node.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for add_node:</div>
@@ -116,16 +123,17 @@ Private Member Functions</h2></td></tr>
 <tr class="separator:ga6c3b32980b3e54687032c5e13110fdd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Add a new element to the head of the linked list. </p>
+<div class="textblock"><p>Add a new node to the end of the linked list. </p>
 <p>Possibly assign data to the new node.</p>
-<p><b>Note</b> One cannot push elements in the middle of the stack. </p>
+<p>One cannot add elements in the middle of the stack.</p>
+<p>A doubly linked list may create circular lists which is a valid linked list. Adding a node on a circular list will add the node right before the <code>head</code>. </p>
 </div><hr/>The documentation for this interface was generated from the following file:<ul>
 <li>src/<a class="el" href="bud__LL__Array2D_8f90.html">bud_LL_Array2D.f90</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 5 2016 09:53:20 for buds by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 6 2016 14:33:57 for buds by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

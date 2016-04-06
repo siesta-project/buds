@@ -14,7 +14,14 @@
 <script type="text/javascript">
   $(document).ready(function() { init_search(); });
 </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="extra_stylesheet.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -108,16 +115,31 @@ Modules</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Types</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">type &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">bud variable  <a href="structbud__lsm__csr0_1_1lsm__csr0.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sparse matrix type in the CSR format.  <a href="structbud__lsm__csr0_1_1lsm__csr0.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__lsm__csr0_1_1new.html">new</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new bud instances.  <a href="interfacebud__lsm__csr0_1_1new.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new sparse matrix.  <a href="interfacebud__lsm__csr0_1_1new.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__lsm__csr0_1_1new__lsm__csr0.html">new_lsm_csr0</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new bud instances.  <a href="interfacebud__lsm__csr0_1_1new__lsm__csr0.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #new  <a href="interfacebud__lsm__csr0_1_1new__lsm__csr0.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__lsm__csr0_1_1mat__fold.html">mat_fold</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fold a sparse matrix to form a smaller sparse matrix.  <a href="interfacebud__lsm__csr0_1_1mat__fold.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__lsm__csr0_1_1mat__sort.html">mat_sort</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sorts columns in the sparse pattern.  <a href="interfacebud__lsm__csr0_1_1mat__sort.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__lsm__csr0_1_1mat__pointerp.html">mat_pointerp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve a pointer to the row offsets/pointers.  <a href="interfacebud__lsm__csr0_1_1mat__pointerp.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__lsm__csr0_1_1mat__offsetp.html">mat_offsetp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #mat_pointerp  <a href="interfacebud__lsm__csr0_1_1mat__offsetp.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__lsm__csr0_1_1mat__columnp.html">mat_columnp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve a pointer to the column indices.  <a href="interfacebud__lsm__csr0_1_1mat__columnp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__lsm__csr0_1_1nonzeros.html">nonzeros</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of non-zero elements in the stored array (same as regular <code>size</code>)  <a href="interfacebud__lsm__csr0_1_1nonzeros.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return number of non-zero elements stored in the sparse matrix.  <a href="interfacebud__lsm__csr0_1_1nonzeros.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__lsm__csr0_1_1mat__rows.html">mat_rows</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of rows in matrix.  <a href="interfacebud__lsm__csr0_1_1mat__rows.html#details">More...</a><br /></td></tr>
@@ -125,29 +147,14 @@ Data Types</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__lsm__csr0_1_1mat__cols.html">mat_cols</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of columns in matrix.  <a href="interfacebud__lsm__csr0_1_1mat__cols.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__lsm__csr0_1_1get__wrapped.html">get_wrapped</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap-around column indices to form a smaller matrix.  <a href="interfacebud__lsm__csr0_1_1get__wrapped.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__lsm__csr0_1_1attach.html">attach</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query internal data structure elements via simple routine.  <a href="interfacebud__lsm__csr0_1_1attach.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__lsm__csr0_1_1finalize.html">finalize</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finalize and sort the column indices per row.  <a href="interfacebud__lsm__csr0_1_1finalize.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__lsm__csr0_1_1get__row__ptrp.html">get_row_ptrp</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve a pointer to the internal row pointers.  <a href="interfacebud__lsm__csr0_1_1get__row__ptrp.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__lsm__csr0_1_1get__columnp.html">get_columnp</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve a pointer to the internal column indices.  <a href="interfacebud__lsm__csr0_1_1get__columnp.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__lsm__csr0_1_1index.html">index</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query sparse index of a given row and column.  <a href="interfacebud__lsm__csr0_1_1index.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve access to sparse pattern variables via pointers.  <a href="interfacebud__lsm__csr0_1_1attach.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__lsm__csr0_1_1print.html">print</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print information about the bud.  <a href="interfacebud__lsm__csr0_1_1print.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="interfacebud__lsm__csr0_1_1print.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__lsm__csr0_1_1assignment_07_0A_08.html">assignment(=)</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for clearing the data container in the bud.  <a href="interfacebud__lsm__csr0_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment of bud to another bud.  <a href="interfacebud__lsm__csr0_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__lsm__csr0_1_1initialize.html">initialize</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization of data container.  <a href="interfacebud__lsm__csr0_1_1initialize.html#details">More...</a><br /></td></tr>
@@ -165,7 +172,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether two buds point to the same data (function)  <a href="interfacebud__lsm__csr0_1_1is__same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__lsm__csr0_1_1same.html">same</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__lsm__csr0_1_1is__same.html" title="Check whether two buds point to the same data (function) ">is_same</a>  <a href="interfacebud__lsm__csr0_1_1same.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #is_same  <a href="interfacebud__lsm__csr0_1_1same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__lsm__csr0_1_1delete.html">delete</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the bud by decreasing references to the underlying data.  <a href="interfacebud__lsm__csr0_1_1delete.html#details">More...</a><br /></td></tr>
@@ -177,7 +184,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of references to the bud.  <a href="interfacebud__lsm__csr0_1_1references.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__lsm__csr0_1_1refs.html">refs</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> references  <a href="interfacebud__lsm__csr0_1_1refs.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #references  <a href="interfacebud__lsm__csr0_1_1refs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
@@ -215,47 +222,88 @@ Functions/Subroutines</h2></td></tr>
 <tr class="memitem:gae358c840d1cded3554431749fc80862d"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#gae358c840d1cded3554431749fc80862d">print</a> =&gt; print_</td></tr>
 <tr class="memdesc:gae358c840d1cded3554431749fc80862d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> print  <a href="#gae358c840d1cded3554431749fc80862d">More...</a><br /></td></tr>
 <tr class="separator:gae358c840d1cded3554431749fc80862d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga222becc86ac7058853a721827d4529a9"><td class="memItemLeft" align="right" valign="top">procedure, private&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga222becc86ac7058853a721827d4529a9">new_dim_</a> =&gt; new_dim_</td></tr>
+<tr class="separator:ga222becc86ac7058853a721827d4529a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab60d8d0155e66ba392d8541298a8444a"><td class="memItemLeft" align="right" valign="top">procedure, private&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#gab60d8d0155e66ba392d8541298a8444a">new_copy_</a> =&gt; new_copy_</td></tr>
+<tr class="separator:gab60d8d0155e66ba392d8541298a8444a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga29c92b47c1b5c832ccfc04a030b7a527"><td class="memItemLeft" align="right" valign="top">generic, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga29c92b47c1b5c832ccfc04a030b7a527">new</a> =&gt; new_dim_, new_copy_</td></tr>
+<tr class="memdesc:ga29c92b47c1b5c832ccfc04a030b7a527"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> new  <a href="#ga29c92b47c1b5c832ccfc04a030b7a527">More...</a><br /></td></tr>
+<tr class="separator:ga29c92b47c1b5c832ccfc04a030b7a527"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4bb8b7770fc1618265e883948b73adc3"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga4bb8b7770fc1618265e883948b73adc3">nonzeros</a> =&gt; nonzeros_</td></tr>
+<tr class="memdesc:ga4bb8b7770fc1618265e883948b73adc3"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#ga4bb8b7770fc1618265e883948b73adc3" title="See interface nonzeros ">nonzeros</a>  <a href="#ga4bb8b7770fc1618265e883948b73adc3">More...</a><br /></td></tr>
+<tr class="separator:ga4bb8b7770fc1618265e883948b73adc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad3e6a668f0b218026c6ad0e5dd8d8ee5"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#gad3e6a668f0b218026c6ad0e5dd8d8ee5">rows</a> =&gt; mat_rows_</td></tr>
+<tr class="memdesc:gad3e6a668f0b218026c6ad0e5dd8d8ee5"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#gae143afbf707dea3960bd2e8ca956d0b3" title="See interface mat_rows ">mat_rows</a>  <a href="#gad3e6a668f0b218026c6ad0e5dd8d8ee5">More...</a><br /></td></tr>
+<tr class="separator:gad3e6a668f0b218026c6ad0e5dd8d8ee5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae143afbf707dea3960bd2e8ca956d0b3"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#gae143afbf707dea3960bd2e8ca956d0b3">mat_rows</a> =&gt; mat_rows_</td></tr>
+<tr class="memdesc:gae143afbf707dea3960bd2e8ca956d0b3"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#gae143afbf707dea3960bd2e8ca956d0b3" title="See interface mat_rows ">mat_rows</a>  <a href="#gae143afbf707dea3960bd2e8ca956d0b3">More...</a><br /></td></tr>
+<tr class="separator:gae143afbf707dea3960bd2e8ca956d0b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5bcb1be58e0f2b272f56ad0020cafe9d"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga5bcb1be58e0f2b272f56ad0020cafe9d">cols</a> =&gt; mat_cols_</td></tr>
+<tr class="memdesc:ga5bcb1be58e0f2b272f56ad0020cafe9d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#ga804df50e085fc7539f3da4a8ac462e4f" title="See interface mat_cols ">mat_cols</a>  <a href="#ga5bcb1be58e0f2b272f56ad0020cafe9d">More...</a><br /></td></tr>
+<tr class="separator:ga5bcb1be58e0f2b272f56ad0020cafe9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga804df50e085fc7539f3da4a8ac462e4f"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga804df50e085fc7539f3da4a8ac462e4f">mat_cols</a> =&gt; mat_cols_</td></tr>
+<tr class="memdesc:ga804df50e085fc7539f3da4a8ac462e4f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#ga804df50e085fc7539f3da4a8ac462e4f" title="See interface mat_cols ">mat_cols</a>  <a href="#ga804df50e085fc7539f3da4a8ac462e4f">More...</a><br /></td></tr>
+<tr class="separator:ga804df50e085fc7539f3da4a8ac462e4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga43710574843d9089ca19f040e18f7daf"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga43710574843d9089ca19f040e18f7daf">fold</a> =&gt; fold_</td></tr>
+<tr class="memdesc:ga43710574843d9089ca19f040e18f7daf"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#ga77672f9f55997c289c12f80a8329aa5e" title="See interface mat_fold ">mat_fold</a>  <a href="#ga43710574843d9089ca19f040e18f7daf">More...</a><br /></td></tr>
+<tr class="separator:ga43710574843d9089ca19f040e18f7daf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga77672f9f55997c289c12f80a8329aa5e"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga77672f9f55997c289c12f80a8329aa5e">mat_fold</a> =&gt; fold_</td></tr>
+<tr class="memdesc:ga77672f9f55997c289c12f80a8329aa5e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#ga77672f9f55997c289c12f80a8329aa5e" title="See interface mat_fold ">mat_fold</a>  <a href="#ga77672f9f55997c289c12f80a8329aa5e">More...</a><br /></td></tr>
+<tr class="separator:ga77672f9f55997c289c12f80a8329aa5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8ed6837f0dfeae2d1bf55a1d1506ffad"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga8ed6837f0dfeae2d1bf55a1d1506ffad">sort</a> =&gt; sort_</td></tr>
+<tr class="memdesc:ga8ed6837f0dfeae2d1bf55a1d1506ffad"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#ga59805ea0b66cf35634caa5b820519a8a" title="See interface mat_sort ">mat_sort</a>  <a href="#ga8ed6837f0dfeae2d1bf55a1d1506ffad">More...</a><br /></td></tr>
+<tr class="separator:ga8ed6837f0dfeae2d1bf55a1d1506ffad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga59805ea0b66cf35634caa5b820519a8a"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga59805ea0b66cf35634caa5b820519a8a">mat_sort</a> =&gt; sort_</td></tr>
+<tr class="memdesc:ga59805ea0b66cf35634caa5b820519a8a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#ga59805ea0b66cf35634caa5b820519a8a" title="See interface mat_sort ">mat_sort</a>  <a href="#ga59805ea0b66cf35634caa5b820519a8a">More...</a><br /></td></tr>
+<tr class="separator:ga59805ea0b66cf35634caa5b820519a8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac22ca89da845f4e166f7ac4c41e8c64d"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#gac22ca89da845f4e166f7ac4c41e8c64d">pointerp</a> =&gt; get_row_offsetp_</td></tr>
+<tr class="memdesc:gac22ca89da845f4e166f7ac4c41e8c64d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#gabceb7c4f03c409d858de19c0faa86252" title="See interface mat_pointerp ">mat_pointerp</a>  <a href="#gac22ca89da845f4e166f7ac4c41e8c64d">More...</a><br /></td></tr>
+<tr class="separator:gac22ca89da845f4e166f7ac4c41e8c64d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabceb7c4f03c409d858de19c0faa86252"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#gabceb7c4f03c409d858de19c0faa86252">mat_pointerp</a> =&gt; get_row_offsetp_</td></tr>
+<tr class="memdesc:gabceb7c4f03c409d858de19c0faa86252"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#gabceb7c4f03c409d858de19c0faa86252" title="See interface mat_pointerp ">mat_pointerp</a>  <a href="#gabceb7c4f03c409d858de19c0faa86252">More...</a><br /></td></tr>
+<tr class="separator:gabceb7c4f03c409d858de19c0faa86252"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0c4d3759b88a3bec339e60bcab36c76c"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga0c4d3759b88a3bec339e60bcab36c76c">offsetp</a> =&gt; get_row_offsetp_</td></tr>
+<tr class="memdesc:ga0c4d3759b88a3bec339e60bcab36c76c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#gabceb7c4f03c409d858de19c0faa86252" title="See interface mat_pointerp ">mat_pointerp</a>  <a href="#ga0c4d3759b88a3bec339e60bcab36c76c">More...</a><br /></td></tr>
+<tr class="separator:ga0c4d3759b88a3bec339e60bcab36c76c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga524bc036e71c955dfa801f9be9b6c035"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga524bc036e71c955dfa801f9be9b6c035">mat_offsetp</a> =&gt; get_row_offsetp_</td></tr>
+<tr class="memdesc:ga524bc036e71c955dfa801f9be9b6c035"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#gabceb7c4f03c409d858de19c0faa86252" title="See interface mat_pointerp ">mat_pointerp</a>  <a href="#ga524bc036e71c955dfa801f9be9b6c035">More...</a><br /></td></tr>
+<tr class="separator:ga524bc036e71c955dfa801f9be9b6c035"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5b4d8cae8df9f835fa2cf38468abb261"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga5b4d8cae8df9f835fa2cf38468abb261">columnp</a> =&gt; get_columnp_</td></tr>
+<tr class="memdesc:ga5b4d8cae8df9f835fa2cf38468abb261"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#ga65de62454e717505b460a45507dcd525" title="See interface mat_columnp ">mat_columnp</a>  <a href="#ga5b4d8cae8df9f835fa2cf38468abb261">More...</a><br /></td></tr>
+<tr class="separator:ga5b4d8cae8df9f835fa2cf38468abb261"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga65de62454e717505b460a45507dcd525"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga65de62454e717505b460a45507dcd525">mat_columnp</a> =&gt; get_columnp_</td></tr>
+<tr class="memdesc:ga65de62454e717505b460a45507dcd525"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#ga65de62454e717505b460a45507dcd525" title="See interface mat_columnp ">mat_columnp</a>  <a href="#ga65de62454e717505b460a45507dcd525">More...</a><br /></td></tr>
+<tr class="separator:ga65de62454e717505b460a45507dcd525"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacd759a2ce22257d2bbcce984019b8e26"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#gacd759a2ce22257d2bbcce984019b8e26">attach</a> =&gt; attach_</td></tr>
+<tr class="memdesc:gacd759a2ce22257d2bbcce984019b8e26"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#gacd759a2ce22257d2bbcce984019b8e26" title="See interface attach ">attach</a>  <a href="#gacd759a2ce22257d2bbcce984019b8e26">More...</a><br /></td></tr>
+<tr class="separator:gacd759a2ce22257d2bbcce984019b8e26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3dfbf47d779091d835b96df8cab0c4d3"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga3dfbf47d779091d835b96df8cab0c4d3">new_dim_</a> (this, nr, nc, nz)</td></tr>
-<tr class="memdesc:ga3dfbf47d779091d835b96df8cab0c4d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new bud allocating room or specific size.  <a href="#ga3dfbf47d779091d835b96df8cab0c4d3">More...</a><br /></td></tr>
 <tr class="separator:ga3dfbf47d779091d835b96df8cab0c4d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga90eb9b4266d564789f209f8f3a963683"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga90eb9b4266d564789f209f8f3a963683">new_copy_</a> (this, nr, nc, nz, rptr, col)</td></tr>
-<tr class="memdesc:ga90eb9b4266d564789f209f8f3a963683"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new bud by copying in from an outside list.  <a href="#ga90eb9b4266d564789f209f8f3a963683">More...</a><br /></td></tr>
 <tr class="separator:ga90eb9b4266d564789f209f8f3a963683"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3dfbf47d779091d835b96df8cab0c4d3"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga3dfbf47d779091d835b96df8cab0c4d3">new_dim_</a> (this, nr, nc, nz)</td></tr>
-<tr class="memdesc:ga3dfbf47d779091d835b96df8cab0c4d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new bud allocating room or specific size.  <a href="#ga3dfbf47d779091d835b96df8cab0c4d3">More...</a><br /></td></tr>
 <tr class="separator:ga3dfbf47d779091d835b96df8cab0c4d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga90eb9b4266d564789f209f8f3a963683"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga90eb9b4266d564789f209f8f3a963683">new_copy_</a> (this, nr, nc, nz, rptr, col)</td></tr>
-<tr class="memdesc:ga90eb9b4266d564789f209f8f3a963683"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new bud by copying in from an outside list.  <a href="#ga90eb9b4266d564789f209f8f3a963683">More...</a><br /></td></tr>
 <tr class="separator:ga90eb9b4266d564789f209f8f3a963683"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga03d18540264666253929feb936199c77"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga03d18540264666253929feb936199c77">fold_</a> (from, nr, nc, to, single)</td></tr>
+<tr class="separator:ga03d18540264666253929feb936199c77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9d2c0aa604f5f847674c4df3c36a55e0"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga9d2c0aa604f5f847674c4df3c36a55e0">sort_</a> (this, err, pvt)</td></tr>
+<tr class="separator:ga9d2c0aa604f5f847674c4df3c36a55e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8101132da74332937553bfd85ae5d16c"><td class="memItemLeft" align="right" valign="top">integer(il_) function, dimension(:), pointer, contiguous&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga8101132da74332937553bfd85ae5d16c">get_row_offsetp_</a> (this)</td></tr>
+<tr class="separator:ga8101132da74332937553bfd85ae5d16c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8101132da74332937553bfd85ae5d16c"><td class="memItemLeft" align="right" valign="top">integer(il_) function, dimension(:), pointer, contiguous&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga8101132da74332937553bfd85ae5d16c">get_row_offsetp_</a> (this)</td></tr>
+<tr class="separator:ga8101132da74332937553bfd85ae5d16c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf8ea7ee77fca44debc9a10bf9e27703b"><td class="memItemLeft" align="right" valign="top">integer(il_) function, dimension(:), pointer, contiguous&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#gaf8ea7ee77fca44debc9a10bf9e27703b">get_columnp_</a> (this)</td></tr>
+<tr class="separator:gaf8ea7ee77fca44debc9a10bf9e27703b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga37523ea3b8600ad6d3c7fdb6d8696e3b"><td class="memItemLeft" align="right" valign="top">elemental integer function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga37523ea3b8600ad6d3c7fdb6d8696e3b">nonzeros_</a> (this)</td></tr>
-<tr class="memdesc:ga37523ea3b8600ad6d3c7fdb6d8696e3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of non-zero elements.  <a href="#ga37523ea3b8600ad6d3c7fdb6d8696e3b">More...</a><br /></td></tr>
 <tr class="separator:ga37523ea3b8600ad6d3c7fdb6d8696e3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga49ff7cfce02e99ddcd4e4a9789a54b4c"><td class="memItemLeft" align="right" valign="top">elemental integer function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga49ff7cfce02e99ddcd4e4a9789a54b4c">mat_rows_</a> (this)</td></tr>
-<tr class="memdesc:ga49ff7cfce02e99ddcd4e4a9789a54b4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of rows of the stored sparse matrix.  <a href="#ga49ff7cfce02e99ddcd4e4a9789a54b4c">More...</a><br /></td></tr>
 <tr class="separator:ga49ff7cfce02e99ddcd4e4a9789a54b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2f71c12781a14da407d944466b327b58"><td class="memItemLeft" align="right" valign="top">elemental integer function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga2f71c12781a14da407d944466b327b58">mat_cols_</a> (this)</td></tr>
-<tr class="memdesc:ga2f71c12781a14da407d944466b327b58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of columns of the stored sparse matrix.  <a href="#ga2f71c12781a14da407d944466b327b58">More...</a><br /></td></tr>
 <tr class="separator:ga2f71c12781a14da407d944466b327b58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga77f993e8fccedd0f8855a6171945c1d1"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga77f993e8fccedd0f8855a6171945c1d1">get_wrapped_</a> (from, nc, to, unite)</td></tr>
-<tr class="memdesc:ga77f993e8fccedd0f8855a6171945c1d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap-around sparse matrix to form a smaller sparse matrix.  <a href="#ga77f993e8fccedd0f8855a6171945c1d1">More...</a><br /></td></tr>
-<tr class="separator:ga77f993e8fccedd0f8855a6171945c1d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3abeb9a50d5f0149eddb9159d3ba5b1a"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga3abeb9a50d5f0149eddb9159d3ba5b1a">attach_</a> (this, D, nr, nc, nz, rptr, col           , nrow           )</td></tr>
-<tr class="memdesc:ga3abeb9a50d5f0149eddb9159d3ba5b1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve access to sparse pattern via pointers.  <a href="#ga3abeb9a50d5f0149eddb9159d3ba5b1a">More...</a><br /></td></tr>
 <tr class="separator:ga3abeb9a50d5f0149eddb9159d3ba5b1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf6a3f7128673f3d18dc1f578deac74b3"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#gaf6a3f7128673f3d18dc1f578deac74b3">finalize_</a> (this, err, pvt)</td></tr>
-<tr class="memdesc:gaf6a3f7128673f3d18dc1f578deac74b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sorts the elements in the sparse pattern.  <a href="#gaf6a3f7128673f3d18dc1f578deac74b3">More...</a><br /></td></tr>
-<tr class="separator:gaf6a3f7128673f3d18dc1f578deac74b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad314199a793a84a97d8da365f1583535"><td class="memItemLeft" align="right" valign="top">integer(il_) function, dimension(:), pointer, contiguous&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#gad314199a793a84a97d8da365f1583535">get_row_ptrp_</a> (this)</td></tr>
-<tr class="memdesc:gad314199a793a84a97d8da365f1583535"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve a pointer to the row pointers.  <a href="#gad314199a793a84a97d8da365f1583535">More...</a><br /></td></tr>
-<tr class="separator:gad314199a793a84a97d8da365f1583535"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf8ea7ee77fca44debc9a10bf9e27703b"><td class="memItemLeft" align="right" valign="top">integer(il_) function, dimension(:), pointer, contiguous&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#gaf8ea7ee77fca44debc9a10bf9e27703b">get_columnp_</a> (this)</td></tr>
-<tr class="memdesc:gaf8ea7ee77fca44debc9a10bf9e27703b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve a pointer to the column indices.  <a href="#gaf8ea7ee77fca44debc9a10bf9e27703b">More...</a><br /></td></tr>
-<tr class="separator:gaf8ea7ee77fca44debc9a10bf9e27703b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa1853afcdc3362cdee0530d7df9f7453"><td class="memItemLeft" align="right" valign="top">pure subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#gaa1853afcdc3362cdee0530d7df9f7453">index_</a> (this, ir, ic, idx)</td></tr>
-<tr class="memdesc:gaa1853afcdc3362cdee0530d7df9f7453"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get sparse index from double index.  <a href="#gaa1853afcdc3362cdee0530d7df9f7453">More...</a><br /></td></tr>
-<tr class="separator:gaa1853afcdc3362cdee0530d7df9f7453"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab73a2fb2eb7a2f7ddee01660099f9a2d"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#gab73a2fb2eb7a2f7ddee01660099f9a2d">print_</a> (this, info, indent)</td></tr>
-<tr class="memdesc:gab73a2fb2eb7a2f7ddee01660099f9a2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="#gab73a2fb2eb7a2f7ddee01660099f9a2d">More...</a><br /></td></tr>
 <tr class="separator:gab73a2fb2eb7a2f7ddee01660099f9a2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9521622c2690fb302bc377ee866b8836"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga9521622c2690fb302bc377ee866b8836">assign_</a> (lhs, rhs)</td></tr>
 <tr class="separator:ga9521622c2690fb302bc377ee866b8836"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -293,36 +341,26 @@ Functions/Subroutines</h2></td></tr>
 <tr class="separator:ga59d6580f4cc13cbc9623762d5892816e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacbc68bd2f6f2831be6bc5a1f33a36606"><td class="memItemLeft" align="right" valign="top">elemental integer function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#gacbc68bd2f6f2831be6bc5a1f33a36606">references_</a> (this)</td></tr>
 <tr class="separator:gacbc68bd2f6f2831be6bc5a1f33a36606"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaac5898302edc9b4807eef67627144b08"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#gaac5898302edc9b4807eef67627144b08">new_dim_</a> (this, nr, nc, nz)</td></tr>
-<tr class="memdesc:gaac5898302edc9b4807eef67627144b08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new bud allocating room or specific size.  <a href="group__bud__lSM__CSR0.html#gaac5898302edc9b4807eef67627144b08">More...</a><br /></td></tr>
-<tr class="separator:gaac5898302edc9b4807eef67627144b08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga68550a7fd8635d1fc5d0a7e212056ee4"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga68550a7fd8635d1fc5d0a7e212056ee4">new_copy_</a> (this, nr, nc, nz, rptr, col)</td></tr>
-<tr class="memdesc:ga68550a7fd8635d1fc5d0a7e212056ee4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new bud by copying in from an outside list.  <a href="group__bud__lSM__CSR0.html#ga68550a7fd8635d1fc5d0a7e212056ee4">More...</a><br /></td></tr>
-<tr class="separator:ga68550a7fd8635d1fc5d0a7e212056ee4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga35d12b4c9d75f5d935937c2265b9c4aa"><td class="memItemLeft" align="right" valign="top">elemental integer function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga35d12b4c9d75f5d935937c2265b9c4aa">nonzeros_</a> (this)</td></tr>
-<tr class="memdesc:ga35d12b4c9d75f5d935937c2265b9c4aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of non-zero elements.  <a href="group__bud__lSM__CSR0.html#ga35d12b4c9d75f5d935937c2265b9c4aa">More...</a><br /></td></tr>
 <tr class="separator:ga35d12b4c9d75f5d935937c2265b9c4aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga105bf8b2c7e1be128aca0268ba3e385c"><td class="memItemLeft" align="right" valign="top">elemental integer function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga105bf8b2c7e1be128aca0268ba3e385c">mat_rows_</a> (this)</td></tr>
-<tr class="memdesc:ga105bf8b2c7e1be128aca0268ba3e385c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of rows of the stored sparse matrix.  <a href="group__bud__lSM__CSR0.html#ga105bf8b2c7e1be128aca0268ba3e385c">More...</a><br /></td></tr>
 <tr class="separator:ga105bf8b2c7e1be128aca0268ba3e385c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacae7fbb1b4a30818b375413a7d763f38"><td class="memItemLeft" align="right" valign="top">elemental integer function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#gacae7fbb1b4a30818b375413a7d763f38">mat_cols_</a> (this)</td></tr>
-<tr class="memdesc:gacae7fbb1b4a30818b375413a7d763f38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of columns of the stored sparse matrix.  <a href="group__bud__lSM__CSR0.html#gacae7fbb1b4a30818b375413a7d763f38">More...</a><br /></td></tr>
 <tr class="separator:gacae7fbb1b4a30818b375413a7d763f38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaac5898302edc9b4807eef67627144b08"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#gaac5898302edc9b4807eef67627144b08">new_dim_</a> (this, nr, nc, nz)</td></tr>
+<tr class="separator:gaac5898302edc9b4807eef67627144b08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga68550a7fd8635d1fc5d0a7e212056ee4"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga68550a7fd8635d1fc5d0a7e212056ee4">new_copy_</a> (this, nr, nc, nz, rptr, col)</td></tr>
+<tr class="separator:ga68550a7fd8635d1fc5d0a7e212056ee4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6d28e44f5227c922af88e5aaffa5dc9b"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga6d28e44f5227c922af88e5aaffa5dc9b">attach_</a> (this, D, nr, nc, nz, rptr, col           , nrow           )</td></tr>
-<tr class="memdesc:ga6d28e44f5227c922af88e5aaffa5dc9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve access to sparse pattern via pointers.  <a href="group__bud__lSM__CSR0.html#ga6d28e44f5227c922af88e5aaffa5dc9b">More...</a><br /></td></tr>
 <tr class="separator:ga6d28e44f5227c922af88e5aaffa5dc9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4491f83665152f402fab1027d9332225"><td class="memItemLeft" align="right" valign="top">pure subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga4491f83665152f402fab1027d9332225">index_</a> (this, ir, ic, idx)</td></tr>
-<tr class="memdesc:ga4491f83665152f402fab1027d9332225"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get sparse index from double index.  <a href="group__bud__lSM__CSR0.html#ga4491f83665152f402fab1027d9332225">More...</a><br /></td></tr>
-<tr class="separator:ga4491f83665152f402fab1027d9332225"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafb2580d992fedefe6a9cf48c8d1d24ea"><td class="memItemLeft" align="right" valign="top">integer(il_) function, dimension(:), pointer, contiguous&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#gafb2580d992fedefe6a9cf48c8d1d24ea">get_row_ptrp_</a> (this)</td></tr>
-<tr class="memdesc:gafb2580d992fedefe6a9cf48c8d1d24ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve a pointer to the row pointers.  <a href="group__bud__lSM__CSR0.html#gafb2580d992fedefe6a9cf48c8d1d24ea">More...</a><br /></td></tr>
-<tr class="separator:gafb2580d992fedefe6a9cf48c8d1d24ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf829850b1b4323c27ab0838f4a1f6b30"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#gaf829850b1b4323c27ab0838f4a1f6b30">fold_</a> (from, nr, nc, to, single)</td></tr>
+<tr class="separator:gaf829850b1b4323c27ab0838f4a1f6b30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab726a7456195362758a5866153094036"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#gab726a7456195362758a5866153094036">fold_row_only</a> (from, nr, to)</td></tr>
+<tr class="separator:gab726a7456195362758a5866153094036"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9d2baab6537725ca56795f5e4dbc40f4"><td class="memItemLeft" align="right" valign="top">integer(il_) function, dimension(:), pointer, contiguous&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#ga9d2baab6537725ca56795f5e4dbc40f4">get_columnp_</a> (this)</td></tr>
-<tr class="memdesc:ga9d2baab6537725ca56795f5e4dbc40f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve a pointer to the column indices.  <a href="group__bud__lSM__CSR0.html#ga9d2baab6537725ca56795f5e4dbc40f4">More...</a><br /></td></tr>
 <tr class="separator:ga9d2baab6537725ca56795f5e4dbc40f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaec9e56c3e8a4eb99251ca1167449c2d5"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#gaec9e56c3e8a4eb99251ca1167449c2d5">finalize_</a> (this, err, pvt)</td></tr>
-<tr class="memdesc:gaec9e56c3e8a4eb99251ca1167449c2d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sorts the elements in the sparse pattern.  <a href="group__bud__lSM__CSR0.html#gaec9e56c3e8a4eb99251ca1167449c2d5">More...</a><br /></td></tr>
-<tr class="separator:gaec9e56c3e8a4eb99251ca1167449c2d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae158570d6ed2bc2c0af6d677ce797a06"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR0.html#gae158570d6ed2bc2c0af6d677ce797a06">sort_</a> (this, err, pvt)</td></tr>
+<tr class="separator:gae158570d6ed2bc2c0af6d677ce797a06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -428,89 +466,20 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ga3abeb9a50d5f0149eddb9159d3ba5b1a"></a>
+<a class="anchor" id="gacd759a2ce22257d2bbcce984019b8e26"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">subroutine attach_ </td>
+          <td class="memname">procedure, public attach </td>
           <td>(</td>
-          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(in)&#160;</td>
-          <td class="paramname"><em>this</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">logical, intent(in), optional&#160;</td>
-          <td class="paramname"><em>D</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer(il_), intent(out), optional&#160;</td>
-          <td class="paramname"><em>nr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer(il_), intent(out), optional&#160;</td>
-          <td class="paramname"><em>nc</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer(il_), intent(out), optional&#160;</td>
-          <td class="paramname"><em>nz</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer(il_), dimension(:), intent(out), optional, pointer, contiguous&#160;</td>
-          <td class="paramname"><em>rptr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer(il_), dimension(:), intent(out), optional, pointer, contiguous&#160;</td>
-          <td class="paramname"><em>col</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer(il_), dimension(:), intent(out), optional, pointer, contiguous&#160;</td>
-          <td class="paramname"><em>nrow</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Retrieve access to sparse pattern via pointers. </p>
-<p>To manually access the sparsity pattern one should retrive the pointers and interact externally with the sparsity pattern.</p>
-<p>Interacting externally with sparse pattern will yield faster performance.</p>
-<p>All arguments are optional and <em>must</em> be accessed by keyword usage.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Add error checking for <code>D</code> parameter.</dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>the sparsity bud </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">nr</td><td><em>optional</em> number of rows </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">nc</td><td><em>optional</em> number of columns </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">nz</td><td><em>optional</em> number of non-zero elements </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">nrow</td><td><em>optional</em> number of non-zero elements per row </td></tr>
-  </table>
-  </dd>
-</dl>
+<p><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#gacd759a2ce22257d2bbcce984019b8e26" title="See interface attach ">attach</a> </p>
 
 </div>
 </div>
@@ -581,22 +550,134 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Retrieve access to sparse pattern via pointers. </p>
-<p>To manually access the sparsity pattern one should retrive the pointers and interact externally with the sparsity pattern.</p>
-<p>Interacting externally with sparse pattern will yield faster performance.</p>
-<p>All arguments are optional and <em>must</em> be accessed by keyword usage.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Add error checking for <code>D</code> parameter.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>the sparsity bud </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">nr</td><td><em>optional</em> number of rows </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">nc</td><td><em>optional</em> number of columns </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">nz</td><td><em>optional</em> number of non-zero elements </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>sparse matrix bud </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">nr</td><td><em>optional</em> number of rows in SM </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">nc</td><td><em>optional</em> number of columns in SM </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">nz</td><td><em>optional</em> number of non-zero elements in SM </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">rptr</td><td><em>optional</em> row pointer (<code>rptr(2)+1</code> is starting index of <code>ir=2</code>) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">col</td><td><em>optional</em> column index </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">nrow</td><td><em>optional</em> number of non-zero elements per row </td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a class="anchor" id="ga3abeb9a50d5f0149eddb9159d3ba5b1a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine attach_ </td>
+          <td>(</td>
+          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(in)&#160;</td>
+          <td class="paramname"><em>this</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">logical, intent(in), optional&#160;</td>
+          <td class="paramname"><em>D</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer(il_), intent(out), optional&#160;</td>
+          <td class="paramname"><em>nr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer(il_), intent(out), optional&#160;</td>
+          <td class="paramname"><em>nc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer(il_), intent(out), optional&#160;</td>
+          <td class="paramname"><em>nz</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer(il_), dimension(:), intent(out), optional, pointer, contiguous&#160;</td>
+          <td class="paramname"><em>rptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer(il_), dimension(:), intent(out), optional, pointer, contiguous&#160;</td>
+          <td class="paramname"><em>col</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer(il_), dimension(:), intent(out), optional, pointer, contiguous&#160;</td>
+          <td class="paramname"><em>nrow</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>sparse matrix bud </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">nr</td><td><em>optional</em> number of rows in SM </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">nc</td><td><em>optional</em> number of columns in SM </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">nz</td><td><em>optional</em> number of non-zero elements in SM </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">rptr</td><td><em>optional</em> row pointer (<code>rptr(2)+1</code> is starting index of <code>ir=2</code>) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">col</td><td><em>optional</em> column index </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">nrow</td><td><em>optional</em> number of non-zero elements per row </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ga5bcb1be58e0f2b272f56ad0020cafe9d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">procedure, public cols </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#ga804df50e085fc7539f3da4a8ac462e4f" title="See interface mat_cols ">mat_cols</a> </p>
+
+</div>
+</div>
+<a class="anchor" id="ga5b4d8cae8df9f835fa2cf38468abb261"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">procedure, public columnp </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#ga65de62454e717505b460a45507dcd525" title="See interface mat_columnp ">mat_columnp</a> </p>
 
 </div>
 </div>
@@ -677,59 +758,24 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="gaf6a3f7128673f3d18dc1f578deac74b3"></a>
+<a class="anchor" id="ga43710574843d9089ca19f040e18f7daf"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">subroutine finalize_ </td>
+          <td class="memname">procedure, public fold </td>
           <td>(</td>
-          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(inout)&#160;</td>
-          <td class="paramname"><em>this</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">integer(il_), intent(out)&#160;</td>
-          <td class="paramname"><em>err</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer(il_), dimension(:), intent(out), optional&#160;</td>
-          <td class="paramname"><em>pvt</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Sorts the elements in the sparse pattern. </p>
-<p>Sorts the sparse matrix such that the column index is always increasing for each row.</p>
-<p>Double entries are not allowed and an error will be returned.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>bud to finalize </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">err</td><td>associated error message of the sparsity pattern </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pvt</td><td><em>optional</em>= if requested the pivoting array for the finalized sparsity pattern </td></tr>
-  </table>
-  </dd>
-</dl>
+<p><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#ga77672f9f55997c289c12f80a8329aa5e" title="See interface mat_fold ">mat_fold</a> </p>
 
 </div>
 </div>
-<a class="anchor" id="gaec9e56c3e8a4eb99251ca1167449c2d5"></a>
+<a class="anchor" id="ga03d18540264666253929feb936199c77"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -737,63 +783,39 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">subroutine bud_lsm_csr0::finalize_ </td>
-          <td>(</td>
-          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(inout)&#160;</td>
-          <td class="paramname"><em>this</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer(il_), intent(out)&#160;</td>
-          <td class="paramname"><em>err</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer(il_), dimension(:), intent(out), optional&#160;</td>
-          <td class="paramname"><em>pvt</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Sorts the elements in the sparse pattern. </p>
-<p>Sorts the sparse matrix such that the column index is always increasing for each row.</p>
-<p>Double entries are not allowed and an error will be returned.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>bud to finalize </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">err</td><td>associated error message of the sparsity pattern </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pvt</td><td><em>optional</em>= if requested the pivoting array for the finalized sparsity pattern </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="gaf8ea7ee77fca44debc9a10bf9e27703b"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">integer(il_) function, dimension(:), pointer, contiguous get_columnp_ </td>
+          <td class="memname">subroutine fold_ </td>
           <td>(</td>
           <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(in)&#160;</td>
-          <td class="paramname"><em>this</em></td><td>)</td>
+          <td class="paramname"><em>from</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">integer(il_), intent(in)&#160;</td>
+          <td class="paramname"><em>nr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer(il_), intent(in)&#160;</td>
+          <td class="paramname"><em>nc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(inout)&#160;</td>
+          <td class="paramname"><em>to</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">logical, intent(in), optional&#160;</td>
+          <td class="paramname"><em>single</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -802,15 +824,148 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Retrieve a pointer to the column indices. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>type to retrieve the pointer from </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">from</td><td>the originating sparse pattern </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nr</td><td>new number of rows in the sparse pattern </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nc</td><td>new number of columns in the sparse pattern </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">to</td><td>the resulting sparse pattern </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">single</td><td><em>optional</em>=.false. if .true.: will compress equivalent entries to a single entry, no double entries will be found subsequently. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the pointer to the contained column indices segment </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="gaf829850b1b4323c27ab0838f4a1f6b30"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine bud_lsm_csr0::fold_ </td>
+          <td>(</td>
+          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(in)&#160;</td>
+          <td class="paramname"><em>from</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer(il_), intent(in)&#160;</td>
+          <td class="paramname"><em>nr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer(il_), intent(in)&#160;</td>
+          <td class="paramname"><em>nc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(inout)&#160;</td>
+          <td class="paramname"><em>to</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">logical, intent(in), optional&#160;</td>
+          <td class="paramname"><em>single</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">from</td><td>the originating sparse pattern </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nr</td><td>new number of rows in the sparse pattern </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nc</td><td>new number of columns in the sparse pattern </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">to</td><td>the resulting sparse pattern </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">single</td><td><em>optional</em>=.false. if .true.: will compress equivalent entries to a single entry, no double entries will be found subsequently. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="group__bud__lSM__CSR0_gaf829850b1b4323c27ab0838f4a1f6b30_cgraph.png" border="0" usemap="#group__bud__lSM__CSR0_gaf829850b1b4323c27ab0838f4a1f6b30_cgraph" alt=""/></div>
+<map name="group__bud__lSM__CSR0_gaf829850b1b4323c27ab0838f4a1f6b30_cgraph" id="group__bud__lSM__CSR0_gaf829850b1b4323c27ab0838f4a1f6b30_cgraph">
+<area shape="rect" id="node2" href="namespacebud__lsm__csr0.html#a3a62bbf75b7df0d237c09d6d0ee92713" title="fold_col_only" alt="" coords="106,5,205,32"/>
+<area shape="rect" id="node4" href="group__bud__lSM__CSR0.html#gab726a7456195362758a5866153094036" title="fold_row_only" alt="" coords="104,56,207,83"/>
+<area shape="rect" id="node3" href="bud__SM__CSR_8f90.html#aead538bba380c662ea7c0db38ed356cb" title="realloc_tmpcol" alt="" coords="255,5,361,32"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="gab726a7456195362758a5866153094036"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine bud_lsm_csr0::fold_row_only </td>
+          <td>(</td>
+          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(in)&#160;</td>
+          <td class="paramname"><em>from</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer(il_), intent(in)&#160;</td>
+          <td class="paramname"><em>nr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(inout)&#160;</td>
+          <td class="paramname"><em>to</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">from</td><td>the originating sparse pattern </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nr</td><td>new number of rows in the sparse pattern </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">to</td><td>the resulting sparse pattern </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="group__bud__lSM__CSR0_gab726a7456195362758a5866153094036_icgraph.png" border="0" usemap="#group__bud__lSM__CSR0_gab726a7456195362758a5866153094036_icgraph" alt=""/></div>
+<map name="group__bud__lSM__CSR0_gab726a7456195362758a5866153094036_icgraph" id="group__bud__lSM__CSR0_gab726a7456195362758a5866153094036_icgraph">
+<area shape="rect" id="node2" href="group__bud__lSM__CSR0.html#gaf829850b1b4323c27ab0838f4a1f6b30" title="fold_" alt="" coords="156,5,207,32"/>
+</map>
+</div>
+</p>
 
 </div>
 </div>
@@ -835,19 +990,17 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Retrieve a pointer to the column indices. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>type to retrieve the pointer from </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>sparse matrix </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the pointer to the contained column indices segment </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a pointer to the column indices for the sparse matrix (contiguous) </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="gad314199a793a84a97d8da365f1583535"></a>
+<a class="anchor" id="gaf8ea7ee77fca44debc9a10bf9e27703b"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -855,7 +1008,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">integer(il_) function, dimension(:), pointer, contiguous get_row_ptrp_ </td>
+          <td class="memname">integer(il_) function, dimension(:), pointer, contiguous get_columnp_ </td>
           <td>(</td>
           <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(in)&#160;</td>
           <td class="paramname"><em>this</em></td><td>)</td>
@@ -868,19 +1021,17 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Retrieve a pointer to the row pointers. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>type to retrieve the pointer from </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>sparse matrix </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the pointer to the contained row-pointer segment </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a pointer to the column indices for the sparse matrix (contiguous) </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="gafb2580d992fedefe6a9cf48c8d1d24ea"></a>
+<a class="anchor" id="ga8101132da74332937553bfd85ae5d16c"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -888,7 +1039,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">integer(il_) function, dimension(:), pointer, contiguous bud_lsm_csr0::get_row_ptrp_ </td>
+          <td class="memname">integer(il_) function, dimension(:), pointer, contiguous get_row_offsetp_ </td>
           <td>(</td>
           <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(in)&#160;</td>
           <td class="paramname"><em>this</em></td><td>)</td>
@@ -901,19 +1052,17 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Retrieve a pointer to the row pointers. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>type to retrieve the pointer from </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>sparse matrix </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the pointer to the contained row-pointer segment </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a pointer to the row offsets for the sparse matrix (contiguous) </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="ga77f993e8fccedd0f8855a6171945c1d1"></a>
+<a class="anchor" id="ga8101132da74332937553bfd85ae5d16c"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -921,33 +1070,11 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">subroutine get_wrapped_ </td>
+          <td class="memname">integer(il_) function, dimension(:), pointer, contiguous get_row_offsetp_ </td>
           <td>(</td>
           <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(in)&#160;</td>
-          <td class="paramname"><em>from</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>this</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">integer(il_), intent(in)&#160;</td>
-          <td class="paramname"><em>nc</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(inout)&#160;</td>
-          <td class="paramname"><em>to</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">logical, intent(in), optional&#160;</td>
-          <td class="paramname"><em>unite</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -956,137 +1083,13 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Wrap-around sparse matrix to form a smaller sparse matrix. </p>
-<p>This reduces the column indices in a sparse pattern to an equivalent column reduced matrix by converting column <code>c</code> to column <code>mod(c-1, nc) + 1</code>. Which in a 0-counted array would simply be: <code>mod(c,nc)</code>.</p>
-<p>This can be useful for transforming a rectangular matrix <code>M(nr, 2*nr)</code> to a square matrix <code>M(nr,nr)</code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">from</td><td>the originating sparse pattern </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nc</td><td>new number of columns in the sparse pattern </td></tr>
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">to</td><td>the resulting sparse pattern </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">unite</td><td><em>optional</em>=.false. unites equivalent sparse elements to not have dublicate elements. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>sparse matrix </td></tr>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a class="anchor" id="gaa1853afcdc3362cdee0530d7df9f7453"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">pure subroutine index_ </td>
-          <td>(</td>
-          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(in)&#160;</td>
-          <td class="paramname"><em>this</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer(il_), intent(in), value&#160;</td>
-          <td class="paramname"><em>ir</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer(il_), intent(in)&#160;</td>
-          <td class="paramname"><em>ic</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer(il_), intent(out)&#160;</td>
-          <td class="paramname"><em>idx</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Get sparse index from double index. </p>
-<p>This should only be used if one does scattered access to the matrix.</p>
-<p>Manual interaction with the sparsity pattern is preferred.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>the sparsity pattern bud </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">ir</td><td>the requested row (1-based) </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">ic</td><td>the requested column (1-based) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">idx</td><td>the index of <code>(ir,ic)</code>, &lt;0 if non-existing </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="ga4491f83665152f402fab1027d9332225"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">pure subroutine bud_lsm_csr0::index_ </td>
-          <td>(</td>
-          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(in)&#160;</td>
-          <td class="paramname"><em>this</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer(il_), intent(in), value&#160;</td>
-          <td class="paramname"><em>ir</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer(il_), intent(in)&#160;</td>
-          <td class="paramname"><em>ic</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer(il_), intent(out)&#160;</td>
-          <td class="paramname"><em>idx</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Get sparse index from double index. </p>
-<p>This should only be used if one does scattered access to the matrix.</p>
-<p>Manual interaction with the sparsity pattern is preferred.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>the sparsity pattern bud </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">ir</td><td>the requested row (1-based) </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">ic</td><td>the requested column (1-based) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">idx</td><td>the index of <code>(ir,ic)</code>, &lt;0 if non-existing </td></tr>
-  </table>
-  </dd>
-</dl>
+<dl class="section return"><dt>Returns</dt><dd>a pointer to the row offsets for the sparse matrix (contiguous) </dd></dl>
 
 </div>
 </div>
@@ -1107,7 +1110,7 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="gaaf7671474916a18d68f969ab4a6fc2e1"></a>
+<a class="anchor" id="ga64317ca154f1786aada58a103250837b"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1115,7 +1118,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">subroutine bud_lsm_csr0::initialize_ </td>
+          <td class="memname">subroutine initialize_ </td>
           <td>(</td>
           <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(inout)&#160;</td>
           <td class="paramname"><em>this</em></td><td>)</td>
@@ -1137,7 +1140,7 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ga64317ca154f1786aada58a103250837b"></a>
+<a class="anchor" id="gaaf7671474916a18d68f969ab4a6fc2e1"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1145,7 +1148,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">subroutine initialize_ </td>
+          <td class="memname">subroutine bud_lsm_csr0::initialize_ </td>
           <td>(</td>
           <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(inout)&#160;</td>
           <td class="paramname"><em>this</em></td><td>)</td>
@@ -1218,6 +1221,99 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ga045da1c36bdb135cf01b01872ac2392d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">pure logical function is_initialized_ </td>
+          <td>(</td>
+          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(in)&#160;</td>
+          <td class="paramname"><em>this</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>check if this bud is initialized </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>.true.</code> if it is associated, else <code>.false.</code> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ga045da1c36bdb135cf01b01872ac2392d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">pure logical function is_initialized_ </td>
+          <td>(</td>
+          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(in)&#160;</td>
+          <td class="paramname"><em>this</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>check if this bud is initialized </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>.true.</code> if it is associated, else <code>.false.</code> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ga045da1c36bdb135cf01b01872ac2392d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">pure logical function is_initialized_ </td>
+          <td>(</td>
+          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(in)&#160;</td>
+          <td class="paramname"><em>this</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>check if this bud is initialized </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>.true.</code> if it is associated, else <code>.false.</code> </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="gac300e15eb39a5f3e66853318356f70c6"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1227,99 +1323,6 @@ Variables</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">pure logical function bud_lsm_csr0::is_initialized_ </td>
-          <td>(</td>
-          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(in)&#160;</td>
-          <td class="paramname"><em>this</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>check if this bud is initialized </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><code>.true.</code> if it is associated, else <code>.false.</code> </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="ga045da1c36bdb135cf01b01872ac2392d"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">pure logical function is_initialized_ </td>
-          <td>(</td>
-          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(in)&#160;</td>
-          <td class="paramname"><em>this</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>check if this bud is initialized </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><code>.true.</code> if it is associated, else <code>.false.</code> </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="ga045da1c36bdb135cf01b01872ac2392d"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">pure logical function is_initialized_ </td>
-          <td>(</td>
-          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(in)&#160;</td>
-          <td class="paramname"><em>this</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>check if this bud is initialized </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><code>.true.</code> if it is associated, else <code>.false.</code> </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="ga045da1c36bdb135cf01b01872ac2392d"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">pure logical function is_initialized_ </td>
           <td>(</td>
           <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(in)&#160;</td>
           <td class="paramname"><em>this</em></td><td>)</td>
@@ -1356,6 +1359,48 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p><b>See interface</b> <a class="el" href="interfacebud__lsm__csr0_1_1is__same.html" title="Check whether two buds point to the same data (function) ">is_same</a> </p>
+
+</div>
+</div>
+<a class="anchor" id="ga5727314d9f9d8462e484da61c379be43"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">elemental logical function is_same_ </td>
+          <td>(</td>
+          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(in)&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(in)&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">lhs</td><td>first bud </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>second bud </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>.true.</code> if <code>lhs</code> and <code>rhs</code> point to the same data </dd></dl>
 
 </div>
 </div>
@@ -1443,71 +1488,20 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ga5727314d9f9d8462e484da61c379be43"></a>
+<a class="anchor" id="ga804df50e085fc7539f3da4a8ac462e4f"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">elemental logical function is_same_ </td>
+          <td class="memname">procedure, public mat_cols </td>
           <td>(</td>
-          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(in)&#160;</td>
-          <td class="paramname"><em>lhs</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(in)&#160;</td>
-          <td class="paramname"><em>rhs</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">lhs</td><td>first bud </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>second bud </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><code>.true.</code> if <code>lhs</code> and <code>rhs</code> point to the same data </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="ga2f71c12781a14da407d944466b327b58"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">elemental integer function mat_cols_ </td>
-          <td>(</td>
-          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(in)&#160;</td>
-          <td class="paramname"><em>this</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Query number of columns of the stored sparse matrix. </p>
+<p><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#ga804df50e085fc7539f3da4a8ac462e4f" title="See interface mat_cols ">mat_cols</a> </p>
 
 </div>
 </div>
@@ -1532,12 +1526,17 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Query number of columns of the stored sparse matrix. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>the sparse matrix </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>number of columns in the matrix </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="ga49ff7cfce02e99ddcd4e4a9789a54b4c"></a>
+<a class="anchor" id="ga2f71c12781a14da407d944466b327b58"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1545,7 +1544,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">elemental integer function mat_rows_ </td>
+          <td class="memname">elemental integer function mat_cols_ </td>
           <td>(</td>
           <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(in)&#160;</td>
           <td class="paramname"><em>this</em></td><td>)</td>
@@ -1558,8 +1557,98 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>the sparse matrix </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>number of columns in the matrix </dd></dl>
 
-<p>Query number of rows of the stored sparse matrix. </p>
+</div>
+</div>
+<a class="anchor" id="ga65de62454e717505b460a45507dcd525"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">procedure, public mat_columnp </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#ga65de62454e717505b460a45507dcd525" title="See interface mat_columnp ">mat_columnp</a> </p>
+
+</div>
+</div>
+<a class="anchor" id="ga77672f9f55997c289c12f80a8329aa5e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">procedure, public mat_fold </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#ga77672f9f55997c289c12f80a8329aa5e" title="See interface mat_fold ">mat_fold</a> </p>
+
+</div>
+</div>
+<a class="anchor" id="ga524bc036e71c955dfa801f9be9b6c035"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">procedure, public mat_offsetp </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#gabceb7c4f03c409d858de19c0faa86252" title="See interface mat_pointerp ">mat_pointerp</a> </p>
+
+</div>
+</div>
+<a class="anchor" id="gabceb7c4f03c409d858de19c0faa86252"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">procedure, public mat_pointerp </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#gabceb7c4f03c409d858de19c0faa86252" title="See interface mat_pointerp ">mat_pointerp</a> </p>
+
+</div>
+</div>
+<a class="anchor" id="gae143afbf707dea3960bd2e8ca956d0b3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">procedure, public mat_rows </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#gae143afbf707dea3960bd2e8ca956d0b3" title="See interface mat_rows ">mat_rows</a> </p>
 
 </div>
 </div>
@@ -1584,8 +1673,101 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>the sparse matrix </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>number of rows in the matrix </dd></dl>
 
-<p>Query number of rows of the stored sparse matrix. </p>
+</div>
+</div>
+<a class="anchor" id="ga49ff7cfce02e99ddcd4e4a9789a54b4c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">elemental integer function mat_rows_ </td>
+          <td>(</td>
+          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(in)&#160;</td>
+          <td class="paramname"><em>this</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>the sparse matrix </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>number of rows in the matrix </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ga59805ea0b66cf35634caa5b820519a8a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">procedure, public mat_sort </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#ga59805ea0b66cf35634caa5b820519a8a" title="See interface mat_sort ">mat_sort</a> </p>
+
+</div>
+</div>
+<a class="anchor" id="ga29c92b47c1b5c832ccfc04a030b7a527"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">generic, public new </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><b>See interface</b> new </p>
+
+</div>
+</div>
+<a class="anchor" id="gab60d8d0155e66ba392d8541298a8444a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">procedure, private new_copy_ </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -1644,15 +1826,13 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create a new bud by copying in from an outside list. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>bud to be allocated </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nr</td><td>number of rows of this bud </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nc</td><td>number of columns of this bud </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nz</td><td>number of non-zero elements this bud </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">rptr</td><td>row pointers (can be of size <code>nr</code> or <code>nr+1</code>) </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>the new sparse matrix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nr</td><td>number of rows of the matrix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nc</td><td>number of columns of the matrix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nz</td><td>number of non-zero elements of the matrix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rptr</td><td>row pointers (at least size <code>nr</code>) </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">col</td><td>column indices for the sparse elements </td></tr>
   </table>
   </dd>
@@ -1715,15 +1895,13 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create a new bud by copying in from an outside list. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>bud to be allocated </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nr</td><td>number of rows of this bud </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nc</td><td>number of columns of this bud </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nz</td><td>number of non-zero elements this bud </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">rptr</td><td>row pointers (can be of size <code>nr</code> or <code>nr+1</code>) </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>the new sparse matrix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nr</td><td>number of rows of the matrix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nc</td><td>number of columns of the matrix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nz</td><td>number of non-zero elements of the matrix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rptr</td><td>row pointers (at least size <code>nr</code>) </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">col</td><td>column indices for the sparse elements </td></tr>
   </table>
   </dd>
@@ -1786,19 +1964,40 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create a new bud by copying in from an outside list. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>bud to be allocated </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nr</td><td>number of rows of this bud </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nc</td><td>number of columns of this bud </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nz</td><td>number of non-zero elements this bud </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">rptr</td><td>row pointers (can be of size <code>nr</code> or <code>nr+1</code>) </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>the new sparse matrix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nr</td><td>number of rows of the matrix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nc</td><td>number of columns of the matrix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nz</td><td>number of non-zero elements of the matrix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rptr</td><td>row pointers (at least size <code>nr</code>) </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">col</td><td>column indices for the sparse elements </td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a class="anchor" id="ga222becc86ac7058853a721827d4529a9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">procedure, private new_dim_ </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -1845,14 +2044,12 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create a new bud allocating room or specific size. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>bud to be allocated </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nr</td><td>number of rows of this bud </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nc</td><td>number of columns of this bud </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nz</td><td>number of non-zero elements this bud </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>the sparse matrix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nr</td><td>number of rows of the matrix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nc</td><td>number of columns of the matrix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nz</td><td>number of non-zero elements the matrix </td></tr>
   </table>
   </dd>
 </dl>
@@ -1902,14 +2099,12 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create a new bud allocating room or specific size. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>bud to be allocated </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nr</td><td>number of rows of this bud </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nc</td><td>number of columns of this bud </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nz</td><td>number of non-zero elements this bud </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>the sparse matrix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nr</td><td>number of rows of the matrix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nc</td><td>number of columns of the matrix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nz</td><td>number of non-zero elements the matrix </td></tr>
   </table>
   </dd>
 </dl>
@@ -1959,43 +2154,32 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create a new bud allocating room or specific size. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>bud to be allocated </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nr</td><td>number of rows of this bud </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nc</td><td>number of columns of this bud </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nz</td><td>number of non-zero elements this bud </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>the sparse matrix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nr</td><td>number of rows of the matrix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nc</td><td>number of columns of the matrix </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nz</td><td>number of non-zero elements the matrix </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a class="anchor" id="ga37523ea3b8600ad6d3c7fdb6d8696e3b"></a>
+<a class="anchor" id="ga4bb8b7770fc1618265e883948b73adc3"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">elemental integer function nonzeros_ </td>
+          <td class="memname">procedure, public nonzeros </td>
           <td>(</td>
-          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(in)&#160;</td>
-          <td class="paramname"><em>this</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Query number of non-zero elements. </p>
+<p><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#ga4bb8b7770fc1618265e883948b73adc3" title="See interface nonzeros ">nonzeros</a> </p>
 
 </div>
 </div>
@@ -2020,8 +2204,44 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>the sparse matrix </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>number of non-zero elements in the matrix </dd></dl>
 
-<p>Query number of non-zero elements. </p>
+</div>
+</div>
+<a class="anchor" id="ga37523ea3b8600ad6d3c7fdb6d8696e3b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">elemental integer function nonzeros_ </td>
+          <td>(</td>
+          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(in)&#160;</td>
+          <td class="paramname"><em>this</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>the sparse matrix </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>number of non-zero elements in the matrix </dd></dl>
 
 </div>
 </div>
@@ -2039,6 +2259,36 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p><b>See interface</b> nullify </p>
+
+</div>
+</div>
+<a class="anchor" id="ga9bd2cd659e4893391a93390429da5fe2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">elemental subroutine nullify_ </td>
+          <td>(</td>
+          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(inout)&#160;</td>
+          <td class="paramname"><em>this</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>nullify references from this bud </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -2072,33 +2322,37 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ga9bd2cd659e4893391a93390429da5fe2"></a>
+<a class="anchor" id="ga0c4d3759b88a3bec339e60bcab36c76c"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">elemental subroutine nullify_ </td>
+          <td class="memname">procedure, public offsetp </td>
           <td>(</td>
-          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(inout)&#160;</td>
-          <td class="paramname"><em>this</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>nullify references from this bud </td></tr>
-  </table>
-  </dd>
-</dl>
+
+<p><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#gabceb7c4f03c409d858de19c0faa86252" title="See interface mat_pointerp ">mat_pointerp</a> </p>
+
+</div>
+</div>
+<a class="anchor" id="gac22ca89da845f4e166f7ac4c41e8c64d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">procedure, public pointerp </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#gabceb7c4f03c409d858de19c0faa86252" title="See interface mat_pointerp ">mat_pointerp</a> </p>
 
 </div>
 </div>
@@ -2156,13 +2410,9 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Print, to std-out, some basic information of the data-container. </p>
-<p>Print out XML-like information regarding the data-container.</p>
-<p><b>wanted</b> Retrieval function of the string that represents the data. This will enable the parent program to show it in the way it wants.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>data type </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>sparse matrix </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">info</td><td><em>optional</em>="lSM_CSR0" additional information printed </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">indent</td><td><em>optional</em>=1 possible indentation of printed statement </td></tr>
   </table>
@@ -2298,6 +2548,23 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="gad3e6a668f0b218026c6ad0e5dd8d8ee5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">procedure, public rows </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#gae143afbf707dea3960bd2e8ca956d0b3" title="See interface mat_rows ">mat_rows</a> </p>
+
+</div>
+</div>
 <a class="anchor" id="gab132173d4dead58f5dab32db909b8c77"></a>
 <div class="memitem">
 <div class="memproto">
@@ -2312,6 +2579,119 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p><b>See interface</b> <a class="el" href="interfacebud__lsm__csr0_1_1is__same.html" title="Check whether two buds point to the same data (function) ">is_same</a> </p>
+
+</div>
+</div>
+<a class="anchor" id="ga8ed6837f0dfeae2d1bf55a1d1506ffad"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">procedure, public sort </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><b>See interface</b> <a class="el" href="group__bud__lSM__CSR0.html#ga59805ea0b66cf35634caa5b820519a8a" title="See interface mat_sort ">mat_sort</a> </p>
+
+</div>
+</div>
+<a class="anchor" id="ga9d2c0aa604f5f847674c4df3c36a55e0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine sort_ </td>
+          <td>(</td>
+          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(inout)&#160;</td>
+          <td class="paramname"><em>this</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer(il_), intent(out)&#160;</td>
+          <td class="paramname"><em>err</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer(il_), dimension(:), intent(out), optional, target&#160;</td>
+          <td class="paramname"><em>pvt</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>sparse pattern to sort (in-place) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">err</td><td>associated error message of the sparsity pattern </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pvt</td><td><em>optional</em>= if requested the pivoting array for the sorted sparsity pattern </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="gae158570d6ed2bc2c0af6d677ce797a06"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine bud_lsm_csr0::sort_ </td>
+          <td>(</td>
+          <td class="paramtype">class(<a class="el" href="structbud__lsm__csr0_1_1lsm__csr0.html">lsm_csr0</a>), intent(inout)&#160;</td>
+          <td class="paramname"><em>this</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer(il_), intent(out)&#160;</td>
+          <td class="paramname"><em>err</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer(il_), dimension(:), intent(out), optional, target&#160;</td>
+          <td class="paramname"><em>pvt</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>sparse pattern to sort (in-place) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">err</td><td>associated error message of the sparsity pattern </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pvt</td><td><em>optional</em>= if requested the pivoting array for the sorted sparsity pattern </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -2429,7 +2809,7 @@ Variables</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 5 2016 09:53:16 for buds by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 6 2016 14:33:55 for buds by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

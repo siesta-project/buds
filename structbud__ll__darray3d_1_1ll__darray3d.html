@@ -14,7 +14,14 @@
 <script type="text/javascript">
   $(document).ready(function() { init_search(); });
 </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="extra_stylesheet.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -99,7 +106,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p>Linked list with element contained dArray3D.  
+<p>Linked list with each node containing dArray3D.  
  <a href="structbud__ll__darray3d_1_1ll__darray3d.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for ll_darray3d:</div>
@@ -145,7 +152,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:gae358c840d1cded3554431749fc80862d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> print  <a href="group__bud__LL__dArray3D.html#gae358c840d1cded3554431749fc80862d">More...</a><br /></td></tr>
 <tr class="separator:gae358c840d1cded3554431749fc80862d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad9512c4d872371e888689a67b77a5d43"><td class="memItemLeft" align="right" valign="top">generic, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__dArray3D.html#gad9512c4d872371e888689a67b77a5d43">new</a> =&gt; <a class="el" href="group__bud__LL__dArray3D.html#ga8078bc0b4e6850cf01c98f488448dad9">new_</a>, <a class="el" href="group__bud__LL__dArray3D.html#gad20ba3bd2381bb058162147e47005af8">new_data_</a></td></tr>
-<tr class="memdesc:gad9512c4d872371e888689a67b77a5d43"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__LL__dArray3D.html#gad9512c4d872371e888689a67b77a5d43" title="See interface new ">new</a>  <a href="group__bud__LL__dArray3D.html#gad9512c4d872371e888689a67b77a5d43">More...</a><br /></td></tr>
+<tr class="memdesc:gad9512c4d872371e888689a67b77a5d43"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> new  <a href="group__bud__LL__dArray3D.html#gad9512c4d872371e888689a67b77a5d43">More...</a><br /></td></tr>
 <tr class="separator:gad9512c4d872371e888689a67b77a5d43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6a2cb9cb2a7c3d84290d209a03f82cca"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__dArray3D.html#ga6a2cb9cb2a7c3d84290d209a03f82cca">nodes</a> =&gt; <a class="el" href="group__bud__LL__dArray3D.html#ga5df6884354181f7b8e61d0371ca5d94e">size_llist_</a></td></tr>
 <tr class="memdesc:ga6a2cb9cb2a7c3d84290d209a03f82cca"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__LL__dArray3D.html#ga6a2cb9cb2a7c3d84290d209a03f82cca" title="See interface nodes ">nodes</a>  <a href="group__bud__LL__dArray3D.html#ga6a2cb9cb2a7c3d84290d209a03f82cca">More...</a><br /></td></tr>
@@ -185,9 +192,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ga7af2b27d67d54b506230471d4e2fc6ca"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__dArray3D.html#ga7af2b27d67d54b506230471d4e2fc6ca">copy</a> =&gt; <a class="el" href="group__bud__LL__dArray3D.html#gad5d94a606328288ee8224202641a9806">copy_list_</a></td></tr>
 <tr class="memdesc:ga7af2b27d67d54b506230471d4e2fc6ca"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__LL__dArray3D.html#ga8f7807b51d48c15855a699dfb554c6b5" title="See interface copy_list ">copy_list</a>  <a href="group__bud__LL__dArray3D.html#ga7af2b27d67d54b506230471d4e2fc6ca">More...</a><br /></td></tr>
 <tr class="separator:ga7af2b27d67d54b506230471d4e2fc6ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa6ee3c7799319b89301bd8717657c7af"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__dArray3D.html#gaa6ee3c7799319b89301bd8717657c7af">itt_step</a> =&gt; <a class="el" href="group__bud__LL__dArray3D.html#ga3288662ee6151cf7752594f3b787e10c">itt_step_</a></td></tr>
-<tr class="memdesc:gaa6ee3c7799319b89301bd8717657c7af"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__LL__dArray3D.html#gaa6ee3c7799319b89301bd8717657c7af" title="See interface itt_step ">itt_step</a>  <a href="group__bud__LL__dArray3D.html#gaa6ee3c7799319b89301bd8717657c7af">More...</a><br /></td></tr>
-<tr class="separator:gaa6ee3c7799319b89301bd8717657c7af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0bf408d46a3a13ff911425c41f6dc401"><td class="memItemLeft" align="right" valign="top">generic, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__dArray3D.html#ga0bf408d46a3a13ff911425c41f6dc401">itt_step</a> =&gt; <a class="el" href="group__bud__LL__dArray3D.html#ga0a67798e8edfc5f32aec0e75bdb894ca">itt_step_</a>, <a class="el" href="group__bud__LL__dArray3D.html#gaedfe538a277d97d7ae4c5ff88daa6798">itt_step_i_</a></td></tr>
+<tr class="memdesc:ga0bf408d46a3a13ff911425c41f6dc401"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__LL__dArray3D.html#ga0bf408d46a3a13ff911425c41f6dc401" title="See interface itt_step ">itt_step</a>  <a href="group__bud__LL__dArray3D.html#ga0bf408d46a3a13ff911425c41f6dc401">More...</a><br /></td></tr>
+<tr class="separator:ga0bf408d46a3a13ff911425c41f6dc401"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -203,18 +210,26 @@ Private Member Functions</h2></td></tr>
 <tr class="separator:ga2273e47fdb6b0b103a1d9ddd542c9184"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae9306f5e51c207d5fc4d96907f38e1ca"><td class="memItemLeft" align="right" valign="top">procedure, private&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__dArray3D.html#gae9306f5e51c207d5fc4d96907f38e1ca">add_node_data_</a></td></tr>
 <tr class="separator:gae9306f5e51c207d5fc4d96907f38e1ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0a67798e8edfc5f32aec0e75bdb894ca"><td class="memItemLeft" align="right" valign="top">procedure, private&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__dArray3D.html#ga0a67798e8edfc5f32aec0e75bdb894ca">itt_step_</a></td></tr>
+<tr class="separator:ga0a67798e8edfc5f32aec0e75bdb894ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaedfe538a277d97d7ae4c5ff88daa6798"><td class="memItemLeft" align="right" valign="top">procedure, private&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__LL__dArray3D.html#gaedfe538a277d97d7ae4c5ff88daa6798">itt_step_i_</a></td></tr>
+<tr class="separator:gaedfe538a277d97d7ae4c5ff88daa6798"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Linked list with element contained dArray3D. </p>
-<p>A direct linked list with contained element (dArray3D).</p>
-<p>This linked list is doubly connected (both backwards and forward itterable). </p>
+<div class="textblock"><p>Linked list with each node containing dArray3D. </p>
+<p>This data container holds 3 variables (doubly linked list):</p><ol type="1">
+<li>The data of the current item</li>
+<li>The next target</li>
+<li>The previous target</li>
+</ol>
+<p>The data in each node does not necessarily require to be populated and they can as such be used as "empty" nodes. </p>
 </div><hr/>The documentation for this type was generated from the following file:<ul>
 <li>src/<a class="el" href="bud__LL__Array3D_8f90.html">bud_LL_Array3D.f90</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 5 2016 09:53:20 for buds by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 6 2016 14:33:57 for buds by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

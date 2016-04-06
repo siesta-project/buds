@@ -14,7 +14,14 @@
 <script type="text/javascript">
   $(document).ready(function() { init_search(); });
 </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="extra_stylesheet.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -98,7 +105,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p>Query internal data structure elements via simple routine.  
+<p>Retrieve access to sparse pattern variables via pointers.  
  <a href="interfacebud__lsm__csr__c_1_1attach.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for attach:</div>
@@ -111,18 +118,21 @@ Collaboration diagram for attach:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:ga4b7ba9f9ec975e89ab185b9a52ec4b1f"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__lSM__CSR__C.html#ga4b7ba9f9ec975e89ab185b9a52ec4b1f">attach_</a> (this, D, nr, nc, nz, rptr, col           )</td></tr>
-<tr class="memdesc:ga4b7ba9f9ec975e89ab185b9a52ec4b1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve access to sparse pattern via pointers.  <a href="group__bud__lSM__CSR__C.html#ga4b7ba9f9ec975e89ab185b9a52ec4b1f">More...</a><br /></td></tr>
 <tr class="separator:ga4b7ba9f9ec975e89ab185b9a52ec4b1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Query internal data structure elements via simple routine. </p>
+<div class="textblock"><p>Retrieve access to sparse pattern variables via pointers. </p>
+<p>Manually access the sparsity pattern by retrieving pointers and interact externally with the sparsity pattern.</p>
+<p>All arguments are optional and <em>must</em> be accessed by keyword.</p>
+<p><b>Note</b> Currently this is the only way to interact with the sparse pattern.</p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000010">Todo:</a></b></dt><dd>Add error checking for <code>D</code> parameter. </dd></dl>
 </div><hr/>The documentation for this interface was generated from the following file:<ul>
 <li>src/<a class="el" href="bud__SM__CSR__C_8f90.html">bud_SM_CSR_C.f90</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 5 2016 09:53:21 for buds by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 6 2016 14:33:57 for buds by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

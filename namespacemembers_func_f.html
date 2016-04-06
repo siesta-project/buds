@@ -14,7 +14,14 @@
 <script type="text/javascript">
   $(document).ready(function() { init_search(); });
 </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="extra_stylesheet.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -130,14 +137,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>filename_()
 : <a class="el" href="group__file.html#ga65a5970205567821f94f42313e68fa26">bud_file</a>
 </li>
-<li>finalize_()
-: <a class="el" href="group__bud__iSM__CSR0.html#gaa2d249e7ff6b85f9bb2a87e8c5e92a48">bud_ism_csr0</a>
-, <a class="el" href="group__bud__iSM__CSR.html#gaff42c5ef4108f194642602c84eb70836">bud_ism_csr</a>
-, <a class="el" href="group__bud__iSM__CSR__C.html#ga0715a2569b9c5059a2d45581392a784d">bud_ism_csr_c</a>
-, <a class="el" href="group__bud__lSM__CSR0.html#gaec9e56c3e8a4eb99251ca1167449c2d5">bud_lsm_csr0</a>
-, <a class="el" href="group__bud__lSM__CSR.html#ga479d36c58e99d24a8f3f3f053ea71673">bud_lsm_csr</a>
-, <a class="el" href="group__bud__lSM__CSR__C.html#ga5b3c49871d9812b7ffc38813e1fba67d">bud_lsm_csr_c</a>
-</li>
 <li>find_bin_ii_()
 : <a class="el" href="group__utility.html#gac99c15b2b4379963d7a057a55e8c4dfe">bud_utils</a>
 </li>
@@ -156,11 +155,41 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>find_binheur_is_()
 : <a class="el" href="group__utility.html#ga30b09c35c961535dcb3fc7c3ce8a3937">bud_utils</a>
 </li>
+<li>fold_()
+: <a class="el" href="group__bud__iSM__CSC.html#ga03d18540264666253929feb936199c77">bud_ism_csc</a>
+, <a class="el" href="group__bud__iSM__CSR0.html#gaadfed708f812b4654f7fc635df8d07be">bud_ism_csr0</a>
+, <a class="el" href="group__bud__iSM__CSR.html#ga90ad3020c6f0bb78219dd527e8320e99">bud_ism_csr</a>
+, <a class="el" href="group__bud__iSM__CSR__C.html#ga3258f9d4285304efc148e981a4dbe30d">bud_ism_csr_c</a>
+, <a class="el" href="group__bud__lSM__CSC.html#ga03d18540264666253929feb936199c77">bud_lsm_csc</a>
+, <a class="el" href="group__bud__lSM__CSR0.html#gaf829850b1b4323c27ab0838f4a1f6b30">bud_lsm_csr0</a>
+, <a class="el" href="group__bud__lSM__CSR.html#ga612d30e8d4be4ec46a595c159a6ba537">bud_lsm_csr</a>
+, <a class="el" href="group__bud__lSM__CSR__C.html#ga414bf25ba89b6553925a87aa791b2a0c">bud_lsm_csr_c</a>
+</li>
+<li>fold_col_only()
+: <a class="el" href="group__bud__iSM__CSC.html#ga9ced0124325e90afb9cfde8dc8c030c4">bud_ism_csc</a>
+, <a class="el" href="namespacebud__ism__csr0.html#aeaaa216f5456d99ecc1e1e31f245fbb5">bud_ism_csr0</a>
+, <a class="el" href="namespacebud__ism__csr.html#a4a9a2dfc482f359d7b9135d0d9a9e210">bud_ism_csr</a>
+, <a class="el" href="namespacebud__ism__csr__c.html#a0f2b98cc511b650f324f65b784714490">bud_ism_csr_c</a>
+, <a class="el" href="group__bud__lSM__CSC.html#ga9ced0124325e90afb9cfde8dc8c030c4">bud_lsm_csc</a>
+, <a class="el" href="namespacebud__lsm__csr0.html#a3a62bbf75b7df0d237c09d6d0ee92713">bud_lsm_csr0</a>
+, <a class="el" href="namespacebud__lsm__csr.html#acf1d2709c4a79b411fa26296bf8445d6">bud_lsm_csr</a>
+, <a class="el" href="namespacebud__lsm__csr__c.html#a3d781fa5c3cfec77f097c4fa1a7abd36">bud_lsm_csr_c</a>
+</li>
+<li>fold_row_only()
+: <a class="el" href="namespacebud__ism__csc.html#a1f26a67f6083fb8c632110e7e2f1a67d">bud_ism_csc</a>
+, <a class="el" href="group__bud__iSM__CSR0.html#ga5f5c874420766dbccf6703d3fa7ef8f3">bud_ism_csr0</a>
+, <a class="el" href="group__bud__iSM__CSR.html#ga5013ca52130fb272b3ad4bf76b68a773">bud_ism_csr</a>
+, <a class="el" href="group__bud__iSM__CSR__C.html#gaedb6358cf3a3941f2b1596c67be58872">bud_ism_csr_c</a>
+, <a class="el" href="namespacebud__lsm__csc.html#a1f26a67f6083fb8c632110e7e2f1a67d">bud_lsm_csc</a>
+, <a class="el" href="group__bud__lSM__CSR0.html#gab726a7456195362758a5866153094036">bud_lsm_csr0</a>
+, <a class="el" href="group__bud__lSM__CSR.html#ga1df151c9499786f7e6a3b4d320c2e2f7">bud_lsm_csr</a>
+, <a class="el" href="group__bud__lSM__CSR__C.html#ga45794a5d36569996ab0213b1d6587f78">bud_lsm_csr_c</a>
+</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 5 2016 09:53:21 for buds by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 6 2016 14:33:58 for buds by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

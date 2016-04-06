@@ -1,12 +1,9 @@
 <map id="Intrinsic buds" name="Intrinsic buds">
-<area shape="rect" id="node1" href="$group__dist-1d.html" title="A distribution implementation of various kinds. " alt="" coords="155,5,316,32"/>
-<area shape="rect" id="node2" href="$group__ll-array.html" title="bud containing a linked list of bud Arrays. " alt="" coords="166,56,305,83"/>
-<area shape="rect" id="node3" href="$group__c2-array.html" title="bud containing a collection of 2 Array buds. " alt="" coords="162,107,309,133"/>
-<area shape="rect" id="node4" href="$group__file.html" title="Perform file operations such as open/close/delete etc. " alt="" coords="214,157,257,184"/>
-<area shape="rect" id="node5" href="$group__fs-c2-array.html" title="bud of finite stack with a collection. The collection contains two Array buds. " alt="" coords="153,209,317,250"/>
-<area shape="rect" id="node6" href="$group__utility.html" title="Generic utility functions used throughout. " alt="" coords="156,274,315,315"/>
-<area shape="rect" id="node7" href="$group__array.html" title="bud containing an intrinsic fortran array. " alt="" coords="209,340,262,367"/>
-<area shape="rect" id="node8" href="$group__fs-array.html" title="bud containing a finite stack of Array buds. " alt="" coords="159,391,312,417"/>
-<area shape="rect" id="node9" href="$group__i-array.html" title="bud item containing an Array. " alt="" coords="180,441,291,468"/>
-<area shape="rect" id="node11" href="$group__sm.html" title="Sparse matrix" alt="" coords="184,492,287,519"/>
+<area shape="rect" id="node1" href="$group__dist-1d.html" title="A distribution implementation of various kinds. " alt="" coords="153,5,315,32"/>
+<area shape="rect" id="node2" href="$group__ll-array.html" title="bud containing a linked list of bud Arrays. " alt="" coords="165,56,303,83"/>
+<area shape="rect" id="node3" href="$group__file.html" title="Perform file operations such as open/close/delete etc. " alt="" coords="213,107,255,133"/>
+<area shape="rect" id="node4" href="$group__utility.html" title="Generic utility functions used throughout. " alt="" coords="155,158,313,199"/>
+<area shape="rect" id="node5" href="$group__array.html" title="bud containing an intrinsic fortran array. " alt="" coords="207,224,261,251"/>
+<area shape="rect" id="node6" href="$group__fs-array.html" title="bud containing a finite stack of Array buds. " alt="" coords="157,275,311,301"/>
+<area shape="rect" id="node8" href="$group__sm.html" title="Sparse matrix" alt="" coords="183,325,285,352"/>
 </map>

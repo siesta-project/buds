@@ -14,7 +14,14 @@
 <script type="text/javascript">
   $(document).ready(function() { init_search(); });
 </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="extra_stylesheet.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -91,16 +98,24 @@ Collaboration diagram for Sparse matrix:</div>
 <div class="dyncontent">
 <center><table><tr><td><img src="group__sm.png" border="0" alt="" usemap="#group____sm"/>
 <map name="group____sm" id="group____sm">
-<area shape="rect" id="node1" href="group__sm-csr.html" title="A compressed sparse row matrix implementation. " alt="" coords="309,5,481,47"/>
-<area shape="rect" id="node2" href="group__sm-csr0.html" title="A compressed sparse row matrix implementation using a 0&#45;based row&#45;pointer. " alt="" coords="304,71,485,112"/>
-<area shape="rect" id="node3" href="group__bud-intrinsic.html" title="Intrinsic buds for usage and reference (best viewed at level 2). " alt="" coords="5,78,105,105"/>
-<area shape="rect" id="node5" href="group__sm-csr-c.html" title="A compressed sparse row matrix implementation using C&#45;indexing. This implementation relies on every i..." alt="" coords="309,136,481,177"/>
+<area shape="rect" id="node1" href="group__sm-csc.html" title="A compressed sparse column matrix implementation. " alt="" coords="310,5,501,47"/>
+<area shape="rect" id="node2" href="group__sm-csr.html" title="A compressed sparse row matrix implementation. " alt="" coords="319,71,491,112"/>
+<area shape="rect" id="node3" href="group__sm-csc0.html" title="A compressed sparse column matrix implementation using a 0&#45;based column&#45;pointer. " alt="" coords="304,136,507,177"/>
+<area shape="rect" id="node4" href="group__sm-csr0.html" title="A compressed sparse row matrix implementation using a 0&#45;based row&#45;pointer. " alt="" coords="315,201,496,243"/>
+<area shape="rect" id="node5" href="group__bud-intrinsic.html" title="Intrinsic buds for usage and reference (best viewed at level 2). " alt="" coords="5,143,105,170"/>
+<area shape="rect" id="node7" href="group__sm-csr-c.html" title="A compressed sparse row matrix implementation using C&#45;indexing. This implementation relies on every i..." alt="" coords="319,267,491,308"/>
 </map>
 </td></tr></table></center>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="groups"></a>
 Modules</h2></td></tr>
+<tr class="memitem:group__sm-csc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sm-csc.html">Compressed Sparse Column (CSC)</a></td></tr>
+<tr class="memdesc:group__sm-csc"><td class="mdescLeft">&#160;</td><td class="mdescRight">A compressed sparse column matrix implementation. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group__sm-csc0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sm-csc0.html">Compressed Sparse Column (CSC 0-based column pointer)</a></td></tr>
+<tr class="memdesc:group__sm-csc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">A compressed sparse column matrix implementation using a 0-based column-pointer. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:group__sm-csr"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sm-csr.html">Compressed Sparse Row (CSR)</a></td></tr>
 <tr class="memdesc:group__sm-csr"><td class="mdescLeft">&#160;</td><td class="mdescRight">A compressed sparse row matrix implementation. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -114,7 +129,7 @@ Modules</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 5 2016 09:53:16 for buds by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 6 2016 14:33:55 for buds by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

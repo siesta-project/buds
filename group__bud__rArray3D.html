@@ -14,7 +14,14 @@
 <script type="text/javascript">
   $(document).ready(function() { init_search(); });
 </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="extra_stylesheet.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -108,30 +115,28 @@ Modules</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Types</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">type &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbud__rarray3d_1_1rarray3d.html">rarray3d</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">bud variable  <a href="structbud__rarray3d_1_1rarray3d.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array data type.  <a href="structbud__rarray3d_1_1rarray3d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__rarray3d_1_1new.html">new</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new bud instances.  <a href="interfacebud__rarray3d_1_1new.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new rArray3D.  <a href="interfacebud__rarray3d_1_1new.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__rarray3d_1_1new__rarray3d.html">new_rarray3d</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new bud instances.  <a href="interfacebud__rarray3d_1_1new__rarray3d.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #new  <a href="interfacebud__rarray3d_1_1new__rarray3d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__rarray3d_1_1valuep.html">valuep</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer/value to/in the stored array.  <a href="interfacebud__rarray3d_1_1valuep.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__rarray3d_1_1value.html">value</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__rarray3d_1_1arrayp.html">arrayp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer to array in the bud.  <a href="interfacebud__rarray3d_1_1arrayp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__rarray3d_1_1size.html">size</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of elements is the stored array (same as regular <code>size</code>)  <a href="interfacebud__rarray3d_1_1size.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query dimension of array (or total size)  <a href="interfacebud__rarray3d_1_1size.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__rarray3d_1_1init__array.html">init_array</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize all values in the array to a specific value.  <a href="interfacebud__rarray3d_1_1init__array.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize array values to a specific value.  <a href="interfacebud__rarray3d_1_1init__array.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__rarray3d_1_1print.html">print</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print information about the bud.  <a href="interfacebud__rarray3d_1_1print.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="interfacebud__rarray3d_1_1print.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__rarray3d_1_1assignment_07_0A_08.html">assignment(=)</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for clearing the data container in the bud.  <a href="interfacebud__rarray3d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment of bud to another bud.  <a href="interfacebud__rarray3d_1_1assignment_07_0A_08.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__rarray3d_1_1initialize.html">initialize</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization of data container.  <a href="interfacebud__rarray3d_1_1initialize.html#details">More...</a><br /></td></tr>
@@ -149,7 +154,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether two buds point to the same data (function)  <a href="interfacebud__rarray3d_1_1is__same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__rarray3d_1_1same.html">same</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="interfacebud__rarray3d_1_1is__same.html" title="Check whether two buds point to the same data (function) ">is_same</a>  <a href="interfacebud__rarray3d_1_1same.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #is_same  <a href="interfacebud__rarray3d_1_1same.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__rarray3d_1_1delete.html">delete</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the bud by decreasing references to the underlying data.  <a href="interfacebud__rarray3d_1_1delete.html#details">More...</a><br /></td></tr>
@@ -161,7 +166,7 @@ Data Types</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query number of references to the bud.  <a href="interfacebud__rarray3d_1_1references.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacebud__rarray3d_1_1refs.html">refs</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> references  <a href="interfacebud__rarray3d_1_1refs.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> #references  <a href="interfacebud__rarray3d_1_1refs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
@@ -199,32 +204,37 @@ Functions/Subroutines</h2></td></tr>
 <tr class="memitem:gae358c840d1cded3554431749fc80862d"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#gae358c840d1cded3554431749fc80862d">print</a> =&gt; print_</td></tr>
 <tr class="memdesc:gae358c840d1cded3554431749fc80862d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> print  <a href="#gae358c840d1cded3554431749fc80862d">More...</a><br /></td></tr>
 <tr class="separator:gae358c840d1cded3554431749fc80862d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae4ccb17dedfbcf6c72880e3448b2985b"><td class="memItemLeft" align="right" valign="top">procedure, private&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#gae4ccb17dedfbcf6c72880e3448b2985b">new_dim_</a></td></tr>
+<tr class="separator:gae4ccb17dedfbcf6c72880e3448b2985b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaac88a61af39e60f21877e613e0bc05ee"><td class="memItemLeft" align="right" valign="top">procedure, private&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#gaac88a61af39e60f21877e613e0bc05ee">new_copy_</a></td></tr>
+<tr class="separator:gaac88a61af39e60f21877e613e0bc05ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga29c92b47c1b5c832ccfc04a030b7a527"><td class="memItemLeft" align="right" valign="top">generic, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#ga29c92b47c1b5c832ccfc04a030b7a527">new</a> =&gt; new_dim_, new_copy_</td></tr>
+<tr class="memdesc:ga29c92b47c1b5c832ccfc04a030b7a527"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> new  <a href="#ga29c92b47c1b5c832ccfc04a030b7a527">More...</a><br /></td></tr>
+<tr class="separator:ga29c92b47c1b5c832ccfc04a030b7a527"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga68dff5317c7ec0f6d3b055d8b196ab9b"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#ga68dff5317c7ec0f6d3b055d8b196ab9b">arrayp</a> =&gt; get_arrayp_</td></tr>
+<tr class="memdesc:ga68dff5317c7ec0f6d3b055d8b196ab9b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__rArray3D.html#ga68dff5317c7ec0f6d3b055d8b196ab9b" title="See interface arrayp ">arrayp</a>  <a href="#ga68dff5317c7ec0f6d3b055d8b196ab9b">More...</a><br /></td></tr>
+<tr class="separator:ga68dff5317c7ec0f6d3b055d8b196ab9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga62f40fa1e409acedc14c48e9c3d1af7b"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#ga62f40fa1e409acedc14c48e9c3d1af7b">size</a> =&gt; size_</td></tr>
+<tr class="memdesc:ga62f40fa1e409acedc14c48e9c3d1af7b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__rArray3D.html#ga62f40fa1e409acedc14c48e9c3d1af7b" title="See interface size ">size</a>  <a href="#ga62f40fa1e409acedc14c48e9c3d1af7b">More...</a><br /></td></tr>
+<tr class="separator:ga62f40fa1e409acedc14c48e9c3d1af7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae38c428e60319ca122c8cf9115772bd6"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#gae38c428e60319ca122c8cf9115772bd6">init_array</a> =&gt; init_array_</td></tr>
+<tr class="memdesc:gae38c428e60319ca122c8cf9115772bd6"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__rArray3D.html#gae38c428e60319ca122c8cf9115772bd6" title="See interface init_array ">init_array</a>  <a href="#gae38c428e60319ca122c8cf9115772bd6">More...</a><br /></td></tr>
+<tr class="separator:gae38c428e60319ca122c8cf9115772bd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5621eb9027264df73a377c8f508a19ad"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#ga5621eb9027264df73a377c8f508a19ad">new_dim_</a> (this,           d1, d2, d3,           val)</td></tr>
-<tr class="memdesc:ga5621eb9027264df73a377c8f508a19ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new rArray3D via dimension sizes.  <a href="#ga5621eb9027264df73a377c8f508a19ad">More...</a><br /></td></tr>
 <tr class="separator:ga5621eb9027264df73a377c8f508a19ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8510dfba6fb62bb3a483f3b41ad93758"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#ga8510dfba6fb62bb3a483f3b41ad93758">new_copy_</a> (this, array)</td></tr>
-<tr class="memdesc:ga8510dfba6fb62bb3a483f3b41ad93758"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new rArray3D by coping another array.  <a href="#ga8510dfba6fb62bb3a483f3b41ad93758">More...</a><br /></td></tr>
 <tr class="separator:ga8510dfba6fb62bb3a483f3b41ad93758"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5621eb9027264df73a377c8f508a19ad"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#ga5621eb9027264df73a377c8f508a19ad">new_dim_</a> (this,           d1, d2, d3,           val)</td></tr>
-<tr class="memdesc:ga5621eb9027264df73a377c8f508a19ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new rArray3D via dimension sizes.  <a href="#ga5621eb9027264df73a377c8f508a19ad">More...</a><br /></td></tr>
 <tr class="separator:ga5621eb9027264df73a377c8f508a19ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8510dfba6fb62bb3a483f3b41ad93758"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#ga8510dfba6fb62bb3a483f3b41ad93758">new_copy_</a> (this, array)</td></tr>
-<tr class="memdesc:ga8510dfba6fb62bb3a483f3b41ad93758"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new rArray3D by coping another array.  <a href="#ga8510dfba6fb62bb3a483f3b41ad93758">More...</a><br /></td></tr>
 <tr class="separator:ga8510dfba6fb62bb3a483f3b41ad93758"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae55d4cc3bfe96170573f54f88fd15eee"><td class="memItemLeft" align="right" valign="top">real(rr_) function, dimension(:,:,:), pointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#gae55d4cc3bfe96170573f54f88fd15eee">get_arrayp_</a> (this)</td></tr>
-<tr class="memdesc:gae55d4cc3bfe96170573f54f88fd15eee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer to data array in bud.  <a href="#gae55d4cc3bfe96170573f54f88fd15eee">More...</a><br /></td></tr>
-<tr class="separator:gae55d4cc3bfe96170573f54f88fd15eee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac5106e9dd7a59e0c1ab8799fc1eb5dbc"><td class="memItemLeft" align="right" valign="top">pure real(rr_) function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#gac5106e9dd7a59e0c1ab8799fc1eb5dbc">get_array_idx_</a> (this,           i1, i2, i3           )</td></tr>
-<tr class="memdesc:gac5106e9dd7a59e0c1ab8799fc1eb5dbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve value in specific index of data array in the container.  <a href="#gac5106e9dd7a59e0c1ab8799fc1eb5dbc">More...</a><br /></td></tr>
-<tr class="separator:gac5106e9dd7a59e0c1ab8799fc1eb5dbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8d0a58ffb0f9524ba0c843fb9bfe7a7c"><td class="memItemLeft" align="right" valign="top">real(rr_) function, dimension(:,:,:), pointer, contiguous&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#ga8d0a58ffb0f9524ba0c843fb9bfe7a7c">get_arrayp_</a> (this)</td></tr>
+<tr class="separator:ga8d0a58ffb0f9524ba0c843fb9bfe7a7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga084999a05dc00b593b315023a6fbf912"><td class="memItemLeft" align="right" valign="top">pure integer function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#ga084999a05dc00b593b315023a6fbf912">size_</a> (this, dim)</td></tr>
-<tr class="memdesc:ga084999a05dc00b593b315023a6fbf912"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query size of array.  <a href="#ga084999a05dc00b593b315023a6fbf912">More...</a><br /></td></tr>
 <tr class="separator:ga084999a05dc00b593b315023a6fbf912"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0bb8671f64ae071b06da8f1489a3d990"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#ga0bb8671f64ae071b06da8f1489a3d990">init_array_</a> (this, v)</td></tr>
-<tr class="memdesc:ga0bb8671f64ae071b06da8f1489a3d990"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the array in bud to a specific value.  <a href="#ga0bb8671f64ae071b06da8f1489a3d990">More...</a><br /></td></tr>
 <tr class="separator:ga0bb8671f64ae071b06da8f1489a3d990"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab73a2fb2eb7a2f7ddee01660099f9a2d"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#gab73a2fb2eb7a2f7ddee01660099f9a2d">print_</a> (this, info, indent)</td></tr>
-<tr class="memdesc:gab73a2fb2eb7a2f7ddee01660099f9a2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="#gab73a2fb2eb7a2f7ddee01660099f9a2d">More...</a><br /></td></tr>
 <tr class="separator:gab73a2fb2eb7a2f7ddee01660099f9a2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9521622c2690fb302bc377ee866b8836"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#ga9521622c2690fb302bc377ee866b8836">assign_</a> (lhs, rhs)</td></tr>
 <tr class="separator:ga9521622c2690fb302bc377ee866b8836"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -266,25 +276,18 @@ Functions/Subroutines</h2></td></tr>
 <tr class="memdesc:ga1d1570f310f37ae8502fc84920ca19f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal routine for cleaning up the data container.  <a href="group__bud__rArray3D.html#ga1d1570f310f37ae8502fc84920ca19f7">More...</a><br /></td></tr>
 <tr class="separator:ga1d1570f310f37ae8502fc84920ca19f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9754390209278853b3461e170be51985"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#ga9754390209278853b3461e170be51985">new_dim_</a> (this,           d1, d2, d3,           val)</td></tr>
-<tr class="memdesc:ga9754390209278853b3461e170be51985"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new rArray3D via dimension sizes.  <a href="group__bud__rArray3D.html#ga9754390209278853b3461e170be51985">More...</a><br /></td></tr>
 <tr class="separator:ga9754390209278853b3461e170be51985"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga783fc05198fd5cd5baf2583fb82e08f5"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#ga783fc05198fd5cd5baf2583fb82e08f5">new_copy_</a> (this, array)</td></tr>
-<tr class="memdesc:ga783fc05198fd5cd5baf2583fb82e08f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new rArray3D by coping another array.  <a href="group__bud__rArray3D.html#ga783fc05198fd5cd5baf2583fb82e08f5">More...</a><br /></td></tr>
 <tr class="separator:ga783fc05198fd5cd5baf2583fb82e08f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf3be59058325834e66cd2b82a4ea4503"><td class="memItemLeft" align="right" valign="top">real(rr_) function, dimension(:,:,:), pointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#gaf3be59058325834e66cd2b82a4ea4503">get_arrayp_</a> (this)</td></tr>
-<tr class="memdesc:gaf3be59058325834e66cd2b82a4ea4503"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve pointer to data array in bud.  <a href="group__bud__rArray3D.html#gaf3be59058325834e66cd2b82a4ea4503">More...</a><br /></td></tr>
-<tr class="separator:gaf3be59058325834e66cd2b82a4ea4503"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa06febb747f2090a72fe6b440b935147"><td class="memItemLeft" align="right" valign="top">real(rr_) function, dimension(:,:,:), pointer, contiguous&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#gaa06febb747f2090a72fe6b440b935147">get_arrayp_</a> (this)</td></tr>
+<tr class="separator:gaa06febb747f2090a72fe6b440b935147"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadb2d853d7d1d6733c446723bf895952f"><td class="memItemLeft" align="right" valign="top">pure real(rr_) function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#gadb2d853d7d1d6733c446723bf895952f">get_array_idx_</a> (this,           i1, i2, i3           )</td></tr>
-<tr class="memdesc:gadb2d853d7d1d6733c446723bf895952f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve value in specific index of data array in the container.  <a href="group__bud__rArray3D.html#gadb2d853d7d1d6733c446723bf895952f">More...</a><br /></td></tr>
 <tr class="separator:gadb2d853d7d1d6733c446723bf895952f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacae44f6be8254f76b0d91dcc556e9b1f"><td class="memItemLeft" align="right" valign="top">pure integer function&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#gacae44f6be8254f76b0d91dcc556e9b1f">size_</a> (this, dim)</td></tr>
-<tr class="memdesc:gacae44f6be8254f76b0d91dcc556e9b1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query size of array.  <a href="group__bud__rArray3D.html#gacae44f6be8254f76b0d91dcc556e9b1f">More...</a><br /></td></tr>
 <tr class="separator:gacae44f6be8254f76b0d91dcc556e9b1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga72a79503a7335c70ad0da5371ce97c20"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#ga72a79503a7335c70ad0da5371ce97c20">init_array_</a> (this, v)</td></tr>
-<tr class="memdesc:ga72a79503a7335c70ad0da5371ce97c20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the array in bud to a specific value.  <a href="group__bud__rArray3D.html#ga72a79503a7335c70ad0da5371ce97c20">More...</a><br /></td></tr>
 <tr class="separator:ga72a79503a7335c70ad0da5371ce97c20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga26f8d1da096111d6bcd9205a83e88949"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#ga26f8d1da096111d6bcd9205a83e88949">print_</a> (this, info, indent)</td></tr>
-<tr class="memdesc:ga26f8d1da096111d6bcd9205a83e88949"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print, to std-out, some basic information of the data-container.  <a href="group__bud__rArray3D.html#ga26f8d1da096111d6bcd9205a83e88949">More...</a><br /></td></tr>
 <tr class="separator:ga26f8d1da096111d6bcd9205a83e88949"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
@@ -298,12 +301,26 @@ Variables</h2></td></tr>
 <tr class="memitem:ga9a11e0b6e627964a31173b8cb5d2d9c2"><td class="memItemLeft" align="right" valign="top">character(len=*), parameter, private&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#ga9a11e0b6e627964a31173b8cb5d2d9c2">bud_type</a> = &quot;rArray3D&quot;</td></tr>
 <tr class="memdesc:ga9a11e0b6e627964a31173b8cb5d2d9c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of bud in this module.  <a href="group__bud__rArray3D.html#ga9a11e0b6e627964a31173b8cb5d2d9c2">More...</a><br /></td></tr>
 <tr class="separator:ga9a11e0b6e627964a31173b8cb5d2d9c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga82c16b6a4a1bba91eb3c83a84bca3dda"><td class="memItemLeft" align="right" valign="top">type(rarray3d_), pointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__rArray3D.html#ga82c16b6a4a1bba91eb3c83a84bca3dda">d</a> =&gt; null()</td></tr>
-<tr class="memdesc:ga82c16b6a4a1bba91eb3c83a84bca3dda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stored pointer which contains the reference counting etc.  <a href="#ga82c16b6a4a1bba91eb3c83a84bca3dda">More...</a><br /></td></tr>
-<tr class="separator:ga82c16b6a4a1bba91eb3c83a84bca3dda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function/Subroutine Documentation</h2>
-<a class="anchor" id="ga9521622c2690fb302bc377ee866b8836"></a>
+<a class="anchor" id="ga68dff5317c7ec0f6d3b055d8b196ab9b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">procedure, public arrayp </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><b>See interface</b> <a class="el" href="group__bud__rArray3D.html#ga68dff5317c7ec0f6d3b055d8b196ab9b" title="See interface arrayp ">arrayp</a> </p>
+
+</div>
+</div>
+<a class="anchor" id="ga49e7214ad7842756e5da617c414d1016"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -311,7 +328,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">subroutine assign_ </td>
+          <td class="memname">subroutine bud_rarray3d::assign_ </td>
           <td>(</td>
           <td class="paramtype">class(<a class="el" href="structbud__rarray3d_1_1rarray3d.html">rarray3d</a>), intent(inout)&#160;</td>
           <td class="paramname"><em>lhs</em>, </td>
@@ -344,7 +361,7 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ga49e7214ad7842756e5da617c414d1016"></a>
+<a class="anchor" id="ga9521622c2690fb302bc377ee866b8836"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -352,7 +369,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">subroutine bud_rarray3d::assign_ </td>
+          <td class="memname">subroutine assign_ </td>
           <td>(</td>
           <td class="paramtype">class(<a class="el" href="structbud__rarray3d_1_1rarray3d.html">rarray3d</a>), intent(inout)&#160;</td>
           <td class="paramname"><em>lhs</em>, </td>
@@ -402,6 +419,36 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ga1e8eef8ea456a03db24f0d0aad448ed3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">elemental subroutine delete_ </td>
+          <td>(</td>
+          <td class="paramtype">class(<a class="el" href="structbud__rarray3d_1_1rarray3d.html">rarray3d</a>), intent(inout)&#160;</td>
+          <td class="paramname"><em>this</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>returned bud is un-initialized with no data associated </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="ga5d14029a61efb37c26ff4e9d996aeaae"></a>
 <div class="memitem">
 <div class="memproto">
@@ -442,36 +489,6 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a class="anchor" id="ga1e8eef8ea456a03db24f0d0aad448ed3"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">elemental subroutine delete_ </td>
-          <td>(</td>
-          <td class="paramtype">class(<a class="el" href="structbud__rarray3d_1_1rarray3d.html">rarray3d</a>), intent(inout)&#160;</td>
-          <td class="paramname"><em>this</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>returned bud is un-initialized with no data associated </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a class="anchor" id="ga1d1570f310f37ae8502fc84920ca19f7"></a>
 <div class="memitem">
 <div class="memproto">
@@ -502,74 +519,12 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="group__bud__rArray3D_ga1d1570f310f37ae8502fc84920ca19f7_icgraph.png" border="0" usemap="#group__bud__rArray3D_ga1d1570f310f37ae8502fc84920ca19f7_icgraph" alt=""/></div>
 <map name="group__bud__rArray3D_ga1d1570f310f37ae8502fc84920ca19f7_icgraph" id="group__bud__rArray3D_ga1d1570f310f37ae8502fc84920ca19f7_icgraph">
-<area shape="rect" id="node2" href="group__bud__rArray3D.html#ga5d14029a61efb37c26ff4e9d996aeaae" title="delete_" alt="" coords="195,5,259,32"/>
-<area shape="rect" id="node3" href="group__bud__C2__rArray3D.html#ga8f9b7b26f3fd30e2a6d9e7ca5e58f1d3" title="bud_c2_rarray3d::delete_" alt="" coords="143,56,311,83"/>
-<area shape="rect" id="node4" href="group__bud__FS__rArray3D.html#ga1c6fe7925101984c6e0289fbcaea1330" title="bud_fs_rarray3d::delete_" alt="" coords="144,107,309,133"/>
-<area shape="rect" id="node5" href="group__bud__Item__rArray3D.html#gac441bf456df9c24b1eea02849b8fd2d4" title="bud_item_rarray3d::\ldelete_" alt="" coords="158,158,295,199"/>
-<area shape="rect" id="node6" href="group__bud__LL__rArray3D.html#gab040d97d7227623ceef2a0846c38615c" title="bud_ll_rarray3d::delete_" alt="" coords="147,224,307,251"/>
+<area shape="rect" id="node2" href="group__bud__rArray3D.html#ga5d14029a61efb37c26ff4e9d996aeaae" title="delete_" alt="" coords="193,5,257,32"/>
+<area shape="rect" id="node3" href="group__bud__FS__rArray3D.html#ga1c6fe7925101984c6e0289fbcaea1330" title="bud_fs_rarray3d::delete_" alt="" coords="143,56,308,83"/>
+<area shape="rect" id="node4" href="group__bud__LL__rArray3D.html#gab040d97d7227623ceef2a0846c38615c" title="bud_ll_rarray3d::delete_" alt="" coords="145,107,305,133"/>
 </map>
 </div>
 </p>
-
-</div>
-</div>
-<a class="anchor" id="gac5106e9dd7a59e0c1ab8799fc1eb5dbc"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">pure real(rr_) function get_array_idx_ </td>
-          <td>(</td>
-          <td class="paramtype">class(<a class="el" href="structbud__rarray3d_1_1rarray3d.html">rarray3d</a>), intent(in)&#160;</td>
-          <td class="paramname"><em>this</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer, intent(in)&#160;</td>
-          <td class="paramname"><em>i1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer, intent(in)&#160;</td>
-          <td class="paramname"><em>i2</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer, intent(in)&#160;</td>
-          <td class="paramname"><em>i3</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Retrieve value in specific index of data array in the container. </p>
-<p>Returns a value in the data container from a specific index.</p>
-<p><b>Developer</b> This routine should be avoided for extensive retrieval of data is required. It may do bounds-check.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>the containing bud </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">i1</td><td>index in the array </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">i2</td><td>index in the array </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">i3</td><td>index in the array </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the value in the specific indexed location of the array </dd></dl>
 
 </div>
 </div>
@@ -616,10 +571,6 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Retrieve value in specific index of data array in the container. </p>
-<p>Returns a value in the data container from a specific index.</p>
-<p><b>Developer</b> This routine should be avoided for extensive retrieval of data is required. It may do bounds-check.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>the containing bud </td></tr>
@@ -633,7 +584,7 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a class="anchor" id="gae55d4cc3bfe96170573f54f88fd15eee"></a>
+<a class="anchor" id="ga8d0a58ffb0f9524ba0c843fb9bfe7a7c"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -641,7 +592,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">real(rr_) function, dimension (:,:,:), pointer get_arrayp_ </td>
+          <td class="memname">real(rr_) function, dimension (:,:,:), pointer, contiguous get_arrayp_ </td>
           <td>(</td>
           <td class="paramtype">class(<a class="el" href="structbud__rarray3d_1_1rarray3d.html">rarray3d</a>), intent(in)&#160;</td>
           <td class="paramname"><em>this</em></td><td>)</td>
@@ -654,20 +605,17 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Retrieve pointer to data array in bud. </p>
-<p>Returns a pointer to the data-array that resides in the bud.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>the containing bud </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>array bud </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a pointer to the data </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a pointer to the data (contiguous) </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="gaf3be59058325834e66cd2b82a4ea4503"></a>
+<a class="anchor" id="gaa06febb747f2090a72fe6b440b935147"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -675,7 +623,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">real(rr_) function, dimension (:,:,:), pointer bud_rarray3d::get_arrayp_ </td>
+          <td class="memname">real(rr_) function, dimension (:,:,:), pointer, contiguous bud_rarray3d::get_arrayp_ </td>
           <td>(</td>
           <td class="paramtype">class(<a class="el" href="structbud__rarray3d_1_1rarray3d.html">rarray3d</a>), intent(in)&#160;</td>
           <td class="paramname"><em>this</em></td><td>)</td>
@@ -688,60 +636,30 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Retrieve pointer to data array in bud. </p>
-<p>Returns a pointer to the data-array that resides in the bud.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>the containing bud </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>array bud </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a pointer to the data </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a pointer to the data (contiguous) </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="ga0bb8671f64ae071b06da8f1489a3d990"></a>
+<a class="anchor" id="gae38c428e60319ca122c8cf9115772bd6"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">subroutine init_array_ </td>
+          <td class="memname">procedure, public init_array </td>
           <td>(</td>
-          <td class="paramtype">class(<a class="el" href="structbud__rarray3d_1_1rarray3d.html">rarray3d</a>), intent(inout)&#160;</td>
-          <td class="paramname"><em>this</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">real(rr_), intent(in)&#160;</td>
-          <td class="paramname"><em>v</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Initialize the array in bud to a specific value. </p>
-<p>Set all array elements to a specific value.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>bud containing the array </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>value to set all elements equal to </td></tr>
-  </table>
-  </dd>
-</dl>
+<p><b>See interface</b> <a class="el" href="group__bud__rArray3D.html#gae38c428e60319ca122c8cf9115772bd6" title="See interface init_array ">init_array</a> </p>
 
 </div>
 </div>
@@ -776,13 +694,51 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Initialize the array in bud to a specific value. </p>
-<p>Set all array elements to a specific value.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>bud containing the array </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>value to set all elements equal to </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>array bud </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>all elements of the contained array will be equal to <code>v</code> after the call </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ga0bb8671f64ae071b06da8f1489a3d990"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine init_array_ </td>
+          <td>(</td>
+          <td class="paramtype">class(<a class="el" href="structbud__rarray3d_1_1rarray3d.html">rarray3d</a>), intent(inout)&#160;</td>
+          <td class="paramname"><em>this</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">real(rr_), intent(in)&#160;</td>
+          <td class="paramname"><em>v</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>array bud </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">v</td><td>all elements of the contained array will be equal to <code>v</code> after the call </td></tr>
   </table>
   </dd>
 </dl>
@@ -1058,6 +1014,48 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a class="anchor" id="ga5727314d9f9d8462e484da61c379be43"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">elemental logical function is_same_ </td>
+          <td>(</td>
+          <td class="paramtype">class(<a class="el" href="structbud__rarray3d_1_1rarray3d.html">rarray3d</a>), intent(in)&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">class(<a class="el" href="structbud__rarray3d_1_1rarray3d.html">rarray3d</a>), intent(in)&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">lhs</td><td>first bud </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>second bud </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>.true.</code> if <code>lhs</code> and <code>rhs</code> point to the same data </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="ga9505f5c4a24936495b3db88a2048117a"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1142,7 +1140,24 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a class="anchor" id="ga5727314d9f9d8462e484da61c379be43"></a>
+<a class="anchor" id="ga29c92b47c1b5c832ccfc04a030b7a527"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">generic, public new </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><b>See interface</b> new </p>
+
+</div>
+</div>
+<a class="anchor" id="gaac88a61af39e60f21877e613e0bc05ee"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1150,16 +1165,39 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">elemental logical function is_same_ </td>
+          <td class="memname">procedure, private new_copy_ </td>
           <td>(</td>
-          <td class="paramtype">class(<a class="el" href="structbud__rarray3d_1_1rarray3d.html">rarray3d</a>), intent(in)&#160;</td>
-          <td class="paramname"><em>lhs</em>, </td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ga8510dfba6fb62bb3a483f3b41ad93758"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine new_copy_ </td>
+          <td>(</td>
+          <td class="paramtype">class(<a class="el" href="structbud__rarray3d_1_1rarray3d.html">rarray3d</a>), intent(inout)&#160;</td>
+          <td class="paramname"><em>this</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">class(<a class="el" href="structbud__rarray3d_1_1rarray3d.html">rarray3d</a>), intent(in)&#160;</td>
-          <td class="paramname"><em>rhs</em>&#160;</td>
+          <td class="paramtype">real(rr_), dimension (:,:,:), intent(in)&#160;</td>
+          <td class="paramname"><em>array</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1175,12 +1213,52 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">lhs</td><td>first bud </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">rhs</td><td>second bud </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>array bud </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">array</td><td>array to dublicate in <code>this</code> (dimensions <em>and</em> values) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><code>.true.</code> if <code>lhs</code> and <code>rhs</code> point to the same data </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ga8510dfba6fb62bb3a483f3b41ad93758"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine new_copy_ </td>
+          <td>(</td>
+          <td class="paramtype">class(<a class="el" href="structbud__rarray3d_1_1rarray3d.html">rarray3d</a>), intent(inout)&#160;</td>
+          <td class="paramname"><em>this</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">real(rr_), dimension (:,:,:), intent(in)&#160;</td>
+          <td class="paramname"><em>array</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>array bud </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">array</td><td>array to dublicate in <code>this</code> (dimensions <em>and</em> values) </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1215,14 +1293,10 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create new rArray3D by coping another array. </p>
-<p>Initializes a new type container from a copy of another array.</p>
-<p>The output data container will have the same size as the value array.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>bud container </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">array</td><td>array to dublicate in <code>this</code> </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>array bud </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">array</td><td>array to dublicate in <code>this</code> (dimensions <em>and</em> values) </td></tr>
   </table>
   </dd>
 </dl>
@@ -1232,14 +1306,14 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="group__bud__rArray3D_ga783fc05198fd5cd5baf2583fb82e08f5_cgraph.png" border="0" usemap="#group__bud__rArray3D_ga783fc05198fd5cd5baf2583fb82e08f5_cgraph" alt=""/></div>
 <map name="group__bud__rArray3D_ga783fc05198fd5cd5baf2583fb82e08f5_cgraph" id="group__bud__rArray3D_ga783fc05198fd5cd5baf2583fb82e08f5_cgraph">
-<area shape="rect" id="node2" href="group__bud__rArray3D.html#ga9754390209278853b3461e170be51985" title="Create new rArray3D via dimension sizes. " alt="" coords="141,5,223,32"/>
+<area shape="rect" id="node2" href="group__bud__rArray3D.html#ga9754390209278853b3461e170be51985" title="new_dim_" alt="" coords="141,5,223,32"/>
 </map>
 </div>
 </p>
 
 </div>
 </div>
-<a class="anchor" id="ga8510dfba6fb62bb3a483f3b41ad93758"></a>
+<a class="anchor" id="gae4ccb17dedfbcf6c72880e3448b2985b"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1247,7 +1321,30 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">subroutine new_copy_ </td>
+          <td class="memname">procedure, private new_dim_ </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ga5621eb9027264df73a377c8f508a19ad"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine new_dim_ </td>
           <td>(</td>
           <td class="paramtype">class(<a class="el" href="structbud__rarray3d_1_1rarray3d.html">rarray3d</a>), intent(inout)&#160;</td>
           <td class="paramname"><em>this</em>, </td>
@@ -1255,8 +1352,26 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">real(rr_), dimension (:,:,:), intent(in)&#160;</td>
-          <td class="paramname"><em>array</em>&#160;</td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>d1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>d2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>d3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">real(rr_), intent(in), optional&#160;</td>
+          <td class="paramname"><em>val</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1270,21 +1385,20 @@ Here is the call graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create new rArray3D by coping another array. </p>
-<p>Initializes a new type container from a copy of another array.</p>
-<p>The output data container will have the same size as the value array.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>bud container </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">array</td><td>array to dublicate in <code>this</code> </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>array bud </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">d1</td><td>size of the internal reference counted array (dim=1) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">d2</td><td>size of the internal reference counted array (dim=2) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">d3</td><td>size of the internal reference counted array (dim=3) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">val</td><td><em>optional</em>=__null__ initial value of all elements </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a class="anchor" id="ga8510dfba6fb62bb3a483f3b41ad93758"></a>
+<a class="anchor" id="ga5621eb9027264df73a377c8f508a19ad"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1292,7 +1406,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">subroutine new_copy_ </td>
+          <td class="memname">subroutine new_dim_ </td>
           <td>(</td>
           <td class="paramtype">class(<a class="el" href="structbud__rarray3d_1_1rarray3d.html">rarray3d</a>), intent(inout)&#160;</td>
           <td class="paramname"><em>this</em>, </td>
@@ -1300,8 +1414,26 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">real(rr_), dimension (:,:,:), intent(in)&#160;</td>
-          <td class="paramname"><em>array</em>&#160;</td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>d1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>d2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>d3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">real(rr_), intent(in), optional&#160;</td>
+          <td class="paramname"><em>val</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1315,14 +1447,13 @@ Here is the call graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create new rArray3D by coping another array. </p>
-<p>Initializes a new type container from a copy of another array.</p>
-<p>The output data container will have the same size as the value array.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>bud container </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">array</td><td>array to dublicate in <code>this</code> </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>array bud </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">d1</td><td>size of the internal reference counted array (dim=1) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">d2</td><td>size of the internal reference counted array (dim=2) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">d3</td><td>size of the internal reference counted array (dim=3) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">val</td><td><em>optional</em>=__null__ initial value of all elements </td></tr>
   </table>
   </dd>
 </dl>
@@ -1378,12 +1509,9 @@ Here is the call graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create new rArray3D via dimension sizes. </p>
-<p>Initializes a new type container from the specified size in the call.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>the bud </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>array bud </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">d1</td><td>size of the internal reference counted array (dim=1) </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">d2</td><td>size of the internal reference counted array (dim=2) </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">d3</td><td>size of the internal reference counted array (dim=3) </td></tr>
@@ -1397,140 +1525,10 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="group__bud__rArray3D_ga9754390209278853b3461e170be51985_icgraph.png" border="0" usemap="#group__bud__rArray3D_ga9754390209278853b3461e170be51985_icgraph" alt=""/></div>
 <map name="group__bud__rArray3D_ga9754390209278853b3461e170be51985_icgraph" id="group__bud__rArray3D_ga9754390209278853b3461e170be51985_icgraph">
-<area shape="rect" id="node2" href="group__bud__rArray3D.html#ga783fc05198fd5cd5baf2583fb82e08f5" title="Create new rArray3D by coping another array. " alt="" coords="135,5,223,32"/>
+<area shape="rect" id="node2" href="group__bud__rArray3D.html#ga783fc05198fd5cd5baf2583fb82e08f5" title="new_copy_" alt="" coords="135,5,223,32"/>
 </map>
 </div>
 </p>
-
-</div>
-</div>
-<a class="anchor" id="ga5621eb9027264df73a377c8f508a19ad"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">subroutine new_dim_ </td>
-          <td>(</td>
-          <td class="paramtype">class(<a class="el" href="structbud__rarray3d_1_1rarray3d.html">rarray3d</a>), intent(inout)&#160;</td>
-          <td class="paramname"><em>this</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer, intent(in)&#160;</td>
-          <td class="paramname"><em>d1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer, intent(in)&#160;</td>
-          <td class="paramname"><em>d2</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer, intent(in)&#160;</td>
-          <td class="paramname"><em>d3</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">real(rr_), intent(in), optional&#160;</td>
-          <td class="paramname"><em>val</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Create new rArray3D via dimension sizes. </p>
-<p>Initializes a new type container from the specified size in the call.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>the bud </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">d1</td><td>size of the internal reference counted array (dim=1) </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">d2</td><td>size of the internal reference counted array (dim=2) </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">d3</td><td>size of the internal reference counted array (dim=3) </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">val</td><td><em>optional</em>=__null__ initial value of all elements </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="ga5621eb9027264df73a377c8f508a19ad"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">subroutine new_dim_ </td>
-          <td>(</td>
-          <td class="paramtype">class(<a class="el" href="structbud__rarray3d_1_1rarray3d.html">rarray3d</a>), intent(inout)&#160;</td>
-          <td class="paramname"><em>this</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer, intent(in)&#160;</td>
-          <td class="paramname"><em>d1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer, intent(in)&#160;</td>
-          <td class="paramname"><em>d2</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer, intent(in)&#160;</td>
-          <td class="paramname"><em>d3</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">real(rr_), intent(in), optional&#160;</td>
-          <td class="paramname"><em>val</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Create new rArray3D via dimension sizes. </p>
-<p>Initializes a new type container from the specified size in the call.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">this</td><td>the bud </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">d1</td><td>size of the internal reference counted array (dim=1) </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">d2</td><td>size of the internal reference counted array (dim=2) </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">d3</td><td>size of the internal reference counted array (dim=3) </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">val</td><td><em>optional</em>=__null__ initial value of all elements </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>
@@ -1551,7 +1549,7 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a class="anchor" id="ga2a9bab079fcd5a9e34ebe9174b39a509"></a>
+<a class="anchor" id="ga9bd2cd659e4893391a93390429da5fe2"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1559,7 +1557,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">elemental subroutine bud_rarray3d::nullify_ </td>
+          <td class="memname">elemental subroutine nullify_ </td>
           <td>(</td>
           <td class="paramtype">class(<a class="el" href="structbud__rarray3d_1_1rarray3d.html">rarray3d</a>), intent(inout)&#160;</td>
           <td class="paramname"><em>this</em></td><td>)</td>
@@ -1581,7 +1579,7 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a class="anchor" id="ga9bd2cd659e4893391a93390429da5fe2"></a>
+<a class="anchor" id="ga2a9bab079fcd5a9e34ebe9174b39a509"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1589,7 +1587,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">elemental subroutine nullify_ </td>
+          <td class="memname">elemental subroutine bud_rarray3d::nullify_ </td>
           <td>(</td>
           <td class="paramtype">class(<a class="el" href="structbud__rarray3d_1_1rarray3d.html">rarray3d</a>), intent(inout)&#160;</td>
           <td class="paramname"><em>this</em></td><td>)</td>
@@ -1625,58 +1623,6 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p><b>See interface</b> print </p>
-
-</div>
-</div>
-<a class="anchor" id="gab73a2fb2eb7a2f7ddee01660099f9a2d"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">subroutine print_ </td>
-          <td>(</td>
-          <td class="paramtype">class(<a class="el" href="structbud__rarray3d_1_1rarray3d.html">rarray3d</a>), intent(in)&#160;</td>
-          <td class="paramname"><em>this</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">character(len=*), intent(in), optional&#160;</td>
-          <td class="paramname"><em>info</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">integer, intent(in), optional&#160;</td>
-          <td class="paramname"><em>indent</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Print, to std-out, some basic information of the data-container. </p>
-<p>Print out XML-like information regarding the data-container.</p>
-<p><b>wanted</b> Retrieval function of the string that represents the data. This will enable the parent program to show it in the way it wants.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>data type </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">info</td><td><em>optional</em>="rArray3D" additional information printed </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">indent</td><td><em>optional</em>=1 possible indentation of printed statement </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>
@@ -1717,13 +1663,9 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Print, to std-out, some basic information of the data-container. </p>
-<p>Print out XML-like information regarding the data-container.</p>
-<p><b>wanted</b> Retrieval function of the string that represents the data. This will enable the parent program to show it in the way it wants.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>data type </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>array bud </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">info</td><td><em>optional</em>="rArray3D" additional information printed </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">indent</td><td><em>optional</em>=1 possible indentation of printed statement </td></tr>
   </table>
@@ -1735,10 +1677,58 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="group__bud__rArray3D_ga26f8d1da096111d6bcd9205a83e88949_cgraph.png" border="0" usemap="#group__bud__rArray3D_ga26f8d1da096111d6bcd9205a83e88949_cgraph" alt=""/></div>
 <map name="group__bud__rArray3D_ga26f8d1da096111d6bcd9205a83e88949_cgraph" id="group__bud__rArray3D_ga26f8d1da096111d6bcd9205a83e88949_cgraph">
-<area shape="rect" id="node2" href="group__bud__rArray3D.html#gacae44f6be8254f76b0d91dcc556e9b1f" title="Query size of array. " alt="" coords="108,5,161,32"/>
+<area shape="rect" id="node2" href="group__bud__rArray3D.html#gacae44f6be8254f76b0d91dcc556e9b1f" title="size_" alt="" coords="108,5,161,32"/>
 </map>
 </div>
 </p>
+
+</div>
+</div>
+<a class="anchor" id="gab73a2fb2eb7a2f7ddee01660099f9a2d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine print_ </td>
+          <td>(</td>
+          <td class="paramtype">class(<a class="el" href="structbud__rarray3d_1_1rarray3d.html">rarray3d</a>), intent(in)&#160;</td>
+          <td class="paramname"><em>this</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">character(len=*), intent(in), optional&#160;</td>
+          <td class="paramname"><em>info</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in), optional&#160;</td>
+          <td class="paramname"><em>indent</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>array bud </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">info</td><td><em>optional</em>="rArray3D" additional information printed </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">indent</td><td><em>optional</em>=1 possible indentation of printed statement </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1886,6 +1876,23 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a class="anchor" id="ga62f40fa1e409acedc14c48e9c3d1af7b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">procedure, public size </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><b>See interface</b> <a class="el" href="group__bud__rArray3D.html#ga62f40fa1e409acedc14c48e9c3d1af7b" title="See interface size ">size</a> </p>
+
+</div>
+</div>
 <a class="anchor" id="ga084999a05dc00b593b315023a6fbf912"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1917,10 +1924,6 @@ Here is the call graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Query size of array. </p>
-<p>Returns the size of the array contained.</p>
-<p><b>Note</b> There is no checking of the dimension queried.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>bud container </td></tr>
@@ -1963,10 +1966,6 @@ Here is the call graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Query size of array. </p>
-<p>Returns the size of the array contained.</p>
-<p><b>Note</b> There is no checking of the dimension queried.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">this</td><td>bud container </td></tr>
@@ -1981,7 +1980,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="group__bud__rArray3D_gacae44f6be8254f76b0d91dcc556e9b1f_icgraph.png" border="0" usemap="#group__bud__rArray3D_gacae44f6be8254f76b0d91dcc556e9b1f_icgraph" alt=""/></div>
 <map name="group__bud__rArray3D_gacae44f6be8254f76b0d91dcc556e9b1f_icgraph" id="group__bud__rArray3D_gacae44f6be8254f76b0d91dcc556e9b1f_icgraph">
-<area shape="rect" id="node2" href="group__bud__rArray3D.html#ga26f8d1da096111d6bcd9205a83e88949" title="Print, to std&#45;out, some basic information of the data&#45;container. " alt="" coords="107,5,161,32"/>
+<area shape="rect" id="node2" href="group__bud__rArray3D.html#ga26f8d1da096111d6bcd9205a83e88949" title="print_" alt="" coords="107,5,161,32"/>
 </map>
 </div>
 </p>
@@ -2057,32 +2056,10 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a class="anchor" id="ga82c16b6a4a1bba91eb3c83a84bca3dda"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">type(rarray3d_), pointer d =&gt; null()</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Stored pointer which contains the reference counting etc. </p>
-
-</div>
-</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 5 2016 09:53:14 for buds by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 6 2016 14:33:55 for buds by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

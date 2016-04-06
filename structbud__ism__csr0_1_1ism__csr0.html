@@ -14,7 +14,14 @@
 <script type="text/javascript">
   $(document).ready(function() { init_search(); });
 </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="extra_stylesheet.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -92,13 +99,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="typebud__ism__csr0_1_1ism__csr0-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">ism_csr0 Type Reference<div class="ingroups"><a class="el" href="group__bud-intrinsic.html">Intrinsic buds</a> &raquo; <a class="el" href="group__sm.html">Sparse matrix</a> &raquo; <a class="el" href="group__sm-csr0.html">Compressed Sparse Row (CSR 0-based row pointer)</a> &raquo; <a class="el" href="group__bud__iSM__CSR0.html">Integer (int)</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>bud variable  
+<p>Sparse matrix type in the CSR format.  
  <a href="structbud__ism__csr0_1_1ism__csr0.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for ism_csr0:</div>
@@ -143,17 +151,74 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:gae358c840d1cded3554431749fc80862d"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iSM__CSR0.html#gae358c840d1cded3554431749fc80862d">print</a> =&gt; <a class="el" href="namespacebud__ism__csr0.html#a9bd9c3c818b6fd2048de6861a6faa628">print_</a></td></tr>
 <tr class="memdesc:gae358c840d1cded3554431749fc80862d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> print  <a href="group__bud__iSM__CSR0.html#gae358c840d1cded3554431749fc80862d">More...</a><br /></td></tr>
 <tr class="separator:gae358c840d1cded3554431749fc80862d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga29c92b47c1b5c832ccfc04a030b7a527"><td class="memItemLeft" align="right" valign="top">generic, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iSM__CSR0.html#ga29c92b47c1b5c832ccfc04a030b7a527">new</a> =&gt; <a class="el" href="group__bud__iSM__CSR0.html#ga222becc86ac7058853a721827d4529a9">new_dim_</a>, <a class="el" href="group__bud__iSM__CSR0.html#gab60d8d0155e66ba392d8541298a8444a">new_copy_</a></td></tr>
+<tr class="memdesc:ga29c92b47c1b5c832ccfc04a030b7a527"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> new  <a href="group__bud__iSM__CSR0.html#ga29c92b47c1b5c832ccfc04a030b7a527">More...</a><br /></td></tr>
+<tr class="separator:ga29c92b47c1b5c832ccfc04a030b7a527"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4bb8b7770fc1618265e883948b73adc3"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iSM__CSR0.html#ga4bb8b7770fc1618265e883948b73adc3">nonzeros</a> =&gt; <a class="el" href="group__bud__iSM__CSR0.html#ga022c36887beffdff32810c7948e1385e">nonzeros_</a></td></tr>
+<tr class="memdesc:ga4bb8b7770fc1618265e883948b73adc3"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__iSM__CSR0.html#ga4bb8b7770fc1618265e883948b73adc3" title="See interface nonzeros ">nonzeros</a>  <a href="group__bud__iSM__CSR0.html#ga4bb8b7770fc1618265e883948b73adc3">More...</a><br /></td></tr>
+<tr class="separator:ga4bb8b7770fc1618265e883948b73adc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad3e6a668f0b218026c6ad0e5dd8d8ee5"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iSM__CSR0.html#gad3e6a668f0b218026c6ad0e5dd8d8ee5">rows</a> =&gt; <a class="el" href="group__bud__iSM__CSR0.html#gae6c5011c9d6284bfdbab640a4de840c7">mat_rows_</a></td></tr>
+<tr class="memdesc:gad3e6a668f0b218026c6ad0e5dd8d8ee5"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__iSM__CSR0.html#gae143afbf707dea3960bd2e8ca956d0b3" title="See interface mat_rows ">mat_rows</a>  <a href="group__bud__iSM__CSR0.html#gad3e6a668f0b218026c6ad0e5dd8d8ee5">More...</a><br /></td></tr>
+<tr class="separator:gad3e6a668f0b218026c6ad0e5dd8d8ee5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae143afbf707dea3960bd2e8ca956d0b3"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iSM__CSR0.html#gae143afbf707dea3960bd2e8ca956d0b3">mat_rows</a> =&gt; <a class="el" href="group__bud__iSM__CSR0.html#gae6c5011c9d6284bfdbab640a4de840c7">mat_rows_</a></td></tr>
+<tr class="memdesc:gae143afbf707dea3960bd2e8ca956d0b3"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__iSM__CSR0.html#gae143afbf707dea3960bd2e8ca956d0b3" title="See interface mat_rows ">mat_rows</a>  <a href="group__bud__iSM__CSR0.html#gae143afbf707dea3960bd2e8ca956d0b3">More...</a><br /></td></tr>
+<tr class="separator:gae143afbf707dea3960bd2e8ca956d0b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5bcb1be58e0f2b272f56ad0020cafe9d"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iSM__CSR0.html#ga5bcb1be58e0f2b272f56ad0020cafe9d">cols</a> =&gt; <a class="el" href="group__bud__iSM__CSR0.html#gab77a2e43739653159fbe81ffc597259a">mat_cols_</a></td></tr>
+<tr class="memdesc:ga5bcb1be58e0f2b272f56ad0020cafe9d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__iSM__CSR0.html#ga804df50e085fc7539f3da4a8ac462e4f" title="See interface mat_cols ">mat_cols</a>  <a href="group__bud__iSM__CSR0.html#ga5bcb1be58e0f2b272f56ad0020cafe9d">More...</a><br /></td></tr>
+<tr class="separator:ga5bcb1be58e0f2b272f56ad0020cafe9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga804df50e085fc7539f3da4a8ac462e4f"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iSM__CSR0.html#ga804df50e085fc7539f3da4a8ac462e4f">mat_cols</a> =&gt; <a class="el" href="group__bud__iSM__CSR0.html#gab77a2e43739653159fbe81ffc597259a">mat_cols_</a></td></tr>
+<tr class="memdesc:ga804df50e085fc7539f3da4a8ac462e4f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__iSM__CSR0.html#ga804df50e085fc7539f3da4a8ac462e4f" title="See interface mat_cols ">mat_cols</a>  <a href="group__bud__iSM__CSR0.html#ga804df50e085fc7539f3da4a8ac462e4f">More...</a><br /></td></tr>
+<tr class="separator:ga804df50e085fc7539f3da4a8ac462e4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga43710574843d9089ca19f040e18f7daf"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iSM__CSR0.html#ga43710574843d9089ca19f040e18f7daf">fold</a> =&gt; <a class="el" href="group__bud__iSM__CSR0.html#gaadfed708f812b4654f7fc635df8d07be">fold_</a></td></tr>
+<tr class="memdesc:ga43710574843d9089ca19f040e18f7daf"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__iSM__CSR0.html#ga77672f9f55997c289c12f80a8329aa5e" title="See interface mat_fold ">mat_fold</a>  <a href="group__bud__iSM__CSR0.html#ga43710574843d9089ca19f040e18f7daf">More...</a><br /></td></tr>
+<tr class="separator:ga43710574843d9089ca19f040e18f7daf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga77672f9f55997c289c12f80a8329aa5e"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iSM__CSR0.html#ga77672f9f55997c289c12f80a8329aa5e">mat_fold</a> =&gt; <a class="el" href="group__bud__iSM__CSR0.html#gaadfed708f812b4654f7fc635df8d07be">fold_</a></td></tr>
+<tr class="memdesc:ga77672f9f55997c289c12f80a8329aa5e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__iSM__CSR0.html#ga77672f9f55997c289c12f80a8329aa5e" title="See interface mat_fold ">mat_fold</a>  <a href="group__bud__iSM__CSR0.html#ga77672f9f55997c289c12f80a8329aa5e">More...</a><br /></td></tr>
+<tr class="separator:ga77672f9f55997c289c12f80a8329aa5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8ed6837f0dfeae2d1bf55a1d1506ffad"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iSM__CSR0.html#ga8ed6837f0dfeae2d1bf55a1d1506ffad">sort</a> =&gt; <a class="el" href="group__bud__iSM__CSR0.html#ga2743f7e74258da3ba2172eb1b3f264ab">sort_</a></td></tr>
+<tr class="memdesc:ga8ed6837f0dfeae2d1bf55a1d1506ffad"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__iSM__CSR0.html#ga59805ea0b66cf35634caa5b820519a8a" title="See interface mat_sort ">mat_sort</a>  <a href="group__bud__iSM__CSR0.html#ga8ed6837f0dfeae2d1bf55a1d1506ffad">More...</a><br /></td></tr>
+<tr class="separator:ga8ed6837f0dfeae2d1bf55a1d1506ffad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga59805ea0b66cf35634caa5b820519a8a"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iSM__CSR0.html#ga59805ea0b66cf35634caa5b820519a8a">mat_sort</a> =&gt; <a class="el" href="group__bud__iSM__CSR0.html#ga2743f7e74258da3ba2172eb1b3f264ab">sort_</a></td></tr>
+<tr class="memdesc:ga59805ea0b66cf35634caa5b820519a8a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__iSM__CSR0.html#ga59805ea0b66cf35634caa5b820519a8a" title="See interface mat_sort ">mat_sort</a>  <a href="group__bud__iSM__CSR0.html#ga59805ea0b66cf35634caa5b820519a8a">More...</a><br /></td></tr>
+<tr class="separator:ga59805ea0b66cf35634caa5b820519a8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac22ca89da845f4e166f7ac4c41e8c64d"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iSM__CSR0.html#gac22ca89da845f4e166f7ac4c41e8c64d">pointerp</a> =&gt; <a class="el" href="namespacebud__ism__csr0.html#adbd1785fa2a325656c0f817b2041fa67">get_row_offsetp_</a></td></tr>
+<tr class="memdesc:gac22ca89da845f4e166f7ac4c41e8c64d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__iSM__CSR0.html#gabceb7c4f03c409d858de19c0faa86252" title="See interface mat_pointerp ">mat_pointerp</a>  <a href="group__bud__iSM__CSR0.html#gac22ca89da845f4e166f7ac4c41e8c64d">More...</a><br /></td></tr>
+<tr class="separator:gac22ca89da845f4e166f7ac4c41e8c64d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabceb7c4f03c409d858de19c0faa86252"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iSM__CSR0.html#gabceb7c4f03c409d858de19c0faa86252">mat_pointerp</a> =&gt; <a class="el" href="namespacebud__ism__csr0.html#adbd1785fa2a325656c0f817b2041fa67">get_row_offsetp_</a></td></tr>
+<tr class="memdesc:gabceb7c4f03c409d858de19c0faa86252"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__iSM__CSR0.html#gabceb7c4f03c409d858de19c0faa86252" title="See interface mat_pointerp ">mat_pointerp</a>  <a href="group__bud__iSM__CSR0.html#gabceb7c4f03c409d858de19c0faa86252">More...</a><br /></td></tr>
+<tr class="separator:gabceb7c4f03c409d858de19c0faa86252"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0c4d3759b88a3bec339e60bcab36c76c"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iSM__CSR0.html#ga0c4d3759b88a3bec339e60bcab36c76c">offsetp</a> =&gt; <a class="el" href="namespacebud__ism__csr0.html#adbd1785fa2a325656c0f817b2041fa67">get_row_offsetp_</a></td></tr>
+<tr class="memdesc:ga0c4d3759b88a3bec339e60bcab36c76c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__iSM__CSR0.html#gabceb7c4f03c409d858de19c0faa86252" title="See interface mat_pointerp ">mat_pointerp</a>  <a href="group__bud__iSM__CSR0.html#ga0c4d3759b88a3bec339e60bcab36c76c">More...</a><br /></td></tr>
+<tr class="separator:ga0c4d3759b88a3bec339e60bcab36c76c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga524bc036e71c955dfa801f9be9b6c035"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iSM__CSR0.html#ga524bc036e71c955dfa801f9be9b6c035">mat_offsetp</a> =&gt; <a class="el" href="namespacebud__ism__csr0.html#adbd1785fa2a325656c0f817b2041fa67">get_row_offsetp_</a></td></tr>
+<tr class="memdesc:ga524bc036e71c955dfa801f9be9b6c035"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__iSM__CSR0.html#gabceb7c4f03c409d858de19c0faa86252" title="See interface mat_pointerp ">mat_pointerp</a>  <a href="group__bud__iSM__CSR0.html#ga524bc036e71c955dfa801f9be9b6c035">More...</a><br /></td></tr>
+<tr class="separator:ga524bc036e71c955dfa801f9be9b6c035"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5b4d8cae8df9f835fa2cf38468abb261"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iSM__CSR0.html#ga5b4d8cae8df9f835fa2cf38468abb261">columnp</a> =&gt; <a class="el" href="group__bud__iSM__CSR0.html#gac828554d87d065321d1bcf3226772a73">get_columnp_</a></td></tr>
+<tr class="memdesc:ga5b4d8cae8df9f835fa2cf38468abb261"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__iSM__CSR0.html#ga65de62454e717505b460a45507dcd525" title="See interface mat_columnp ">mat_columnp</a>  <a href="group__bud__iSM__CSR0.html#ga5b4d8cae8df9f835fa2cf38468abb261">More...</a><br /></td></tr>
+<tr class="separator:ga5b4d8cae8df9f835fa2cf38468abb261"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga65de62454e717505b460a45507dcd525"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iSM__CSR0.html#ga65de62454e717505b460a45507dcd525">mat_columnp</a> =&gt; <a class="el" href="group__bud__iSM__CSR0.html#gac828554d87d065321d1bcf3226772a73">get_columnp_</a></td></tr>
+<tr class="memdesc:ga65de62454e717505b460a45507dcd525"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__iSM__CSR0.html#ga65de62454e717505b460a45507dcd525" title="See interface mat_columnp ">mat_columnp</a>  <a href="group__bud__iSM__CSR0.html#ga65de62454e717505b460a45507dcd525">More...</a><br /></td></tr>
+<tr class="separator:ga65de62454e717505b460a45507dcd525"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacd759a2ce22257d2bbcce984019b8e26"><td class="memItemLeft" align="right" valign="top">procedure, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iSM__CSR0.html#gacd759a2ce22257d2bbcce984019b8e26">attach</a> =&gt; <a class="el" href="group__bud__iSM__CSR0.html#ga78c95bea46e88f6bef36683e73451ae5">attach_</a></td></tr>
+<tr class="memdesc:gacd759a2ce22257d2bbcce984019b8e26"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>See interface</b> <a class="el" href="group__bud__iSM__CSR0.html#gacd759a2ce22257d2bbcce984019b8e26" title="See interface attach ">attach</a>  <a href="group__bud__iSM__CSR0.html#gacd759a2ce22257d2bbcce984019b8e26">More...</a><br /></td></tr>
+<tr class="separator:gacd759a2ce22257d2bbcce984019b8e26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:ga222becc86ac7058853a721827d4529a9"><td class="memItemLeft" align="right" valign="top">procedure, private&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iSM__CSR0.html#ga222becc86ac7058853a721827d4529a9">new_dim_</a> =&gt; new_dim_</td></tr>
+<tr class="separator:ga222becc86ac7058853a721827d4529a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab60d8d0155e66ba392d8541298a8444a"><td class="memItemLeft" align="right" valign="top">procedure, private&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iSM__CSR0.html#gab60d8d0155e66ba392d8541298a8444a">new_copy_</a> =&gt; new_copy_</td></tr>
+<tr class="separator:gab60d8d0155e66ba392d8541298a8444a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>bud variable </p>
-<p>Handler for the pointer type stored </p>
+<div class="textblock"><p>Sparse matrix type in the CSR format. </p>
 </div><hr/>The documentation for this type was generated from the following file:<ul>
 <li>src/<a class="el" href="bud__SM__CSR0_8f90.html">bud_SM_CSR0.f90</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 5 2016 09:53:18 for buds by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 6 2016 14:33:56 for buds by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

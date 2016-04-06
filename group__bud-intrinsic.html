@@ -14,7 +14,14 @@
 <script type="text/javascript">
   $(document).ready(function() { init_search(); });
 </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="extra_stylesheet.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -92,16 +99,13 @@ Collaboration diagram for Intrinsic buds:</div>
 <div class="dyncontent">
 <center><table><tr><td><img src="group__bud-intrinsic.png" border="0" alt="" usemap="#group____bud-intrinsic"/>
 <map name="group____bud-intrinsic" id="group____bud-intrinsic">
-<area shape="rect" id="node1" href="group__dist-1d.html" title="A distribution implementation of various kinds. " alt="" coords="155,5,316,32"/>
-<area shape="rect" id="node2" href="group__ll-array.html" title="bud containing a linked list of bud Arrays. " alt="" coords="166,56,305,83"/>
-<area shape="rect" id="node3" href="group__c2-array.html" title="bud containing a collection of 2 Array buds. " alt="" coords="162,107,309,133"/>
-<area shape="rect" id="node4" href="group__file.html" title="Perform file operations such as open/close/delete etc. " alt="" coords="214,157,257,184"/>
-<area shape="rect" id="node5" href="group__fs-c2-array.html" title="bud of finite stack with a collection. The collection contains two Array buds. " alt="" coords="153,209,317,250"/>
-<area shape="rect" id="node6" href="group__utility.html" title="Generic utility functions used throughout. " alt="" coords="156,274,315,315"/>
-<area shape="rect" id="node7" href="group__array.html" title="bud containing an intrinsic fortran array. " alt="" coords="209,340,262,367"/>
-<area shape="rect" id="node8" href="group__fs-array.html" title="bud containing a finite stack of Array buds. " alt="" coords="159,391,312,417"/>
-<area shape="rect" id="node9" href="group__i-array.html" title="bud item containing an Array. " alt="" coords="180,441,291,468"/>
-<area shape="rect" id="node11" href="group__sm.html" title="Sparse matrix" alt="" coords="184,492,287,519"/>
+<area shape="rect" id="node1" href="group__dist-1d.html" title="A distribution implementation of various kinds. " alt="" coords="153,5,315,32"/>
+<area shape="rect" id="node2" href="group__ll-array.html" title="bud containing a linked list of bud Arrays. " alt="" coords="165,56,303,83"/>
+<area shape="rect" id="node3" href="group__file.html" title="Perform file operations such as open/close/delete etc. " alt="" coords="213,107,255,133"/>
+<area shape="rect" id="node4" href="group__utility.html" title="Generic utility functions used throughout. " alt="" coords="155,158,313,199"/>
+<area shape="rect" id="node5" href="group__array.html" title="bud containing an intrinsic fortran array. " alt="" coords="207,224,261,251"/>
+<area shape="rect" id="node6" href="group__fs-array.html" title="bud containing a finite stack of Array buds. " alt="" coords="157,275,311,301"/>
+<area shape="rect" id="node8" href="group__sm.html" title="Sparse matrix" alt="" coords="183,325,285,352"/>
 </map>
 </td></tr></table></center>
 </div>
@@ -111,20 +115,11 @@ Modules</h2></td></tr>
 <tr class="memitem:group__array"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__array.html">Array</a></td></tr>
 <tr class="memdesc:group__array"><td class="mdescLeft">&#160;</td><td class="mdescRight">bud containing an intrinsic fortran array. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:group__c2-array"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__c2-array.html">Collection of 2 arrays</a></td></tr>
-<tr class="memdesc:group__c2-array"><td class="mdescLeft">&#160;</td><td class="mdescRight">bud containing a collection of 2 Array buds. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:group__file"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html">File</a></td></tr>
 <tr class="memdesc:group__file"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform file operations such as open/close/delete etc. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:group__fs-array"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fs-array.html">Finite stack with Array</a></td></tr>
 <tr class="memdesc:group__fs-array"><td class="mdescLeft">&#160;</td><td class="mdescRight">bud containing a finite stack of Array buds. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:group__fs-c2-array"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__fs-c2-array.html">Finite stack of collection with 2 Arrays</a></td></tr>
-<tr class="memdesc:group__fs-c2-array"><td class="mdescLeft">&#160;</td><td class="mdescRight">bud of finite stack with a collection. The collection contains two Array buds. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:group__i-array"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__i-array.html">Item with Array</a></td></tr>
-<tr class="memdesc:group__i-array"><td class="mdescLeft">&#160;</td><td class="mdescRight">bud item containing an Array. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:group__ll-array"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ll-array.html">Linked list of Arrays</a></td></tr>
 <tr class="memdesc:group__ll-array"><td class="mdescLeft">&#160;</td><td class="mdescRight">bud containing a linked list of bud Arrays. <br /></td></tr>
@@ -141,7 +136,7 @@ Modules</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 5 2016 09:53:14 for buds by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 6 2016 14:33:55 for buds by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

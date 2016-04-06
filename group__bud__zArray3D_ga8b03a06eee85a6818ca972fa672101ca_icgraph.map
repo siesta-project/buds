@@ -1,7 +1,5 @@
 <map id="delete_data" name="delete_data">
-<area shape="rect" id="node2" href="$group__bud__zArray3D.html#ga02400dc9d5a2d697b4397489d7a0a3c3" title="delete_" alt="" coords="196,5,260,32"/>
-<area shape="rect" id="node3" href="$group__bud__C2__zArray3D.html#gafa578cebffe0e624a44d4be60b3fc48f" title="bud_c2_zarray3d::delete_" alt="" coords="143,56,313,83"/>
-<area shape="rect" id="node4" href="$group__bud__FS__zArray3D.html#ga85f0c816c02161b17d58c0c98ed3a9d4" title="bud_fs_zarray3d::delete_" alt="" coords="144,107,312,133"/>
-<area shape="rect" id="node5" href="$group__bud__Item__zArray3D.html#ga6d932500f68e210323f28d0fccc35072" title="bud_item_zarray3d::\ldelete_" alt="" coords="158,158,298,199"/>
-<area shape="rect" id="node6" href="$group__bud__LL__zArray3D.html#ga1d218a98ce82fbd41751d7d7c719a4df" title="bud_ll_zarray3d::delete_" alt="" coords="147,224,309,251"/>
+<area shape="rect" id="node2" href="$group__bud__zArray3D.html#ga02400dc9d5a2d697b4397489d7a0a3c3" title="delete_" alt="" coords="195,5,259,32"/>
+<area shape="rect" id="node3" href="$group__bud__FS__zArray3D.html#ga85f0c816c02161b17d58c0c98ed3a9d4" title="bud_fs_zarray3d::delete_" alt="" coords="143,56,311,83"/>
+<area shape="rect" id="node4" href="$group__bud__LL__zArray3D.html#ga1d218a98ce82fbd41751d7d7c719a4df" title="bud_ll_zarray3d::delete_" alt="" coords="145,107,308,133"/>
 </map>

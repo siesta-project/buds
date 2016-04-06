@@ -14,7 +14,14 @@
 <script type="text/javascript">
   $(document).ready(function() { init_search(); });
 </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="extra_stylesheet.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -98,7 +105,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p>Create new bud instances.  
+<p>Create a new sparse matrix.  
  <a href="interfacebud__ism__csr0_1_1new.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for new:</div>
@@ -111,21 +118,20 @@ Collaboration diagram for new:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:ga3dfbf47d779091d835b96df8cab0c4d3"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iSM__CSR0.html#ga3dfbf47d779091d835b96df8cab0c4d3">new_dim_</a> (this, nr, nc, nz)</td></tr>
-<tr class="memdesc:ga3dfbf47d779091d835b96df8cab0c4d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new bud allocating room or specific size.  <a href="group__bud__iSM__CSR0.html#ga3dfbf47d779091d835b96df8cab0c4d3">More...</a><br /></td></tr>
 <tr class="separator:ga3dfbf47d779091d835b96df8cab0c4d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga90eb9b4266d564789f209f8f3a963683"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__bud__iSM__CSR0.html#ga90eb9b4266d564789f209f8f3a963683">new_copy_</a> (this, nr, nc, nz, rptr, col)</td></tr>
-<tr class="memdesc:ga90eb9b4266d564789f209f8f3a963683"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new bud by copying in from an outside list.  <a href="group__bud__iSM__CSR0.html#ga90eb9b4266d564789f209f8f3a963683">More...</a><br /></td></tr>
 <tr class="separator:ga90eb9b4266d564789f209f8f3a963683"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Create new bud instances. </p>
+<div class="textblock"><p>Create a new sparse matrix. </p>
+<p>You may either create an empty sparse matrix with a fixed size, or create a sparse matrix from existing data. </p>
 </div><hr/>The documentation for this interface was generated from the following file:<ul>
 <li>src/<a class="el" href="bud__SM__CSR0_8f90.html">bud_SM_CSR0.f90</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 5 2016 09:53:18 for buds by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 6 2016 14:33:56 for buds by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

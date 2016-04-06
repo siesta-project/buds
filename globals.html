@@ -14,7 +14,14 @@
 <script type="text/javascript">
   $(document).ready(function() { init_search(); });
 </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="extra_stylesheet.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -75,6 +82,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals_func.html"><span>Functions</span></a></li>
     </ul>
   </div>
+  <div id="navrow4" class="tabs3">
+    <ul class="tablist">
+      <li><a href="#index_i"><span>i</span></a></li>
+      <li><a href="#index_p"><span>p</span></a></li>
+      <li><a href="#index_r"><span>r</span></a></li>
+      <li class="current"><a href="#index_s"><span>s</span></a></li>
+    </ul>
+  </div>
 </div><!-- top -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -91,7 +106,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 
 <div class="contents">
-<div class="textblock">Here is a list of all file members with links to the files they belong to:</div><ul>
+<div class="textblock">Here is a list of all file members with links to the files they belong to:</div>
+
+<h3><a class="anchor" id="index_i"></a>- i -</h3><ul>
 <li>insert_back()
 : <a class="el" href="group__utility.html#gafe8c75a750c86eb7fc2ad49c93cb3df8">bud_utils.f90</a>
 </li>
@@ -110,14 +127,32 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>internal_quick_is_()
 : <a class="el" href="group__utility.html#gacd38ae4f3f76419b648e6ea6b7c2fbb3">bud_utils.f90</a>
 </li>
+</ul>
+
+
+<h3><a class="anchor" id="index_p"></a>- p -</h3><ul>
 <li>partition()
 : <a class="el" href="group__utility.html#ga6532acbefa821b34144e864a81ba6c25">bud_utils.f90</a>
 </li>
+</ul>
+
+
+<h3><a class="anchor" id="index_r"></a>- r -</h3><ul>
 <li>realloc_tmpcol()
-: <a class="el" href="bud__SM__CSR_8f90.html#af12d10079635ac7ebf2672a7aa06221c">bud_SM_CSR.f90</a>
-, <a class="el" href="bud__SM__CSR0_8f90.html#af12d10079635ac7ebf2672a7aa06221c">bud_SM_CSR0.f90</a>
-, <a class="el" href="bud__SM__CSR__C_8f90.html#af12d10079635ac7ebf2672a7aa06221c">bud_SM_CSR_C.f90</a>
+: <a class="el" href="bud__SM__CSR_8f90.html#aead538bba380c662ea7c0db38ed356cb">bud_SM_CSR.f90</a>
+, <a class="el" href="bud__SM__CSR0_8f90.html#aead538bba380c662ea7c0db38ed356cb">bud_SM_CSR0.f90</a>
+, <a class="el" href="bud__SM__CSR__C_8f90.html#aead538bba380c662ea7c0db38ed356cb">bud_SM_CSR_C.f90</a>
+, <a class="el" href="bud__SM__CSR0_8f90.html#aead538bba380c662ea7c0db38ed356cb">bud_SM_CSR0.f90</a>
+, <a class="el" href="bud__SM__CSR__C_8f90.html#aead538bba380c662ea7c0db38ed356cb">bud_SM_CSR_C.f90</a>
 </li>
+<li>realloc_tmprow()
+: <a class="el" href="bud__SM__CSC_8f90.html#a3861a86fa8e97d9209731e2038cb663f">bud_SM_CSC.f90</a>
+, <a class="el" href="bud__SM__CSC0_8f90.html#a3861a86fa8e97d9209731e2038cb663f">bud_SM_CSC0.f90</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_s"></a>- s -</h3><ul>
 <li>siftdown()
 : <a class="el" href="group__utility.html#ga0ac7a2a437f78293a0292106ed10b80d">bud_utils.f90</a>
 </li>
@@ -125,7 +160,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 5 2016 09:53:21 for buds by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 6 2016 14:33:58 for buds by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>
