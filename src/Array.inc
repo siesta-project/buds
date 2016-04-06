@@ -29,6 +29,7 @@
   ! Common parameters and variables used
 # include "bud_common_declarations.inc"
 
+
   ! Determine the variable size
 #if BUD_DIM == 0
 #  define BUD_DIM_SPEC()
@@ -44,18 +45,38 @@
 #  error "bud_Array: Does not handle array sizes larger than 4"
 #endif
 
-  !> @bud variable
+  
+  !> Array data type
   !!
-  !! Handler for the array type stored
+  !! This data type contains the reference counted
+  !! array.
   type BUD_TYPE_NAME
+
+    !> @cond BUD_DEVELOPER
+    
     !> Stored pointer which contains the reference counting etc.
     type(BUD_TYPE_NAME_), pointer :: D => null()
+
+    !> @endcond BUD_DEVELOPER
 
 #if BUD_FORTRAN >= 2003
   contains
 #   include "bud_common_type.inc"
 
-    
+    procedure, private :: new_dim_
+    procedure, private :: new_copy_
+    !> @iSee new
+    generic, public :: new => new_dim_, new_copy_
+
+    !> @iSee #arrayp
+    procedure, public :: arrayp => get_arrayp_
+
+    !> @iSee #size
+    procedure, public :: size => size_
+
+    !> @iSee #init_array
+    procedure, public :: init_array => init_array_
+
 #endif
   end type BUD_TYPE_NAME
 
@@ -80,14 +101,25 @@
   end type BUD_TYPE_NAME_
 
   !> @endcond BUD_DEVELOPER
-  
-  !> Create new @bud instances
+
+  !> Create a new BUD_TYPE_NAME.
+  !!
+  !! This allocates the array in the @bud.
+  !!
+  !! The dimensions of the contained array may be
+  !! explicitly passed, or an array may be passed
+  !! which will be copied to the contained array.
+  !!
+  !! @note
+  !! If the array is created from dimensions, the initial
+  !! value of the array is arbitrary.
   interface new
     module procedure new_dim_
     module procedure new_copy_
   end interface
   public :: new
-  !> Create new @bud instances
+  
+  !> @iSee #new
   interface BUD_TYPE_NEW
     module procedure new_dim_
     module procedure new_copy_
@@ -95,39 +127,59 @@
   public :: BUD_TYPE_NEW
 
 
-  !> Retrieve pointer/value to/in the stored array
+  !> Retrieve pointer to array in the @bud
   !!
-  !! With a `=>` a pointer to the stored array is returned.
-  !! With an indexed call the value in the specific array
-  !! at that index is returned.
+  !! The array-pointer will _always_ be contiguous.
   !!
   !! @note
-  !! For excessive access to the array one should retrieve
-  !! a pointer, and then access the elements in that array.
-  interface valuep
+  !! Do not deallocate the array-pointer.
+  interface arrayp
     module procedure get_arrayp_
   end interface
-  public :: valuep
-
-  interface value
-    module procedure get_array_idx_
-  end interface
-  public :: value
+  public :: arrayp
 
 
-  !> Number of elements is the stored array (same as regular `size`)
+  ! We do not support this as it should never
+  ! be used as such...
+!!$  interface value
+!!$    module procedure get_array_idx_
+!!$  end interface
+!!$  public :: value
+
+
+  !> Query dimension of array (or total size)
+  !!
+  !! Returns the size of the array contained.
+  !!
+  !! @note
+  !! There is no checking of the dimension queried.
+  !!
+  !! This is equivalent to:
+  !! \code{.f90}
+  !! a => arrayp(this)
+  !! ... = size(a [,dim=])
+  !! \endcode
   interface size
     module procedure size_
   end interface
   public :: size
 
-  !> Initialize all values in the array to a specific value
+  !> Initialize array values to a specific value.
+  !!
+  !! All elements of the array will sub-sequently have
+  !! the supplied value.
   interface init_array
     module procedure init_array_
   end interface
   public :: init_array
   
-  !> Print information about the @bud
+  !> Print, to std-out, some basic information of the data-container
+  !!
+  !! Print out XML-like information regarding the data-container.
+  !!
+  !! @wanted
+  !! Retrieval function of the string that represents the data.
+  !! This will enable the parent program to show it in the way it wants.
   interface print
     module procedure print_
   end interface
@@ -156,12 +208,7 @@
     
   end subroutine delete_data
 
-  !> Create new BUD_TYPE_NAME via dimension sizes.
-  !!
-  !! Initializes a new type container from the specified
-  !! size in the call.
-  !!
-  !! @param[inout] this the @bud
+  !> @param[inout] this array @bud
   !! @param[in] d1 size of the internal reference counted array (dim=1)
 #if BUD_DIM > 1
   !! @param[in] d2 size of the internal reference counted array (dim=2)
@@ -223,16 +270,8 @@
   end subroutine new_dim_
 
 
-  !> Create new BUD_TYPE_NAME by coping another array.
-  !!
-  !! Initializes a new type container from a copy of another
-  !! array.
-  !!
-  !! The output data container will have the same
-  !! size as the value array.
-  !!
-  !! @param[inout] this @bud container
-  !! @param[in] array array to dublicate in `this`
+  !> @param[inout] this array @bud
+  !! @param[in] array array to dublicate in `this` (dimensions _and_ values)
   subroutine new_copy_(this, array)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 #ifdef BUD_TYPE_VAR_PREC
@@ -279,19 +318,14 @@
   end subroutine new_copy_
 
 
-  !> Retrieve pointer to data array in @bud
-  !!
-  !! Returns a pointer to the data-array that resides in
-  !! the @bud.
-  !!
-  !! @param[in] this the containing @bud
-  !! @return a pointer to the data
+  !> @param[in] this array @bud
+  !! @return a pointer to the data (contiguous)
   function get_arrayp_(this) result(p)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
 #ifdef BUD_TYPE_VAR_PREC
-    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer :: p BUD_DIM_SPEC()
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer, contiguous :: p BUD_DIM_SPEC()
 #else
-    BUD_TYPE_VAR, pointer :: p BUD_DIM_SPEC()
+    BUD_TYPE_VAR, pointer, contiguous :: p BUD_DIM_SPEC()
 #endif
 
     p => this%D%array
@@ -299,16 +333,7 @@
   end function get_arrayp_
 
 
-  !> Retrieve value in specific index of data array in the container
-  !!
-  !! Returns a value in the data container from a specific index.
-  !!
-  !! @dev_note
-  !! This routine should be avoided for extensive retrieval
-  !! of data is required.
-  !! It may do bounds-check.
-  !!
-  !! @param[in] this the containing @bud
+  !> @param[in] this the containing @bud
   !! @param[in] i1 index in the array
 #if BUD_DIM > 1
   !! @param[in] i2 index in the array
@@ -360,14 +385,7 @@
   end function get_array_idx_
 
 
-  !> Query size of array
-  !!
-  !! Returns the size of the array contained.
-  !!
-  !! @note
-  !! There is no checking of the dimension queried.
-  !!
-  !! @param[in] this @bud container
+  !> @param[in] this @bud container
   !! @param[in] dim @opt=@null along the specified dimension
   !! @return the size of the contained array
   pure function size_(this, dim) result(d)
@@ -385,12 +403,9 @@
   end function size_
 
 
-  !> Initialize the array in @bud to a specific value.
-  !!
-  !! Set all array elements to a specific value.
-  !!
-  !! @param[in] this @bud containing the array
-  !! @param[in] v value to set all elements equal to
+  !> @param[in] this array @bud
+  !! @param[in] v all elements of the contained array will be
+  !!              equal to `v` after the call
   subroutine init_array_(this, v)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 #ifdef BUD_TYPE_VAR_PREC
@@ -406,15 +421,7 @@
   end subroutine init_array_
 
 
-  !> Print, to std-out, some basic information of the data-container
-  !!
-  !! Print out XML-like information regarding the data-container.
-  !!
-  !! @wanted
-  !! Retrieval function of the string that represents the data.
-  !! This will enable the parent program to show it in the way it wants.
-  !!
-  !! @param[in] this data type
+  !> @param[in] this array @bud
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
   subroutine print_(this, info, indent)
@@ -478,6 +485,7 @@
 
   end subroutine print_
 
+  
   ! Local pre-processor variables that
   ! undefine the variables that are not needed anymore.
 #undef BUD_MOD_NAME
@@ -488,6 +496,7 @@
 #undef BUD_TYPE_VAR
 #undef BUD_TYPE_VAR_PREC
 
+  
 ! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings

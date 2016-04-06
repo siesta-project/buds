@@ -44,7 +44,7 @@
   ! We force `delete_data` to be private.
   ! This will prohibit a mistaken public designation of the
   ! routine.
-  !> Internal routine for clearing the data container in the @bud
+  ! Internal routine for clearing the data container in the @bud
   private :: delete_data
 
   !> Assignment of @bud to another @bud
@@ -102,7 +102,7 @@
   end interface
   public :: is_same
 
-  !> @iSee is_same
+  !> @iSee #is_same
   interface same
     module procedure is_same_
   end interface
@@ -150,7 +150,7 @@
   end interface
   public :: references
 
-  !> @iSee references
+  !> @iSee #references
   interface refs
     module procedure references_
   end interface
