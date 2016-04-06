@@ -43,7 +43,7 @@
 !! This sparsity pattern is constructed to conform with the
 !! MKL Sparse BLAS library.
 !! The sparsity pattern is 1-based and is the 3-array variant
-!! of the CSR format. The 3-array variant can be used in the
+!! of the CSC format. The 3-array variant can be used in the
 !! 4-array input without changing any array elements and/or
 !! extra memory allocation.
 !! To be compatible with the MKL Sparse BLAS library the
