@@ -154,6 +154,39 @@ $(SRC_DIR)/bud_SM_CSC0.f90: $(SRC_DIR)/SM_CSC0.F90
 	$(CPP) $(INC) $(CPPFLAGS) $< > $@
 
 
+SM_AR_OBJS = \
+	bud_SM_CSR_Array1D.o \
+	bud_SM_CSR_Array2D.o \
+	bud_SM_CSR0_Array1D.o \
+	bud_SM_CSR0_Array2D.o \
+	bud_SM_CSR_C_Array1D.o \
+	bud_SM_CSR_C_Array2D.o
+SM_AR_OBJS := $(addprefix $(SRC_DIR)/,$(SM_AR_OBJS))
+$(SM_OBJS): $(SM_OBJS) $(ARRAY_OBJS)
+SRC_OBJS += $(SM_AR_OBJS)
+$(SRC_DIR)/bud_SM_CSR_Array1D.f90: $(SRC_DIR)/SM_CSR_Array1D.F90
+	$(CPP) $(INC) $(CPPFLAGS) $< > $@
+$(SRC_DIR)/bud_SM_CSR_Array2D.f90: _TMP_FILE=$(SRC_DIR)/SM_CSR_Array2D.F90
+$(SRC_DIR)/bud_SM_CSR_Array2D.f90: $(SRC_DIR)/SM_CSR_Array1D.F90
+	@rm -f $(_TMP_FILE)
+	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/2D/g' $(SRC_DIR)/SM_CSR_Array1D.F90 >> $(_TMP_FILE)
+	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
+$(SRC_DIR)/bud_SM_CSR0_Array1D.f90: $(SRC_DIR)/SM_CSR0_Array1D.F90
+	$(CPP) $(INC) $(CPPFLAGS) $< > $@
+$(SRC_DIR)/bud_SM_CSR0_Array2D.f90: _TMP_FILE=$(SRC_DIR)/SM_CSR0_Array2D.F90
+$(SRC_DIR)/bud_SM_CSR0_Array2D.f90: $(SRC_DIR)/SM_CSR0_Array1D.F90
+	@rm -f $(_TMP_FILE)
+	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/2D/g' $(SRC_DIR)/SM_CSR0_Array1D.F90 >> $(_TMP_FILE)
+	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
+$(SRC_DIR)/bud_SM_CSR_C_Array1D.f90: $(SRC_DIR)/SM_CSR_C_Array1D.F90
+	$(CPP) $(INC) $(CPPFLAGS) $< > $@
+$(SRC_DIR)/bud_SM_CSR_C_Array2D.f90: _TMP_FILE=$(SRC_DIR)/SM_CSR_C_Array2D.F90
+$(SRC_DIR)/bud_SM_CSR_C_Array2D.f90: $(SRC_DIR)/SM_CSR_C_Array1D.F90
+	@rm -f $(_TMP_FILE)
+	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/2D/g' $(SRC_DIR)/SM_CSR_C_Array1D.F90 >> $(_TMP_FILE)
+	$(CPP) $(INC) $(CPPFLAGS) $(_TMP_FILE) > $@
+
+
 FILE_OBJS = \
 	bud_File.o
 FILE_OBJS := $(addprefix $(SRC_DIR)/,$(FILE_OBJS))
