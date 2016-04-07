@@ -83,8 +83,24 @@
   contains
 #   include "bud_common_type.inc"
 
+    !> @name Private procedures
+    !> @{
+    ! Doxygen needed line
+
     procedure, private :: new_
     procedure, private :: new_data_
+
+    procedure, private :: set_data_
+    procedure, private :: set_data_idx_
+    
+    procedure, private :: add_node_
+    procedure, private :: add_node_data_
+
+    procedure, private :: itt_step_
+    procedure, private :: itt_step_i_
+
+    !>>@}
+
     !> @iSee new
     generic, public :: new => new_, new_data_
 
@@ -93,8 +109,6 @@
     !> @iSee #nodes
     procedure, public :: size => size_llist_
 
-    procedure, private :: set_data_
-    procedure, private :: set_data_idx_
     !> @iSee #set_data
     generic, public :: set_data => set_data_, set_data_idx_
     !> @iSee #set_data
@@ -106,8 +120,6 @@
     !> @iSee #get_data
     procedure, public :: get => get_node_data_idx_
 
-    procedure, private :: add_node_
-    procedure, private :: add_node_data_
     !> @iSee #add_node
     generic, public :: add_node => add_node_, add_node_data_
 
@@ -124,8 +136,6 @@
     !> @iSee #copy_list
     procedure, public :: copy => copy_list_
 
-    procedure, private :: itt_step_
-    procedure, private :: itt_step_i_
     !> @iSee #itt_step
     generic, public :: itt_step => itt_step_, itt_step_i_
     

@@ -204,8 +204,15 @@
   contains
 #   include "bud_common_type.inc"
 
+    !> @name Private procedures
+    !> @{
+    ! Doxygen needed line
+
     procedure, private :: new_ => new_
     procedure, private :: new_data_ => new_data_
+
+    !>>@}
+
     !> @iSee #new
     generic, public :: new => new_, new_data_
 
