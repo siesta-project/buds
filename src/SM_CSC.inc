@@ -632,6 +632,8 @@
       
     end if
 
+    !> @cond BUD_DEVELOPER
+
   contains
 
     ! Reallocate the temporary row indices in
@@ -645,6 +647,8 @@
         allocate(tmprow(n))
       end if
     end subroutine realloc_tmprow
+    
+    !> @endcond BUD_DEVELOPER
     
   end subroutine fold_row_only
 

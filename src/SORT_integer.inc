@@ -64,7 +64,7 @@ pure subroutine BUD_CC2(sort_ps_,BUD_PREC)(n, array, sarray)
 
     end if
   end do sort_loop
-
+!> @cond BUD_DEVELOPER
 contains
 
   pure subroutine insert_mid(n,array,sarray,sF,sA,P)
@@ -192,6 +192,8 @@ contains
 
   end subroutine insert_back
 
+!> @endcond BUD_DEVELOPER
+
 end subroutine
 
 
@@ -221,6 +223,7 @@ pure subroutine  BUD_CC2(sort_heap_,BUD_PREC)(n, array)
     call siftDown(n, array, 1_ BUD_PREC)
   end do
 
+!> @cond BUD_DEVELOPER
 contains
 
   ! Reorders to place in tree
@@ -259,6 +262,7 @@ contains
     end do
 
   end subroutine siftDown
+!> @endcond BUD_DEVELOPER
 
 end subroutine
 
@@ -294,6 +298,7 @@ pure subroutine  BUD_CC2(sort_heap_idx_,BUD_PREC)(n, array, pvt)
     call siftDown(n, array, pvt, 1_ BUD_PREC)
   end do
 
+!> @cond BUD_DEVELOPER
 contains
 
   pure subroutine siftDown( n, array, pvt, person )
@@ -330,7 +335,8 @@ contains
     end do
     
   end subroutine siftDown
-  
+!> @endcond BUD_DEVELOPER
+
 end subroutine
 
 
@@ -352,6 +358,7 @@ recursive pure subroutine BUD_CC2(sort_quick_,BUD_PREC)(n, array)
   call BUD_CC2(sort_quick_,BUD_PREC)(div-one, array(1))
   call BUD_CC2(sort_quick_,BUD_PREC)(n-div+one, array(div))
   
+!> @cond BUD_DEVELOPER
 contains
 
   ! Partition an array by swapping
@@ -418,7 +425,8 @@ contains
     end do
     
   end subroutine partition
-  
+!> @endcond BUD_DEVELOPER
+
 end subroutine
 
 !> @param[in] n size of array to sort
@@ -443,6 +451,7 @@ pure subroutine BUD_CC2(sort_quick_idx_,BUD_PREC)(n, array, pvt)
   ! call actual algorithm
   call BUD_FIND_LOCAL (n, array, n, pvt)
 
+!> @cond BUD_DEVELOPER
 contains
   
   recursive pure subroutine BUD_FIND_LOCAL (n, array, m, pvt)
@@ -531,7 +540,8 @@ contains
     end do
     
   end subroutine partition
-  
+!> @endcond BUD_DEVELOPER
+
 end subroutine
 
 

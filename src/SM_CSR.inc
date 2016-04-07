@@ -732,6 +732,7 @@
       
     end if
 
+    !> @cond BUD_DEVELOPER
   contains
 
     ! Reallocate the temporary column indices in
@@ -745,6 +746,8 @@
         allocate(tmpcol(n))
       end if
     end subroutine realloc_tmpcol
+
+    !> @endcond BUD_DEVELOPER
     
   end subroutine fold_col_only
 
