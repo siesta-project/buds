@@ -19,7 +19,15 @@ _cwd=`pwd`
 # Get latest tag version on master
 tag=`git describe --abbrev=1`
 doc_version=${tag%-*}
-doc_version=${doc_version//-/+}
+# Retrieve end
+end=${doc_version#*-}
+tar_version=${doc_version%%-*}
+if [[ -z "$end" ]]; then
+    doc_version=$tar_version
+else
+    doc_version="$tar_version (+$end)"
+fi
+unset end
 
 
 if [[ $(dirname $_sd) != $_cwd ]]; then
@@ -84,6 +92,8 @@ pushd $_DOC
 
 # Insert the version string in the version
 sed -i -e "s/BUDS_VERSION/$doc_version/g" html/index.html
+# This reflects the DOWNLOAD.md file
+sed -i -e "s/BUDS_VERSION/$tar_version/g" html/download.html
 
 # if we have optipng we optimize the PNG's
 # to reduce webpage size.
