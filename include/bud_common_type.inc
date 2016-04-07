@@ -4,6 +4,12 @@
   ! This adds all OO routines 
   
 #if BUD_FORTRAN >= 2003
+
+  !> @name Intrinsic @bud procedures
+  !! These procedures are common for nearly all
+  !! @buds.
+  !>@{
+  ! needed comment to separate the next interface
   
 # ifndef BUD_NO_DELETE
   !> @iSee delete
@@ -37,6 +43,8 @@
   !> @iSee print
   procedure, public :: print => print_
 # endif
+
+  !>>@}
 
 #endif
 

@@ -41,11 +41,17 @@
   public :: BUD_TYPE_NAME
   private :: BUD_TYPE_NAME_
 
+  !> @name Intrinsic @bud routines
+  !! These routines are common for nearly all @buds.
+  !>@{
+  ! needed comment
+
   ! We force `delete_data` to be private.
   ! This will prohibit a mistaken public designation of the
   ! routine.
   ! Internal routine for clearing the data container in the @bud
   private :: delete_data
+
 
   !> Assignment of @bud to another @bud
   !!
@@ -156,6 +162,8 @@
   end interface
   public :: refs
 
+  !>>@}
+
   !> @cond ALWAYS_SKIP
 
 #if defined(BUD_ERROR)
@@ -172,10 +180,17 @@
 # endif
 #endif
 
+
 contains
 
+  
   ! contains in non-modules freak doxygen out...
   !> @endcond ALWAYS_SKIP
+
+  !> @name Intrinsic @bud routines
+  !! Generic routines for all @buds
+  !>@{
+  ! needed comment to separate the next interface
 
   !> @param[inout] this @bud that is initialized
   subroutine initialize_(this)
@@ -230,6 +245,7 @@ contains
     
   end function is_same_
 
+  
 #ifndef BUD_NO_DELETE
   
   !> @param[inout] this returned @bud is un-initialized with no data associated
@@ -357,6 +373,8 @@ contains
   !> @}
 
   !> @endcond BUD_DOC_INC
+
+  !>>@}
 
   
 ! project-bud -- local file settings
