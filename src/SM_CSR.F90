@@ -3,7 +3,7 @@
 ! Get default commands
 #include "bud_utils.inc"
 
-!> @addtogroup sm Sparse matrix
+!> @addtogroup sm Sparse pattern
 !! @ingroup bud-intrinsic
 !!
 !! @{
