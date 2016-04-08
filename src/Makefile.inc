@@ -150,7 +150,7 @@ SM_AR_OBJS = \
 	bud_SM_CSR_C_Array1D.o \
 	bud_SM_CSR_C_Array2D.o
 SM_AR_OBJS := $(addprefix $(SRC_DIR)/,$(SM_AR_OBJS))
-$(SM_OBJS): $(SM_OBJS) $(ARRAY_OBJS)
+$(SM_AR_OBJS): $(SM_OBJS) $(ARRAY_OBJS)
 SRC_OBJS += $(SM_AR_OBJS)
 $(SRC_DIR)/bud_SM_CSR_Array1D.f90: $(SRC_DIR)/SM_CSR_Array1D.F90
 	$(CPP) $(INC) $(CPPFLAGS) $< > $@

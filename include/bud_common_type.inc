@@ -46,6 +46,11 @@
 
   !>>@}
 
+#ifdef BUD_INCLUDE_TYPE
+#   include BUD_INCLUDE_TYPE
+#endif
+
+
 #endif
 
   

@@ -31,17 +31,7 @@
 
 
   ! Determine the variable size
-#if BUD_DIM == 0
-#  define BUD_DIM_SPEC()
-#elif BUD_DIM == 1
-#  define BUD_DIM_SPEC() (:)
-#elif BUD_DIM == 2
-#  define BUD_DIM_SPEC() (:,:)
-#elif BUD_DIM == 3
-#  define BUD_DIM_SPEC() (:,:,:)
-#elif BUD_DIM == 4
-#  define BUD_DIM_SPEC() (:,:,:,:)
-#else
+#if BUD_DIM > 4
 #  error "bud_Array: Does not handle array sizes larger than 4"
 #endif
 
@@ -63,8 +53,15 @@
   contains
 #   include "bud_common_type.inc"
 
+    !> @name Private procedures
+    !> @{
+    ! Doxygen needed line
+    
     procedure, private :: new_dim_
     procedure, private :: new_copy_
+
+    !>>@}
+    
     !> @iSee new
     generic, public :: new => new_dim_, new_copy_
 
@@ -488,14 +485,12 @@
   
   ! Local pre-processor variables that
   ! undefine the variables that are not needed anymore.
-#undef BUD_MOD_NAME
-#undef BUD_TYPE_NAME
-#undef BUD_TYPE_NAME_
-#undef BUD_TYPE_NAME_STR
 #undef BUD_TYPE_NEW
 #undef BUD_TYPE_VAR
 #undef BUD_TYPE_VAR_PREC
 
+#include "bud_cleanup.inc"
+  
   
 ! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts

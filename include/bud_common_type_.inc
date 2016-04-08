@@ -2,6 +2,10 @@
 
   ! Simple type for inclusion in the type scopes.
 
+#ifdef BUD_INCLUDE_TYPE_
+#   include BUD_INCLUDE_TYPE_
+#endif
+
   !> @cond BUD_DEVELOPER
   
   !> Reference counter for @bud

@@ -110,10 +110,27 @@
   !> @}
 
   !> @endcond BUD_DOC_INC
-
+  
 #endif
 
+  ! Check that the DIM_SPEC has not been specified
+#if defined(BUD_DIM) && ! defined(BUD_DIM_SPEC)
+# if BUD_DIM == 0
+#  define BUD_DIM_SPEC()
+# elif BUD_DIM == 1
+#  define BUD_DIM_SPEC() (:)
+# elif BUD_DIM == 2
+#  define BUD_DIM_SPEC() (:,:)
+# elif BUD_DIM == 3
+#  define BUD_DIM_SPEC() (:,:,:)
+# elif BUD_DIM == 4
+#  define BUD_DIM_SPEC() (:,:,:,:)
+# elif BUD_DIM == 5
+#  define BUD_DIM_SPEC() (:,:,:,:,:)
+# endif
+#endif
 
+  
   ! project-bud -- local file settings
   !     Anything below this line may be overwritten by scripts
   !     Below are non-editable settings

@@ -741,19 +741,6 @@
   end subroutine print_
 
 
-#undef BUD_MOD_NAME
-#undef BUD_TYPE_NAME
-#undef BUD_TYPE_NAME_
-#undef BUD_TYPE_NAME_STR
-#undef BUD_TYPE_NEW
-#undef BUD_COLL_1
-#undef BUD_COLL_2
-#undef BUD_COLL_3
-#undef BUD_COLL_4
-#undef BUD_COLL_5
-#undef BUD_COLL_6
-#undef BUD_COLL_ALL_SAME
-
   ! project-bud -- local file settings
   !     Anything below this line may be overwritten by scripts
   !     Below are non-editable settings

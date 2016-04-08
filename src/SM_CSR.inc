@@ -1043,6 +1043,8 @@
 #undef BUD_SM_INTEROP_C
 #undef BUD_SM_MOD
 
+#include "bud_cleanup.inc"
+  
   
 ! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts
