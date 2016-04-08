@@ -1,6 +1,6 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
 
-# define BUD_INCLUDE_TYPE_ "C_SM_Array_type_.inc"
+# define BUD_INCLUDE_TYPE_ "SM_Array_type_.inc"
 
   !> Retrieve pointer to array in the sparse matrix
   !!
@@ -31,7 +31,7 @@
     module procedure get_elem2_
   end interface
 
-  !> Retrieve a pointer to the array @bud
+  !> Retrieve a pointer to the array @bud (not values)
   interface get_arrayp
     module procedure get_elem2p_
   end interface

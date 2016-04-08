@@ -71,7 +71,7 @@ module BUD_MOD_NAME
 #undef BUD_TYPE_VAR_PREC
 # define BUD_COLL_1 BUD_CC2(BUD_TYPE,iSM_CSR)
 # define BUD_COLL_2 BUD_CC2(BUD_TYPE,bArray1D)
-#include "C_SM_Array.inc"
+#include "SM_Array.inc"
 end module
 !> @}
 
@@ -91,7 +91,7 @@ module BUD_MOD_NAME
 # define BUD_TYPE_VAR_PREC rr_
 # define BUD_COLL_1 BUD_CC2(BUD_TYPE,iSM_CSR)
 # define BUD_COLL_2 BUD_CC2(BUD_TYPE,rArray1D)
-#include "C_SM_Array.inc"
+#include "SM_Array.inc"
 end module
 !> @}
 
@@ -111,7 +111,7 @@ module BUD_MOD_NAME
 # define BUD_TYPE_VAR_PREC rd_
 # define BUD_COLL_1 BUD_CC2(BUD_TYPE,iSM_CSR)
 # define BUD_COLL_2 BUD_CC2(BUD_TYPE,dArray1D)
-#include "C_SM_Array.inc"
+#include "SM_Array.inc"
 end module
 !> @}
 
@@ -132,7 +132,7 @@ module BUD_MOD_NAME
 # define BUD_TYPE_VAR_PREC rr_
 # define BUD_COLL_1 BUD_CC2(BUD_TYPE,iSM_CSR)
 # define BUD_COLL_2 BUD_CC2(BUD_TYPE,cArray1D)
-#include "C_SM_Array.inc"
+#include "SM_Array.inc"
 end module
 !> @}
 
@@ -152,7 +152,7 @@ module BUD_MOD_NAME
 # define BUD_TYPE_VAR_PREC rd_
 # define BUD_COLL_1 BUD_CC2(BUD_TYPE,iSM_CSR)
 # define BUD_COLL_2 BUD_CC2(BUD_TYPE,zArray1D)
-#include "C_SM_Array.inc"
+#include "SM_Array.inc"
 end module
 !> @}
 
