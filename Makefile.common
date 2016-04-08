@@ -15,12 +15,12 @@ _OCT_rwx_rx_rx = 755
 # to be unitialized
 # This will enable the vendor setup using
 # a default vendor
-undefine CC
-undefine FC
-undefine CXX
-undefine MPICC
-undefine MPIFC
-undefine MPICXX
+unexport CC
+unexport FC
+unexport CXX
+unexport MPICC
+unexport MPIFC
+unexport MPICXX
 
 define _NL
 
