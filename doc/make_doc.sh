@@ -63,9 +63,16 @@ if [[ -n "$_fail" ]]; then
     exit 1
 fi
 
+mkdir -p doc/images
+
 # Check whether we should use dot
 if [[ $(have_exe dot) -eq 0 ]]; then
     have_dot="HAVE_DOT = YES"
+
+    # Make sure we create all custom graphs for
+    # dependency graphs
+    dot -Tpng include/buds_include.dot > doc/images/buds_include.png
+    
 else
     have_dot="HAVE_DOT = NO"
 fi

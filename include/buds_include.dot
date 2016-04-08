@@ -1,0 +1,76 @@
+##Command to produce the output: "dot -Tpng thisfile > thisfile.png"
+
+digraph budsInclude {
+	graph [fontname = "helvetica", fontsize=8];
+	node [fontname = "helvetica", fontsize=8];
+	compound=true;
+	remincross=true;
+	overlap=false;
+
+subgraph cluster_utils {
+	style=filled;
+	color=lightgray;
+	label="bud_utils.inc";
+	
+	# Here comes the actual dependency graph
+	subgraph cluster_common {
+		style=filled;
+		color=aliceblue;
+		
+		node [shape=record];
+		bud [label="<common> bud_common.inc
+			 |<common_declarations> bud_common_declarations.inc
+			 |{<common_type> bud_common_type.inc
+				 |<common_type_> bud_common_type_.inc
+				 }"];
+		
+		// node [shape=oval, color=green];
+		// common[label="bud_common.inc"];
+		// common_declarations[label="bud_common_declarations.inc"];
+		// common_type[label="bud_common_type.inc"];
+		// common_type_[label="bud_common_type_.inc"];
+		
+		// common -> common_declarations -> common_type -> common_type_ [style=invis];
+
+		label="common*.inc";
+	}
+
+node [shape=oval];
+fstack[label="bud_fstack.inc"];
+
+coll[label="bud_coll.inc"];
+
+item[label="bud_item.inc"];
+
+llist[label="bud_llist.inc"];
+
+coll_elem[label="bud_coll_elem.inc"];
+
+
+# Collection
+bud -> coll [ltail=cluster_common];
+coll_elem -> coll;
+
+# Fstack
+bud -> fstack [ltail=cluster_common];
+
+# Item
+bud -> item [ltail=cluster_common];
+
+# Linked list
+bud -> llist [ltail=cluster_common];
+
+}
+
+# defined variables (included)
+node [shape=egg];
+def_type[label=<BUD_INCLUDE_TYPE<BR /><FONT POINT-SIZE="7">User defined</FONT>>];
+def_type_[label=<BUD_INCLUDE_TYPE_<BR /><FONT POINT-SIZE="7">User defined</FONT>>];
+
+bud:common_type -> def_type;
+
+bud:common_type_ -> def_type_;
+
+# Alignment control
+def_type -> def_type_ [style=invis];
+}
