@@ -108,7 +108,7 @@
   end interface
   public :: is_same
 
-  !> @iSee #is_same
+  !> @iSee is_same
   interface same
     module procedure is_same_
   end interface
@@ -156,7 +156,7 @@
   end interface
   public :: references
 
-  !> @iSee #references
+  !> @iSee references
   interface refs
     module procedure references_
   end interface

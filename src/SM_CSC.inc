@@ -162,7 +162,7 @@
   end interface
   public :: new
   
-  !> @iSee #new
+  !> @iSee new
   interface BUD_TYPE_NEW
     module procedure new_dim_
     module procedure new_copy_
