@@ -58,7 +58,7 @@
 !! @{
 module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iSM_CSC)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,iSM_CSC)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,SM_CSC)
 # define BUD_TYPE_VAR integer
 # define BUD_TYPE_VAR_PREC ii_
 # define BUD_SM_CSC 0
@@ -72,7 +72,7 @@ end module
 !! @{
 module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,lSM_CSC)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,lSM_CSC)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,SM_CSC)
 # define BUD_TYPE_VAR integer
 # define BUD_TYPE_VAR_PREC il_
 # define BUD_SM_CSC 0

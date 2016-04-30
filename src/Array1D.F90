@@ -33,7 +33,7 @@
 !! @{
 module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,bArray1D)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,bArray1D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,Array)
 # define BUD_TYPE_VAR logical
 #undef BUD_TYPE_VAR_PREC
 #include "Array.inc"
@@ -46,7 +46,7 @@ end module
 !! @{
 module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,sArray1D)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,sArray1D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,Array)
 # define BUD_TYPE_VAR integer
 # define BUD_TYPE_VAR_PREC is_
 #include "Array.inc"
@@ -59,7 +59,7 @@ end module
 !! @{
 module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iArray1D)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,iArray1D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,Array)
 # define BUD_TYPE_VAR integer
 # define BUD_TYPE_VAR_PREC ii_
 #include "Array.inc"
@@ -72,7 +72,7 @@ end module
 !! @{
 module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,lArray1D)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,lArray1D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,Array)
 # define BUD_TYPE_VAR integer
 # define BUD_TYPE_VAR_PREC il_
 #include "Array.inc"
@@ -85,7 +85,7 @@ end module
 !! @{
 module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,rArray1D)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,rArray1D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,Array)
 # define BUD_TYPE_VAR real
 # define BUD_TYPE_VAR_PREC rr_
 #include "Array.inc"
@@ -98,7 +98,7 @@ end module
 !! @{
 module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,dArray1D)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,dArray1D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,Array)
 # define BUD_TYPE_VAR real
 # define BUD_TYPE_VAR_PREC rd_
 #include "Array.inc"
@@ -111,7 +111,7 @@ end module
 !! @{
 module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,cArray1D)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,cArray1D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,Array)
 # define BUD_TYPE_VAR complex
 # define BUD_TYPE_VAR_PREC rr_
 #include "Array.inc"
@@ -124,7 +124,7 @@ end module
 !! @{
 module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,zArray1D)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,zArray1D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,Array)
 # define BUD_TYPE_VAR complex
 # define BUD_TYPE_VAR_PREC rd_
 #include "Array.inc"

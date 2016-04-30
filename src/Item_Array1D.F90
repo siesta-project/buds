@@ -28,7 +28,7 @@
 module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,sArray1D)
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,Item_,sArray1D)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_Item_,sArray1D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_Item_,Array)
 # define BUD_ITEM_TYPE BUD_CC2(BUD_TYPE,sArray1D)
 #include "Item_Array.inc"
 end module
@@ -41,7 +41,7 @@ end module
 module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,iArray1D)
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,Item_,iArray1D)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_Item_,iArray1D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_Item_,Array)
 # define BUD_ITEM_TYPE BUD_CC2(BUD_TYPE,iArray1D)
 #include "Item_Array.inc"
 end module
@@ -54,7 +54,7 @@ end module
 module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,lArray1D)
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,Item_,lArray1D)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_Item_,lArray1D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_Item_,Array)
 # define BUD_ITEM_TYPE BUD_CC2(BUD_TYPE,lArray1D)
 #include "Item_Array.inc"
 end module
@@ -67,7 +67,7 @@ end module
 module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,rArray1D)
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,Item_,rArray1D)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_Item_,rArray1D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_Item_,Array)
 # define BUD_ITEM_TYPE BUD_CC2(BUD_TYPE,rArray1D)
 #include "Item_Array.inc"
 end module
@@ -80,7 +80,7 @@ end module
 module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,dArray1D)
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,Item_,dArray1D)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_Item_,dArray1D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_Item_,Array)
 # define BUD_ITEM_TYPE BUD_CC2(BUD_TYPE,dArray1D)
 #include "Item_Array.inc"
 end module
@@ -93,7 +93,7 @@ end module
 module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,cArray1D)
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,Item_,cArray1D)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_Item_,cArray1D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_Item_,Array)
 # define BUD_ITEM_TYPE BUD_CC2(BUD_TYPE,cArray1D)
 #include "Item_Array.inc"
 end module
@@ -106,7 +106,7 @@ end module
 module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,zArray1D)
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,Item_,zArray1D)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_Item_,zArray1D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_Item_,Array)
 # define BUD_ITEM_TYPE BUD_CC2(BUD_TYPE,zArray1D)
 #include "Item_Array.inc"
 end module

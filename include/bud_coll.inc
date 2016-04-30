@@ -76,94 +76,14 @@
 
   !> @endcond BUD_DOC_INC
 
-  ! Here we check whether all data collections are the same
-  ! If they are all different one may perform assignments
-  ! without problems
-#undef BUD_COLL_SAME
-
-#if BUD_TYPE_NAME == BUD_COLL_1
-# define BUD_COLL_SAME 1
-#endif
-#if BUD_TYPE_NAME == BUD_COLL_2
-# define BUD_COLL_SAME 1
-#endif
-
-#if BUD_COLL_1 == BUD_COLL_2
-# define BUD_COLL_SAME 1
-#endif
-  
-#ifdef BUD_COLL_3
-# if BUD_TYPE_NAME == BUD_COLL_3
-#  define BUD_COLL_SAME 1
-# endif
-# if BUD_COLL_1 == BUD_COLL_3
-#  define BUD_COLL_SAME 1
-# endif
-# if BUD_COLL_2 == BUD_COLL_3
-#  define BUD_COLL_SAME 1
-# endif
-#endif
-
-#ifdef BUD_COLL_4
-# if BUD_TYPE_NAME == BUD_COLL_4
-#  define BUD_COLL_SAME 1
-# endif
-# if BUD_COLL_1 == BUD_COLL_4
-#  define BUD_COLL_SAME 1
-# endif
-# if BUD_COLL_2 == BUD_COLL_4
-#  define BUD_COLL_SAME 1
-# endif
-# if BUD_COLL_3 == BUD_COLL_4
-#  define BUD_COLL_SAME 1
-# endif
-#endif
-
-#ifdef BUD_COLL_5
-# if BUD_TYPE_NAME == BUD_COLL_5
-#  define BUD_COLL_SAME 1
-# endif
-# if BUD_COLL_1 == BUD_COLL_5
-#  define BUD_COLL_SAME 1
-# endif
-# if BUD_COLL_2 == BUD_COLL_5
-#  define BUD_COLL_SAME 1
-# endif
-# if BUD_COLL_3 == BUD_COLL_5
-#  define BUD_COLL_SAME 1
-# endif
-# if BUD_COLL_4 == BUD_COLL_5
-#  define BUD_COLL_SAME 1
-# endif
-#endif
-
-#ifdef BUD_COLL_6
-# if BUD_TYPE_NAME == BUD_COLL_6
-#  define BUD_COLL_SAME 1
-# endif
-# if BUD_COLL_1 == BUD_COLL_6
-#  define BUD_COLL_SAME 1
-# endif
-# if BUD_COLL_2 == BUD_COLL_6
-#  define BUD_COLL_SAME 1
-# endif
-# if BUD_COLL_3 == BUD_COLL_6
-#  define BUD_COLL_SAME 1
-# endif
-# if BUD_COLL_4 == BUD_COLL_6
-#  define BUD_COLL_SAME 1
-# endif
-# if BUD_COLL_5 == BUD_COLL_6
-#  define BUD_COLL_SAME 1
-# endif
-#endif
-
-  
+  ! There are no pre-processor string
+  ! comparisons CPP
+  ! Hence this _has_ to be supplied by the user.
 #ifndef BUD_COLL_SAME
 # define BUD_COLL_SAME 0
 #endif
 
-  
+
   !> Collection data type
   !!
   !! This collection contains these elements:
@@ -350,13 +270,15 @@
   end interface
   public :: new
 
-  !> @iSee #new
+  !> @iSee new
   interface BUD_TYPE_NEW
     module procedure new_
     module procedure new_data_
   end interface
   public :: BUD_TYPE_NEW
 
+
+  
 #if BUD_COLL_SAME == 0
   interface assignment(=)
     module procedure BUD_CC3(get_elem,1,_assign_)
@@ -560,10 +482,10 @@
   
   ! all default reference counted stuff
 # include "bud_common.inc"
-  
 
-  !> @cond BUD_DEVELOPER
   
+  !> @cond BUD_DEVELOPER
+
   pure subroutine delete_data(D)
     type(BUD_TYPE_NAME_), intent(inout) :: D
 
@@ -586,16 +508,6 @@
 
   !> @endcond BUD_DEVELOPER
 
-  
-  !> @param[inout] this initialize @bud with no data
-  subroutine new_(this)
-    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-
-    call initialize(this)
-
-    call tag_object_(this)
-    
-  end subroutine new_
 
   !> @param[inout] this new initialized @bud
   !! @param[in] A first element in the @bud
@@ -661,6 +573,17 @@
 #endif
     
   end subroutine new_data_
+
+  
+  !> @param[inout] this initialize @bud with no data
+  subroutine new_(this)
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    
+    call initialize(this)
+    
+    call tag_object_(this)
+    
+  end subroutine new_
 
 
   ! Create data-retrieval routines

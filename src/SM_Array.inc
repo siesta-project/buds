@@ -1,17 +1,18 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
 
+!# define BUD_INCLUDE_TYPE "SM_Array_type.inc"
 # define BUD_INCLUDE_TYPE_ "SM_Array_type_.inc"
 
-  !> Retrieve pointer to array in the sparse matrix
+  !> Retrieve pointer to values in the sparse matrix
   !!
   !! The array-pointer will _always_ be contiguous.
   !!
   !! @note
   !! Do not deallocate the array-pointer.
-  interface arrayp
-    module procedure get_arrayp_
+  interface matrixp
+    module procedure get_matrixp_
   end interface
-  public :: arrayp
+  public :: matrixp
 
   !> Retrieve pointer to the sparse pattern
   !!
@@ -42,7 +43,7 @@
 
   !> @param[in] this sparse matrix
   !! @return a pointer to the data (contiguous)
-  function get_arrayp_(this) result(p)
+  function get_matrixp_(this) result(p)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer, contiguous :: p BUD_DIM_SPEC()
@@ -52,8 +53,8 @@
     
     p => arrayp(this%D%e2)
     
-  end function get_arrayp_
-
+  end function get_matrixp_
+  
 #undef BUD_TYPE_NEW
 
   ! Associated with the Array

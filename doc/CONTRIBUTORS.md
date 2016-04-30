@@ -10,13 +10,16 @@ buds have been developed by the following list of people:
 	- Item
 	- Utils with sorting algorithms and search algorithms
   + Array
-  + C2_Array
-  + FS_Array
-  + Item_Array
-  + LL_Array
+    - C2_Array	
+    - FS_Array
+    - Item_Array
+    - LL_Array
   + SM_CSR
+    - SM_CSR_Array
   + SM_CSR_C
+    - SM_CSR_C_Array
   + SM_CSR0
+    - SM_CSR0_Array
 
 
 # Acknowledgements  {#contribAcknow}

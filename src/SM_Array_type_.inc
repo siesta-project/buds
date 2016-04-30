@@ -1,10 +1,11 @@
 #if BUD_DIM > 1
-  !> Integer corresponding to the sparse index (`1<=sm_idx<=BUD_DIM`
-  integer :: sm_idx = 1
+  !> Integer corresponding to the sparse index (`1<=sm_idx<=BUD_DIM`)
+  !! The default sparse dimension is the last dimension.
+  integer :: sm_idx = BUD_DIM
 #endif
 
 
-! project-bud -- local file settings
+  ! project-bud -- local file settings
   !     Anything below this line may be overwritten by scripts
   !     Below are non-editable settings
 

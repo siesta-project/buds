@@ -79,8 +79,8 @@ Additionally these guidelines __must__ be followed:
 		!! @param[inout] bar1 updated value
 		!! @param[in] bar2 \@opt=\@null decide how bar1 calculated.
 		subroutine foo_(bar1, bar2)
-		 ..., intent(inout) :: bar1
-		 ..., intent(in), optional :: bar2 ! none default
+		  ..., intent(inout) :: bar1
+		  ..., intent(in), optional :: bar2 ! none default
 ~~~~~~~~~~~
 
   + Use `\@null` as replacement for optional arguments which may have no information
@@ -97,7 +97,7 @@ Additionally these guidelines __must__ be followed:
   However, functions have their usage as they have a clear
   intent.
 
-- Procedures (functions/subroutines) should be named `get\_?`.
+- Procedures (functions/subroutines) should be named `get_?`.
   This forces the routines to be made into
   to interfaced procedures.  
   Furthermore it enables the use of the actual procedure
@@ -137,13 +137,20 @@ makes pre-processors non-ideal due to their limitation in
 branching constructs. Especially the lack of string comparison
 makes it difficult to use.
 
-I did initially think about creation a bash-equivalent
-meta-scripting language for dynamically creating code.
+I did initially think about creating a bash-equivalent
+meta-scripting language for dynamic code generation.
 However, this will greatly limit the creation of new _buds_
 as the API for such construction will be foreign for a
 majority of developers.
 
 Hence the final decision went to the pre-processors.
+
+There are many other choices considering code generation tools:
+
+- m4
+- Python
+- Bison/YACC
+- etc.
 
 
 # Creating a new bud  {#develNew}
@@ -165,8 +172,8 @@ code from point 3. after point 4.
 
 2. Define your _bud_ name (these names _should_ be used):
 ~~~~~~{.c}
-#define BUD_TYPE_NAME OneVariable
-#define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
+    #define BUD_TYPE_NAME OneVariable
+    #define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
 ~~~~~~
    The `BUD_CC2` macro is enabled in `bud_utils.inc`.	
 
@@ -183,7 +190,7 @@ code from point 3. after point 4.
 	__must__ be defined as this:
 ~~~~~~~{.f90}
 	type BUD_TYPE_NAME_  ! Doxygen lower-cases this :(
-     <contained data>
+      <contained data>
     #include "buds_common_type_.inc"
     end type
 ~~~~~~~
@@ -196,8 +203,9 @@ code from point 3. after point 4.
 	This data should _only_ contain this:
 ~~~~~~~{.f90}
 	type BUD_TYPE_NAME  ! Doxygen lower-cases this :(
-     type(BUD_TYPE_NAME_), pointer :: D => null()
+      type(BUD_TYPE_NAME_), pointer :: D => null()
     #if BUD_FORTRAN >= 2003
+    contains
       <procedures exposed via Object-Oriented programming>
     #endif
     end type
