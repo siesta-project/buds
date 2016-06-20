@@ -157,7 +157,7 @@
     !> Local index to global index
     integer(BUD_PREC), pointer, contiguous :: l2g(:) => null()
     !> Global index to processor
-    integer(BUD_PREC), pointer, contiguous :: i2g(:) => null()
+    integer(BUD_PREC), pointer, contiguous :: g2P(:) => null()
 
 
     ! Consistent data in the reference counted object
@@ -166,52 +166,32 @@
   end type BUD_TYPE_NAME_
 
   !> Query communicator of the distribution
-  interface get_comm
+  !!
+  !! @note Do not delete this communicator.
+  interface comm
     module procedure comm_
   end interface
-  public :: get_comm
-
-  !> Query pointer to communicator of the distribution
-  interface get_commp
-    module procedure commp_
-  end interface
-  public :: get_commp
+  public :: comm
 
   !> Query group of the distribution
-  interface get_group
+  !!
+  !! @note Do not delete this group.
+  interface group
     module procedure group_
   end interface
-  public :: get_group
-
-  !> Query pointer to group of the distribution
-  interface get_groupp
-    module procedure groupp_
-  end interface
-  public :: get_groupp
+  public :: group
 
   !> Query ID for current processor in distribution
-  interface get_P
+  interface rank
     module procedure P_
   end interface
-  public :: get_P
-
-  !> Query pointer to the ID for current processor in distribution
-  interface get_Pp
-    module procedure Pp_
-  end interface
-  public :: get_Pp
+  public :: rank
 
   !> Query number of processors in distribution
-  interface get_NP
+  interface size
     module procedure NP_
   end interface
-  public :: get_NP
-
-  !> Query pointer to the number of processors in distribution
-  interface get_NPp
-    module procedure NPp_
-  end interface
-  public :: get_NPp
+  public :: size
 
   !> Query block-size (if DIST_BLOCK_?)
   interface size_block
@@ -220,10 +200,10 @@
   public :: size_block
 
   !> Query block-size (if DIST_BLOCK_?)
-  interface get_blocksize
+  interface blocksize
     module procedure blocksize_
   end interface
-  public :: get_blocksize
+  public :: blocksize
 
   !> Attach/Query several quantities at once
   interface attach
@@ -277,23 +257,17 @@
   public :: newFake
 
   !> Query number of elements on this node
-  interface size_local
+  interface size_dist_local
     module procedure size_local_default_
     module procedure size_local_ng_
   end interface
-  public :: size_local
+  public :: size_dist_local
 
   !> Query number of total elements 
-  interface size_global
+  interface size_dist
     module procedure size_
   end interface
-  public :: size_global
-
-  !> Query number of total elements 
-  interface size
-    module procedure size_
-  end interface
-  public :: size
+  public :: size_dist
 
   !> Query global index from a local index
   interface local2global
@@ -310,11 +284,11 @@
   public :: global2local
 
   !> Query number of elements on this node
-  interface global2P
+  interface global2rank
     module procedure g2P_default_
     module procedure g2P_ng_
   end interface
-  public :: global2P
+  public :: global2rank
 
    
   ! Here we create the interfaces for
@@ -353,10 +327,10 @@
 
 
   !> Query error of previous MPI calls
-  interface get_MPIerr
+  interface MPIerr
     module procedure get_MPIerr_
   end interface
-  public :: get_MPIerr
+  public :: MPIerr
   
   !> Print information about the @bud
   interface print
@@ -406,8 +380,8 @@
     if ( associated(this%nl) ) then
       deallocate(this%nl)
       deallocate(this%l2g)
-      deallocate(this%i2g)
-      nullify(this%nl,this%l2g,this%i2g)
+      deallocate(this%g2P)
+      nullify(this%nl,this%l2g,this%g2P)
     end if
     
   end subroutine delete_data
@@ -420,26 +394,12 @@
     comm = this%D%comm
   end function comm_
 
-  !> Query the associated communicator
-  function commp_(this) result(commp)
-    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer(ii_), pointer :: commp
-    commp => this%D%comm
-  end function commp_
-
   !> Query the associated group
   elemental function group_(this) result(grp)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_) :: grp
     grp = this%D%Grp
   end function group_
-
-  !> Query the associated group
-  function groupp_(this) result(grpp)
-    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer(ii_), pointer :: grpp
-    grpp => this%D%Grp
-  end function groupp_
 
   !> Query the current processor ID in the communicator
   elemental function P_(this) result(P)
