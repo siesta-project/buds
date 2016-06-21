@@ -78,7 +78,68 @@
 #if BUD_FORTRAN >= 2003
   contains
 #   include "bud_common_type.inc"
+
+    !> @name Private procedures
+    !> @{
+    ! Doxygen needed line
     
+    procedure, private :: new_, new_block_cyclic_, new_block_
+
+    procedure, private :: size_local_default_, size_local_ng_
+    procedure, private :: l2g_default_, l2g_ng_
+    procedure, private :: g2l_default_, g2l_ng_
+    procedure, private :: g2P_default_, g2P_ng_
+
+    !>>@}
+    
+    !> @iSee new
+    generic, public :: new => new_, new_block_cyclic_, new_block_
+
+    !> @iSee #dtype
+    procedure, public :: dtype => dtype_
+
+    !> @iSee #comm
+    procedure, public :: comm => comm_
+
+    !> @iSee #group
+    procedure, public :: group => group_
+
+    !> @iSee #rank
+    procedure, public :: rank => P_
+    !> @iSee #size
+    procedure, public :: size => NP_
+
+    !> @iSee #is_dist
+    procedure, public :: is_dist => is_dist_
+
+    !> @iSee #is_comm
+    procedure, public :: is_comm => is_comm_
+
+    !> @iSee #size_dist_local
+    generic, public :: size_dist_local => size_local_default_, size_local_ng_
+    !> @iSee #size_dist
+    procedure, public :: size_dist => size_
+
+
+    !> @iSee #size_block
+    procedure, public :: size_block => blocksize_
+    !> @iSee #blocksize
+    procedure, public :: blocksize => blocksize_
+
+    !> @iSee #local2global
+    generic, public :: local2global => l2g_default_, l2g_ng_
+    !> @iSee #global2local
+    generic, public :: global2local => g2l_default_, g2l_ng_
+
+    !> @iSee #global2rank
+    generic, public :: global2rank => g2P_default_, g2P_ng_
+    
+    !> @iSee #attach
+    procedure, public :: attach => attach_
+
+    !> @iSee #err
+    procedure, public :: err => get_MPIerr_
+
 #endif
   end type BUD_TYPE_NAME
 
@@ -1365,12 +1426,12 @@
 
     ! figure out how many groups there are
     ! 1. the root node from each sub-group
-    !    b-cast its parent get_P value
+    !    b-cast its parent rank value
     !    which is unique.
     ! 2. Every sub-node has information about the parent
     !    node ID
     if ( is_comm(sub) ) then
-      sub_root = get_P(set)
+      sub_root = rank(set)
       call MPI_Bcast(sub_root, 1, MPI_Integer, &
         0, sub%D%Comm, sub%D%err)
     else
@@ -1380,13 +1441,13 @@
     end if
 
     ! make list of each groups parent ID
-    Ng = get_NP(set)
+    Ng = size(set)
 
     ! Allocate an array to contain the groups
     allocate(procs(Ng))
     ! initialize to minimum
     procs = -1
-    procs(get_P(set)+1) = sub_root
+    procs(rank(set)+1) = sub_root
 
     ! Distribute root node and number of nodes
     call MPI_AllReduce( MPI_IN_PLACE, procs, Ng, &
