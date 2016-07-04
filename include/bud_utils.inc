@@ -34,12 +34,13 @@
   !> \def BUD_NEW
   !! The name for creating a new @bud
 #define BUD_NEW new
+  
   !> \def BUD_MOD
   !! The prefix used for @bud modules.
   !!
   !! Defaulted to `new`
-  
 #define BUD_MOD bud
+
   !> \def BUD_TYPE
   !! The prefix used for @bud types, this should generally not be altered.
   !!
@@ -65,17 +66,26 @@
 # define BUD_FORTRAN 2003
 #endif
 
-#ifndef BUD_FORTRAN_FINALIZE
-# if BUD_FORTRAN >= 2003
+#if BUD_FORTRAN >= 2003
+  ! In case BUD_FORTRAN version is above 2003
+  ! we have a couple of different specifications
+  ! that are standard and common.
+  
+# ifndef BUD_FORTRAN_FINALIZE
 #  define BUD_FORTRAN_FINALIZE 1
 # endif
-#endif
 
-  ! If we are using F03 we may use the class statements
-#if BUD_FORTRAN >= 2003
+# ifndef BUD_FORTRAN_CONTIGUOUS
+#  define BUD_FORTRAN_CONTIGUOUS , contiguous
+# endif
+
 # define BUD_CLASS class
+
 #else
+
+# define BUD_FORTRAN_CONTIGUOUS
 # define BUD_CLASS type
+  
 #endif
 
 

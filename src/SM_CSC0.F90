@@ -24,7 +24,7 @@
 !!
 !! \code{.f90}
 !!   integer :: nc, nz, ic, idx
-!!   integer, pointer, contiguous :: cptr(:), row(:)
+!!   integer, pointer BUD_FORTRAN_CONTIGUOUS :: cptr(:), row(:)
 !!
 !!   call attach(this, nr=nc, nz=nz, cptr=cptr, row=row)
 !!

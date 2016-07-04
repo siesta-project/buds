@@ -132,15 +132,15 @@
     integer(BUD_TYPE_VAR_PREC) :: nz = 0
 
     !> Index of the equivalent column (size `nr+1`)
-    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: cptr(:) => null()
+    integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: cptr(:) => null()
 
 #if BUD_SM_CSC == 1
     !> Number of non-zero elements per column (`ncol(i)=cptr(i+1)-cptr(i)`)
-    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: ncol(:) => null()
+    integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: ncol(:) => null()
 #endif
 
     !> The row index of the equivalent sparse matrix (size `nz`)
-    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: row(:) => null()
+    integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: row(:) => null()
 
 
     ! Consistent data in the reference counted object
@@ -403,9 +403,9 @@
     ! wanted information.
     logical, intent(in), optional :: D
     integer(BUD_TYPE_VAR_PREC), intent(out), optional :: nr, nc, nz
-    integer(BUD_TYPE_VAR_PREC), intent(out), pointer, contiguous, optional :: cptr(:), row(:)
+    integer(BUD_TYPE_VAR_PREC), intent(out), pointer BUD_FORTRAN_CONTIGUOUS, optional :: cptr(:), row(:)
 #if BUD_SM_CSC == 1
-    integer(BUD_TYPE_VAR_PREC), intent(out), pointer, contiguous, optional :: ncol(:)
+    integer(BUD_TYPE_VAR_PREC), intent(out), pointer BUD_FORTRAN_CONTIGUOUS, optional :: ncol(:)
 #endif
 
     if ( present(nr) ) nr = this%D%nr
@@ -475,8 +475,8 @@
 
     ! from array elements
     integer(BUD_TYPE_VAR_PREC) :: fnr, fnc, fnz
-    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: fptr(:), frow(:), fsow(:)
-    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: tptr(:), trow(:)
+    integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: fptr(:), frow(:), fsow(:)
+    integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: tptr(:), trow(:)
     
     integer(BUD_TYPE_VAR_PREC) :: ic, i, ptr
     integer(BUD_TYPE_VAR_PREC), pointer :: ind
@@ -665,8 +665,8 @@
 
     ! from array elements
     integer(BUD_TYPE_VAR_PREC) :: fnr, fnc, fnz
-    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: fptr(:), frow(:)
-    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: tptr(:), trow(:)
+    integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: fptr(:), frow(:)
+    integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: tptr(:), trow(:)
     
     integer(BUD_TYPE_VAR_PREC) :: c, ic, i
     integer(BUD_TYPE_VAR_PREC), pointer :: ind
@@ -729,7 +729,7 @@
   !! @return a pointer to the column offsets for the sparse matrix (contiguous)
   function get_col_offsetp_(this) result(cptr)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: cptr(:)
+    integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: cptr(:)
     
     cptr => this%D%cptr
     
@@ -740,7 +740,7 @@
   !! @return a pointer to the row indices for the sparse matrix (contiguous)
   function get_rowp_(this) result(row)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: row(:)
+    integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: row(:)
 
     row => this%D%row
     
@@ -761,7 +761,7 @@
 
     ! Local variables
     integer(BUD_TYPE_VAR_PREC) :: ic, nc, nz, ptr
-    integer(BUD_TYPE_VAR_PREC), pointer, contiguous :: cptr(:), row(:), tvt(:)
+    integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: cptr(:), row(:), tvt(:)
 
     ! Initialize error
     err = 0

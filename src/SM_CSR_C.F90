@@ -30,7 +30,7 @@
 !!
 !! \code{.f90}
 !!   integer :: nr, nz, ir, idx
-!!   integer, pointer, contiguous :: rptr(:), col(:)
+!!   integer, pointer BUD_FORTRAN_CONTIGUOUS :: rptr(:), col(:)
 !!
 !!   call attach(this, nr=nr, nz=nz, rptr=rptr, col=col)
 !!
