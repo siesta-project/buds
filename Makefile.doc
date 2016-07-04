@@ -1,8 +1,0 @@
-.PHONY: doc
-doc: $(OBJS:.o=.f90)
-	@doc/make_doc.sh
-
-
-# Local Variables:
-#  mode: makefile-gmake
-# End:
