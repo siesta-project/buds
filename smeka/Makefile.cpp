@@ -1,4 +1,4 @@
-_SMEKA_pp = 1
+_SMEKA_cpp = 1
 
 # This smeka file creates the preprocessor
 # settings.
@@ -7,7 +7,11 @@ _SMEKA_pp = 1
 # (probably we should do a check to ensure
 #  it works)
 CPP ?= cpp
-CPPFLAGS ?= -E -P -C -nostdinc
+# Sadly there are many variations of CPP
+# clang-3.5 (MacOSx): -E -EP -xc
+# clang-3.7> (MacOSx): -E -P -x c
+# cpp(gnu): -E -P -x c -nostdinc
+CPPFLAGS ?= -E -P -x c
 
 ifeq ($(uname_S),Linux)
 endif
@@ -24,13 +28,13 @@ endif
 ifeq ($(uname_S),Cygwin)
 endif
 
-.PHONY: smeka-show-pp
-.NOTPARALLEL: smeka-show-pp
-smeka-show-pp:
+.PHONY: smeka-show-cpp
+.NOTPARALLEL: smeka-show-cpp
+smeka-show-cpp:
 	@echo "  CPP      = $(CPP)"
 	@echo "  CPPFLAGS = $(CPPFLAGS)"
 	@echo "  INCLUDES = $(INCLUDES)"
-show: smeka-show-pp
+show: smeka-show-cpp
 
 # Local Variables:
 #  mode: makefile-gmake
