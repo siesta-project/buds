@@ -199,7 +199,7 @@ end subroutine
 
 !> @param[in] n number of elements in array
 !! @param[inout] array sorted array on exit
-pure subroutine  BUD_CC2(sort_heap_,BUD_PREC)(n, array)
+pure subroutine BUD_CC2(sort_heap_,BUD_PREC)(n, array)
   integer(BUD_PREC), intent(in) :: n
   integer(BUD_PREC), intent(inout) :: array(n)
 
@@ -270,7 +270,7 @@ end subroutine
 !> @param[in] n number of elements in array
 !! @param[in] array unaltered array on exit
 !! @param[out] pvt pivoting array such that array(pvt(1)) is the smallest number
-pure subroutine  BUD_CC2(sort_heap_idx_,BUD_PREC)(n, array, pvt)
+pure subroutine BUD_CC2(sort_heap_idx_,BUD_PREC)(n, array, pvt)
   integer(BUD_PREC) ,intent(in) :: n, array(n)
   integer(BUD_PREC) ,intent(out) :: pvt(n)
 
