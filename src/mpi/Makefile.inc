@@ -1,15 +1,14 @@
 mpi_DIR = $(TOP_DIR)/src/mpi
-mpi_VDIR = $(VPATH)/$(mpi_DIR)
+# Append to VPATH
+VPATH := $(VPATH):$(mpi_DIR)
 
 
 DIST_OBJECTS = \
 	bud_Dist1D.o
-DIST_OBJECTS := $(addprefix $(mpi_DIR)/,$(DIST_OBJECTS))
-$(DIST_OBJECTS:.o=.f90): $(mpi_DIR)/Dist1D.inc
-$(DIST_OBJECTS): $(mpi_DIR)/Dist1D.inc
+$(DIST_OBJECTS:.o=.f90): Dist1D.inc
 mpi_OBJECTS += $(DIST_OBJECTS)
-$(mpi_DIR)/bud_Dist1D.f90: $(mpi_DIR)/Dist1D.F90
-	$(CPP) $(INCLUDES) $(CPPFLAGS) $< > $@
+bud_Dist1D.f90: Dist1D.F90
+	$(CPP) $(CPPFLAGS) $(FPPFLAGS) $(INCLUDES) $< > $@
 
 
 # Define objects that needs compilation

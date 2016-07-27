@@ -32,16 +32,17 @@ include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.smeka
 
 
 # All routines require the special preprocessor files
+# We skip this from the VPATH as it really is only INCLUDES
 INCLUDES += -I$(TOP_DIR)/include
 
 
 # Include the makefile in the src directory
 include $(TOP_DIR)/src/Makefile.inc
 
-ifeq ($(MPI),1)
-# Include dir:
-#    ./src/mpi
-include $(TOP_DIR)/src/mpi/Makefile.inc
+ifneq ($(MPI),0)
+ # Include dir:
+ #    ./src/mpi
+ include $(TOP_DIR)/src/mpi/Makefile.inc
 endif
 
 
