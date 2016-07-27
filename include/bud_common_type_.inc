@@ -12,6 +12,12 @@
   !! Tracks the number of times this data structure is referenced
   integer :: refs_ = 0
 
+  !> Error message
+  !!
+  !! Each operation may return an error. This error may be retrieved
+  !! through the error interface.
+  integer :: error_ = 0
+
   !> Hash ID for the @bud (unique for different @buds)
   !! Enables a unique ID for any @bud of the same type.
   character(len=BUD_ID_LEN) :: id_ = "null_id"

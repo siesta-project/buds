@@ -54,7 +54,7 @@
     BUD_TYPe = BUD_TYPE_NAME_STR
 # endif
 
-  
+
 #endif
   
   

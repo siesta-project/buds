@@ -50,8 +50,10 @@
   !> \def BUD_FORTRAN
   !! Denote the fortran standard that the compiler supports.
   !!
-  !! This will default to 2003 and will directly enable the
-  !! use of OO programming paradigms for the @bud.
+  !! This will default to 1995.
+  !! To enable OO and type procedures one must set this
+  !! variable to 2003 or above.
+  !! This is highly encouraged.
   !!
   !! Essentially every @bud allows calls such as:
   !! \code{.f90}
@@ -63,7 +65,7 @@
   !! where the developer creates interfaces for both.
 
 #ifndef BUD_FORTRAN
-# define BUD_FORTRAN 2003
+# define BUD_FORTRAN 1995
 #endif
 
 #if BUD_FORTRAN >= 2003

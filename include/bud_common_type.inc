@@ -20,6 +20,7 @@
   procedure, public :: nullify => nullify_
 # endif
 
+
   !> @iSee initialize
   procedure, public :: initialize => initialize_
 
@@ -39,6 +40,10 @@
   !> @iSee references
   procedure, public :: refs => references_
 
+  !> @iSee error
+  procedure, public :: error => error_
+
+  
 # ifndef BUD_NO_PRINT
   !> @iSee print
   procedure, public :: print => print_

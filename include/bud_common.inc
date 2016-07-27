@@ -162,6 +162,13 @@
   end interface
   public :: refs
 
+
+  !> @iSee error
+  interface error
+    module procedure error_
+  end interface
+  public :: error
+
   !>>@}
 
   !> @cond ALWAYS_SKIP
@@ -344,6 +351,22 @@ contains
     end if
     
   end function references_
+
+  
+  !> @param[in] this reference counted @bud
+  !! @return current error from last call
+  elemental function error_(this) result(error)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    
+    integer :: error
+
+    if ( is_initd(this) ) then
+      error = this%D%error_
+    else
+      error = 0
+    end if
+    
+  end function error_
 
   
   !> @cond BUD_DEVELOPER
