@@ -92,16 +92,16 @@ endif
 
 
 # Generic compiler options
-CC := $(V_CC)
-CXX := $(V_CXX)
-FC := $(V_FC)
+CC ?= $(V_CC)
+CXX ?= $(V_CXX)
+FC ?= $(V_FC)
 ifdef V_CPP
-CPP := $(V_CPP)
+CPP ?= $(V_CPP)
 endif
-MPICC := $(V_MPICC)
-MPICXX := $(V_MPICXX)
-MPIFC := $(V_MPIFC)
-FC_MODDIR := $(V_FC_MODDIR)
+MPICC ?= $(V_MPICC)
+MPICXX ?= $(V_MPICXX)
+MPIFC ?= $(V_MPIFC)
+FC_MODDIR ?= $(V_FC_MODDIR)
 
 .PHONY: smeka-show-compiler
 .NOTPARALLEL: smeka-show-compiler
@@ -112,10 +112,8 @@ smeka-show-compiler:
 	@echo "  CFLAGS   = $(CFLAGS)"
 	@echo "  CXX      = $(CXX)"
 	@echo "  CXXFLAGS = $(CXXFLAGS)"
-	@echo "  CPP      = $(CPP)"
 	@echo "  FC       = $(FC)"
 	@echo "  FFLAGS   = $(FFLAGS)"
-	@echo "  FPPFLAGS = $(FPPFLAGS)"
 	@echo ""
 	@echo "Used MPI compilation options:"
 	@echo "  MPICC    = $(MPICC)"
@@ -128,9 +126,14 @@ smeka-show-compiler:
 show: smeka-show-compiler
 
 # Define the default compilation options:
+ifeq ($(SMEKA_CPP_F),0)
+%.o: %.F90
+	$(FC) -c -o $@ $(FFLAGS) $(CPPFLAGS) $(FPPFLAGS) $(INCLUDES) $<
+else
 %.o: %.F90
 	$(CPP) $(CPPFLAGS) $(FPPFLAGS) $(INCLUDES) $< > $(<:.F90=_cpp.f90)
 	$(FC) -c -o $@ $(FFLAGS) $(INCLUDES) $(<:.F90=_cpp.f90)
+endif
 %.o: %.f90
 	$(FC) -c -o $@ $(FFLAGS) $(INCLUDES) $<
 %.o: %.c

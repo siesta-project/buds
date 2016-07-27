@@ -31,6 +31,10 @@ include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.smeka
 # SMEKAENDSETTINGS (DO NOT DELETE)
 
 
+# All routines require the special preprocessor files
+INCLUDES += -I$(TOP_DIR)/include
+
+
 # Include the makefile in the src directory
 include $(TOP_DIR)/src/Makefile.inc
 
