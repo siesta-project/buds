@@ -124,7 +124,7 @@ bud_SM_CSR_C_Array2D.f90: SM_CSR_C_Array1D.F90
 	$(src_CPP)
 bud_SM_CSR_C_Array3D.f90: _TMP_FILE=SM_CSR_C_Array3D.F90
 bud_SM_CSR_C_Array3D.f90: SM_CSR_C_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/3D/g' $(src_DIR)/SM_CSR_C_Array1D.F90 > $(_TMP_FILE)
+	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/1D/3D/g' $(src_DIR)/SM_CSR_C_Array1D.F90 > $(_TMP_FILE)
 	$(src_CPP)
 
 
