@@ -7,11 +7,18 @@
 # sources.
 # It will warn if this is not the case
 
-_DOC=final_doc
+# Retrieve the git-source top-directory
+_main_dir=`git rev-parse --show-toplevel`
 
-# NOTE if any user may end up symlinking the script, this
-# will not work. However, who would do that?
-_sd="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+_DOC=$_main_dir/buds-final-doc
+_SRC=$_main_dir/buds-final-src
+
+# Initially clean the documentation and source
+# directories
+rm -rf $_DOC $_SRC
+
+
+pushd $_main_dir
 
 # Get the calling directory
 _cwd=`pwd`
@@ -30,7 +37,7 @@ fi
 unset end
 
 
-if [[ $(dirname $_sd) != $_cwd ]]; then
+if [[ $_main_dir != $_cwd ]]; then
     echo "$0 must be called from this directory:"
     echo "  $(dirname $_sd)"
     echo "Currently it is called from:"
@@ -42,7 +49,7 @@ function have_exe {
     local exe=$1
     shift
     which $exe > /dev/null
-    printf "%d" $?
+    return $?
 }
     
 
@@ -50,7 +57,7 @@ function have_exe {
 _fail=""
 for exe in doxygen
 do
-    if [[ $(have_exe $exe) -ne 0 ]]; then
+    if ! $(have_exe $exe) ; then
 	_fail="$_fail $exe"
     fi
 done
@@ -66,7 +73,7 @@ fi
 mkdir -p doc/images
 
 # Check whether we should use dot
-if [[ $(have_exe dot) -eq 0 ]]; then
+if $(have_exe dot) ; then
     have_dot="HAVE_DOT = YES"
 
     # Make sure we create all custom graphs for
@@ -77,18 +84,29 @@ else
     have_dot="HAVE_DOT = NO"
 fi
 
-# Start on the actual creation of the documentation
-# We create a temporary directory
-rm -rf $_DOC
+
+# First we need to ensure the sources are ok.
+mkdir $_SRC
+pushd $_SRC
+{
+    echo "TOP_DIR = $_main_dir"
+    # Enable MPI routines for documentation
+    echo "MPI = 1"
+    # Enable OO procedures for documentation
+    echo "OO = 1"
+    echo "include \$(TOP_DIR)/Makefile"
+} > Makefile
+make source
+popd
 
 # Now we can create the documentation
+# This will create the documentation folder
 {
     cat doc/Doxyfile
     # Insert correct documentation version
     echo "PROJECT_NUMBER = $doc_version"
     echo "$have_dot"
 } | doxygen -
-
 
 
 
@@ -104,9 +122,11 @@ sed -i -e "s/BUDS_VERSION/$tar_version/g" html/download.html
 
 # if we have optipng we optimize the PNG's
 # to reduce webpage size.
-if [[ $(have_exe optipng) -eq 0 ]]; then
+if $(have_exe optipng) ; then
     find ./ -name "*.png" | \
 	xargs -n 1 -P 4 optipng -o7
 fi
+
+popd
 
 popd
