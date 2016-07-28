@@ -39,10 +39,16 @@ INCLUDES += -I$(TOP_DIR)/include
 # Include the makefile in the src directory
 include $(TOP_DIR)/src/Makefile.inc
 
+MPI ?= 0
 ifneq ($(MPI),0)
  # Include dir:
  #    ./src/mpi
  include $(TOP_DIR)/src/mpi/Makefile.inc
+endif
+
+OO ?= 0
+ifneq ($(OO),0)
+ FPPFLAGS += -DBUD_FORTRAN=2003
 endif
 
 
@@ -51,6 +57,9 @@ $(LIBRARIES): $(OBJECTS)
 
 # Create target
 lib: $(LIBRARIES)
+
+# Create target
+source: $(SOURCES)
 
 # Include the makefile in the test directory
 include $(TOP_DIR)/src/test/Makefile.inc
