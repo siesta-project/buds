@@ -196,6 +196,7 @@ contains
 # include "UNIQ_integer.inc"
 
 end module
+
 !> @}
 
 

@@ -36,7 +36,10 @@ module BUD_MOD_NAME
 # include "bud_common_declarations.inc"
 
   !> Maximum path length for the filenames
-  integer, parameter :: FILE_NAME_LEN = 256
+  integer, parameter :: FILE_NAME_LEn = 256
+
+  !> Initial unit to open files with
+  integer, parameter :: FILE_UNIT_STARt = 1000
 
   
   !> File @bud
@@ -110,9 +113,6 @@ module BUD_MOD_NAME
 
     !> Unit for the file (negative if non-opened)
     integer :: unit = -1
-
-    !> Status, which may be queried by the user
-    integer :: stat = 0
 
     ! Consistent data in the reference counted object
 #   include "bud_common_type_.inc"
@@ -328,11 +328,13 @@ module BUD_MOD_NAME
     ! Only close if the file is open
     if ( is_open ) then
       close( this%unit, iostat = stat )
+    else
+      stat = 0
     end if
 
     this%file = ' '
     this%unit = -1
-    this%stat = 0
+    this%error_ = stat
     
   end subroutine delete_data
 
@@ -340,7 +342,7 @@ module BUD_MOD_NAME
   !> @param[inout] this force the status to be 0
   subroutine stat_reset_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    if ( is_initd(this) ) this%D%stat = 0
+    if ( is_initd(this) ) this%D%error_ = 0
   end subroutine stat_reset_
 
   !> @endcond BUD_DEVELOPER
@@ -355,7 +357,12 @@ module BUD_MOD_NAME
     ! initialize object
     call initialize(this)
 
-    this%D%file = filename
+    if ( len_trim(filename) == 0 ) then
+      ! show an error if there is no filename
+      this%D%error_ = -100
+    else
+      this%D%file = trim(filename)
+    end if
     
   end subroutine new_
 
@@ -365,7 +372,7 @@ module BUD_MOD_NAME
     integer :: unit
     logical :: is_open
 
-    unit = 999
+    unit = FILE_UNIT_STARt - 1
     is_open = .true.
     
     do while ( is_open )
@@ -422,7 +429,7 @@ module BUD_MOD_NAME
     end if
     
     inquire( this%D%unit, opened = is, &
-      iostat = this%D%stat)
+      iostat = this%D%error_)
 
     ! restore unit in case it really is not opened...
     ! this should only happen if the user closes the file
@@ -441,7 +448,7 @@ module BUD_MOD_NAME
 
     if ( is_initd(this) ) then
       inquire( file = this%D%file, exist = exist, &
-        iostat = this%D%stat)
+        iostat = this%D%error_)
     else
       exist = .false.
     end if
@@ -459,10 +466,11 @@ module BUD_MOD_NAME
 
     if ( is_open(this) ) then
       inquire( this%D%unit, direct = dir, &
-        iostat = this%D%stat)
+        iostat = this%D%error_)
 
-      direct = dir == 'YES'
-
+      direct = (dir == 'YES') .or. &
+        (dir == 'yes')
+      
     else
 
       call stat_reset_(this)
@@ -483,9 +491,10 @@ module BUD_MOD_NAME
 
     if ( is_open(this) ) then
       inquire( this%D%unit, sequential = seq, &
-        iostat = this%D%stat)
+        iostat = this%D%error_)
 
-      sequential = seq == 'YES'
+      sequential = (seq == 'YES') .or. &
+        (seq == 'yes')
 
     else
 
@@ -507,9 +516,10 @@ module BUD_MOD_NAME
 
     if ( is_open(this) ) then
       inquire( this%D%unit, formatted = form, &
-        iostat = this%D%stat)
+        iostat = this%D%error_)
 
-      formatted = form == 'YES'
+      formatted = (form == 'YES') .or. &
+        (form == 'yes')
 
     else
 
@@ -531,9 +541,10 @@ module BUD_MOD_NAME
 
     if ( is_open(this) ) then
       inquire( this%D%unit, unformatted = unform, &
-        iostat = this%D%stat)
+        iostat = this%D%error_)
 
-      unformatted = unform == 'YES'
+      unformatted = (unform == 'YES') .or. &
+        (unform == 'yes')
 
     else
 
@@ -553,7 +564,7 @@ module BUD_MOD_NAME
     integer :: stat
 
     if ( is_open(this) ) then
-      stat = this%D%stat
+      stat = error(this)
       call stat_reset_(this)
     else
       stat = 0
@@ -595,7 +606,7 @@ module BUD_MOD_NAME
     open( this%D%unit, file=trim(this%D%file), &
       form = lform, access = laccess, action = laction, &
       status = lstatus, &
-      iostat = this%D%stat )
+      iostat = this%D%error_ )
     
   end subroutine open_
 
@@ -609,8 +620,7 @@ module BUD_MOD_NAME
     end if
 
     ! Close file-unit
-    close( this%D%unit, &
-      iostat = this%D%stat )
+    close( this%D%unit, iostat = this%D%error_ )
 
     this%D%unit = -1
     
@@ -622,8 +632,7 @@ module BUD_MOD_NAME
 
     if ( .not. is_open(this) ) return
       
-    rewind( this%D%unit, &
-      iostat = this%D%stat )
+    rewind( this%D%unit, iostat = this%D%error_ )
     
   end subroutine rewind_
 
@@ -644,15 +653,15 @@ module BUD_MOD_NAME
       do i = 1, n
         
         backspace( this%D%unit, &
-          iostat = this%D%stat )
+          iostat = this%D%error_ )
         
-        if ( this%D%stat /= 0 ) return
+        if ( this%D%error_ /= 0 ) return
       end do
       
     else
       
       backspace( this%D%unit, &
-        iostat = this%D%stat )
+        iostat = this%D%error_ )
       
     end if
     
@@ -670,7 +679,7 @@ module BUD_MOD_NAME
     if ( is_open(this) ) then
       
       close( this%D%unit, STATUS = 'DELETE', &
-        iostat = this%D%stat )
+        iostat = this%D%error_ )
 
       ! reset status as not opened
       this%D%unit = -1
@@ -681,7 +690,7 @@ module BUD_MOD_NAME
       ! it does not matter how it is opened
       open( unit, file = this%D%file )
       close( unit, STATUS = 'DELETE', &
-        iostat = this%D%stat )
+        iostat = this%D%error_ )
       
     end if
     

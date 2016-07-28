@@ -3,6 +3,7 @@
 !# define BUD_INCLUDE_TYPE "SM_Array_type.inc"
 # define BUD_INCLUDE_TYPE_ "SM_Array_type_.inc"
 
+
   !> Retrieve pointer to values in the sparse matrix
   !!
   !! The array-pointer will _always_ be contiguous.
@@ -54,6 +55,7 @@
     p => arrayp(this%D%e2)
     
   end function get_matrixp_
+
   
 #undef BUD_TYPE_NEW
 

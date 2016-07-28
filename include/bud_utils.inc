@@ -55,7 +55,7 @@
   !! variable to 2003 or above.
   !! This is highly encouraged.
   !!
-  !! Essentially every @bud allows calls such as:
+  !! Essentially every @bud allows calls such as (if 2003 is enabled):
   !! \code{.f90}
   !! type(Bud) :: bu
   !! call new(bu)

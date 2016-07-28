@@ -67,7 +67,7 @@
 
     !> @iSee #arrayp
     procedure, public :: arrayp => get_arrayp_
-
+o
     !> @iSee #size
     procedure, public :: size => size_
 

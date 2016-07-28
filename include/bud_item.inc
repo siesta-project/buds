@@ -26,7 +26,7 @@
   !> Item wrapper for a @bud
   !!
   !! This wrapper type contains another @bud. It may
-  !! be used as a container for sub-partitining.
+  !! be used as a container for sub-partitioning.
   !!
   !! Generally you need (should) not use this Item type
   !! unless you have a specific use case.

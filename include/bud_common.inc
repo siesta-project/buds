@@ -163,7 +163,12 @@
   public :: refs
 
 
-  !> @iSee error
+  !> Query the latest routine which may have produced an error.
+  !!
+  !! Return the error value of the latest routine which issued an error.
+  !! If the error-value is non-zero an error occurred and one should track
+  !! the value.
+  !! If it is zero, there has been no error and one may safely proceed.
   interface error
     module procedure error_
   end interface
@@ -220,6 +225,9 @@ contains
 
     ! Set the initial reference count
     this%D%refs_ = 1
+    
+    ! Set the initial error
+    this%D%error_ = 0
 
     ! Tag the object (always)
     call tag_object_(this)
@@ -376,7 +384,7 @@ contains
   elemental function id_(this) result(str)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     
-    character(len=BUD_ID_LEN) :: str
+    character(len=BUD_ID_LEn) :: str
     
     str = this%D%id_
     
