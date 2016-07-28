@@ -91,7 +91,7 @@ SM_AR_OBJECTS = \
 	bud_SM_CSR0_Array3D.o \
 	bud_SM_CSR_C_Array1D.o \
 	bud_SM_CSR_C_Array2D.o \
-	bud_SM_CSR_C_Array2D.o
+	bud_SM_CSR_C_Array3D.o
 $(SM_AR_OBJECTS): $(SM_OBJECTS) $(ARRAY_OBJECTS)
 src_OBJECTS += $(SM_AR_OBJECTS)
 bud_SM_CSR_Array1D.f90: SM_CSR_Array1D.F90
@@ -218,7 +218,7 @@ OBJECTS += $(src_OBJECTS)
 
 
 # Define rules for all objects
-$(src_OBJECTS): INCLUDES += -I$(src_DIR)
+$(src_CPP_SOURCES): INCLUDES += -I$(src_DIR)
 
 
 # Local Variables:

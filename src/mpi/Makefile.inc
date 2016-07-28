@@ -22,7 +22,7 @@ OBJECTS += $(mpi_OBJECTS)
 
 
 # Ensure we use the correct compiler
-$(mpi_OBJECTS): INCLUDES += -I$(mpi_DIR)
+$(mpi_CPP_SOURCES): INCLUDES += -I$(mpi_DIR)
 $(mpi_OBJECTS): FC  = $(MPIFC)
 $(mpi_OBJECTS): CC  = $(MPICC)
 $(mpi_OBJECTS): CXX = $(MPICXX)
