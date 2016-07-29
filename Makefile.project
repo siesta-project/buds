@@ -58,6 +58,10 @@ install-version:
 	@echo "#define BUDS_VERSION_STR \"$(PROJECT_MAJOR).$(PROJECT_MINOR).$(PROJECT_MICRO)\"" >> $(VERSION_FILE)
 
 
+.PHONY:
+doc:
+	doc/make_doc.sh
+
 
 clean: MPI=1
 clean:
