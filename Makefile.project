@@ -29,11 +29,6 @@ ifeq ($(SHARED),1)
   # position independent code
   # THIS IS A SMEKA SETTING
   PIC = 1
-  ifneq ($(MPI),0)
-    # We must also use mpicc to create the shared
-    # library
-    libbuds.so: CC = $(MPICC)
-  endif
 endif
 
 
@@ -63,7 +58,6 @@ doc:
 	doc/make_doc.sh
 
 
-clean: MPI=1
 clean:
 	-rm -f libbuds.a libbuds.so
 

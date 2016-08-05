@@ -211,14 +211,25 @@ bud_FS_C2_Array3D.f90: FS_C2_Array1D.F90
 src_SOURCES = $(patsubst %.o, %.f90, $(src_OBJECTS))
 # CPP_SOURCES are those sources that needs deletion upon make clean
 src_CPP_SOURCES = $(src_SOURCES)
+src_MODS = $(patsubst %.f90, %.mod, $(src_SOURCES))
+
 SOURCES += $(src_SOURCES)
 CPP_SOURCES += $(src_CPP_SOURCES)
-F_MODS  += $(patsubst %.f90, %.mod, $(src_SOURCES))
+F_MODS  += $(src_MODS)
 OBJECTS += $(src_OBJECTS)
 
 
 # Define rules for all objects
 $(src_CPP_SOURCES): INCLUDES += -I$(src_DIR)
+
+
+clean-src:
+	-rm -f $(src_CPP_SOURCES)
+	-rm -f $(src_OBJECTS)
+	-rm -f *.mod
+
+
+clean: clean-src
 
 
 # Local Variables:

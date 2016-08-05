@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/siesta-project/buds.svg?branch=master)](https://travis-ci.org/siesta-project/buds)
+
 # buds
 
 Library for creating buds of reference counted Fortran

@@ -44,6 +44,11 @@ ifneq ($(MPI),0)
  # Include dir:
  #    ./src/mpi
  include $(TOP_DIR)/src/mpi/Makefile.inc
+
+ # We must also use mpicc to create the shared
+ # library
+ libbuds.so: CC = $(MPICC)
+
 endif
 
 OO ?= 0
