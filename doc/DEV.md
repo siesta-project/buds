@@ -29,13 +29,15 @@ Additionally these guidelines __must__ be followed:
 
 - Indent in a 2-level sequence.
   + Currently this is enabled for emacs via local variables
+  + Please copy-paste the bottom comments into any new files
+    to follow these rules.
 
 - Pre-processor variables __must__ adhere to these rules:
   1. Prefix with `BUD_` which ensures no name-clashing with
   parenting libraries/applications.
   2. Ensure the implementation files contain an `#undef` statement
   to limit warnings when compiled.
-  Although this is not necessary it eases compiler debugging
+  Although this is not necessary it eases debugging
   substantially.
 
 - All public procedures (subroutine/function) __must__ be interfaced.
@@ -46,6 +48,9 @@ Additionally these guidelines __must__ be followed:
   If you do not know how Doxygen works, please look in the documentation
   for a routine/function which you think replicates your routine the most
   and copy/paste the corresponding documentation.
+
+  Importantly, the main documentation should be present at the interface
+  construct and _not_ at the internal deferred routine. 
 
   Generally these guidelines are encouraged:
   + Document parameters (`@param`/`@return`) at private procedures
@@ -68,12 +73,14 @@ Additionally these guidelines __must__ be followed:
           module procedure new_
 		end interface
 ~~~~~~~~~~~
-    
+    You may also define later pre-processor statements using later revisions.
+
   + Add contribution statements in the `CONTRIBUTORS.md` file
 	which ensures a resulting documentation to be short and concise.  
     In the `CONTRIBUTORS.md` file you may add any information and specifics
 	of what has been implemented by specific authors.
-  + Do __not__ use the `@date` marker as it clutters the documentation.
+  + Do __not__ use the `@date` marker as it clutters the documentation with
+    limited use.
   + Use `\@opt` to denote optional arguments, for instance:
 ~~~~~~~~~~~{.f90}
 		!! @param[inout] bar1 updated value
@@ -91,17 +98,22 @@ Additionally these guidelines __must__ be followed:
        ... ! skipped documentation in doxygen
       !> \@endcond ALWAYS_SKIP
 ~~~~~~~~
+    This does not prohibit the requirement of adding documentation as it is
+	still available for developers.
 
 - _Only_ use functions for single value retrievals. Generally subroutines
   have less overhead and are preferred over functions.  
   However, functions have their usage as they have a clear
   intent.
 
-- Procedures (functions/subroutines) should be named `get_?`.
+- Procedures (functions/subroutines) should be prefixed with:
+  + `get_?` for retrieval of values/data in the bud.
+  + `ptr_?` for retrieval of a pointer to the data in the bud.
   This forces the routines to be made into
   to interfaced procedures.  
   Furthermore it enables the use of the actual procedure
   name as local variables.
+
 
 
 ## Understanding buds implementation  {#develUnderstand}
@@ -124,7 +136,7 @@ Each arrow shows _usage_ direction. I.e. `bud_coll.inc` has at least two `#inclu
 2. `#include bud_coll_elem.inc`
 
 
-### CPP, a problematic code generation tool?
+### CPP, a problematic code generation tool? {#develCPP}
 
 The decision on using pre-processors to construct the
 _buds_ library was not a dream situation. Ideally the
@@ -162,8 +174,8 @@ should only rely on the `common*.inc` files as seen in
 Here is a walk-through of creating a bud with a single
 variable contained.
 Note that the following points also represents the
-structure of the code file. I.e. you should _never_ add
-code from point 3. after point 4.
+structure of the code file. I.e. you should retain the order
+of points in the code.
 
 1. The first code present in the type _must_ be
 ~~~~~~{.c}
@@ -206,6 +218,7 @@ code from point 3. after point 4.
       type(BUD_TYPE_NAME_), pointer :: D => null()
     #if BUD_FORTRAN >= 2003
     contains
+	#   include "bud_common_type.inc"
       <procedures exposed via Object-Oriented programming>
     #endif
     end type
@@ -227,6 +240,8 @@ code from point 3. after point 4.
    Remark that this inclusions inserts a `contains`
    statement which forces the separation of variable/interface declarations
    from routine declarations.
+   Hence all interfaces and constants _must_ be defined before this point,
+   and all code must be present after this point.
 
 8. Create a deletion routine which shall ensure no
    memory leaks. I.e. it should delete _all_ allocatable/pointers in the
@@ -242,7 +257,6 @@ code from point 3. after point 4.
 9. Add any specific routines for your data type. Note that you may
    never expose routines directly from the module. This will ensure
    that name-clashes are never encountered.
-
 
 
 

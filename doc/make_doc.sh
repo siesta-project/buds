@@ -7,6 +7,14 @@
 # sources.
 # It will warn if this is not the case
 
+# Default parameters determining which sub-programs
+# should be used (mainly for developing documentation)
+#   whether graphviz should be used...
+DOT=${DOT:-1}
+#   whether graphviz should be used...
+OPTIPNG=${OPTIPNG:-1}
+
+
 # Retrieve the git-source top-directory
 _main_dir=`git rev-parse --show-toplevel`
 
@@ -73,7 +81,7 @@ fi
 mkdir -p doc/images
 
 # Check whether we should use dot
-if $(have_exe dot) ; then
+if $(have_exe dot) && [ $DOT -eq 1 ] ; then
     have_dot="HAVE_DOT = YES"
 
     # Make sure we create all custom graphs for
@@ -97,6 +105,8 @@ pushd $_SRC
     echo "include \$(TOP_DIR)/Makefile"
 } > Makefile
 make source
+# Ensure the *.inc files are also present
+cp $_main_dir/include/*.inc .
 popd
 
 # Now we can create the documentation
@@ -122,7 +132,7 @@ sed -i -e "s/BUDS_VERSION/$tar_version/g" html/download.html
 
 # if we have optipng we optimize the PNG's
 # to reduce webpage size.
-if $(have_exe optipng) ; then
+if $(have_exe optipng) && [ $OPTIPNG -eq 1 ] ; then
     find ./ -name "*.png" | \
 	xargs -n 1 -P 4 optipng -o7
 fi
