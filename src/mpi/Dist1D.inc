@@ -483,8 +483,8 @@
       integer :: lb, ub
 
       if ( associated(froml) ) then
-        lb = lbound(froml)
-        ub = ubound(froml)
+        lb = lbound(froml,1)
+        ub = ubound(froml,1)
         allocate(tol(lb:ub))
       end if
 
