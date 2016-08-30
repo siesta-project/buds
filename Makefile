@@ -45,10 +45,6 @@ ifneq ($(MPI),0)
  #    ./src/mpi
  include $(TOP_DIR)/src/mpi/Makefile.inc
 
- # We must also use mpicc to create the shared
- # library
- libbuds.so: CC = $(MPICC)
-
 endif
 
 OO ?= 0
@@ -59,6 +55,14 @@ endif
 
 # Libraries depend on the objects
 $(LIBRARIES): $(OBJECTS)
+
+# Fix the library linking
+libbuds.so:
+ifneq ($(MPI),0)
+	$(MPIFC) $(LINK_FLAGS) $(FFLAGS) -o $@ $^ $(LIBS) $(LDFLAGS)
+else
+	$(FC) $(LINK_FLAGS) $(FFLAGS) -o $@ $^ $(LIBS) $(LDFLAGS)
+endif
 
 # Create target
 lib: $(LIBRARIES)

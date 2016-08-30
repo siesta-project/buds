@@ -406,6 +406,9 @@
 # include "bud_common.inc"
 #undef BUD_DELETE_NOELEMENTAL
 
+
+  !> @cond BUD_DEVELOPER
+  
   !> Internal routine for cleaning up the data container.
   !!
   !! @dev_note
@@ -448,20 +451,47 @@
   end subroutine common_delete_
 
 
-    !> Internal routine for cleaning up the data container.
-  !!
-  !! @dev_note
-  !! This routine is only used internally to clean-up
-  !! any data in the type.
-  !! Should never be made public.
+  !> @endcond BUD_DEVELOPER
+
+
+  !> @param[in] from the original `bud` which is copied to `to`
+  !! @param[inout] to the output `bud` with the full stuff (Comm_dup is issued
   subroutine copy_(from, to)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
 
     call delete(to)
     if ( .not. is_initd(from) ) return
-    
+
+    call new(to, from%D%comm)
+
+    to%D%dist = from%D%dist
+    to%D%ng = from%D%ng
+    to%D%BS = from%D%BS
+
+    call assert(from%D%nl, to%D%nl)
+    call assert(from%D%l2g, to%D%l2g)
+    call assert(from%D%g2P, to%D%g2P)
+
+    ! Copy the common data-content
+    call common_copy_(from, to)
+
+  contains
+
+    subroutine assert(froml, tol)
+      integer(BUD_PREC), pointer :: froml(:), tol(:)
+      integer :: lb, ub
+
+      if ( associated(froml) ) then
+        lb = lbound(froml)
+        ub = ubound(froml)
+        allocate(tol(lb:ub))
+      end if
+
+    end subroutine assert
+      
   end subroutine copy_
+
 
   ! First we implement the easy stuff
   !> Query the associated communicator
