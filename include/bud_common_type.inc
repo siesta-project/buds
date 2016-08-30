@@ -19,6 +19,10 @@
   !> @iSee nullify
   procedure, public :: nullify => nullify_
 # endif
+# ifndef BUD_NO_COPY
+  !> @iSee copy
+  procedure, public :: copy => copy_
+# endif
 
 
   !> @iSee initialize

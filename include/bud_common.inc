@@ -46,12 +46,12 @@
   !>@{
   ! needed comment
 
-  ! We force `delete_data` to be private.
+  ! We force `common_delete_` to be private.
   ! This will prohibit a mistaken public designation of the
   ! routine.
   ! Internal routine for clearing the data container in the @bud
-  private :: delete_data
-
+  private :: common_delete_
+  private :: common_copy_
 
   !> Assignment of @bud to another @bud
   !!
@@ -130,6 +130,18 @@
   public :: delete
 #endif
 
+
+#ifndef BUD_NO_COPY
+  !> Copies the @bud by creating an entirely new object with the same data
+  !!
+  !! This will for all purposes be regarded as a new instance.
+  !!
+  interface copy
+    module procedure copy_
+  end interface
+  public :: copy
+#endif
+
 #ifndef BUD_NO_NULLIFY
   
   !> Nullifies the current @bud
@@ -204,6 +216,23 @@ contains
   !>@{
   ! needed comment to separate the next interface
 
+  !> Copies the common data types in the buds
+  !!
+  !! Whenever some variable is added in bud_common_type_.inc
+  !! it should be copied in this routine.
+  !!
+  !! @note this routine is local and should only be called
+  !! from routines inside.
+  subroutine common_copy_(from, to)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
+
+    to%D%error_ = from%D%error_
+
+  end subroutine common_copy_
+  
+
+  
   !> @param[inout] this @bud that is initialized
   subroutine initialize_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
@@ -283,7 +312,7 @@ contains
       ! Use the routine provided for this specific
       ! type to clean up any internal structure
       
-      call delete_data(this%D)
+      call common_delete_(this%D)
       
       ! Deallocate the currently referenced storage
       deallocate(this%D, stat=error)

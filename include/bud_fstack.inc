@@ -250,7 +250,7 @@
 
   !> @cond BUD_DEVELOPER
 
-  pure subroutine delete_data(D)
+  pure subroutine common_delete_(D)
     type(BUD_TYPE_NAME_), intent(inout) :: D
     
     if ( associated(D%T) ) then
@@ -265,10 +265,36 @@
     D%nel_max = 0
     D%nel = 0
     
-  end subroutine delete_data
+  end subroutine common_delete_
 
   !> @endcond BUD_DEVELOPER
 
+
+  !> @param[in] from the original `bud` which is copied to `to`
+  !! @param[inout] to the output `bud` with the full copied data
+  subroutine copy_(from, to)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
+    integer :: i
+    type(BUD_STACK_TYPE), pointer :: tmp
+    type(BUD_STACK_TYPE) :: cp
+    
+    call delete(to)
+    if ( .not. is_initd(from) ) return
+
+    call new(to, from%D%nel_max)
+
+    do i = 1 , size(from)
+      tmp => get_elemp(from, i)
+      call copy(tmp, cp)
+      call push(to, cp)
+      call delete(cp)
+    end do
+    
+    ! Copy the common data-content
+    call common_copy_(from, to)
+    
+  end subroutine copy_
 
   !> @param[inout] this initialize the finite stack
   !! @param[in] nel maximum number of elements that may be contained in the stack
@@ -504,12 +530,12 @@
   end subroutine get_elem_
 
   !> @param[in] this stack to retrieve pointer element from
-  !! @param p pointer to the element `iel`
   !! @param[in] iel @opt=`size(this)` index of element to return. May be negative to offset from top.
-  subroutine get_elemp_(this, p, iel)
+  !! @result pointer to the element `iel`
+  function get_elemp_(this, iel) result(p)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    type(BUD_STACK_TYPE), pointer :: p
     integer, intent(in), optional :: iel
+    type(BUD_STACK_TYPE), pointer :: p
     integer :: el
 
     nullify(p)
@@ -530,7 +556,7 @@
       p => this%D%T(el)
     end if
       
-  end subroutine get_elemp_
+  end function get_elemp_
 
 
   !> @param[inout] this stack to count element from

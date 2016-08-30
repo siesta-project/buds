@@ -214,11 +214,11 @@
     ! non-local/neighbour elements.
 
     !> Number of (local) elements in the distribution
-    integer(BUD_PREC), pointer, contiguous :: nl(:) => null()
+    integer(BUD_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: nl(:) => null()
     !> Local index to global index
-    integer(BUD_PREC), pointer, contiguous :: l2g(:) => null()
+    integer(BUD_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: l2g(:) => null()
     !> Global index to processor
-    integer(BUD_PREC), pointer, contiguous :: g2P(:) => null()
+    integer(BUD_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: g2P(:) => null()
 
 
     ! Consistent data in the reference counted object
@@ -412,7 +412,7 @@
   !! This routine is only used internally to clean-up
   !! any data in the type.
   !! Should never be made public.
-  subroutine delete_data(this)
+  subroutine common_delete_(this)
     type(BUD_TYPE_NAME_), intent(inout) :: this
     integer :: err
 
@@ -445,7 +445,23 @@
       nullify(this%nl,this%l2g,this%g2P)
     end if
     
-  end subroutine delete_data
+  end subroutine common_delete_
+
+
+    !> Internal routine for cleaning up the data container.
+  !!
+  !! @dev_note
+  !! This routine is only used internally to clean-up
+  !! any data in the type.
+  !! Should never be made public.
+  subroutine copy_(from, to)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
+
+    call delete(to)
+    if ( .not. is_initd(from) ) return
+    
+  end subroutine copy_
 
   ! First we implement the easy stuff
   !> Query the associated communicator

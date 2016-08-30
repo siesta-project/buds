@@ -367,7 +367,7 @@
 
   !> @cond BUD_DEVELOPER
   
-  pure subroutine delete_data(D)
+  pure subroutine common_delete_(D)
     type(BUD_TYPE_NAME_), intent(inout) :: D
     type(BUD_LINKED_LIST_NAME), pointer :: head, tmp
 
@@ -427,10 +427,24 @@
     nullify(D%ll)
     nullify(D%head)
 
-  end subroutine delete_data
+  end subroutine common_delete_
 
   !> @endcond BUD_DEVELOPER
 
+
+  
+  !> @param[in] from the original `bud` which is copied to `to`
+  !! @param[inout] to the output `bud` with the full copied data
+  subroutine copy_(from, to)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
+
+    call delete(to)
+    if ( .not. is_initd(from) ) return
+
+    ! Currently not implemented
+    
+  end subroutine copy_
 
   !> @param[inout] this initialized linked list upon exit
   subroutine new_(this)

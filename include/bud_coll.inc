@@ -486,7 +486,7 @@
   
   !> @cond BUD_DEVELOPER
 
-  pure subroutine delete_data(D)
+  pure subroutine common_delete_(D)
     type(BUD_TYPE_NAME_), intent(inout) :: D
 
     call delete(D%e1)
@@ -504,10 +504,40 @@
     call delete(D%e6)
 #endif
     
-  end subroutine delete_data
+  end subroutine common_delete_
 
   !> @endcond BUD_DEVELOPER
 
+
+  !> @param[in] from the original `bud` which is copied to `to`
+  !! @param[inout] to the output `bud` with the full copied data
+  subroutine copy_(from, to)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
+
+    call delete(to)
+    if ( .not. is_initd(from) ) return
+
+    call initialize(to)
+    ! Copy the common data-content
+    call common_copy_(from, to)
+
+    call copy(from%D%e1, to%D%e1)
+    call copy(from%D%e2, to%D%e2)
+#ifdef BUD_COLL_3
+    call copy(from%D%e3, to%D%e3)
+#endif
+#ifdef BUD_COLL_4
+    call copy(from%D%e4, to%D%e4)
+#endif
+#ifdef BUD_COLL_5
+    call copy(from%D%e5, to%D%e5)
+#endif
+#ifdef BUD_COLL_6
+    call copy(from%D%e6, to%D%e6)
+#endif
+    
+  end subroutine copy_
 
   !> @param[inout] this new initialized @bud
   !! @param[in] A first element in the @bud

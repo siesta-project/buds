@@ -22,8 +22,11 @@
   !      This does not allow C-interoperability (do NOT set
   !      BUD_SM_INTEROP_C in this case)
   !
-  ! Currently this sparse matrix is not allowed
-  ! to be used in C-interoperability
+  !  - BUD_SM_INTEROP_C=0|1
+  !    Use C-indexing with BUD_SM_INTEROP_C == 1
+  !    All subsequent operations correspond to a
+  !    C-index method.
+  !    Cannot be used together with BUD_SM_CSR == 1
   
 #ifndef BUD_SM_CSC
 # define BUD_SM_CSC 0
@@ -31,6 +34,9 @@
 
 #if BUD_SM_CSC == 0
 #elif BUD_SM_CSC == 1
+# if BUD_SM_INTEROP_C == 1
+#  error "SM_INTEROP_C may not be defined when using SM_CSC == 1"
+# endif
 #else
 # error "SM_CSC *MUST* be either 0 or 1"
 #endif
@@ -268,7 +274,6 @@
 # include "SM_common.inc"
 
   
-
   !> @cond BUD_DEVELOPER
   
   !> Internal routine for cleaning up the data container.
@@ -277,7 +282,7 @@
   !! This routine is only used internally to clean-up
   !! any data in the type.
   !! Should never be made public.
-  pure subroutine delete_data(this)
+  pure subroutine common_delete_(this)
     type(BUD_TYPE_NAME_), intent(inout) :: this
 
     this%nr = 0
@@ -296,9 +301,27 @@
     nullify(this%ncol)
 #endif
     
-  end subroutine delete_data
+  end subroutine common_delete_
   
   !> @endcond BUD_DEVELOPER
+
+  
+  !> @param[in] from the original `bud` which is copied to `to`
+  !! @param[inout] to the output `bud` with the full copied data
+  subroutine copy_(from, to)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
+    
+    call delete(to)
+    if ( .not. is_initd(from) ) return
+    
+    call new(to, from%D%nr, from%D%nc, from%D%nz, &
+      from%D%cptr, from%D%row)
+    
+    ! Copy the common data-content
+    call common_copy_(from, to)
+
+  end subroutine copy_
 
   
   !> @param[inout] this the sparse matrix

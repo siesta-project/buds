@@ -300,7 +300,7 @@ module BUD_MOD_NAME
   
   ! Include common data routines
   ! Note that 'CONTAINS' is present in this include file.
-  ! the delete_data ensures a closed file
+  ! the common_delete_ ensures a closed file
   ! Hence we *must* not use elemental
 #define BUD_DELETE_NOELEMENTAL
 # include "bud_common.inc"
@@ -317,7 +317,7 @@ module BUD_MOD_NAME
   !! Should never be made public.
   !!
   !! @param[inout] this contained data to be deleted
-  subroutine delete_data(this)
+  subroutine common_delete_(this)
     type(BUD_TYPE_NAME_), intent(inout) :: this
     integer :: stat
     
@@ -336,7 +336,27 @@ module BUD_MOD_NAME
     this%unit = -1
     this%error_ = stat
     
-  end subroutine delete_data
+  end subroutine common_delete_
+
+  
+  !> @param[in] from origin of data
+  !> @param[inout] to copy data to this object
+  subroutine copy_(from, to)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
+
+    call delete(to)
+    if ( .not. is_initd(from) ) return
+
+    call initialize(to)
+
+    call common_copy_(from, to)
+        
+    ! Copy data
+    to%D%file = from%D%file
+    to%D%unit = from%D%unit
+    
+  end subroutine copy_
 
 
   !> @param[inout] this force the status to be 0

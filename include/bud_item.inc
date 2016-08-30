@@ -174,12 +174,12 @@
 
   !> @cond BUD_DEVELOPER
   
-  pure subroutine delete_data(D)
+  pure subroutine common_delete_(D)
     type(BUD_TYPE_NAME_), intent(inout) :: D
     
     call delete(D%item)
     
-  end subroutine delete_data
+  end subroutine common_delete_
 
   !> @endcond BUD_DEVELOPER
 

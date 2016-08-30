@@ -4,16 +4,16 @@
 # define BUD_INCLUDE_TYPE_ "SM_Array_type_.inc"
 
 
-  !> Retrieve pointer to values in the sparse matrix
+  !> Retrieve pointer data in the sparse matrix
   !!
   !! The array-pointer will _always_ be contiguous.
   !!
   !! @note
   !! Do not deallocate the array-pointer.
-  interface matrixp
+  interface datap
     module procedure get_matrixp_
   end interface
-  public :: matrixp
+  public :: datap
 
   !> Retrieve pointer to the sparse pattern
   !!
@@ -52,7 +52,7 @@
     BUD_TYPE_VAR, pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC()
 #endif
     
-    p => arrayp(this%D%e2)
+    p => get_arrayp(this%D%e2)
     
   end function get_matrixp_
 

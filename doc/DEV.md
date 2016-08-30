@@ -248,7 +248,7 @@ of points in the code.
    `BUD_TYPE_NAME_` type.  
    Its interface __must__ look like this:
 ~~~~~~~{.f90}
-   subroutine delete_data(D)
+   subroutine common_delete_(D)
      type(BUD_TYPE_NAME_), intent(inout) :: D  ! Doxygen lower-cases this :(
      <clean-up>
    end subroutine

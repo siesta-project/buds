@@ -65,8 +65,8 @@
     !> @iSee new
     generic, public :: new => new_dim_, new_copy_
 
-    !> @iSee #arrayp
-    procedure, public :: arrayp => get_arrayp_
+    !> @iSee #get_arrayp
+    procedure, public :: get_arrayp => get_arrayp_
 o
     !> @iSee #size
     procedure, public :: size => size_
@@ -130,18 +130,10 @@ o
   !!
   !! @note
   !! Do not deallocate the array-pointer.
-  interface arrayp
+  interface get_arrayp
     module procedure get_arrayp_
   end interface
-  public :: arrayp
-
-
-  ! We do not support this as it should never
-  ! be used as such...
-!!$  interface value
-!!$    module procedure get_array_idx_
-!!$  end interface
-!!$  public :: value
+  public :: get_arrayp
 
 
   !> Query dimension of array (or total size)
@@ -188,13 +180,15 @@ o
 # include "bud_common.inc"
 
   
+  !> @cond BUD_DEVELOPER
+  
   !> Internal routine for cleaning up the data container.
   !!
   !! @dev_note
   !! This routine is only used internally to clean-up
   !! any data in the type.
   !! Should never be made public.
-  pure subroutine delete_data(this)
+  pure subroutine common_delete_(this)
     type(BUD_TYPE_NAME_), intent(inout) :: this
 
     ! Currently we do not allow external memory
@@ -203,8 +197,27 @@ o
     deallocate(this%array)
     nullify(this%array)
     
-  end subroutine delete_data
+  end subroutine common_delete_
 
+  !> @endcond BUD_DEVELOPER
+
+
+  !> @param[in] from the origin of data
+  !! @param[inout] to the destination of the data
+  subroutine copy_(from, to)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
+
+    call delete(to)
+    if ( .not. is_initd(from) ) return
+
+    call new(to, from%D%array)
+
+    call common_copy_(from, to)
+    
+  end subroutine copy_
+
+  
   !> @param[inout] this array @bud
   !! @param[in] d1 size of the internal reference counted array (dim=1)
 #if BUD_DIM > 1

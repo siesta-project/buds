@@ -5,6 +5,7 @@
 
 !> @addtogroup sm Sparse pattern
 !! @ingroup bud-intrinsic
+!! @bud containing a sparse matrix pattern _and_ the
 !!
 !! @{
 

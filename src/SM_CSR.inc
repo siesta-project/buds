@@ -34,9 +34,9 @@
 
 #if BUD_SM_CSR == 0
 #elif BUD_SM_CSR == 1
-#ifdef BUD_SM_INTEROP_C
-# error "SM_INTEROP_C may not be defined when using SM_CSR == 1"
-#endif
+# if BUD_SM_INTEROP_C == 1
+#  error "SM_INTEROP_C may not be defined when using SM_CSR == 1"
+# endif
 #else
 # error "SM_CSR *MUST* be either 0 or 1"
 #endif
@@ -259,12 +259,11 @@
   !!
 #if BUD_SM_CSR == 0
 # if BUD_SM_INTEROP_C == 0
-  !! `M(ir,col(pointer(ir)))` is the first sparse
-  !! element in row `ir`.
+  !! `M(ir,col(pointer(ir)))` 
 # else
-  !! `M(ir,col(pointer(ir)+1))` is the first sparse
-  !! element in row `ir`.
+  !! `M(ir,col(pointer(ir)+1))`
 # endif
+  !! is the first sparse element in row `ir`.
 #elif BUD_SM_CSR == 1
   !! `M(ir,col(pointer(ir)+1))` is the first sparse
   !! element in row `ir`.
@@ -301,7 +300,7 @@
   !! This routine is only used internally to clean-up
   !! any data in the type.
   !! Should never be made public.
-  pure subroutine delete_data(this)
+  pure subroutine common_delete_(this)
     type(BUD_TYPE_NAME_), intent(inout) :: this
 
     this%nr = 0
@@ -320,11 +319,27 @@
     nullify(this%nrow)
 #endif
 
-    
-  end subroutine delete_data
+  end subroutine common_delete_
   
   !> @endcond BUD_DEVELOPER
 
+  
+  !> @param[in] from the original `bud` which is copied to `to`
+  !! @param[inout] to the output `bud` with the full copied data
+  subroutine copy_(from, to)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
+    
+    call delete(to)
+    if ( .not. is_initd(from) ) return
+    
+    call new(to, from%D%nr, from%D%nc, from%D%nz, &
+      from%D%rptr, from%D%col)
+    
+    ! Copy the common data-content
+    call common_copy_(from, to)
+
+  end subroutine copy_
   
   !> @param[inout] this the sparse matrix
   !! @param[in] nr number of rows of the matrix
@@ -428,7 +443,7 @@
 # if BUD_SM_INTEROP_C == 0
   !! @param[out] rptr @opt row pointer (`rptr(2)` is starting index of `ir=2`)
 # else
-  !! @param[out] rptr @opt row pointer (`rptr(2)+1` is starting C-index of `ir=2`)
+  !! @param[out] rptr @opt row pointer (`rptr(2)+1` is starting index of `ir=2`, note that `rptr(2)` is in C-index format))
 # endif
 #elif BUD_SM_CSR == 1
   !! @param[out] rptr @opt row pointer (`rptr(2)+1` is starting index of `ir=2`)
