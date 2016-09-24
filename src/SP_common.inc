@@ -5,24 +5,24 @@
 
   !> Errors with a negative number refers to the `-err` element
   !!
-  !! This may mean that the entry is beyond the matrix size.
+  !! This may mean that the entry is beyond the pattern size.
 
   !> Definition of no errors in the call
-  integer, parameter, public :: SM_NONE = 0
+  integer, parameter, public :: SP_NONE = 0
 
   !> Signals two or more equivalent sparse elements
-  integer, parameter, public :: SM_ENTRY_MULTIPLE = 1
+  integer, parameter, public :: SP_ENTRY_MULTIPLE = 1
 
-  !> The input argument that is wrong by `err-SM_INPUT`
+  !> The input argument that is wrong by `err-SP_INPUT`
   !!
   !! This constant is an offset in the error number that
-  !! refers to the input parameter `err - SM_INPUT`.
-  !! I.e. if `err = SM_INPUT + 2`, the second argument
+  !! refers to the input parameter `err - SP_INPUT`.
+  !! I.e. if `err = SP_INPUT + 2`, the second argument
   !! is erroneous.
-  integer, parameter, public :: SM_INPUT = 1000
+  integer, parameter, public :: SP_INPUT = 1000
 
 
-    !> Return number of non-zero elements stored in the sparse matrix
+  !> Return number of non-zero elements stored in the sparse pattern
   !!
   !! This corresponds to the `size` of the `col` array
   !! contained in the object.
@@ -31,17 +31,29 @@
   end interface
   public :: nonzeros
 
-  !> Number of rows in matrix
-  interface mat_rows
-    module procedure mat_rows_
+  !> Number of rows in the sparse pattern
+  interface rows
+    module procedure rows_
   end interface 
-  public :: mat_rows
+  public :: rows
   
-  !> Number of columns in matrix
-  interface mat_cols
-    module procedure mat_cols_
+  !> Number of columns in the sparse pattern
+  interface columns
+    module procedure columns_
   end interface 
-  public :: mat_cols
+  public :: columns
+
+
+  !> Dimension size of the sparse pattern
+  !!
+  !! This routine will return 1 of 3 possible scenarios:
+  !!  1. `size(this)` will return `nonzeros(this)`
+  !!  2. `size(this, 1)` will return `rows(this)`
+  !!  3. `size(this, 2)` will return `columns(this)`
+  interface size
+    module procedure size_
+  end interface 
+  public :: size
 
 
   !> Retrieve access to sparse pattern variables via pointers.
@@ -84,8 +96,8 @@
 
   
   
-  !> @param[in] this the sparse matrix
-  !! @return number of non-zero elements in the matrix
+  !> @param[in] this the sparse pattern
+  !! @return number of non-zero elements in the pattern
   elemental function nonzeros_(this) result(nnzs)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer :: nnzs
@@ -93,22 +105,47 @@
   end function nonzeros_
   
   
-  !> @param[in] this the sparse matrix
-  !! @return number of rows in the matrix
-  elemental function mat_rows_(this) result(rows)
+  !> @param[in] this the sparse pattern
+  !! @return number of rows in the pattern
+  elemental function rows_(this) result(rows)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer :: rows
     rows = this%D%nr
-  end function mat_rows_
+  end function rows_
 
   
-  !> @param[in] this the sparse matrix
-  !! @return number of columns in the matrix
-  elemental function mat_cols_(this) result(cols)
+  !> @param[in] this the sparse pattern
+  !! @return number of columns in the pattern
+  elemental function columns_(this) result(cols)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer :: cols
     cols = this%D%nc
-  end function mat_cols_
+  end function columns_
+
+
+  !> @param[in] this the sparse pattern
+  !> @param[in] dim @optional=0 the dimension query
+  !! @return size of the sparse pattern dependent on value of `dim`: 0=nonzeros, 1=rows, 2=columns.
+  elemental function size_(this, dim) result(size)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    integer, intent(in), optional :: dim
+    integer :: size
+
+    if ( present(dim) ) then
+      if ( dim == 1 ) then
+        size = this%D%nr
+      else if ( dim == 2 ) then
+        size = this%D%nc
+      else if ( dim == 0 ) then
+        size = this%D%nz
+      else
+        size = -1
+      end if
+    else
+      size = this%D%nz
+    end if
+    
+  end function size_
 
   
 ! project-bud -- local file settings

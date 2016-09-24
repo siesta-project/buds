@@ -17,8 +17,8 @@
 !! @{
 
 
-!> @defgroup sm-csr-array CSR format
-!! @ingroup sm-csr
+!> @defgroup sm-csr-c-array CSR (C-indexed) format
+!! @ingroup sm-csr-c
 !!
 !! @{
 
@@ -29,17 +29,17 @@
 
 
 #if BUD_DIM == 1
-!> @defgroup sm-csr-array-BUD_DIM Sparse matrix
+!> @defgroup sm-csr-c-array-BUD_DIM Sparse matrix
 #elif BUD_DIM == 2
-!> @defgroup sm-csr-array-BUD_DIM Sparse matrix, 1 extra dimension per element
+!> @defgroup sm-csr-c-array-BUD_DIM Sparse matrix, 1 extra dimension per element
 #elif BUD_DIM == 3
-!> @defgroup sm-csr-array-BUD_DIM Sparse matrix, 2 extra dimensions per element
+!> @defgroup sm-csr-c-array-BUD_DIM Sparse matrix, 2 extra dimensions per element
 #elif BUD_DIM == 4
-!> @defgroup sm-csr-array-BUD_DIM Sparse matrix, 3 extra dimensions per element
+!> @defgroup sm-csr-c-array-BUD_DIM Sparse matrix, 3 extra dimensions per element
 #elif BUD_DIM == 5
-!> @defgroup sm-csr-array-BUD_DIM Sparse matrix, 4 extra dimensions per element
+!> @defgroup sm-csr-c-array-BUD_DIM Sparse matrix, 4 extra dimensions per element
 #endif
-!! @ingroup sm-csr-BUD_DIM
+!! @ingroup sm-csr-c-BUD_DIM
 !!
 !! A sparse matrix pattern with associated sparse matrix elements.
 !!
@@ -56,111 +56,111 @@
 !! @{
 
 
-# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,bSM1DiCSR)
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,bSM1DiCSR_C)
 !> @defgroup BUD_MOD_NAME Logical
 !! @details
 !! The sparsity pattern is in `integer(selected_int_kind(9))` precision.
 !! @{
 module BUD_MOD_NAME
-  use BUD_CC3(BUD_MOD,_,iSM_CSR)
+  use BUD_CC3(BUD_MOD,_,iSP_CSR_C)
   use BUD_CC3(BUD_MOD,_,bArray1D)
 #include "bud_common_declarations.inc"
-# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,bSM1DiCSR)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,SMDistCSR)
+# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,bSM1DiCSR_C)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,SMDistCSR_C)
 # define BUD_TYPE_VAR logical
 #undef BUD_TYPE_VAR_PREC
-# define BUD_COLL_1 BUD_CC2(BUD_TYPE,iSM_CSR)
+# define BUD_COLL_1 BUD_CC2(BUD_TYPE,iSP_CSR_C)
 # define BUD_COLL_2 BUD_CC2(BUD_TYPE,bArray1D)
-#include "SM_Array.inc"
+#include "SP_Array.inc"
 end module
 !> @}
 
-# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,rSM1DiCSR)
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,rSM1DiCSR_C)
 !> @defgroup BUD_MOD_NAME Real (float)
 !! `real(selected_real_kind(6))` data type
 !!
 !! The sparsity pattern is in `integer(selected_int_kind(9))` precision.
 !! @{
 module BUD_MOD_NAME
-  use BUD_CC3(BUD_MOD,_,iSM_CSR)
+  use BUD_CC3(BUD_MOD,_,iSP_CSR_C)
   use BUD_CC3(BUD_MOD,_,rArray1D)
 #include "bud_common_declarations.inc"
-# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,rSM1DiCSR)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,SMDistCSR)
+# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,rSM1DiCSR_C)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,SMDistCSR_C)
 # define BUD_TYPE_VAR real
 # define BUD_TYPE_VAR_PREC rr_
-# define BUD_COLL_1 BUD_CC2(BUD_TYPE,iSM_CSR)
+# define BUD_COLL_1 BUD_CC2(BUD_TYPE,iSP_CSR_C)
 # define BUD_COLL_2 BUD_CC2(BUD_TYPE,rArray1D)
-#include "SM_Array.inc"
+#include "SP_Array.inc"
 end module
 !> @}
 
-# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,dSM1DiCSR)
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,dSM1DiCSR_C)
 !> @defgroup BUD_MOD_NAME Real (double)
 !! `real(selected_real_kind(15))` data type
 !!
 !! The sparsity pattern is in `integer(selected_int_kind(9))` precision.
 !! @{
 module BUD_MOD_NAME
-  use BUD_CC3(BUD_MOD,_,iSM_CSR)
+  use BUD_CC3(BUD_MOD,_,iSP_CSR_C)
   use BUD_CC3(BUD_MOD,_,dArray1D)
 #include "bud_common_declarations.inc"
-# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,dSM1DiCSR)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,SMDistCSR)
+# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,dSM1DiCSR_C)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,SMDistCSR_C)
 # define BUD_TYPE_VAR real
 # define BUD_TYPE_VAR_PREC rd_
-# define BUD_COLL_1 BUD_CC2(BUD_TYPE,iSM_CSR)
+# define BUD_COLL_1 BUD_CC2(BUD_TYPE,iSP_CSR_C)
 # define BUD_COLL_2 BUD_CC2(BUD_TYPE,dArray1D)
-#include "SM_Array.inc"
+#include "SP_Array.inc"
 end module
 !> @}
 
 
-# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,cSM1DiCSR)
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,cSM1DiCSR_C)
 !> @defgroup BUD_MOD_NAME Complex (float)
 !! `complex(selected_real_kind(6))` data type
 !!
 !! The sparsity pattern is in `integer(selected_int_kind(9))` precision.
 !! @{
 module BUD_MOD_NAME
-  use BUD_CC3(BUD_MOD,_,iSM_CSR)
+  use BUD_CC3(BUD_MOD,_,iSP_CSR_C)
   use BUD_CC3(BUD_MOD,_,cArray1D)
 #include "bud_common_declarations.inc"
-# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,cSM1DiCSR)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,SMDistCSR)
+# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,cSM1DiCSR_C)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,SMDistCSR_C)
 # define BUD_TYPE_VAR complex
 # define BUD_TYPE_VAR_PREC rr_
-# define BUD_COLL_1 BUD_CC2(BUD_TYPE,iSM_CSR)
+# define BUD_COLL_1 BUD_CC2(BUD_TYPE,iSP_CSR_C)
 # define BUD_COLL_2 BUD_CC2(BUD_TYPE,cArray1D)
-#include "SM_Array.inc"
+#include "SP_Array.inc"
 end module
 !> @}
 
-# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,zSM1DiCSR)
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,zSM1DiCSR_C)
 !> @defgroup BUD_MOD_NAME Complex (double)
 !! `complex(selected_real_kind(15))` data type
 !!
 !! The sparsity pattern is in `integer(selected_int_kind(9))` precision.
 !! @{
 module BUD_MOD_NAME
-  use BUD_CC3(BUD_MOD,_,iSM_CSR)
+  use BUD_CC3(BUD_MOD,_,iSP_CSR_C)
   use BUD_CC3(BUD_MOD,_,zArray1D)
 #include "bud_common_declarations.inc"
-# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,zSM1DiCSR)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,SMDistCSR)
+# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,zSM1DiCSR_C)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,SMDistCSR_C)
 # define BUD_TYPE_VAR complex
 # define BUD_TYPE_VAR_PREC rd_
-# define BUD_COLL_1 BUD_CC2(BUD_TYPE,iSM_CSR)
+# define BUD_COLL_1 BUD_CC2(BUD_TYPE,iSP_CSR_C)
 # define BUD_COLL_2 BUD_CC2(BUD_TYPE,zArray1D)
-#include "SM_Array.inc"
+#include "SP_Array.inc"
 end module
 !> @}
 
 
-! GROUP sm-csr-array-BUD_DIM
+! GROUP sm-csr0-array-BUD_DIM
 !> @}
 
-! GROUP sm-csr-array
+! GROUP sm-csr0-array
 !> @}
 
 ! GROUP sm-array

@@ -1,7 +1,7 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
 
-!# define BUD_INCLUDE_TYPE "SM_Array_type.inc"
-# define BUD_INCLUDE_TYPE_ "SM_Array_type_.inc"
+!# define BUD_INCLUDE_TYPE "SP_Array_type.inc"
+# define BUD_INCLUDE_TYPE_ "SP_Array_type_.inc"
 
 
   !> Retrieve pointer data in the sparse matrix
@@ -52,7 +52,7 @@
     BUD_TYPE_VAR, pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC()
 #endif
     
-    p => get_arrayp(this%D%e2)
+    p => arrayp(this%D%e2)
     
   end function get_matrixp_
 

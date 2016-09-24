@@ -183,6 +183,24 @@
 
   !> @endcond BUD_DEVELOPER
 
+
+  !> @param[in] from the origin of data
+  !! @param[inout] to the destination of the data
+  subroutine copy_(from, to)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
+
+    call delete(to)
+    if ( .not. is_initd(from) ) return
+
+    call initialize(to)
+    call common_copy_(from, to)
+
+    call copy(from%D%item, to%D%item)
+    
+  end subroutine copy_
+  
+  
   !> @param[inout] this type to be initialized 
   subroutine new_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this

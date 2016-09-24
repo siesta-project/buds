@@ -56,7 +56,9 @@ module BUD_MOD_NAME
   contains
 #   include "bud_common_type.inc"
 
-    !> @iSee new
+    !> @iSee new_file
+    procedure, public :: new_file => new_
+    !> @iSee new_file
     procedure, public :: new => new_
 
     !> @iSee open
@@ -130,15 +132,16 @@ module BUD_MOD_NAME
   !!
   !! @note
   !! This will _not_ open the file.
-  interface new
-    module procedure new_
-  end interface
-  public :: new
-  !> @iSee `new`
   interface BUD_CC3(BUD_NEW,_,File)
     module procedure new_
   end interface
   public :: BUD_CC3(BUD_NEW,_,File)
+
+  !> @iSee BUD_CC3(BUD_NEW,_,File)
+  interface new
+    module procedure new_
+  end interface
+  public :: new
 
 
   !> Open file via object
@@ -281,10 +284,10 @@ module BUD_MOD_NAME
   !! If the file is opened it will be closed afterwards.
   !!
   !! The file @bud will not be deleted, nor the filename.
-  interface file_delete
-    module procedure file_delete_
+  interface delete_file
+    module procedure delete_file_
   end interface
-  public :: file_delete
+  public :: delete_file
 
   !> Print, to std-out, some basic information of the data-container
   !!
@@ -306,8 +309,8 @@ module BUD_MOD_NAME
 # include "bud_common.inc"
 #undef BUD_DELETE_NOELEMENTAL
 
+  
   !> @cond BUD_DEVELOPER
-
 
   !> Internal routine for cleaning up the data container.
   !!
@@ -338,6 +341,14 @@ module BUD_MOD_NAME
     
   end subroutine common_delete_
 
+  !> @param[inout] this force the status to be 0
+  subroutine stat_reset_(this)
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    if ( is_initd(this) ) this%D%error_ = 0
+  end subroutine stat_reset_
+
+  !> @endcond BUD_DEVELOPER
+
   
   !> @param[in] from origin of data
   !> @param[inout] to copy data to this object
@@ -358,14 +369,6 @@ module BUD_MOD_NAME
     
   end subroutine copy_
 
-
-  !> @param[inout] this force the status to be 0
-  subroutine stat_reset_(this)
-    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    if ( is_initd(this) ) this%D%error_ = 0
-  end subroutine stat_reset_
-
-  !> @endcond BUD_DEVELOPER
 
 
   !> @param[inout] this file @bud
@@ -688,7 +691,7 @@ module BUD_MOD_NAME
   end subroutine backspace_
 
   !> @param[inout] this file @bud
-  subroutine file_delete_(this)
+  subroutine delete_file_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer :: unit
 
@@ -714,7 +717,7 @@ module BUD_MOD_NAME
       
     end if
     
-  end subroutine file_delete_
+  end subroutine delete_file_
 
   
   !> @param[in] this data type
@@ -744,12 +747,13 @@ module BUD_MOD_NAME
     end if
 
     ! Create fmt
-    write(fmt, '(a,i0,a)') '(t',lindent,',4a,3(a,l1),a,i0,a)'
+    write(fmt, '(a,i0,a)') '(t',lindent,',4a,4(a,l1),a,i0,a)'
     
     write(*,fmt) "<", trim(name), &
       " file=", filename(this), &
       ", open=", is_open(this), &
       ", formatted=", is_formatted(this), &
+      ", direct=", is_direct(this), &
       ", exists=", exists(this), &
       ", refs: ", references(this), ">"
 

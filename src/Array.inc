@@ -60,14 +60,16 @@
     procedure, private :: new_dim_
     procedure, private :: new_copy_
 
-    !>>@}
+    !> @}
     
-    !> @iSee new
+    !> @iSee new_array
+    generic, public :: new_array => new_dim_, new_copy_
+    !> @iSee new_array
     generic, public :: new => new_dim_, new_copy_
 
-    !> @iSee #get_arrayp
-    procedure, public :: get_arrayp => get_arrayp_
-o
+    !> @iSee #arrayp
+    procedure, public :: arrayp => arrayp_
+
     !> @iSee #size
     procedure, public :: size => size_
 
@@ -110,18 +112,18 @@ o
   !! @note
   !! If the array is created from dimensions, the initial
   !! value of the array is arbitrary.
-  interface new
-    module procedure new_dim_
-    module procedure new_copy_
-  end interface
-  public :: new
-  
-  !> @iSee new
   interface BUD_TYPE_NEW
     module procedure new_dim_
     module procedure new_copy_
   end interface
   public :: BUD_TYPE_NEW
+
+  !> @iSee BUD_TYPE_NEW
+  interface new
+    module procedure new_dim_
+    module procedure new_copy_
+  end interface
+  public :: new
 
 
   !> Retrieve pointer to array in the @bud
@@ -130,10 +132,10 @@ o
   !!
   !! @note
   !! Do not deallocate the array-pointer.
-  interface get_arrayp
-    module procedure get_arrayp_
+  interface arrayp
+    module procedure arrayp_
   end interface
-  public :: get_arrayp
+  public :: arrayp
 
 
   !> Query dimension of array (or total size)
@@ -330,7 +332,7 @@ o
 
   !> @param[in] this array @bud
   !! @return a pointer to the data (contiguous)
-  function get_arrayp_(this) result(p)
+  function arrayp_(this) result(p)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC()
@@ -340,7 +342,7 @@ o
 
     p => this%D%array
 
-  end function get_arrayp_
+  end function arrayp_
 
 
   !> @param[in] this the containing @bud
@@ -423,6 +425,7 @@ o
 #else
     BUD_TYPE_VAR, intent(in) :: v
 #endif
+    integer :: i
 
     if ( is_initd(this) ) then
       this%D%array = v
