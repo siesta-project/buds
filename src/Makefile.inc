@@ -177,6 +177,13 @@ bud_SP_CSC_C_Array3D.f90: SP_CSC_C_Array1D.F90
 	$(src_FPP)
 
 
+LIST_OBJECTS = \
+	bud_List.o
+$(LIST_OBJECTS:.o=.f90): List.inc
+src_OBJECTS += $(LIST_OBJECTS)
+bud_List.f90: List.F90
+	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
+
 
 FILE_OBJECTS = \
 	bud_File.o
