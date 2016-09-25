@@ -56,9 +56,9 @@ module BUD_MOD_NAME
   contains
 #   include "bud_common_type.inc"
 
-    !> @iSee new_file
-    procedure, public :: new_file => new_
-    !> @iSee new_file
+    !> @iSee BUD_CC3(BUD_NEW,_,File)
+    procedure, public :: BUD_CC3(BUD_NEW,_,File) => new_
+    !> @iSee BUD_CC3(BUD_NEW,_,File)
     procedure, public :: new => new_
 
     !> @iSee open

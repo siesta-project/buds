@@ -309,7 +309,7 @@
     call delete(to)
     if ( .not. is_initd(from) ) return
     
-    call new_sp_csr(to, from%D%nr, from%D%nc, from%D%nz, &
+    call new(to, from%D%nr, from%D%nc, from%D%nz, &
       from%D%rptr, from%D%col)
     to%D%sorted = from%D%sorted
     
@@ -384,7 +384,7 @@
 #endif
 
     ! pre-allocate
-    call new_sp_csr(this, nr, nc, nz)
+    call new(this, nr, nc, nz)
 
     ! Copy pointers
     this%D%rptr(1:this%D%nr) = rptr
@@ -562,7 +562,7 @@
       ! responsibility of the programmer.
       
       ! Create new folded matrix
-      call new_sp_csr(to, fnr, nc, fnz)
+      call new(to, fnr, nc, fnz)
 
 #if BUD_SP_CSR == 0
       call attach(to, rptr=tptr, col=tcol)
@@ -680,7 +680,7 @@
       ! create the new sparsity pattern
       !> TODO check that the last row has > 0 elements
       !! this will justify the `-1` below
-      call new_sp_csr(to, fnr, nc, tptr(fnr+1)-1, tptr, tcol)
+      call new(to, fnr, nc, tptr(fnr+1)-1, tptr, tcol)
 
 # else
 
@@ -714,7 +714,7 @@
       deallocate(tmpcol)
       
       ! create the new sparsity pattern
-      call new_sp_csr(to, fnr, nc, tptr(fnr+1), tptr, tcol)
+      call new(to, fnr, nc, tptr(fnr+1), tptr, tcol)
 
 # endif
       
@@ -748,7 +748,7 @@
       deallocate(tmpcol)
       
       ! create the new sparsity pattern
-      call new_sp_csr(to, fnr, nc, tptr(fnr+1), tptr, tcol)
+      call new(to, fnr, nc, tptr(fnr+1), tptr, tcol)
 
 #endif
       
@@ -799,7 +799,7 @@
     ! responsibility of the programmer.
     
     ! Create new folded matrix
-    call new_sp_csr(to, nr, fnc, fnz)
+    call new(to, nr, fnc, fnz)
     
     call attach(to, rptr=tptr, col=tcol)
       

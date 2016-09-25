@@ -62,9 +62,9 @@
 
     !> @}
     
-    !> @iSee new_array
-    generic, public :: new_array => new_dim_, new_copy_
-    !> @iSee new_array
+    !> @iSee BUD_NEW_TYPE
+    generic, public :: BUD_NEW_TYPE => new_dim_, new_copy_
+    !> @iSee BUD_NEW_TYPE
     generic, public :: new => new_dim_, new_copy_
 
     !> @iSee #arrayp
