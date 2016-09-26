@@ -101,18 +101,18 @@
   !! which either initializes the object with
   !! an empty contained BUD_ITEM_TYPE or with a reference to the passed
   !! type.
-  interface new
-    module procedure new_
-    module procedure new_data_
-  end interface
-  public :: new
-  
-  !> @iSee #new
   interface BUD_TYPE_NEW
     module procedure new_
     module procedure new_data_
   end interface
   public :: BUD_TYPE_NEW
+  
+  !> @iSee BUD_TYPE_NEW
+  interface new
+    module procedure new_
+    module procedure new_data_
+  end interface
+  public :: new
 
 
   !> Store BUD_ITEM_TYPE in the @bud

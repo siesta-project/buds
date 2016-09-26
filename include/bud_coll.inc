@@ -264,18 +264,18 @@
   !!
   !! This will call `delete` before re-initializing the
   !! data.
-  interface new
-    module procedure new_
-    module procedure new_data_
-  end interface
-  public :: new
-
-  !> @iSee new
   interface BUD_TYPE_NEW
     module procedure new_
     module procedure new_data_
   end interface
   public :: BUD_TYPE_NEW
+
+  !> @iSee BUD_TYPE_NEW
+  interface new
+    module procedure new_
+    module procedure new_data_
+  end interface
+  public :: new
 
 
   
@@ -709,4 +709,3 @@
   !  f90-program-indent: 2
   !  f90-do-indent: 2
   ! End:
-

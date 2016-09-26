@@ -141,16 +141,16 @@
   !! will clear the reference (@isee delete).
   !! Subsequently the type container will be allocated
   !! and the reference counted data will be 1.
-  interface new
-    module procedure new_
-  end interface
-  public :: new
-  
-  !> @iSee #new
   interface BUD_TYPE_NEW
     module procedure new_
   end interface
   public :: BUD_TYPE_NEW
+  
+  !> @iSee BUD_TYPE_NEW
+  interface new
+    module procedure new_
+  end interface
+  public :: new
   
   !> Adds/Pushes new element to the stack
   !!

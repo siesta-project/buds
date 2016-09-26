@@ -197,18 +197,18 @@
   !!
   !! One may later use #set_head to change the
   !! head of the linked list.
-  interface new
-    module procedure new_
-    module procedure new_data_
-  end interface
-  public :: new
-  
-  !> @iSee #new
   interface BUD_TYPE_NEW
     module procedure new_
     module procedure new_data_
   end interface
   public :: BUD_TYPE_NEW
+  
+  !> @iSee BUD_TYPE_NEW
+  interface new
+    module procedure new_
+    module procedure new_data_
+  end interface
+  public :: new
 
 
   ! this should probably not be documented
