@@ -120,6 +120,12 @@
     !> @iSee #list_shrink
     generic, public :: list_shrink => shrink_, shrink_n_
 
+    !> @iSee #list_clear
+    generic, public :: list_clear => clear_
+
+    !> @iSee #list_merge
+    procedure, public :: list_merge => merge_
+
     !> @iSee #list_set_incr_n
     procedure, public :: list_set_incr_n => set_incr_n
 
@@ -299,6 +305,18 @@
   interface list_pop
     module procedure pop_value_
   end interface list_pop
+
+  !> Merges two lists into a new list.
+  !!
+  !! Takes two lists and merges them into one. This is equivalent to
+  !! the following:
+  !! \code{.f90}
+  !! call copy(a, c)
+  !! call list_push(c, b)
+  !! \endcode
+  interface list_merge
+    module procedure merge_
+  end interface list_merge
 
   !> Sorts the entries in the list
   !!
@@ -652,8 +670,9 @@
   !! @param[in] list the list to be added to the list
   subroutine push_array_(this, n, list)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC) :: n, list(n)
-    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC) :: i
+    integer(BUD_TYPE_VAR_PREC), intent(in) :: n
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in) :: list(n)
+    integer(BUD_TYPE_VAR_PREC) :: i
     logical :: sorted
     
     call assert_init_size_add(this, n)
@@ -710,6 +729,18 @@
     
   end function pop_value_
 
+  !> @param[in] A first list
+  !> @param[in] B second list
+  !> @param[inout] C the merged list of `A` and `B`
+  subroutine merge_(A, B, C)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: A, B
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: C
+
+    call copy(A, C)
+    call list_push(C, B)
+    
+  end subroutine merge_
+
   !> @param[in] this list @bud
   !! @return a pointer to the list (contiguous)
   function listp_(this) result(p)
@@ -746,9 +777,9 @@
   !! @param[in] n @opt number of elements that needs to be available in its current state
   subroutine extend_(this, max_n, n)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), optional :: max_n, n
+    integer(BUD_TYPE_VAR_PREC), optional :: max_n, n
 
-    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC) :: lmax_n, i
+    integer(BUD_TYPE_VAR_PREC) :: lmax_n, i
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), allocatable :: tmp(:)
 
     ! We will select the larger of the two
@@ -788,13 +819,14 @@
 
   end subroutine extend_
 
-  !> @param[in] this @bud container
+  
+  !> @param[inout] this @bud container
   !! @param[in] max_n new maximum number of allowed elements that should be available in the list
   subroutine shrink_n_(this, max_n)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC) :: max_n
+    integer(BUD_TYPE_VAR_PREC), intent(in) :: max_n
 
-    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC) :: i, n
+    integer(BUD_TYPE_VAR_PREC) :: i, n
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), allocatable :: tmp(:)
 
     n = min(max_n, this%D%n)
@@ -825,17 +857,34 @@
 
   end subroutine shrink_n_
 
-  !> @param[in] this List reduced to number of elements already in the list
+  !> @param[inout] this List reduced to number of elements already in the list
   subroutine shrink_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
-    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC) :: n
+    integer(BUD_TYPE_VAR_PREC) :: n
 
     n = this%D%n
     call list_shrink(this, n)
 
   end subroutine shrink_
 
+  
+  !> @param[inout] this clear the elements without shrinking the allocated list
+  !! @param[in] n @opt=0 the retained elements in the list
+  subroutine clear_(this, n)
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    integer(BUD_TYPE_VAR_PREC), intent(in), optional :: n
+    integer(BUD_TYPE_VAR_PREC) :: ln
+
+    if ( .not. is_initd(this) ) return
+    
+    ln = 0
+    if ( present(n) ) ln = n
+
+    this%D%n = ln
+    
+  end subroutine clear_
+  
 
   !> @param[inout] this list @bud (sorted on exit)
   subroutine sort_(this)
@@ -1114,7 +1163,7 @@
     use BUD_CC2(BUD_MOD,_utils), only: find_bin
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in) :: val
-    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC) :: idx
+    integer(BUD_TYPE_VAR_PREC) :: idx
 
     if ( this%D%sorted ) then
       
@@ -1139,7 +1188,6 @@
   !! @param[in] val the value to be queried whether it is in the list
   !! @return .true. if `val` is in the list
   pure function in_list_(this, val) result(found)
-    use BUD_CC2(BUD_MOD,_utils), only: find_bin
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in) :: val
     logical :: found
