@@ -1,5 +1,15 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
 
+  !> @defgroup sm-array Sparse matrix (pattern and data)
+  !! @ingroup bud-intrinsic
+  !!
+  !! @bud containing a sparse matrix pattern _and_ the
+  !! associated data corresponding to the sparse matrix elements.
+  !!
+  !! From this object the full matrix may be constructed or interacted
+  !! with.
+  !!
+  
 !# define BUD_INCLUDE_TYPE "SP_Array_type.inc"
 # define BUD_INCLUDE_TYPE_ "SP_Array_type_.inc"
 

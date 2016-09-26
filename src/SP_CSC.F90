@@ -3,12 +3,8 @@
 ! Get default commands
 #include "bud_utils.inc"
 
-!> @addtogroup sm Sparse pattern
-!! @ingroup bud-intrinsic
-!!
-!! @{
-
-!> @defgroup sm-csc Compressed Sparse Column (CSC)
+!> @defgroup sm-csc CSC (Compressed Sparse Column)
+!! @ingroup sm
 !!
 !! A compressed sparse column pattern implementation.
 !!
@@ -81,9 +77,6 @@ end module
 !> @}
 
 ! GROUP sm-csc
-!> @}
-
-! GROUP sm
 !> @}
 
 

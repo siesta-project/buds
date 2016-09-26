@@ -1,6 +1,23 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
   
 #include "bud_utils.inc"
+
+  !> @defgroup list List
+  !! @ingroup bud-intrinsic
+  !!
+  !! A List implementation with set-like operations. 
+  !!
+  !! The list is the equivalent of the #Array1D structure
+  !! however with a large set of intrinsic functionality
+  !! not available for the #Array1D @bud.
+  !!
+  !! The List enables:
+  !!  1. Sorting
+  !!  2. Set operations; union, intersection, complement
+  !!  3. Reverse elements
+  !!  4. Automatic re-allocation when more elements are needed.
+  !!  5. Binary search-algorithms if sorted.
+  !!
   
   ! The following pre-processor variables are currently used when
   ! included:
@@ -482,7 +499,7 @@
   !> @param[inout] this array @bud
   !! @param[in] a first value of the range
   !! @param[in] b last value of the range
-  !! @param[in] step @optional=1 the step of the sequence
+  !! @param[in] step @opt=1 the step of the sequence
   subroutine new_range_(this, a, b, step)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in) :: a, b

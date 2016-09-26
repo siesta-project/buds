@@ -3,28 +3,10 @@
 ! Get default commands
 #include "bud_utils.inc"
 
-!> @addtogroup bud-intrinsic
-
-!> @defgroup list List
-!! @ingroup bud-intrinsic
-!!
-!! A List implementation with set-like operations. 
-!!
-!! The list is the equivalent of the #Array1D structure
-!! however with a large set of intrinsic functionality
-!! not available for the #Array1D @bud.
-!!
-!! The List enables:
-!!  1. Sorting
-!!  2. Set operations; union, intersection, complement
-!!  3. Reverse elements
-!!  4. Automatic re-allocation when more elements are needed.
-!!  5. Binary search-algorithms if sorted.
-!!
-!! @{
 
 # define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,sList)
 !> @defgroup BUD_MOD_NAME Integer (short)
+!! @ingroup list
 !! `integer(selected_int_kind(4))` data type
 !! @{
 module BUD_MOD_NAME
@@ -38,6 +20,7 @@ end module
 
 # define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,iList)
 !> @defgroup BUD_MOD_NAME Integer (int)
+!! @ingroup list
 !! `integer(selected_int_kind(9))` data type
 !! @{
 module BUD_MOD_NAME
@@ -51,6 +34,7 @@ end module
 
 # define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,lList)
 !> @defgroup BUD_MOD_NAME Integer (long)
+!! @ingroup list
 !! `integer(selected_int_kind(18))` data type
 !! @{
 module BUD_MOD_NAME
@@ -60,9 +44,6 @@ module BUD_MOD_NAME
 # define BUD_TYPE_VAR_PREC il_
 #include "List.inc"
 end module
-!> @}
-
-! GROUP list
 !> @}
 
 

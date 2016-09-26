@@ -3,26 +3,13 @@
 ! Get default commands
 #include "bud_utils.inc"
 
-!> @addtogroup bud-intrinsic
-
-!> @defgroup array Array
-!! @ingroup bud-intrinsic
-!!
-!! Intrinsic fortran array data-type.
-!!
-!! The contained array may be of various data types
-!! and can be accessed through a variety of ways.
-!!
-!! The reference counting makes it easy to decide when
-!! to delete the data associated with the object.
-!!
-!! @{
 
 ! Define the number of dimensions in this Array
 #define BUD_DIM 1
 #define BUD_DIMD BUD_CC2(BUD_DIM,D)
 
 !> @defgroup array-BUD_DIM Array BUD_DIMD
+!! @ingroup array
 !! Array of dimension BUD_DIM.
 !! @{
 
@@ -132,9 +119,6 @@ end module
 !> @}
 
 ! GROUP array-BUD_DIM
-!> @}
-
-! GROUP array
 !> @}
 
 

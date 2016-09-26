@@ -1,6 +1,18 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
   
 #include "bud_utils.inc"
+
+  !> @defgroup array Array
+  !! @ingroup bud-intrinsic
+  !!
+  !! Intrinsic fortran array data-type.
+  !!
+  !! The contained array may be of various data types
+  !! and can be accessed through a variety of ways.
+  !!
+  !! The reference counting makes it easy to decide when
+  !! to delete the data associated with the object.
+  !!
   
   ! The following pre-processor variables are currently used when
   ! included:

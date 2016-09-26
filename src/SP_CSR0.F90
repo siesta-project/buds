@@ -3,12 +3,8 @@
 ! Get default commands
 #include "bud_utils.inc"
 
-!> @addtogroup sm Sparse pattern
-!! @ingroup bud-intrinsic
-!!
-!! @{
-
-!> @defgroup sm-csr0 Compressed Sparse Row (CSR 0-based row pointer)
+!> @defgroup sm-csr0 CSR0 (Compressed Sparse Row 0-based row pointer)
+!! @ingroup sm
 !!
 !! A compressed sparse row matrix implementation using
 !! a 0-based row-pointer.
@@ -79,9 +75,6 @@ end module
 !> @}
 
 ! GROUP sm-csr0
-!> @}
-
-! GROUP sm
 !> @}
 
 

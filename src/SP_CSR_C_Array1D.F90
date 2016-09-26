@@ -3,21 +3,9 @@
 ! Get default commands
 #include "bud_utils.inc"
 
-!> @addtogroup bud-intrinsic Intrinsic @buds
-
-!> @defgroup sm-array Sparse matrix (pattern and data)
-!! @ingroup bud-intrinsic
-!!
-!! @bud containing a sparse matrix pattern _and_ the
-!! associated data corresponding to the sparse matrix elements.
-!!
-!! From this object the full matrix may be constructed or interacted
-!! with.
-!!
-!! @{
-
 
 !> @defgroup sm-csr-c-array CSR (C-indexed) format
+!! @ingroup sm-array
 !! @ingroup sm-csr-c
 !!
 !! @{
@@ -58,8 +46,9 @@
 
 # define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,bSM1DiCSR_C)
 !> @defgroup BUD_MOD_NAME Logical
-!! @details
-!! The sparsity pattern is in `integer(selected_int_kind(9))` precision.
+!! `logical` data type
+!!
+!! Sparsity pattern with logical content.
 !! @{
 module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,iSP_CSR_C)
@@ -161,9 +150,6 @@ end module
 !> @}
 
 ! GROUP sm-csr0-array
-!> @}
-
-! GROUP sm-array
 !> @}
 
 

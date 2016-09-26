@@ -1,5 +1,15 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
 
+  !> @defgroup sm Sparse pattern
+  !! @ingroup bud-intrinsic
+  !!
+  !! @brief
+  !! Sparse pattern for reduced storage formats of dense patterns
+  !! with many zero elements.
+  !!
+  !! A sparse pattern is denoted by a two-dimensional format based on
+  !! rows and columns.
+
   ! Constants defined to be used as error messages
   !
 

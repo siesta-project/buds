@@ -217,7 +217,7 @@ module BUD_MOD_NAME
   end interface
   public :: get_unit
 
-  !> @iSee #get_unit
+  !> @iSee get_unit
   interface unit
     module procedure get_unit_
   end interface

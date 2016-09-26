@@ -3,15 +3,8 @@
 ! Get default commands
 #include "bud_utils.inc"
 
-!> @addtogroup sm Sparse pattern
-!! @ingroup bud-intrinsic
-!!
-!! Sparse pattern for reduced storage formats of dense patterns with
-!! many zero elements.
-!!
-!! @{
-
-!> @defgroup sm-csr Compressed Sparse Row (CSR)
+!> @defgroup sm-csr CSR (Compressed Sparse Row)
+!! @ingroup sm
 !!
 !! A compressed sparse row matrix implementation.
 !!
@@ -84,9 +77,6 @@ end module
 !> @}
 
 ! GROUP sm-csr
-!> @}
-
-! GROUP sm
 !> @}
 
 
