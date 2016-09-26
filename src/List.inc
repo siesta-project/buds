@@ -466,7 +466,7 @@
     call new_dim_(this, n)
 
     ! copy data
-    call push(this, n, list)
+    call list_push(this, n, list)
 
   end subroutine new_copy_n_
 
@@ -631,7 +631,7 @@
 
     if ( .not. is_initd(other) ) return
 
-    call push(this, other%D%n, other%D%lst)
+    call list_push(this, other%D%n, other%D%lst)
     
   end subroutine push_list_
 
