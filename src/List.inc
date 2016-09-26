@@ -88,9 +88,16 @@
     !> @iSee #sort_heap
     procedure, public :: list_sort => sort_heap_
 
+    procedure, private :: push_value_
+    procedure, private :: push_array_
+    procedure, private :: push_list_
+
     !> @iSee #list_push
     generic, public :: list_push => push_value_, push_array_, &
       push_list_
+
+    !> @iSee #list_pop
+    generic, public :: list_pop => pop_value_
 
     
     ! Set operations
@@ -107,6 +114,17 @@
 
     !> @iSee #list_extend
     procedure, public :: list_extend => extend_
+
+    procedure, private :: shrink_
+    procedure, private :: shrink_n_
+    !> @iSee #list_shrink
+    generic, public :: list_shrink => shrink_, shrink_n_
+
+    !> @iSee #list_set_incr_n
+    procedure, public :: list_set_incr_n => set_incr_n
+
+    !> @iSee #list_get_incr_n
+    procedure, public :: list_get_incr_n => get_incr_n
 
     !> @iSee #index
     procedure, public :: index => index_
@@ -274,6 +292,14 @@
     module procedure push_value_, push_array_, push_list_
   end interface list_push
 
+  !> Pop the last element in the list
+  !!
+  !! Will return and remove the latest element in the list (from the end).
+  !! The list will never be re-allocated.
+  interface list_pop
+    module procedure pop_value_
+  end interface list_pop
+
   !> Sorts the entries in the list
   !!
   !! The values in the list will be sorted.
@@ -296,6 +322,14 @@
   interface list_extend
     module procedure extend_
   end interface list_extend
+
+  !> Shrinks the List to the number of elements currently in the List (or an explicit size)
+  !!
+  !! If the number of contained elements are larger than the new size,
+  !! the last elements will silently be removed.
+  interface list_shrink
+    module procedure shrink_, shrink_n_
+  end interface list_shrink
 
 
   !> Returns the union of two lists in a third list
@@ -534,8 +568,31 @@
   end function max_sizep_
 
 
-  !> @param[in] this list
+  !> @param[inout] this list
   !! @param[in] incr_n the default number of values that should be
+  subroutine set_incr_n(this, incr_n)
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    integer(BUD_TYPE_VAR_PREC), intent(in) :: incr_n
+
+    if ( .not. is_initd(this) ) return
+    
+    this%D%incr_n = incr_n
+
+  end subroutine set_incr_n
+
+  !> @param[in] this list
+  !! @param[out] incr_n the default number of values that should be
+  subroutine get_incr_n(this, incr_n)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    integer(BUD_TYPE_VAR_PREC), intent(out) :: incr_n
+
+    incr_n = 0
+    if ( .not. is_initd(this) ) return
+    
+    incr_n = this%D%incr_n
+
+  end subroutine get_incr_n
+  
 
   !> @cond BUD_DEVELOPER
   
@@ -635,6 +692,23 @@
     
   end subroutine push_list_
 
+  
+  !> @param[inout] this List
+  !! @return the last element in the list (also decrement list size)
+  !!         if there are no elements `0` will be returned.
+  function pop_value_(this) result(val)
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC) :: val
+
+    if ( size(this) == 0 ) then
+      val = 0
+      return
+    end if
+    
+    val = this%D%lst(this%D%n)
+    this%D%n = this%D%n - 1
+    
+  end function pop_value_
 
   !> @param[in] this list @bud
   !! @return a pointer to the list (contiguous)
@@ -713,6 +787,54 @@
     deallocate(tmp)
 
   end subroutine extend_
+
+  !> @param[in] this @bud container
+  !! @param[in] max_n new maximum number of allowed elements that should be available in the list
+  subroutine shrink_n_(this, max_n)
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC) :: max_n
+
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC) :: i, n
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), allocatable :: tmp(:)
+
+    n = min(max_n, this%D%n)
+    
+    ! Reduce the array to the new size
+    ! we only need to copy the elements
+    if ( n > 0 ) then
+      allocate( tmp(n) )
+      do i = 1, n
+        tmp(i) = this%D%lst(i)
+      end do
+    end if
+    
+    deallocate(this%D%lst)
+    nullify(this%D%lst)
+    allocate(this%D%lst(max_n))
+    
+    ! set the new maximum size of the list
+    if ( n > 0 ) then
+      do i = 1, n
+        this%D%lst(i) = tmp(i)
+      end do
+      this%D%n = n
+      deallocate(tmp)
+    end if
+    
+    this%D%max_n = max_n
+
+  end subroutine shrink_n_
+
+  !> @param[in] this List reduced to number of elements already in the list
+  subroutine shrink_(this)
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC) :: n
+
+    n = this%D%n
+    call list_shrink(this, n)
+
+  end subroutine shrink_
 
 
   !> @param[inout] this list @bud (sorted on exit)

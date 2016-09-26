@@ -6,6 +6,9 @@
 !> @addtogroup sm Sparse pattern
 !! @ingroup bud-intrinsic
 !!
+!! Sparse pattern for reduced storage formats of dense patterns with
+!! many zero elements.
+!!
 !! @{
 
 !> @defgroup sm-csr Compressed Sparse Row (CSR)

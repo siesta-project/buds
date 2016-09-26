@@ -8,7 +8,7 @@
 !> @defgroup array Array
 !! @ingroup bud-intrinsic
 !!
-!! @bud containing an intrinsic fortran array.
+!! Intrinsic fortran array data-type.
 !!
 !! The contained array may be of various data types
 !! and can be accessed through a variety of ways.

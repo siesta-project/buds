@@ -8,11 +8,18 @@
 !> @defgroup list List
 !! @ingroup bud-intrinsic
 !!
-!! @bud containing a fixed dimension list.
+!! A List implementation with set-like operations. 
 !!
 !! The list is the equivalent of the #Array1D structure
 !! however with a large set of intrinsic functionality
 !! not available for the #Array1D @bud.
+!!
+!! The List enables:
+!!  1. Sorting
+!!  2. Set operations; union, intersection, complement
+!!  3. Reverse elements
+!!  4. Automatic re-allocation when more elements are needed.
+!!  5. Binary search-algorithms if sorted.
 !!
 !! @{
 
