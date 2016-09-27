@@ -78,6 +78,13 @@
     procedure, private :: new_copy_n_
     procedure, private :: new_range_
 
+    procedure, private :: push_value_
+    procedure, private :: push_array_
+    procedure, private :: push_list_
+
+    procedure, private :: shrink_
+    procedure, private :: shrink_n_
+
     !> @}
     
     !> @iSee BUD_NEW_TYPE
@@ -92,10 +99,10 @@
     !> @iSee #sizep
     procedure, public :: sizep => sizep_
 
-    !> @iSee #max_size
-    procedure, public :: max_size => max_size_
-    !> @iSee #max_sizep
-    procedure, public :: max_sizep => max_sizep_
+    !> @iSee #size_max
+    procedure, public :: size_max => max_size_
+    !> @iSee #size_max_p
+    procedure, public :: size_max_p => max_sizep_
 
     !> @iSee #listp
     procedure, public :: listp => listp_
@@ -104,10 +111,6 @@
 
     !> @iSee #sort_heap
     procedure, public :: list_sort => sort_heap_
-
-    procedure, private :: push_value_
-    procedure, private :: push_array_
-    procedure, private :: push_list_
 
     !> @iSee #list_push
     generic, public :: list_push => push_value_, push_array_, &
@@ -132,8 +135,6 @@
     !> @iSee #list_extend
     procedure, public :: list_extend => extend_
 
-    procedure, private :: shrink_
-    procedure, private :: shrink_n_
     !> @iSee #list_shrink
     generic, public :: list_shrink => shrink_, shrink_n_
 
@@ -281,18 +282,18 @@
   !> Query maximum allowed size of list
   !!
   !! Returns the allowed size of the list.
-  interface max_size
+  interface size_max
     module procedure max_size_
   end interface
-  public :: max_size
+  public :: size_max
 
   !> Track maximum allowed size of list
   !!
   !! Returns a pointer to the the allowed size of the list.
-  interface max_sizep
+  interface size_max_p
     module procedure max_sizep_
   end interface
-  public :: max_sizep
+  public :: size_max_p
 
   !> Returns index of the queried element. If non-existing returns `-1`.
   interface index

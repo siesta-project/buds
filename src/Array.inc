@@ -79,14 +79,14 @@
     !> @iSee BUD_NEW_TYPE
     generic, public :: new => new_dim_, new_copy_
 
-    !> @iSee #arrayp
-    procedure, public :: arrayp => arrayp_
+    !> @iSee #array_p
+    procedure, public :: array_p => arrayp_
 
     !> @iSee #size
     procedure, public :: size => size_
 
-    !> @iSee #init_array
-    procedure, public :: init_array => init_array_
+    !> @iSee #init_value
+    procedure, public :: init_value => init_array_
 
 #endif
   end type BUD_TYPE_NAME
@@ -144,10 +144,10 @@
   !!
   !! @note
   !! Do not deallocate the array-pointer.
-  interface arrayp
+  interface array_p
     module procedure arrayp_
   end interface
-  public :: arrayp
+  public :: array_p
 
 
   !> Query dimension of array (or total size)
@@ -171,10 +171,10 @@
   !!
   !! All elements of the array will sub-sequently have
   !! the supplied value.
-  interface init_array
+  interface init_value
     module procedure init_array_
   end interface
-  public :: init_array
+  public :: init_value
   
   !> Print, to std-out, some basic information of the data-container
   !!

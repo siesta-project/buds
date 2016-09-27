@@ -52,7 +52,7 @@
     procedure, private :: new_
     procedure, private :: new_data_
 
-    !>>@}
+    !> @}
     
     !> @iSee new
     generic, public :: new => new_, new_data_
@@ -149,7 +149,7 @@
   end interface
   public :: get
 
-  !> Overriding assignment(=) by allowing contained data
+  !> Overriding `assignment(=)` by allowing contained data
   !!
   !! Allow assigning BUD_TYPE_NAME with BUD_ITEM_TYPE.
   interface assignment(=)

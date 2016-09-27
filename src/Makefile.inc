@@ -100,7 +100,7 @@ SP_ARR_R = \
 	bud_SP_CSR_C_Array1D.o \
 	bud_SP_CSR_C_Array2D.o \
 	bud_SP_CSR_C_Array3D.o
-$(SP_ARR_R): $(SP_R) $(ARRAY_OBJECTS)
+$(SP_ARR_R): SP_Array.inc SP_Array_type_.inc $(SP_R) $(ARRAY_OBJECTS)
 src_OBJECTS += $(SP_ARR_R)
 bud_SP_CSR_Array1D.f90: SP_CSR_Array1D.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
@@ -143,7 +143,7 @@ SP_ARR_C = \
 	bud_SP_CSC_C_Array1D.o \
 	bud_SP_CSC_C_Array2D.o \
 	bud_SP_CSC_C_Array3D.o
-$(SP_ARR_C): $(SP_C) $(ARRAY_OBJECTS)
+$(SP_ARR_C): SP_Array.inc SP_Array_type_.inc $(SP_C) $(ARRAY_OBJECTS)
 #src_OBJECTS += $(SP_ARR_C)
 bud_SP_CSC_Array1D.f90: SP_CSC_Array1D.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@

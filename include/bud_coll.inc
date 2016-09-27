@@ -53,13 +53,13 @@
   !!
   !! The stored elements may be accessed either via routine calls:
   !! ~~~{.f90}
-  !! call get_elem1(this, A)
+  !! call element1(this, A)
   !! ~~~
   !! which will be equivalent to deleting `A` and assigning the
   !! stored element.
   !! One can also access the data via a pointer:
   !! ~~~{.f90}
-  !! A => get_elem1p(this)
+  !! A => element1_p(this)
   !! ~~~
   !! which does not increase the reference counter for the stored
   !! element. Hence no deletion should be performed.
@@ -131,56 +131,55 @@
     procedure, private :: new_ => new_
     procedure, private :: new_data_ => new_data_
 
-    !>>@}
+    !> @}
 
     !> @iSee #new
     generic, public :: new => new_, new_data_
 
-    !> @iSee #get_elem1
-    procedure, public :: get_elem1 => get_elem1_
-    !> @iSee #get_elem1p
-    procedure, public :: get_elem1p=> get_elem1p_
+    !> @iSee #element1
+    procedure, public :: element1 => get_elem1_
+    !> @iSee #element1_p
+    procedure, public :: element1_p => get_elem1p_
+    !> @iSee #set_element1
+    procedure, public :: set_element1 => set_elem1_
 
-    !> @iSee #set_elem1
-    procedure, public :: set_elem1 => set_elem1_
-
-    !> @iSee #get_elem2
-    procedure, public :: get_elem2 => get_elem2_
-    !> @iSee #get_elem2p
-    procedure, public :: get_elem2p=> get_elem2p_
-    !> @iSee #set_elem2
-    procedure, public :: set_elem2 => set_elem2_
+    !> @iSee #element2
+    procedure, public :: element2 => get_elem2_
+    !> @iSee #element2_p
+    procedure, public :: element2_p => get_elem2p_
+    !> @iSee #set_element2
+    procedure, public :: set_element2 => set_elem2_
 #ifdef BUD_COLL_3
-    !> @iSee #get_elem3
-    procedure, public :: get_elem3 => get_elem3_
-    !> @iSee #get_elem3p
-    procedure, public :: get_elem3p=> get_elem3p_
-    !> @iSee #set_elem3
-    procedure, public :: set_elem3 => set_elem3_
+    !> @iSee #element3
+    procedure, public :: element3 => get_elem3_
+    !> @iSee #element3_p
+    procedure, public :: element3_p => get_elem3p_
+    !> @iSee #set_element3
+    procedure, public :: set_element3 => set_elem3_
 #endif
 #ifdef BUD_COLL_4
-    !> @iSee #get_elem4
-    procedure, public :: get_elem4 => get_elem4_
-    !> @iSee #get_elem4p
-    procedure, public :: get_elem4p=> get_elem4p_
-    !> @iSee #set_elem4
-    procedure, public :: set_elem4 => set_elem4_
+    !> @iSee #element4
+    procedure, public :: element4 => get_elem4_
+    !> @iSee #element4_p
+    procedure, public :: element4_p => get_elem4p_
+    !> @iSee #set_element4
+    procedure, public :: set_element4 => set_elem4_
 #endif
 #ifdef BUD_COLL_5
-    !> @iSee #get_elem5
-    procedure, public :: get_elem5 => get_elem5_
-    !> @iSee #get_elem5p
-    procedure, public :: get_elem5p=> get_elem5p_
-    !> @iSee #_elem5
-    procedure, public :: set_elem5 => set_elem5_
+    !> @iSee #element5
+    procedure, public :: element5 => get_elem5_
+    !> @iSee #element5_p
+    procedure, public :: element5_p => get_elem5p_
+    !> @iSee #set_element5
+    procedure, public :: set_element5 => set_elem5_
 #endif
 #ifdef BUD_COLL_6
-    !> @iSee #get_elem6
-    procedure, public :: get_elem6 => get_elem6_
-    !> @iSee #get_elem6p
-    procedure, public :: get_elem6p=> get_elem6p_
-    !> @iSee #_elem6
-    procedure, public :: set_elem6 => set_elem6_
+    !> @iSee #element6
+    procedure, public :: element6 => get_elem6_
+    !> @iSee #element6_p
+    procedure, public :: element6_p => get_elem6p_
+    !> @iSee #set_element6
+    procedure, public :: set_element6 => set_elem6_
 #endif
 
 #endif
@@ -283,66 +282,66 @@
   interface assignment(=)
     module procedure BUD_CC3(get_elem,1,_assign_)
     module procedure BUD_CC3(get_elem,2,_assign_)
-#ifdef BUD_COLL_3
+# ifdef BUD_COLL_3
     module procedure BUD_CC3(get_elem,3,_assign_)
-#endif
-#ifdef BUD_COLL_4
+# endif
+# ifdef BUD_COLL_4
     module procedure BUD_CC3(get_elem,4,_assign_)
-#endif
-#ifdef BUD_COLL_5
+# endif
+# ifdef BUD_COLL_5
     module procedure BUD_CC3(get_elem,5,_assign_)
-#endif
-#ifdef BUD_COLL_6
+# endif
+# ifdef BUD_COLL_6
     module procedure BUD_CC3(get_elem,6,_assign_)
-#endif
+# endif
     module procedure BUD_CC3(set_elem,1,_)
     module procedure BUD_CC3(set_elem,2,_)
-#ifdef BUD_COLL_3
+# ifdef BUD_COLL_3
     module procedure BUD_CC3(set_elem,3,_)
-#endif
-#ifdef BUD_COLL_4
+# endif
+# ifdef BUD_COLL_4
     module procedure BUD_CC3(set_elem,4,_)
-#endif
-#ifdef BUD_COLL_5
+# endif
+# ifdef BUD_COLL_5
     module procedure BUD_CC3(set_elem,5,_)
-#endif
-#ifdef BUD_COLL_6
+# endif
+# ifdef BUD_COLL_6
     module procedure BUD_CC3(set_elem,6,_)
-#endif
+# endif
   end interface
 
-  interface get
+  interface element
     module procedure BUD_CC3(get_elem,1,_)
     module procedure BUD_CC3(get_elem,2,_)
-#ifdef BUD_COLL_3
+# ifdef BUD_COLL_3
     module procedure BUD_CC3(get_elem,3,_)
-#endif
-#ifdef BUD_COLL_4
+# endif
+# ifdef BUD_COLL_4
     module procedure BUD_CC3(get_elem,4,_)
-#endif
-#ifdef BUD_COLL_5
+# endif
+# ifdef BUD_COLL_5
     module procedure BUD_CC3(get_elem,5,_)
-#endif
-#ifdef BUD_COLL_6
+# endif
+# ifdef BUD_COLL_6
     module procedure BUD_CC3(get_elem,6,_)
-#endif
+# endif
   end interface
 
-  interface set
+  interface set_element
     module procedure BUD_CC3(set_elem,1,_)
     module procedure BUD_CC3(set_elem,2,_)
-#ifdef BUD_COLL_3
+# ifdef BUD_COLL_3
     module procedure BUD_CC3(set_elem,3,_)
-#endif
-#ifdef BUD_COLL_4
+# endif
+# ifdef BUD_COLL_4
     module procedure BUD_CC3(set_elem,4,_)
-#endif
-#ifdef BUD_COLL_5
+# endif
+# ifdef BUD_COLL_5
     module procedure BUD_CC3(set_elem,5,_)
-#endif
-#ifdef BUD_COLL_6
+# endif
+# ifdef BUD_COLL_6
     module procedure BUD_CC3(set_elem,6,_)
-#endif
+# endif
   end interface
 
 #endif
@@ -357,10 +356,10 @@
   !!
   !! Change the suffix number `1` to `2`, ... to get the
   !! corresponding element in the collection.
-  interface get_elem1
+  interface element1
     module procedure get_elem1_
   end interface
-  public :: get_elem1
+  public :: element1
 
   !> Set the first @bud in the collection
   !!
@@ -371,10 +370,10 @@
   !!
   !! Change the suffix number `1` to `2`, ... to set the
   !! corresponding element in the collection.
-  interface set_elem1
+  interface set_element1
     module procedure set_elem1_
   end interface
-  public :: set_elem1
+  public :: set_element1
 
   !> Return a pointer to the first element of the collection
   !!
@@ -384,87 +383,87 @@
   !!
   !! Change the suffix number `1` to `2`, ... to get the
   !! corresponding element in the collection.
-  interface get_elem1p
+  interface element1_p
     module procedure get_elem1p_
   end interface
-  public :: get_elem1p
+  public :: element1_p
     
   !> @cond BUD_DEVELOPER
 
   ! we do not document these sub-routines as they are encompassed
   ! by the first documentation
 
-  interface get_elem2
+  interface element2
     module procedure get_elem2_
   end interface
-  public :: get_elem2
-  interface set_elem2
+  public :: element2
+  interface set_element2
     module procedure set_elem2_
   end interface
-  public :: set_elem2
-  interface get_elem2p
+  public :: set_element2
+  interface element2_p
     module procedure get_elem2p_
   end interface
-  public :: get_elem2p
+  public :: element2_p
 
 #ifdef BUD_COLL_3
-  interface get_elem3
+  interface element3
     module procedure get_elem3_
   end interface
-  public :: get_elem3
-  interface set_elem3
+  public :: element3
+  interface set_element3
     module procedure set_elem3_
   end interface
-  public :: set_elem3
-  interface get_elem3p
+  public :: set_element3
+  interface element3_p
     module procedure get_elem3p_
   end interface
-  public :: get_elem3p
+  public :: element3_p
 #endif
   
 #ifdef BUD_COLL_4
-  interface get_elem4
+  interface element4
     module procedure get_elem4_
   end interface
-  public :: get_elem4
-  interface set_elem4
+  public :: element4
+  interface set_element4
     module procedure set_elem4_
   end interface
-  public :: set_elem4
-  interface get_elem4p
+  public :: set_element4
+  interface element4_p
     module procedure get_elem4p_
   end interface
-  public :: get_elem4p
+  public :: element4_p
 #endif
   
 #ifdef BUD_COLL_5
-  interface get_elem5
+  interface element5
     module procedure get_elem5_
   end interface
-  public :: get_elem5
-  interface set_elem5
+  public :: element5
+  interface set_element5
     module procedure set_elem5_
   end interface
-  public :: set_elem5
-  interface get_elem5p
+  public :: set_element5
+  interface element5_p
     module procedure get_elem5p_
   end interface
-  public :: get_elem5p
+  public :: element5_p
 #endif
 
 #ifdef BUD_COLL_6
-  interface get_elem6
+  interface element6
     module procedure get_elem6_
   end interface
-  public :: get_elem6
-  interface set_elem6
+  public :: element6
+  interface set_element6
     module procedure set_elem6_
   end interface
-  public :: set_elem6
-  interface get_elem6p
+  public :: set_element6
+  interface element6_p
     module procedure get_elem6p_
   end interface
-  public :: get_elem6p
+  public :: element6_p
 #endif
 
   !> @endcond BUD_DEVELOPER

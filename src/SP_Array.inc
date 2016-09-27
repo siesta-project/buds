@@ -62,7 +62,7 @@
     BUD_TYPE_VAR, pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC()
 #endif
     
-    p => arrayp(this%D%e2)
+    p => array_p(this%D%e2)
     
   end function get_matrixp_
 

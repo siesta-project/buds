@@ -72,15 +72,15 @@
     !> @iSee #keep
     procedure, public :: keep => keep_
 
-    !> @iSee #get_elem
-    procedure, public :: get_elem => get_elem_
-    !> @iSee #get_elem
+    !> @iSee #element
+    procedure, public :: element => get_elem_
+    !> @iSee #element
     procedure, public :: get => get_elem_
 
-    !> @iSee #get_elemp
-    procedure, public :: get_elemp => get_elemp_
-    !> @iSee #get_elemp
-    procedure, public :: getp => get_elemp_
+    !> @iSee #element_p
+    procedure, public :: element_p => get_elemp_
+    !> @iSee #element_p
+    procedure, public :: get_p => get_elemp_
 
     !> @iSee #size
     procedure, public :: size => size_elem_
@@ -202,10 +202,10 @@
   !!
   !! If the requested element is beyond the number of
   !! stored elements `elem` will be un-initialized upon return.
-  interface get_elem
+  interface element
     module procedure get_elem_
   end interface
-  public :: get_elem
+  public :: element
   
   !> Retrieve pointer to specific element in the stack
   !!
@@ -215,10 +215,10 @@
   !! If the requested element is beyond the number of
   !! stored elements `elem` will be null.
   !!
-  interface get_elemp
+  interface element_p
     module procedure get_elemp_
   end interface
-  public :: get_elemp
+  public :: element_p
 
   !> Query number of currently stored elements in this stack
   interface size
@@ -276,7 +276,7 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
     integer :: i
-    type(BUD_STACK_TYPE), pointer :: tmp
+    type(BUD_STACK_TYPE), pointer :: p
     type(BUD_STACK_TYPE) :: cp
     
     call delete(to)
@@ -285,8 +285,8 @@
     call new(to, from%D%nel_max)
 
     do i = 1 , size(from)
-      tmp => get_elemp(from, i)
-      call copy(tmp, cp)
+      p => element_p(from, i)
+      call copy(p, cp)
       call push(to, cp)
       call delete(cp)
     end do
@@ -314,6 +314,7 @@
 
     this%D%nel_max = nel
     this%D%nel = 0
+    
     ! prepare data locations
     allocate(this%D%T(nel))
 
@@ -344,11 +345,13 @@
       this%D%T = cshift(this%D%T,+1)
       call delete(this%D%T(el))
       this%D%T(el) = item
+      
     else
       el = el + 1
       ! simply add it to the stack
       this%D%nel = el
       this%D%T(el) = item
+      
     end if
     
   end subroutine push_

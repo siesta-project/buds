@@ -80,9 +80,16 @@
 #if BUD_FORTRAN >= 2003
   contains
 #   include "bud_common_type.inc"
+    
+    !> @name Private procedures
+    !> @{
+    ! Doxygen needed line
 
     procedure, private :: new_dim_ => new_dim_
     procedure, private :: new_copy_ => new_copy_
+
+    !> @}
+
     !> @iSee BUD_TYPE_NEW
     generic, public :: BUD_TYPE_NEW => new_dim_, new_copy_
     !> @iSee BUD_TYPE_NEW
