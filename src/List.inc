@@ -85,6 +85,9 @@
     procedure, private :: shrink_
     procedure, private :: shrink_n_
 
+    procedure, private :: new_index_list_range_
+    procedure, private :: new_index_list_list_
+    
     !> @}
     
     !> @iSee BUD_NEW_TYPE
@@ -94,61 +97,64 @@
     generic, public :: new => new_dim_, new_copy_, &
       new_copy_n_, new_range_
 
+    !> @iSee new_index_list
+    generic, public :: new_index_list => new_index_list_list_, &
+      new_index_list_range_
+
     !> @iSee #size
     procedure, public :: size => size_
     !> @iSee #sizep
-    procedure, public :: sizep => sizep_
+    procedure, public :: size_p => sizep_
 
     !> @iSee #size_max
     procedure, public :: size_max => max_size_
     !> @iSee #size_max_p
     procedure, public :: size_max_p => max_sizep_
 
-    !> @iSee #listp
-    procedure, public :: listp => listp_
-    !> @iSee #max_listp
-    procedure, public :: list_maxp => list_maxp_
+    !> @iSee #list_p
+    procedure, public :: list_p => listp_
+    !> @iSee #list_max_p
+    procedure, public :: list_max_p => list_maxp_
 
-    !> @iSee #sort_heap
-    procedure, public :: list_sort => sort_heap_
+    !> @iSee #sort
+    procedure, public :: sort => sort_heap_
 
-    !> @iSee #list_push
-    generic, public :: list_push => push_value_, push_array_, &
-      push_list_
+    !> @iSee #push
+    generic, public :: push => push_value_, push_array_, push_list_
 
-    !> @iSee #list_pop
-    generic, public :: list_pop => pop_value_
+    !> @iSee #pop
+    procedure, public :: pop => pop_value_
 
     
     ! Set operations
-    !> @iSee #list_union
-    generic, public :: list_union => union_
-    !> @iSee #list_complement
-    generic, public :: list_complement => complement_
-    !> @iSee #list_intersect
-    generic, public :: list_intersect => intersect_
+    !> @iSee #union
+    procedure, public :: union => union_
+    !> @iSee #complement
+    procedure public :: complement => complement_
+    !> @iSee #intersect
+    procedure, public :: intersect => intersect_
     
 
-    !> @iSee #list_reverse
-    generic, public :: list_reverse => reverse_
+    !> @iSee #reverse
+    generic, public :: reverse => reverse_
 
-    !> @iSee #list_extend
-    procedure, public :: list_extend => extend_
+    !> @iSee #extend
+    procedure, public :: extend => extend_
 
-    !> @iSee #list_shrink
-    generic, public :: list_shrink => shrink_, shrink_n_
+    !> @iSee #shrink
+    generic, public :: shrink => shrink_, shrink_n_
 
-    !> @iSee #list_clear
-    generic, public :: list_clear => clear_
+    !> @iSee #clear
+    generic, public :: clear => clear_
 
-    !> @iSee #list_merge
-    procedure, public :: list_merge => merge_
+    !> @iSee #merge
+    procedure, public :: merge => merge_
 
-    !> @iSee #list_set_incr_n
-    procedure, public :: list_set_incr_n => set_incr_n
+    !> @iSee #set_incr_n
+    procedure, public :: set_incr_n => set_incr_n
 
-    !> @iSee #list_get_incr_n
-    procedure, public :: list_get_incr_n => get_incr_n
+    !> @iSee #get_incr_n
+    procedure, public :: get_incr_n => get_incr_n
 
     !> @iSee #index
     procedure, public :: index => index_
@@ -227,6 +233,17 @@
   end interface
   public :: new
 
+  !> Create a new list via an index transfer.
+  !!
+  !! This enables one to create an index list (or pivoting list)
+  !! which contains the indices of certain values in another
+  !! list.
+  interface new_index_list
+    module procedure new_index_list_list_
+    module procedure new_index_list_range_
+  end interface
+  public :: new_index_list
+
 
   !> Retrieve pointer to array in the @bud
   !!
@@ -238,10 +255,10 @@
   !!
   !! @note
   !! Do not deallocate the array-pointer.
-  interface listp
+  interface list_p
     module procedure listp_
   end interface
-  public :: listp
+  public :: list_p
 
   !> Retrieve pointer to full array in the @bud
   !!
@@ -249,10 +266,10 @@
   !!
   !! @note
   !! Do not deallocate the array-pointer.
-  interface list_maxp
+  interface list_max_p
     module procedure max_listp_
   end interface
-  public :: list_maxp
+  public :: list_max_p
 
 
   !> Query current size of list (number of current elements)
@@ -273,10 +290,10 @@
   !> Track the current size of list (number of current elements)
   !!
   !! Returns a pointer to the size of the list.
-  interface sizep
+  interface size_p
     module procedure sizep_
   end interface
-  public :: sizep
+  public :: size_p
 
 
   !> Query maximum allowed size of list
@@ -312,17 +329,17 @@
   !! then the internal array will be re-allocated.
   !! This means that a pointer to the array should be
   !! re-instantiated, if needed.
-  interface list_push
+  interface push
     module procedure push_value_, push_array_, push_list_
-  end interface list_push
+  end interface push
 
   !> Pop the last element in the list
   !!
   !! Will return and remove the latest element in the list (from the end).
   !! The list will never be re-allocated.
-  interface list_pop
+  interface pop
     module procedure pop_value_
-  end interface list_pop
+  end interface pop
 
   !> Merges two lists into a new list.
   !!
@@ -330,11 +347,11 @@
   !! the following:
   !! \code{.f90}
   !! call copy(a, c)
-  !! call list_push(c, b)
+  !! call push(c, b)
   !! \endcode
-  interface list_merge
+  interface merge
     module procedure merge_
-  end interface list_merge
+  end interface merge
 
   !> Sorts the entries in the list
   !!
@@ -344,49 +361,49 @@
   !! one must do the following:
   !! \code{.f90}
   !!   call copy(this, other)
-  !!   call list_sort(other)
+  !!   call sort(other)
   !! \endcode
-  interface list_sort
+  interface sort
     module procedure sort_
-  end interface list_sort
+  end interface sort
 
 
   !> Ensures that the list may contain a given number of values
   !!
   !! One may query an explicit number of maximum values (`max_n`),
   !! or an additive number of values (`n`).
-  interface list_extend
+  interface extend
     module procedure extend_
-  end interface list_extend
+  end interface extend
 
   !> Shrinks the List to the number of elements currently in the List (or an explicit size)
   !!
   !! If the number of contained elements are larger than the new size,
   !! the last elements will silently be removed.
-  interface list_shrink
+  interface shrink
     module procedure shrink_, shrink_n_
-  end interface list_shrink
+  end interface shrink
 
 
   !> Returns the union of two lists in a third list
-  interface list_union
+  interface union
     module procedure union_
-  end interface list_union
+  end interface union
 
   !> Returns the intersection of two lists in a third list
-  interface list_intersect
+  interface intersect
     module procedure intersect_
-  end interface list_intersect
+  end interface intersect
 
   !> Returns the complement of two lists in a third list
-  interface list_complement
+  interface complement
     module procedure complement_
-  end interface list_complement
+  end interface complement
 
   !> Reverses the list
-  interface list_reverse
+  interface reverse
     module procedure reverse_
-  end interface list_reverse
+  end interface reverse
 
 
   !> Query whether a value is in the list
@@ -536,9 +553,55 @@
     call new_dim_(this, n)
 
     ! copy data
-    call list_push(this, n, list)
+    call push(this, n, list)
 
   end subroutine new_copy_n_
+
+  
+  !> @param[inout] this list @bud
+  !! @param[in] list list to convert to a list index using `[1:size(list)]`
+  subroutine new_index_list_range_(this, list)
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    type(BUD_TYPE_NAME), intent(in) :: list
+
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: lst(:), ths(:)
+    integer(BUD_TYPE_VAR_PREC) :: i, n
+
+    n = size(list)
+
+    call new_dim_n(this, n)
+
+    ths => list_p(this)
+    lst => list_p(list)
+
+    do i = 1 , n
+      ths(i) = index(list, i)
+    end do
+
+  end subroutine new_index_list_range_
+  
+  !> @param[inout] this list @bud
+  !! @param[in] list list to lookup values from `lookup`
+  !! @param[in] lookup the lookup values in `list`
+  subroutine new_index_list_list_(this, list, lookup)
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    type(BUD_TYPE_NAME), intent(in) :: list, lookup
+
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: ths(:), look(:)
+    integer(BUD_TYPE_VAR_PREC) :: i, n
+
+    n = size(lookup)
+
+    call new_dim_n(this, n)
+
+    ths => list_p(this)
+    look => list_p(lookup)
+
+    do i = 1 , n
+      ths(i) = index(list, look(i))
+    end do
+
+  end subroutine new_index_list_list_
 
 
   !> @param[in] this @bud container
@@ -648,7 +711,7 @@
     if ( is_initd(this) ) then
       
       if ( this%D%max_n < this%D%n + n ) then
-        call list_extend(this, max_n= &
+        call extend(this, max_n= &
           max(this%D%n+n,this%D%max_n+this%D%incr_n))
       end if
 
@@ -725,7 +788,7 @@
 
     if ( .not. is_initd(other) ) return
 
-    call list_push(this, other%D%n, other%D%lst)
+    call push(this, other%D%n, other%D%lst)
     
   end subroutine push_list_
 
@@ -755,7 +818,7 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: C
 
     call copy(A, C)
-    call list_push(C, B)
+    call push(C, B)
     
   end subroutine merge_
 
@@ -882,7 +945,7 @@
     integer(BUD_TYPE_VAR_PREC) :: n
 
     n = this%D%n
-    call list_shrink(this, n)
+    call shrink(this, n)
 
   end subroutine shrink_
 
@@ -941,20 +1004,20 @@
     if ( is_sorted(A) .and. .not. is_sorted(B) ) then
 
       ! we search in A
-      l = listp(B)
+      l = list_p(B)
       do i = 1 , size(B)
         if ( in_list(A, l(i)) ) then
-          call list_push(C, l(i))
+          call push(C, l(i))
         end if
       end do
 
     else if ( .not. is_sorted(A) .and. is_sorted(B) ) then
 
       ! we search in B
-      l = listp(A)
+      l = list_p(A)
       do i = 1 , size(A)
         if ( in_list(B, l(i)) ) then
-          call list_push(C, l(i))
+          call push(C, l(i))
         end if
       end do
 
@@ -967,14 +1030,14 @@
         D = B
       else
         call copy(B, D)
-        call list_sort(D)
+        call sort(D)
       end if
 
       ! we search in B
-      l = listp(A)
+      l = list_p(A)
       do i = 1 , size(A)
         if ( in_list(D, l(i)) ) then
-          call list_push(C, l(i))
+          call push(C, l(i))
         end if
       end do
 
@@ -988,14 +1051,14 @@
         D = A
       else
         call copy(A, D)
-        call list_sort(D)
+        call sort(D)
       end if
 
       ! we search in A
-      l = listp(B)
+      l = list_p(B)
       do i = 1 , size(B)
         if ( in_list(D, l(i)) ) then
-          call list_push(C, l(i))
+          call push(C, l(i))
         end if
       end do
 
@@ -1033,26 +1096,26 @@
     if ( is_sorted(A) .and. .not. is_sorted(B) ) then
 
       ! First populate A
-      call list_push(C, A)
+      call push(C, A)
       
       ! we search in A
-      l = listp(B)
+      l = list_p(B)
       do i = 1 , size(B)
         if ( .not. in_list(A, l(i)) ) then
-          call list_push(C, l(i))
+          call push(C, l(i))
         end if
       end do
 
     else if ( .not. is_sorted(A) .and. is_sorted(B) ) then
       
       ! First populate B
-      call list_push(C, B)
+      call push(C, B)
 
       ! we search in B
-      l = listp(A)
+      l = list_p(A)
       do i = 1 , size(A)
         if ( .not. in_list(B, l(i)) ) then
-          call list_push(C, l(i))
+          call push(C, l(i))
         end if
       end do
 
@@ -1064,17 +1127,17 @@
         D = B
       else
         call copy(B, D)
-        call list_sort(D)
+        call sort(D)
       end if
 
       ! First populate B
-      call list_push(C, B)
+      call push(C, B)
 
       ! we search in B
-      l = listp(A)
+      l = list_p(A)
       do i = 1 , size(A)
         if ( .not. in_list(D, l(i)) ) then
-          call list_push(C, l(i))
+          call push(C, l(i))
         end if
       end do
 
@@ -1088,17 +1151,17 @@
         D = A
       else
         call copy(A, D)
-        call list_sort(D)
+        call sort(D)
       end if
 
       ! First populate A
-      call list_push(C, A)
+      call push(C, A)
 
       ! we search in A
-      l = listp(B)
+      l = list_p(B)
       do i = 1 , size(B)
         if ( .not. in_list(D, l(i)) ) then
-          call list_push(C, l(i))
+          call push(C, l(i))
         end if
       end do
 
@@ -1136,16 +1199,16 @@
       D = A
     else
       call copy(A, D)
-      call list_sort(D)
+      call sort(D)
     end if
       
     ! This is easy...
     
     ! we search in A
-    l = listp(B)
+    l = list_p(B)
     do i = 1 , size(B)
       if ( .not. in_list(D, l(i)) ) then
-        call list_push(C, l(i))
+        call push(C, l(i))
       end if
     end do
 
@@ -1162,7 +1225,7 @@
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC) :: tmp
 
     n = size(this)
-    l => listp(this)
+    l => list_p(this)
     
     do i = 1 , n / 2
       tmp = l(i)
