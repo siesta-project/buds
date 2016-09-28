@@ -569,7 +569,7 @@
 
     n = size(list)
 
-    call new_dim_n(this, n)
+    call new_dim_(this, n)
 
     ths => list_p(this)
     lst => list_p(list)
@@ -592,7 +592,7 @@
 
     n = size(lookup)
 
-    call new_dim_n(this, n)
+    call new_dim_(this, n)
 
     ths => list_p(this)
     look => list_p(lookup)
