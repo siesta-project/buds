@@ -88,6 +88,9 @@
     procedure, private :: new_dim_ => new_dim_
     procedure, private :: new_copy_ => new_copy_
 
+    procedure, private :: columnp_
+    procedure, private :: column_rp_
+
     !> @}
 
     !> @iSee BUD_TYPE_NEW
@@ -110,18 +113,23 @@
     !> @iSee #index
     procedure, public :: index => index_
 
-    !> @iSee #offsetp
-    procedure, public :: offsetp => offsetp_
+    !> @iSee #offset_p
+    procedure, public :: offset_p => offsetp_
 
-    !> @iSee #columnp
-    procedure, public :: columnp => columnp_
+#if BUD_SP_CSR == 1
+    !> @iSee #nrow_p
+    procedure, public :: nrow_p => nrowp_
+#endif
+
+    !> @iSee #column_p
+    generic, public :: column_p => columnp_, column_rp_
 
     
-    !> @iSee #sp_fold
-    procedure, public :: sp_fold => fold_
+    !> @iSee #fold
+    procedure, public :: fold => fold_
 
-    !> @iSee #sp_sort
-    procedure, public :: sp_sort => sort_
+    !> @iSee #sort
+    procedure, public :: sort => sort_
 
     !> @iSee #attach
     procedure, public :: attach => attach_
@@ -186,6 +194,45 @@
   public :: new
 
 
+
+
+  !> Retrieve a pointer to the row offsets/pointers
+  !!
+  !! A pointer with the row offsets.
+  !!
+#if BUD_SP_CSR == 0
+# if BUD_SP_INTEROP_C == 0
+  !! `M(ir,col(pointer(ir)))` 
+# else
+  !! `M(ir,col(pointer(ir)+1))`
+# endif
+  !! is the first sparse element in row `ir`.
+#elif BUD_SP_CSR == 1
+  !! `M(ir,col(pointer(ir)+1))` is the first sparse
+  !! element in row `ir`.
+#endif
+  interface offset_p
+    module procedure offsetp_
+  end interface
+  public :: offset_p
+
+  
+  !> Retrieve a pointer to the column indices
+  interface column_p
+    module procedure columnp_
+    module procedure column_rp_
+  end interface
+  public :: column_p
+
+#if BUD_SP_CSR == 1
+  !> Retrieve a pointer to the number of entries per row
+  interface nrow_p
+    module procedure nrowp_
+  end interface
+  public :: nrow_p
+#endif
+
+
   !> Fold a sparse matrix to form a smaller sparse matrix
   !!
 #if BUD_SP_CSR == 0
@@ -214,11 +261,10 @@
   !!
   !! Both the number of rows and/or columns may changed
   !! individually.
-  interface sp_fold
+  interface fold
     module procedure fold_
   end interface 
-  public :: sp_fold
-  
+  public :: fold
   
   !> Sorts columns in the sparse pattern
   !!
@@ -235,40 +281,11 @@
   !!
   !!  - `err == SP_INPUT + 3`:
   !!    the 3rd input is erroneously supplied.
-  interface sp_sort
+  interface sort
     module procedure sort_
   end interface
-  public :: sp_sort
+  public :: sort
 
-
-  !> Retrieve a pointer to the row offsets/pointers
-  !!
-  !! A pointer with the row offsets.
-  !!
-#if BUD_SP_CSR == 0
-# if BUD_SP_INTEROP_C == 0
-  !! `M(ir,col(pointer(ir)))` 
-# else
-  !! `M(ir,col(pointer(ir)+1))`
-# endif
-  !! is the first sparse element in row `ir`.
-#elif BUD_SP_CSR == 1
-  !! `M(ir,col(pointer(ir)+1))` is the first sparse
-  !! element in row `ir`.
-#endif
-  interface offsetp
-    module procedure offsetp_
-  end interface
-  public :: offsetp
-
-  
-  !> Retrieve a pointer to the column indices
-  interface columnp
-    module procedure columnp_
-  end interface
-  public :: columnp
-
-  
   ! Include the common elements of a sparsity method
   ! This includes "bud_common.inc"
 # include "SP_common.inc"
@@ -430,7 +447,6 @@
     
   end function offsetp_
 
-  
   !> @param[in] this sparse matrix
   !! @return a pointer to the column indices for the sparse matrix (contiguous)
   function columnp_(this) result(col)
@@ -440,12 +456,44 @@
     col => this%D%col
     
   end function columnp_
+  
+  !> @param[in] this sparse matrix
+  !> @param[in] r only retrieve the columns that reside in row `r`
+  !! @return a pointer to the column indices for the sparse matrix of row `r` (contiguous)
+  function column_rp_(this, r) result(col)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    integer(BUD_TYPE_VAR_PREC), intent(in) :: r
+    integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: col(:)
+
+#if BUD_SP_CSR == 0
+# if BUD_SP_INTEROP_C == 0
+    col => this%D%col(this%D%rptr(r):this%D%rptr(r+1)-1)
+# else
+    col => this%D%col(this%D%rptr(r)+1:this%D%rptr(r+1))
+# endif
+#elif BUD_SP_CSR == 1
+    col => this%D%col(this%D%rptr(r)+1:this%D%rptr(r+1))
+#endif
+    
+  end function column_rp_
+
+#if BUD_SP_CSR == 1
+  !> @param[in] this sparse matrix
+  !! @return a pointer to the array that holds the number of entries per row
+  function nrowp_(this) result(nrow)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: nrow(:)
+
+    nrow => this%D%nrow
+    
+  end function nrowp_
+#endif
 
   
   !> @param[in] this sparse matrix @bud
-  !! @param[out] nr @opt number of rows in SM
-  !! @param[out] nc @opt number of columns in SM
-  !! @param[out] nz @opt number of non-zero elements in SM
+  !! @param[out] nr @opt number of rows in SP
+  !! @param[out] nc @opt number of columns in SP
+  !! @param[out] nz @opt number of non-zero elements in SP
 #if BUD_SP_CSR == 0
 # if BUD_SP_INTEROP_C == 0
   !! @param[out] rptr @opt row pointer (`rptr(2)` is starting index of `ir=2`)
@@ -1011,42 +1059,6 @@
   end function index_
   
   
-  !> @param[in] this sparse matrix
-  !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
-  !! @param[in] indent @opt=1 possible indentation of printed statement
-  subroutine print_(this, info, indent)
-    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    character(len=*), intent(in), optional :: info
-    integer, intent(in), optional :: indent
-
-    integer :: lindent
-
-    ! 4-byte variable
-    character(len=32) :: fmt
-    character(len=256) :: name
-
-    name = BUD_TYPE_NAME_STR
-    if ( present(info) ) name = info
-    lindent = 1
-    if ( present(indent) ) lindent = indent
-
-    write(fmt, '(a,i0,a)') '(t',lindent,',3a)'
-    
-    if ( .not. is_initd(this) ) then
-      write(*,fmt) "<", trim(name), " not initialized>"
-      return
-    end if
-
-    ! Create fmt
-    write(fmt, '(a,i0,a)') '(t',lindent,',3a,4(i0,a))'
-    
-    write(*,fmt) "<", trim(name), " rows=", this%D%nr, &
-      ", cols=", this%D%nc, ", nnzs=",this%D%nz, &
-      ", refs: ", references(this), ">"
-    
-  end subroutine print_
-
-
 ! Local pre-processor variables that
 ! undefine the variables that are not needed anymore.
 #undef BUD_MOD_NAME

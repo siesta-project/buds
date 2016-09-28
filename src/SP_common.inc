@@ -1,6 +1,6 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
 
-  !> @defgroup sm Sparse pattern
+  !> @defgroup sp Sparse pattern
   !! @ingroup bud-intrinsic
   !!
   !! @brief
@@ -54,7 +54,7 @@
   public :: columns
 
 
-  !> Dimension size of the sparse pattern
+  !> Dimensions of the sparse pattern
   !!
   !! This routine will return 1 of 3 possible scenarios:
   !!  1. `size(this)` will return `nonzeros(this)`
@@ -156,6 +156,41 @@
     end if
     
   end function size_
+
+  !> @param[in] this sparse pattern
+  !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
+  !! @param[in] indent @opt=1 possible indentation of printed statement
+  subroutine print_(this, info, indent)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    character(len=*), intent(in), optional :: info
+    integer, intent(in), optional :: indent
+
+    integer :: lindent
+
+    ! 4-byte variable
+    character(len=32) :: fmt
+    character(len=256) :: name
+
+    name = BUD_TYPE_NAME_STR
+    if ( present(info) ) name = info
+    lindent = 1
+    if ( present(indent) ) lindent = indent
+
+    write(fmt, '(a,i0,a)') '(t',lindent,',3a)'
+    
+    if ( .not. is_initd(this) ) then
+      write(*,fmt) "<", trim(name), " not initialized>"
+      return
+    end if
+
+    ! Create fmt
+    write(fmt, '(a,i0,a)') '(t',lindent,',3a,4(i0,a))'
+    
+    write(*,fmt) "<", trim(name), " rows=", this%D%nr, &
+      ", cols=", this%D%nc, ", nnzs=",this%D%nz, &
+      ", refs: ", references(this), ">"
+    
+  end subroutine print_
 
   
 ! project-bud -- local file settings

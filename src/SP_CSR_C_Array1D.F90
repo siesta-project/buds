@@ -4,9 +4,9 @@
 #include "bud_utils.inc"
 
 
-!> @defgroup sm-csr-c-array CSR (C-indexed) format
-!! @ingroup sm-array
-!! @ingroup sm-csr-c
+!> @defgroup sp-csr-c-array CSR (C-indexed) format
+!! @ingroup sp-array
+!! @ingroup sp-csr-c
 !!
 !! @{
 
@@ -17,19 +17,19 @@
 
 
 #if BUD_DIM == 1
-!> @defgroup sm-csr-c-array-BUD_DIM Sparse matrix
+!> @defgroup sp-csr-c-array-BUD_DIM Sparse matrix
 #elif BUD_DIM == 2
-!> @defgroup sm-csr-c-array-BUD_DIM Sparse matrix, 1 extra dimension per element
+!> @defgroup sp-csr-c-array-BUD_DIM Sparse matrix, 1 extra dimension per element
 #elif BUD_DIM == 3
-!> @defgroup sm-csr-c-array-BUD_DIM Sparse matrix, 2 extra dimensions per element
+!> @defgroup sp-csr-c-array-BUD_DIM Sparse matrix, 2 extra dimensions per element
 #elif BUD_DIM == 4
-!> @defgroup sm-csr-c-array-BUD_DIM Sparse matrix, 3 extra dimensions per element
+!> @defgroup sp-csr-c-array-BUD_DIM Sparse matrix, 3 extra dimensions per element
 #elif BUD_DIM == 5
-!> @defgroup sm-csr-c-array-BUD_DIM Sparse matrix, 4 extra dimensions per element
+!> @defgroup sp-csr-c-array-BUD_DIM Sparse matrix, 4 extra dimensions per element
 #endif
-!! @ingroup sm-csr-c-BUD_DIM
+!! @ingroup sp-csr-c-BUD_DIM
 !!
-!! A sparse matrix pattern with associated sparse matrix elements.
+!! A sparse matrix with associated sparse matrix elements.
 !!
 !! This @bud is fully self-contained and enables the interaction
 !! with a sparse matrix and its data.
@@ -44,7 +44,7 @@
 !! @{
 
 
-# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,bSM1DiCSR_C)
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,iCSR_C_b1D)
 !> @defgroup BUD_MOD_NAME Logical
 !! `logical` data type
 !!
@@ -54,8 +54,8 @@ module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,iSP_CSR_C)
   use BUD_CC3(BUD_MOD,_,bArray1D)
 #include "bud_common_declarations.inc"
-# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,bSM1DiCSR_C)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,SMDistCSR_C)
+# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iCSR_C_b1D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,CSR_C_1D)
 # define BUD_TYPE_VAR logical
 #undef BUD_TYPE_VAR_PREC
 # define BUD_COLL_1 BUD_CC2(BUD_TYPE,iSP_CSR_C)
@@ -64,7 +64,7 @@ module BUD_MOD_NAME
 end module
 !> @}
 
-# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,rSM1DiCSR_C)
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,iCSR_C_r1D)
 !> @defgroup BUD_MOD_NAME Real (float)
 !! `real(selected_real_kind(6))` data type
 !!
@@ -74,8 +74,8 @@ module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,iSP_CSR_C)
   use BUD_CC3(BUD_MOD,_,rArray1D)
 #include "bud_common_declarations.inc"
-# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,rSM1DiCSR_C)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,SMDistCSR_C)
+# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iCSR_C_r1D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,CSR_C_1D)
 # define BUD_TYPE_VAR real
 # define BUD_TYPE_VAR_PREC rr_
 # define BUD_COLL_1 BUD_CC2(BUD_TYPE,iSP_CSR_C)
@@ -84,7 +84,7 @@ module BUD_MOD_NAME
 end module
 !> @}
 
-# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,dSM1DiCSR_C)
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,iCSR_C_d1D)
 !> @defgroup BUD_MOD_NAME Real (double)
 !! `real(selected_real_kind(15))` data type
 !!
@@ -94,8 +94,8 @@ module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,iSP_CSR_C)
   use BUD_CC3(BUD_MOD,_,dArray1D)
 #include "bud_common_declarations.inc"
-# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,dSM1DiCSR_C)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,SMDistCSR_C)
+# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iCSR_C_d1D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,CSR_C_1D)
 # define BUD_TYPE_VAR real
 # define BUD_TYPE_VAR_PREC rd_
 # define BUD_COLL_1 BUD_CC2(BUD_TYPE,iSP_CSR_C)
@@ -105,7 +105,7 @@ end module
 !> @}
 
 
-# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,cSM1DiCSR_C)
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,iCSR_C_c1D)
 !> @defgroup BUD_MOD_NAME Complex (float)
 !! `complex(selected_real_kind(6))` data type
 !!
@@ -115,8 +115,8 @@ module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,iSP_CSR_C)
   use BUD_CC3(BUD_MOD,_,cArray1D)
 #include "bud_common_declarations.inc"
-# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,cSM1DiCSR_C)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,SMDistCSR_C)
+# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iCSR_C_c1D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,CSR_C_1D)
 # define BUD_TYPE_VAR complex
 # define BUD_TYPE_VAR_PREC rr_
 # define BUD_COLL_1 BUD_CC2(BUD_TYPE,iSP_CSR_C)
@@ -125,7 +125,7 @@ module BUD_MOD_NAME
 end module
 !> @}
 
-# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,zSM1DiCSR_C)
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,iCSR_C_z1D)
 !> @defgroup BUD_MOD_NAME Complex (double)
 !! `complex(selected_real_kind(15))` data type
 !!
@@ -135,8 +135,8 @@ module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,iSP_CSR_C)
   use BUD_CC3(BUD_MOD,_,zArray1D)
 #include "bud_common_declarations.inc"
-# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,zSM1DiCSR_C)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,SMDistCSR_C)
+# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iCSR_C_z1D)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,CSR_C_1D)
 # define BUD_TYPE_VAR complex
 # define BUD_TYPE_VAR_PREC rd_
 # define BUD_COLL_1 BUD_CC2(BUD_TYPE,iSP_CSR_C)
@@ -146,10 +146,10 @@ end module
 !> @}
 
 
-! GROUP sm-csr0-array-BUD_DIM
+! GROUP sp-csr0-array-BUD_DIM
 !> @}
 
-! GROUP sm-csr0-array
+! GROUP sp-csr0-array
 !> @}
 
 

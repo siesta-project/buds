@@ -3,7 +3,7 @@
 ! Get default commands
 #include "bud_utils.inc"
 
-!> @defgroup sm-csr CSR (Compressed Sparse Row)
+!> @defgroup sp-csr CSR (Compressed Sparse Row)
 !! @ingroup sm
 !!
 !! A compressed sparse row matrix implementation.
@@ -76,7 +76,7 @@ module BUD_MOD_NAME
 end module
 !> @}
 
-! GROUP sm-csr
+! GROUP sp-csr
 !> @}
 
 

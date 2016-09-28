@@ -1,6 +1,6 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
 
-  !> @defgroup sm-array Sparse matrix (pattern and data)
+  !> @defgroup sp-array Sparse matrix (pattern and data)
   !! @ingroup bud-intrinsic
   !!
   !! @bud containing a sparse matrix pattern _and_ the
@@ -20,34 +20,35 @@
   !!
   !! @note
   !! Do not deallocate the array-pointer.
-  interface datap
+  interface matrix_p
     module procedure get_matrixp_
   end interface
-  public :: datap
+  public :: matrix_p
 
-  !> Retrieve pointer to the sparse pattern
-  !!
-  !! The array does not step the reference counter
-  !! of BUD_COLL_1.
-  interface get_SMp
-    module procedure get_elem1p_
-  end interface
 
   !> Retrieve the sparse pattern
-  interface get_SM
+  interface sparse_pattern
     module procedure get_elem1_
   end interface
+  public :: sparse_pattern
+
+  !> Retrieve pointer to the sparse pattern
+  interface sparse_pattern_p
+    module procedure get_elem1p_
+  end interface 
+  public :: sparse_pattern_p
 
   !> Retrieve the array @bud
-  interface get_array
+  interface array
     module procedure get_elem2_
   end interface
-
-  !> Retrieve a pointer to the array @bud (not values)
-  interface get_arrayp
+  public :: array
+  
+  !> Retrieve a pointer to the array @bud
+  interface array_p
     module procedure get_elem2p_
   end interface
-
+  public :: array_p
   
 #include "bud_coll.inc"
 

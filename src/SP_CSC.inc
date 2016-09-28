@@ -87,6 +87,9 @@
     procedure, private :: new_dim_ => new_dim_
     procedure, private :: new_copy_ => new_copy_
 
+    procedure, private :: rowp_
+    procedure, private :: row_cp_
+
     !> @}
     
     !> @iSee BUD_TYPE_NEW
@@ -109,18 +112,23 @@
     !> @iSee #index
     procedure, public :: index => index_
     
-    !> @iSee #offsetp
-    procedure, public :: offsetp => offsetp_
+    !> @iSee #offset_p
+    procedure, public :: offset_p => offsetp_
 
-    !> @iSee #rowp
-    procedure, public :: rowp => rowp_
+#if BUD_SP_CSR == 1
+    !> @iSee #ncolumn_p
+    procedure, public :: ncolumn_p => ncolumnp_
+#endif
+
+    !> @iSee #row_p
+    generic, public :: row_p => rowp_, row_cp_
 
     
-    !> @iSee #sp_fold
-    procedure, public :: sp_fold => fold_
+    !> @iSee #fold
+    procedure, public :: fold => fold_
 
-    !> @iSee #sp_sort
-    procedure, public :: sp_sort => sort_
+    !> @iSee #sort
+    procedure, public :: sort => sort_
 
     !> @iSee #attach
     procedure, public :: attach => attach_
@@ -186,6 +194,45 @@
   public :: new
 
   
+
+  !> Retrieve a pointer to the column offsets/pointers
+  !!
+  !! A pointer with the column offsets.
+  !!
+#if BUD_SP_CSC == 0
+# if BUD_SP_INTEROP_C == 1
+  !! `M(row(pointer(ic)+1),ic)` is the first sparse
+  !! element in column `ic`.
+# else
+  !! `M(row(pointer(ic)),ic)` is the first sparse
+  !! element in column `ic`.
+# endif
+#elif BUD_SP_CSC == 1
+  !! `M(row(pointer(ic)+1),ic)` is the first sparse
+  !! element in column `ic`.
+#endif
+  interface offset_p
+    module procedure offsetp_
+  end interface
+  public :: offset_p
+
+  
+  !> Retrieve a pointer to the row indices in the sparse pattern
+  interface row_p
+    module procedure rowp_
+    module procedure row_cp_
+  end interface
+  public :: row_p
+
+#if BUD_SP_CSR == 1
+  !> Retrieve a pointer to the number of entries per column
+  interface ncolumn_p
+    module procedure ncolumnp_
+  end interface
+  public :: ncolumn_p
+#endif
+
+  
   !> Fold a sparse pattern to form a smaller sparse pattern
   !!
 #if BUD_SP_CSC == 0
@@ -210,10 +257,10 @@
   !!
   !! Both the number of rows and/or columns may be changed
   !! individually.
-  interface sp_fold
+  interface fold
     module procedure fold_
   end interface 
-  public :: sp_fold
+  public :: fold
 
   
   !> Sorts rows in the sparse pattern
@@ -231,39 +278,10 @@
   !!
   !!  - `err == SP_INPUT + 3`:
   !!    the 3rd input is erroneously supplied.
-  interface sp_sort
+  interface sort
     module procedure sort_
   end interface
-  public :: sp_sort
-
-
-  !> Retrieve a pointer to the column offsets/pointers
-  !!
-  !! A pointer with the column offsets.
-  !!
-#if BUD_SP_CSC == 0
-# if BUD_SP_INTEROP_C == 1
-  !! `M(row(pointer(ic)+1),ic)` is the first sparse
-  !! element in column `ic`.
-# else
-  !! `M(row(pointer(ic)),ic)` is the first sparse
-  !! element in column `ic`.
-# endif
-#elif BUD_SP_CSC == 1
-  !! `M(row(pointer(ic)+1),ic)` is the first sparse
-  !! element in column `ic`.
-#endif
-  interface offsetp
-    module procedure offsetp_
-  end interface
-  public :: offsetp
-
-  
-  !> Retrieve a pointer to the row indices in the sparse pattern
-  interface rowp
-    module procedure rowp_
-  end interface
-  public :: rowp
+  public :: sort
 
   
   ! Include the common elements of a sparsity method
@@ -439,11 +457,42 @@
     
   end function rowp_
 
+  !> @param[in] this sparse pattern
+  !> @param[in] c only retrieve the rows that reside in column `c`
+  !! @return a pointer to the row indices for the sparse pattern (contiguous)
+  function row_cp_(this,c) result(row)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    integer(BUD_TYPE_VAR_PREC), intent(in) :: c
+    integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: row(:)
+
+#if BUD_SP_CSR == 0
+# if BUD_SP_INTEROP_C == 0
+    row => this%D%row(this%D%cptr(c):this%D%cptr(c+1)-1)
+# else
+    row => this%D%row(this%D%cptr(c)+1:this%D%cptr(c+1))
+# endif
+#elif BUD_SP_CSR == 1
+    row => this%D%row(this%D%cptr(c)+1:this%D%cptr(c+1))
+#endif
+    
+  end function row_cp_
+  
+#if BUD_SP_CSR == 1
+  !> @param[in] this sparse matrix
+  !! @return a pointer to the array that holds the number of entries per column
+  function ncolumnp_(this) result(ncol)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: ncol(:)
+    
+    ncol => this%D%ncol
+    
+  end function ncolumnp_
+#endif
   
   !> @param[in] this sparse pattern @bud
-  !! @param[out] nr @opt number of rows in SM
-  !! @param[out] nc @opt number of columns in SM
-  !! @param[out] nz @opt number of non-zero elements in SM
+  !! @param[out] nr @opt number of rows in SP
+  !! @param[out] nc @opt number of columns in SP
+  !! @param[out] nz @opt number of non-zero elements in SP
   !! @param[out] cptr @opt column pointer (`cptr(2)` is starting index of `ic=2`)
   !! @param[out] row @opt row index
 #if BUD_SP_CSC == 1
@@ -474,7 +523,6 @@
 #endif
     
   end subroutine attach_
-
 
 
   !> @param[in] from the originating sparse pattern
@@ -822,7 +870,7 @@
 
   !> @endcond BUD_DEVELOPER
 
-
+  
   
   !> @param[in] this sparse pattern to sort (in-place)
   !! @param[out] err associated error message of the sparsity pattern
@@ -964,42 +1012,6 @@
 #endif
     
   end function index_
-
-  
-  !> @param[in] this sparse pattern
-  !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
-  !! @param[in] indent @opt=1 possible indentation of printed statement
-  subroutine print_(this, info, indent)
-    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    character(len=*), intent(in), optional :: info
-    integer, intent(in), optional :: indent
-
-    integer :: lindent
-
-    ! 4-byte variable
-    character(len=32) :: fmt
-    character(len=256) :: name
-
-    name = BUD_TYPE_NAME_STR
-    if ( present(info) ) name = info
-    lindent = 1
-    if ( present(indent) ) lindent = indent
-
-    write(fmt, '(a,i0,a)') '(t',lindent,',3a)'
-    
-    if ( .not. is_initd(this) ) then
-      write(*,fmt) "<", trim(name), " not initialized>"
-      return
-    end if
-
-    ! Create fmt
-    write(fmt, '(a,i0,a)') '(t',lindent,',3a,4(i0,a))'
-    
-    write(*,fmt) "<", trim(name), " rows=", this%D%nr, &
-      ", cols=", this%D%nc, ", nnzs=",this%D%nz, &
-      ", refs: ", references(this), ">"
-    
-  end subroutine print_
 
 
 ! Local pre-processor variables that
