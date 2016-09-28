@@ -18,6 +18,10 @@
   !!  4. Automatic re-allocation when more elements are needed.
   !!  5. Binary search-algorithms if sorted.
   !!
+  !!
+  !! The list also implements index functions which are extremely fast
+  !! if the list is sorted. In such cases the list may be used as pivoting
+  !! array.
   
   ! The following pre-processor variables are currently used when
   ! included:
@@ -649,7 +653,6 @@
     end if
 
   end function max_size_
-
 
   !> @param[in] this @bud container
   !! @return the size of the contained list
