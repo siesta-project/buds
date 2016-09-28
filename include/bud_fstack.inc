@@ -62,15 +62,17 @@
   contains
 #   include "bud_common_type.inc"
 
-    !> @iSee #new
+    !> @iSee BUD_NEW_TYPE
+    procedure, public :: BUD_NEW_TYPE => new_
+    !> @iSee BUD_NEW_TYPE
     procedure, public :: new => new_
 
     !> @iSee #push
     procedure, public :: push => push_
     !> @iSee #pop
     procedure, public :: pop => pop_
-    !> @iSee #keep
-    procedure, public :: keep => keep_
+    !> @iSee #retain
+    procedure, public :: retain => retain_
 
     !> @iSee #element
     procedure, public :: element => get_elem_
@@ -183,7 +185,7 @@
   public :: pop
 
 
-  !> Keeps a fixed number of elements in the stack
+  !> Retains a fixed number of elements in the stack
   !!
   !! Retains a number of elements from either the top or the
   !! bottom of the stack.
@@ -193,10 +195,10 @@
   !!
   !! @note
   !! Defaults to `top=fnelem(this)-1`
-  interface keep
-    module procedure keep_
+  interface retain
+    module procedure retain_
   end interface
-  public :: keep
+  public :: retain
   
   !> Retrieve specific element from the stack
   !!
@@ -465,7 +467,7 @@
   !! @param[in] top @opt=1 number of elements kept from the top
   !! @param[in] bot @opt=@null number of elements kept from the bottom,
   !!                only used if `top` is not supplied.
-  subroutine keep_(this, top, bot)
+  subroutine retain_(this, top, bot)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer, intent(in), optional :: top, bot
     
@@ -490,7 +492,7 @@
       
     else
 
-      ! keep 'n' items from the bottom
+      ! retain 'n' items from the bottom
       lnpop = el - bot
 
       ! we should not pop anything 
@@ -500,7 +502,7 @@
       
     end if
     
-  end subroutine keep_
+  end subroutine retain_
 
   
   !> @param[in] this stack to retrieve element from

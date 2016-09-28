@@ -54,7 +54,9 @@
 
     !> @}
     
-    !> @iSee new
+    !> @iSee BUD_NEW_TYPE
+    generic, public :: BUD_NEW_TYPE => new_, new_data_
+    !> @iSee BUD_NEW_TYPE
     generic, public :: new => new_, new_data_
 
     !> @iSee set_data
