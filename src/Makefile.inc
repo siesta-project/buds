@@ -60,6 +60,10 @@ bud_LL_Array3D.f90: LL_Array1D.F90
 	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/Array1D/Array3D/g' $(src_DIR)/LL_Array1D.F90 > $(_TMP_FILE)
 	$(src_FPP)
 
+SP_generic = bud_SP_generic.o
+src_OBJECTS += $(SP_generic)
+bud_SP_generic.f90: SP_generic.F90
+	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
 
 SP_R = \
 	bud_SP_CSR.o \

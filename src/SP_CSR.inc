@@ -61,7 +61,8 @@
 #define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
 #define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
 #define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
-  
+
+  use BUD_CC3(BUD_MOD,_,SP_generic)
   
   ! This *MUST* be the first statement
   ! Common parameters and variables used

@@ -10,27 +10,6 @@
   !! A sparse pattern is denoted by a two-dimensional format based on
   !! rows and columns.
 
-  ! Constants defined to be used as error messages
-  !
-
-  !> Errors with a negative number refers to the `-err` element
-  !!
-  !! This may mean that the entry is beyond the pattern size.
-
-  !> Definition of no errors in the call
-  integer, parameter, public :: SP_NONE = 0
-
-  !> Signals two or more equivalent sparse elements
-  integer, parameter, public :: SP_ENTRY_MULTIPLE = 1
-
-  !> The input argument that is wrong by `err-SP_INPUT`
-  !!
-  !! This constant is an offset in the error number that
-  !! refers to the input parameter `err - SP_INPUT`.
-  !! I.e. if `err = SP_INPUT + 2`, the second argument
-  !! is erroneous.
-  integer, parameter, public :: SP_INPUT = 1000
-
 
   !> Return number of non-zero elements stored in the sparse pattern
   !!
