@@ -41,6 +41,12 @@ include $(TOP_DIR)/src/Makefile.inc
 
 MPI ?= 0
 ifneq ($(MPI),0)
+
+ # Define the mpi flag
+ # the BUD_MPI should now retain the MPI standard
+ # I.e. =1, =2, =3, etc.
+ FPPFLAGS += -DBUD_MPI=$(MPI)
+
  # Include dir:
  #    ./src/mpi
  include $(TOP_DIR)/src/mpi/Makefile.inc
