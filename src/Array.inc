@@ -86,7 +86,7 @@
     procedure, public :: size => size_
 
     !> @iSee #init_value
-    procedure, public :: init_value => init_array_
+    procedure, public :: init_value => init_value_
 
 #endif
   end type BUD_TYPE_NAME
@@ -172,7 +172,7 @@
   !! All elements of the array will sub-sequently have
   !! the supplied value.
   interface init_value
-    module procedure init_array_
+    module procedure init_value_
   end interface
   public :: init_value
   
@@ -288,7 +288,7 @@
 #endif
 
     if ( present(val) ) then
-      call init_array(this, val)
+      call init_value(this, val)
     end if
 
   end subroutine new_dim_
@@ -430,7 +430,7 @@
   !> @param[in] this array @bud
   !! @param[in] v all elements of the contained array will be
   !!              equal to `v` after the call
-  subroutine init_array_(this, v)
+  subroutine init_value_(this, v)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in) :: v
@@ -443,7 +443,7 @@
       this%D%array = v
     end if
 
-  end subroutine init_array_
+  end subroutine init_value_
 
 
   !> @param[in] this array @bud
