@@ -23,9 +23,6 @@ OBJECTS += $(mpi_OBJECTS)
 
 # Ensure we use the correct compiler
 $(mpi_FPP_SOURCES): INCLUDES += -I$(mpi_DIR)
-$(mpi_OBJECTS): FC  = $(MPIFC)
-$(mpi_OBJECTS): CC  = $(MPICC)
-$(mpi_OBJECTS): CXX = $(MPICXX)
 
 # Local Variables:
 #  mode: makefile-gmake

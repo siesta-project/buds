@@ -45,6 +45,10 @@ ifneq ($(MPI),0)
  #    ./src/mpi
  include $(TOP_DIR)/src/mpi/Makefile.inc
 
+ CC := $(MPICC)
+ CXX := $(MPICXX)
+ FC := $(MPIFC)
+
 endif
 
 OO ?= 0
@@ -52,17 +56,11 @@ ifneq ($(OO),0)
  FPPFLAGS += -DBUD_FORTRAN=2003
 endif
 
+# The linker is a fortran compiler
+LINK := $(FC)
 
 # Libraries depend on the objects
 $(LIBRARIES): $(OBJECTS)
-
-# Fix the library linking
-libbuds.so:
-ifneq ($(MPI),0)
-	$(MPIFC) $(LINK_FLAGS) $(FFLAGS) -o $@ $^ $(LIBS) $(LDFLAGS)
-else
-	$(FC) $(LINK_FLAGS) $(FFLAGS) -o $@ $^ $(LIBS) $(LDFLAGS)
-endif
 
 # Create target
 lib: $(LIBRARIES)
