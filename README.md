@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/siesta-project/buds.svg?branch=master)](https://travis-ci.org/siesta-project/buds)
+[![Build Status](https://travis-ci.org/siesta-project/buds.svg?branch=master)](https://travis-ci.org/siesta-project/buds)[![codecov](https://codecov.io/gh/siesta-project/buds/branch/master/graph/badge.svg)](https://codecov.io/gh/siesta-project/buds)
+
 
 # buds
 
