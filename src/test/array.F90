@@ -6,9 +6,7 @@ program test_array
   use bud_iArray2D
   use bud_iArray3D
 
-  type(iArray1D) :: a1, b1, c1
-  type(iArray2D) :: a2, b2, c2
-  type(iArray3D) :: a3, b3, c3
+  implicit none
 
   call t_1
   write(*,*)
@@ -19,42 +17,71 @@ program test_array
 contains
 
   subroutine t_1()
-    call new(a1,10)
-    b1 = a1
-    call print(a1)
-    call print(b1)
-    call delete(b1)
-    c1 = a1
-    call print(c1)
-    call delete(c1)
-    call delete(a1)
-    call print(a1)
+    type(iArray1D) :: a, b, c
+    integer, pointer :: i(:)
+    ! Try and create a new array
+    call new(a,10)
+    ! Try to retrieve the pointer
+    i => array_p(a)
+    call init_value(a, 0)
+    b = a
+    ! Print a (check double references)
+    call print(a)
+    ! Print b (check double references)
+    call print(b)
+    call delete(b)
+    call copy(a, c)
+    ! These should both contain only one reference
+    call print(a)
+    call print(c)
+    ! try and delete the routines
+    call delete(c)
+    call delete(a)
+    ! try and delete an already deleted object
+    call delete(a)
+    ! print not initialized
+    call print(a)
+    call print(c)
   end subroutine t_1
 
   subroutine t_2()
-    call new(a2,10,10)
-    b2 = a2
-    call print(a2)
-    call print(b2)
-    call delete(b2)
-    c2 = a2
-    call print(c2)
-    call delete(c2)
-    call delete(a2)
-    call print(a2)
+    type(iArray2D) :: a, b, c
+    integer, pointer :: i(:,:)
+    call new(a,10,20)
+    i => array_p(a)
+    call init_value(a, 0)
+    b = a
+    call print(a)
+    call print(b)
+    call delete(b)
+    call copy(a, c)
+    call print(a)
+    call print(c)
+    call delete(c)
+    call delete(a)
+    call delete(a)
+    call print(a)
+    call print(c)
   end subroutine t_2
 
   subroutine t_3()
-    call new(a3,10,10,10)
-    b3 = a3
-    call print(a3)
-    call print(b3)
-    call delete(b3)
-    c3 = a3
-    call print(c3)
-    call delete(c3)
-    call delete(a3)
-    call print(a3)
+    type(iArray3D) :: a, b, c
+    integer, pointer :: i(:,:,:)
+    call new(a,10,20,30)
+    i => array_p(a)
+    call init_value(a, 0)
+    b = a
+    call print(a)
+    call print(b)
+    call delete(b)
+    call copy(a, c)
+    call print(a)
+    call print(c)
+    call delete(c)
+    call delete(a)
+    call delete(a)
+    call print(a)
+    call print(c)
   end subroutine t_3
 
 end program test_array

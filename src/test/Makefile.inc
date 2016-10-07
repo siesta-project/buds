@@ -35,8 +35,8 @@ $(test_out_DIR)/c2_array: $(test_COMMON_OBJECTS) $(test_out_DIR)/c2_array.o
 	@echo "#### TEST -- running: $@" >> run_tests.sh
 	@echo $@ >> run_tests.sh
 
-#test_TESTS += ll_array
-#test_OBJECTS += ll_array.o
+test_TESTS += ll_array
+test_OBJECTS += ll_array.o
 $(test_out_DIR)/ll_array: $(test_COMMON_OBJECTS) $(test_out_DIR)/ll_array.o
 	$(FC) -o $@ $^ -l$(BUDS_LIB) $(FFLAGS) $(INCLUDES) $(LDFLAGS)
 	@echo "#### TEST -- running: $@" >> run_tests.sh
