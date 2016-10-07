@@ -3,7 +3,7 @@ MPI = 1
 
 # Define Fortran compiler and flags
 FC = gfortran
-FCFLAGS = -O2
+FFLAGS = -O2
 MPIFC = mpif90
 
 
