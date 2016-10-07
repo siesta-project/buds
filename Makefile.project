@@ -20,11 +20,15 @@ STATIC ?= 1
 SHARED ?= 1
 
 # Create the list of libraries
+BUDS_LIB ?= buds$(LIB_SUFFIX)
+BUDS_LIB_STATIC ?= lib$(BUDS_LIB).a
+BUDS_LIB_SHARED ?= lib$(BUDS_LIB).so
+
 ifeq ($(STATIC),1)
-  LIBRARIES += libbuds$(LIB_SUFFIX).a
+  LIBRARIES += $(BUDS_LIB_STATIC)
 endif
 ifeq ($(SHARED),1)
-  LIBRARIES += libbuds$(LIB_SUFFIX).so
+  LIBRARIES += $(BUDS_LIB_SHARED)
   # Forcefully denote that objects should have
   # position independent code
   # THIS IS A SMEKA SETTING

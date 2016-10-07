@@ -6,7 +6,7 @@ VPATH ?= $(shell pwd)
 .PHONY: default
 default: lib
 
-# the default target
+# the all target
 .PHONY: all
 all: static shared
 
@@ -78,5 +78,8 @@ lib: $(LIBRARIES)
 # Create target
 source: source-src source-mpi
 
-# Include the makefile in the test directory
+# Include the makefile in the test source directories:
+#    ./src/test
 include $(TOP_DIR)/src/test/Makefile.inc
+#    ./src/mpi/test
+include $(TOP_DIR)/src/mpi/test/Makefile.inc
