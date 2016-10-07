@@ -26,10 +26,12 @@ bud_Dist1D.f90: Dist1D.F90
 mpi_SOURCES = $(patsubst %.o, %.f90, $(mpi_OBJECTS))
 # FPP_SOURCES are those sources that needs deletion upon make clean
 mpi_FPP_SOURCES = $(mpi_SOURCES)
+ifneq ($(MPI),0)
+OBJECTS += $(mpi_OBJECTS)
 SOURCES += $(mpi_SOURCES)
 FPP_SOURCES += $(mpi_FPP_SOURCES)
 F_MODS  += $(patsubst %.f90, %.mod, $(mpi_SOURCES))
-OBJECTS += $(mpi_OBJECTS)
+endif
 
 
 # Ensure we use the correct compiler

@@ -35,10 +35,9 @@ include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.smeka
 # We skip this from the VPATH as it really is only INCLUDES
 INCLUDES += -I$(TOP_DIR)/include
 
+# Decide on the options for compilation
 
-# Include the makefile in the src directory
-include $(TOP_DIR)/src/Makefile.inc
-
+#### MPI
 MPI ?= 0
 ifneq ($(MPI),0)
 
@@ -47,20 +46,25 @@ ifneq ($(MPI),0)
  # I.e. =1, =2, =3, etc.
  FPPFLAGS += -DBUD_MPI=$(MPI)
 
- # Include dir:
- #    ./src/mpi
- include $(TOP_DIR)/src/mpi/Makefile.inc
-
  CC := $(MPICC)
  CXX := $(MPICXX)
  FC := $(MPIFC)
 
 endif
 
+#### Object-Oriented
 OO ?= 0
 ifneq ($(OO),0)
  FPPFLAGS += -DBUD_FORTRAN=2003
 endif
+
+
+# Include the makefile in the source directories:
+#    ./src
+include $(TOP_DIR)/src/Makefile.inc
+#    ./src/mpi
+include $(TOP_DIR)/src/mpi/Makefile.inc
+
 
 # The linker is a fortran compiler
 LINK := $(FC)
