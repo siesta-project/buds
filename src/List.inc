@@ -118,10 +118,10 @@
     !> @iSee #list_p
     procedure, public :: list_p => listp_
     !> @iSee #list_max_p
-    procedure, public :: list_max_p => list_maxp_
+    procedure, public :: list_max_p => max_listp_
 
     !> @iSee #sort
-    procedure, public :: sort => sort_heap_
+    procedure, public :: sort => sort_
 
     !> @iSee #push
     generic, public :: push => push_value_, push_array_, push_list_
@@ -134,13 +134,13 @@
     !> @iSee #union
     procedure, public :: union => union_
     !> @iSee #complement
-    procedure public :: complement => complement_
+    procedure, public :: complement => complement_
     !> @iSee #intersect
     procedure, public :: intersect => intersect_
     
 
     !> @iSee #reverse
-    generic, public :: reverse => reverse_
+    procedure, public :: reverse => reverse_
 
     !> @iSee #extend
     procedure, public :: extend => extend_
@@ -149,7 +149,7 @@
     generic, public :: shrink => shrink_, shrink_n_
 
     !> @iSee #clear
-    generic, public :: clear => clear_
+    procedure, public :: clear => clear_
 
     !> @iSee #merge
     procedure, public :: merge => merge_
@@ -989,7 +989,7 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: A, B
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: C
 
-    BUD_CLASS(BUD_TYPE_NAME) :: D
+    type(BUD_TYPE_NAME) :: D
     integer(BUD_TYPE_VAR_PREC) :: i, n
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: l(:)
 
@@ -1079,7 +1079,7 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: A, B
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: C
 
-    BUD_CLASS(BUD_TYPE_NAME) :: D
+    type(BUD_TYPE_NAME) :: D
     integer(BUD_TYPE_VAR_PREC) :: i, n
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: l(:)
 
@@ -1182,7 +1182,7 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: A, B
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: C
 
-    BUD_CLASS(BUD_TYPE_NAME) :: D
+    type(BUD_TYPE_NAME) :: D
     integer(BUD_TYPE_VAR_PREC) :: i, n
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: l(:)
 
@@ -1226,7 +1226,7 @@
     integer(BUD_TYPE_VAR_PREC) :: i, n
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: l(:)
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC) :: tmp
-
+    
     n = size(this)
     l => list_p(this)
     

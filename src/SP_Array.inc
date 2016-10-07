@@ -58,9 +58,9 @@
   function get_matrixp_(this) result(p)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
 #ifdef BUD_TYPE_VAR_PREC
-    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC()
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC(:)
 #else
-    BUD_TYPE_VAR, pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC()
+    BUD_TYPE_VAR, pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC(:)
 #endif
     
     p => array_p(this%D%e2)

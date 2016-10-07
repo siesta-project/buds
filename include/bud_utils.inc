@@ -111,6 +111,11 @@
 #define BUD_CC5(a,b,c,d,e) BUD_CCX5(a,b,c,d,e)
 #define BUD_CCX5(a,b,c,d,e) a ## b ## c ## d ## e
 
+  !> \def BUD_CC6(a,b,c,d,e,f)
+  !! Concatenate six arguments \a a, \a b, \a c, \a d, \a e and \a f.
+#define BUD_CC6(a,b,c,d,e,f) BUD_CCX6(a,b,c,d,e,f)
+#define BUD_CCX6(a,b,c,d,e,f) a ## b ## c ## d ## e ## f
+
   !> \def BUD_XSTR(x)
   !! Creates a string of the expanded argument.
 #define BUD_XSTR(x) BUD_STR(x)
@@ -126,20 +131,25 @@
 #endif
 
   ! Check that the DIM_SPEC has not been specified
-#if defined(BUD_DIM) && ! defined(BUD_DIM_SPEC)
+#undef BUD_DIM_SPEC
+#if defined(BUD_DIM)
 # if BUD_DIM == 0
-#  define BUD_DIM_SPEC()
+#  define BUD_DIM_SPEC(a)
 # elif BUD_DIM == 1
-#  define BUD_DIM_SPEC() (:)
+#  define BUD_DIM_SPEC(a) (a)
 # elif BUD_DIM == 2
-#  define BUD_DIM_SPEC() (:,:)
+#  define BUD_DIM_SPEC(a) (a,a)
 # elif BUD_DIM == 3
-#  define BUD_DIM_SPEC() (:,:,:)
+#  define BUD_DIM_SPEC(a) (a,a,a)
 # elif BUD_DIM == 4
-#  define BUD_DIM_SPEC() (:,:,:,:)
+#  define BUD_DIM_SPEC(a) (a,a,a,a)
 # elif BUD_DIM == 5
-#  define BUD_DIM_SPEC() (:,:,:,:,:)
+#  define BUD_DIM_SPEC(a) (a,a,a,a,a)
+# elif BUD_DIM == 6
+#  define BUD_DIM_SPEC(a) (a,a,a,a,a,a)
 # endif
+#else
+# define BUD_DIM_SPEC(a)
 #endif
 
   

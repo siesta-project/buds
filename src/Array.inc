@@ -101,9 +101,9 @@
 
     !> Array stored in the @bud
 #ifdef BUD_TYPE_VAR_PREC
-    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: array BUD_DIM_SPEC() => null()
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: array BUD_DIM_SPEC(:) => null()
 #else
-    BUD_TYPE_VAR, pointer BUD_FORTRAN_CONTIGUOUS :: array BUD_DIM_SPEC() => null()
+    BUD_TYPE_VAR, pointer BUD_FORTRAN_CONTIGUOUS :: array BUD_DIM_SPEC(:) => null()
 #endif
 
     ! Consistent data in the reference counted object
@@ -299,9 +299,9 @@
   subroutine new_copy_(this, array)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 #ifdef BUD_TYPE_VAR_PREC
-    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in) :: array BUD_DIM_SPEC()
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in) :: array BUD_DIM_SPEC(:)
 #else
-    BUD_TYPE_VAR, intent(in) :: array BUD_DIM_SPEC()
+    BUD_TYPE_VAR, intent(in) :: array BUD_DIM_SPEC(:)
 #endif
 
 #if BUD_DIM == 1
@@ -347,9 +347,9 @@
   function arrayp_(this) result(p)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
 #ifdef BUD_TYPE_VAR_PREC
-    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC()
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC(:)
 #else
-    BUD_TYPE_VAR, pointer  BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC()
+    BUD_TYPE_VAR, pointer  BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC(:)
 #endif
 
     p => this%D%array

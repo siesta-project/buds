@@ -93,7 +93,7 @@ module BUD_MOD_NAME
     procedure, public :: exists => exists_
 
     !> @iSee file_delete
-    procedure, public :: file_delete => file_delete_
+    procedure, public :: delete_file => delete_file_
 
     !> @iSee get_stat
     procedure, public :: stat => get_stat_

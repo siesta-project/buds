@@ -133,10 +133,8 @@
     !> @iSee #set_head
     procedure, public :: set_head => set_head_idx_
 
-    !> @iSee #copy_list
-    procedure, public :: copy_list => copy_list_
-    !> @iSee #copy_list
-    procedure, public :: copy => copy_list_
+    !> @iSee #copy
+    procedure, public :: copy_list => copy_
 
     !> @iSee #itt_step
     generic, public :: itt_step => itt_step_, itt_step_i_
@@ -347,7 +345,7 @@
   !! This will assign the node data to the new
   !! linked list nodes.
   interface copy_list
-    module procedure copy_list_
+    module procedure copy_
   end interface
   public :: copy_list
 
@@ -434,19 +432,6 @@
   !> @endcond BUD_DEVELOPER
 
 
-  
-  !> @param[in] from the original `bud` which is copied to `to`
-  !! @param[inout] to the output `bud` with the full copied data
-  subroutine copy_(from, to)
-    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
-    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
-
-    call delete(to)
-    if ( .not. is_initd(from) ) return
-
-    ! Currently not implemented
-    
-  end subroutine copy_
 
   !> @param[inout] this initialized linked list upon exit
   subroutine new_(this)
@@ -910,16 +895,13 @@
 
   !> @param[inout] from the linked list that is the original list
   !! @param[inout] to a copy of `from` upon exit
-  subroutine copy_list_(from, to)
+  subroutine copy_(from, to)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: from, to
     type(BUD_LINKED_LIST_NAME), pointer :: t, f
 
-    if ( .not. is_initd(from) ) then
-      call delete(to)
-      return
-    end if
-
     call delete(to)
+    if ( .not. is_initd(from) ) return
+
     call new(to)
 
     ! First create the previous track
@@ -962,7 +944,7 @@
     end do
 #endif
 
-  end subroutine copy_list_
+  end subroutine copy_
   
   
   !> @param[in] this linked list
