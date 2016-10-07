@@ -5,7 +5,9 @@ echo "OS-name: $TRAVIS_OS_NAME"
 
 function buds_osx {
     brew update
-    brew install gfortran
+    brew install gcc
+    # If gfortran install fails do nothing
+    brew install gfortran || echo "Should be OK"
     {
       echo CPP = gcc -E -P -x c
     } > setup.make
