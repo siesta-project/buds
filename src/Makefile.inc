@@ -284,6 +284,9 @@ OBJECTS += $(src_OBJECTS)
 $(src_FPP_SOURCES): INCLUDES += -I$(src_DIR)
 
 
+source-src: $(src_SOURCES)
+
+
 clean-src:
 	-rm -f $(src_FPP_SOURCES)
 	-rm -f $(src_OBJECTS)

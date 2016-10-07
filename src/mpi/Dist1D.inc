@@ -4,7 +4,16 @@
   
   !> This module makes heavy usage of the
   !! MPI variables
+#ifndef BUD_MPI_INCLUDE
   use mpi
+#else
+  include BUD_STR(BUD_MPI_INCLUDE)
+#endif
+
+  ! We require the use of the communicator
+  use BUD_CC3(BUD_MOD,_,MP_Comm)
+
+  use BUD_CC3(BUD_MOD,_,Dist_generic)
 
 #define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
 #define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
@@ -15,18 +24,18 @@
   !! This @bud implements a selected portion of different
   !! distributions.
   !! Currently the available distributions are:
-  !!  - DIST_BLOCK_CYCLIC
+  !!  - DIST_BLOCK_CYCLIC_FIRST_SPLIT
   !!    This format of block-cyclic distributions
-  !!    has 2 versions, each usable for different aspects:
-  !!    * DIST_BLOCK_CYCLIC_FIRST
-  !!      any remaining non-associated elements are assigned
-  !!      to the first processor.
-  !!    * DIST_BLOCK_FIRST
-  !!      any remaining non-associated elements are assigned
-  !!      to the first processor.
-  !!    * DIST_BLOCK_LAST
-  !!      any remaining non-associated elements are assigned
-  !!      to the last processor.
+  !!    with any remaining non-associated elements are
+  !!    assigned to the first processors in a round-robin
+  !!    fashion.
+  !!  - DIST_BLOCK_LAST_ALL
+  !!    This format is a simple block distribution
+  !!    where all remaining elements are assigned to the
+  !!    last process.
+  !!  - DIST_CYCLIC_FIRST
+  !!    This format is a simple distribution equivalent to
+  !!    the DIST_BLOCK_CYCLIC_FIRST_SPLIT with block-size 1.
   !! 
   !! @dev_note
   !! The following pre-processor variables are currently used when
@@ -46,32 +55,11 @@
 # include "bud_common_declarations.inc"
 
 
-  !> Denote no distribution
-  integer(ii_), parameter, public :: DIST_NONE = 1
-
-  !> Block-cyclic distribution, remaining goes to first processor
-  integer(ii_), parameter, public :: DIST_BLOCK_CYCLIC_FIRST = 2
-  !> Block-cyclic distribution, remaining goes to last processor
-!  integer(ii_), parameter, public :: DIST_BLOCK_CYCLIC_LAST = 3
-
-  !> Block-cyclic distribution (DIST_BLOCK_CYCLIC_FIRST)
-  integer(ii_), parameter, public :: DIST_BLOCK_CYCLIC = DIST_BLOCK_CYCLIC_FIRST
-
-  ! currently this is not enabled as an implementation
-  ! is not complete. Hence it is private.
-  !> User defined distribution (DIST_EXPLICIT)
-  integer(ii_), parameter, private :: DIST_EXPLICIT = 4
-
-  !> A simple block-partitioning (remainder to first process)
-  integer(ii_), parameter, public :: DIST_BLOCK_FIRST = 5
-  !> A simple block-partitioning (remainder to last process)
-  integer(ii_), parameter, public :: DIST_BLOCK_LAST = 6
-
-
   !> @bud variable
   !!
   !! Handler for the pointer type stored
   type BUD_TYPE_NAME
+
     !> Stored pointer which contains the reference counting etc.
     type(BUD_TYPE_NAME_), pointer :: D => null()
 
@@ -83,20 +71,15 @@
     !> @{
     ! Doxygen needed line
     
-    procedure, private :: new_, new_block_cyclic_, new_block_
-
-    procedure, private :: size_local_default_, size_local_ng_
-    procedure, private :: l2g_default_, l2g_ng_
-    procedure, private :: g2l_default_, g2l_ng_
-    procedure, private :: g2P_default_, g2P_ng_
+    procedure, private :: new_, new_block_cyclic_, new_block_or_cyclic_
 
     !>>@}
     
     !> @iSee new
-    generic, public :: new => new_, new_block_cyclic_, new_block_
+    generic, public :: new => new_, new_block_cyclic_, new_block_or_cyclic_
 
-    !> @iSee #dtype
-    procedure, public :: dtype => dtype_
+    !> @iSee #dist_type
+    procedure, public :: dist_type => dist_type_
 
     !> @iSee #comm
     procedure, public :: comm => comm_
@@ -104,10 +87,12 @@
     !> @iSee #group
     procedure, public :: group => group_
 
-    !> @iSee #rank
+    !> @iSee #comm_rank
+    procedure, public :: comm_rank => P_
+    !> @iSee #comm_rank
     procedure, public :: rank => P_
-    !> @iSee #size
-    procedure, public :: size => NP_
+    !> @iSee #comm_size
+    procedure, public :: comm_size => NP_
 
     !> @iSee #is_dist
     procedure, public :: is_dist => is_dist_
@@ -115,10 +100,12 @@
     !> @iSee #is_comm
     procedure, public :: is_comm => is_comm_
 
-    !> @iSee #size_dist_local
-    generic, public :: size_dist_local => size_local_default_, size_local_ng_
-    !> @iSee #size_dist
-    procedure, public :: size_dist => size_
+    !> @iSee #size_local
+    procedure, public :: size_local => size_local_
+    !> @iSee #size_global
+    procedure, public :: size_global => size_
+    !> @iSee #size_global
+    procedure, public :: size => size_
 
 
     !> @iSee #size_block
@@ -127,18 +114,24 @@
     procedure, public :: blocksize => blocksize_
 
     !> @iSee #local2global
-    generic, public :: local2global => l2g_default_, l2g_ng_
+    procedure, public :: local2global => local_to_global_
+    !> @iSee #local2global
+    procedure, public :: l2g => local_to_global_
     !> @iSee #global2local
-    generic, public :: global2local => g2l_default_, g2l_ng_
+    procedure, public :: global2local => global_to_local_
+    !> @iSee #global2local
+    procedure, public :: g2l => global_to_local_
 
     !> @iSee #global2rank
-    generic, public :: global2rank => g2P_default_, g2P_ng_
+    procedure, public :: global2rank => global_to_rank_
+    !> @iSee #global2rank
+    procedure, public :: g2rank => global_to_rank_
     
     !> @iSee #attach
     procedure, public :: attach => attach_
 
-    !> @iSee #err
-    procedure, public :: err => get_MPIerr_
+    !> @iSee #error_mpi
+    procedure, public :: error_mpi => get_MPIerr_
 
 #endif
   end type BUD_TYPE_NAME
@@ -171,27 +164,21 @@
   !! names for other distribution types.
   !! This may help future splitting of the underlying data
   !! type without forcing code changes in the user code.
+  !! This is of course only possible if the interfaces are
+  !! distinct.
   type BUD_TYPE_NAME_
 
-    !> Storage for MPI-error, allows external query.
-    integer(ii_) :: err = MPI_SUCCESS
-
+#define BUD_TYPE_MP_COMM BUD_CC2(BUD_TYPE,MP_Comm)
+    
     !> The associated communicator
-    integer(ii_) :: Comm = MPI_Comm_Null
-    !> The group that encompass the equivalent communicator
-    integer(ii_) :: Grp = MPI_Group_Null
-
-    !> The associated processor number
-    integer(ii_) :: P = 0
-    !> The number of processors in `Comm`
-    integer(ii_) :: NP = 1
+    type(BUD_TYPE_MP_COMM) :: comm
 
     !> The distribution type
     !!
     !! @todo
     !! Consider changing this to `type`. However, it may be ambiguous
     !! with either choice.
-    integer(ii_) :: dist = DIST_NONE
+    integer :: dist = DIST_NONE
 
     !> Number of (total) elements in the distribution
     !!
@@ -203,7 +190,7 @@
 
     ! ***** Block-distribution information
     !> Block-size if BLOCK_CYCLIC distribution is used.
-    integer(ii_) :: BS = -1
+    integer(BUD_PREC) :: BS = -1
 
     ! ***** Explicit distribution
     ! Here we store all information regarding the
@@ -226,33 +213,46 @@
 
   end type BUD_TYPE_NAME_
 
+  !> Create a new distribution object.
+  interface BUD_TYPE_NEW
+    module procedure new_
+    module procedure new_block_cyclic_
+    module procedure new_block_or_cyclic_
+  end interface
+  public :: BUD_TYPE_NEW
+
+  !> Create a new object
+  interface new
+    module procedure new_
+    module procedure new_block_cyclic_
+    module procedure new_block_or_cyclic_
+  end interface
+  public :: new
+
+  
   !> Query communicator of the distribution
-  !!
-  !! @note Do not delete this communicator.
   interface comm
     module procedure comm_
   end interface
   public :: comm
 
-  !> Query group of the distribution
-  !!
-  !! @note Do not delete this group.
-  interface group
-    module procedure group_
-  end interface
-  public :: group
-
   !> Query ID for current processor in distribution
+  interface comm_rank
+    module procedure P_
+  end interface
+  public :: comm_rank
+
+  !> @iSee #comm_rank
   interface rank
     module procedure P_
   end interface
   public :: rank
 
   !> Query number of processors in distribution
-  interface size
+  interface comm_size
     module procedure NP_
   end interface
-  public :: size
+  public :: comm_size
 
   !> Query block-size (if DIST_BLOCK_?)
   interface size_block
@@ -285,113 +285,75 @@
   public :: is_comm
 
   !> Query the distribution type
-  interface dtype
-    module procedure dtype_
+  interface dist_type
+    module procedure dist_type_
   end interface
-  public :: dtype
+  public :: dist_type
 
-  
-  !> Create a new object
-  interface new
-    module procedure new_
-    module procedure new_block_cyclic_
-    module procedure new_block_
-  end interface
-  public :: new
-
-  !> Create a new object
-  interface BUD_TYPE_NEW
-    module procedure new_
-    module procedure new_block_cyclic_
-    module procedure new_block_
-  end interface
-  public :: BUD_TYPE_NEW
-
-  !> Create a new object which is "fake"
-  !!
-  !! Essentially this does not do any MPI function
-  !! calls but may be used to emulate foreign distributions.
-  interface newFake
-    module procedure new_fake_block_cyclic_
-    module procedure new_fake_block_
-  end interface
-  public :: newFake
 
   !> Query number of elements on this node
-  interface size_dist_local
-    module procedure size_local_default_
-    module procedure size_local_ng_
+  interface size_local
+    module procedure size_local_
   end interface
-  public :: size_dist_local
+  public :: size_local
 
   !> Query number of total elements 
-  interface size_dist
+  interface size_global
     module procedure size_
   end interface
-  public :: size_dist
+  public :: size_global
+
+  !> @iSee size_global
+  interface size
+    module procedure size_
+  end interface
+  public :: size
 
   !> Query global index from a local index
   interface local2global
-    module procedure l2g_default_
-    module procedure l2g_ng_
+    module procedure local_to_global_
   end interface
   public :: local2global
 
+  !> @iSee local2global
+  interface l2g
+    module procedure local_to_global_
+  end interface
+  public :: l2g
+
   !> Query local index from a global index
   interface global2local
-    module procedure g2l_default_
-    module procedure g2l_ng_
+    module procedure global_to_local_
   end interface
   public :: global2local
 
+  !> @iSee global2local
+  interface g2l
+    module procedure global_to_local_
+  end interface
+  public :: g2l
+
   !> Query number of elements on this node
   interface global2rank
-    module procedure g2P_default_
-    module procedure g2P_ng_
+    module procedure global_to_rank_
   end interface
   public :: global2rank
+
+  !> @iSee global2rank
+  interface g2rank
+    module procedure global_to_rank_
+  end interface
+  public :: g2rank
 
    
   ! Here we create the interfaces for
   ! sub partitions
 
-  !> Create a fake distribution on non-participating processors in a sub
-  interface fake_sub
-    module procedure fake_sub_
-    module procedure fake_sub_explicit_
-  end interface
-  public :: fake_sub
-
-  !> Query root processor and number of processors in one sub distribution
-  interface sub1_root
-    module procedure sub1_root_
-  end interface
-  public :: sub1_root
-
-  !> Query root processor and number of processors in one sub distribution
-  interface sub1_root_NP
-    module procedure sub1_root_NP_
-  end interface
-  public :: sub1_root_NP
-
-  !> Retrieve the ranks of a sub distribution within a top-level distribution
-  interface sub1_ranks
-    module procedure sub1_ranks_
-  end interface
-  public :: sub1_ranks
-
-  !> Query subset information from multiple subsets simultaneously
-  interface subN_groups
-    module procedure subN_groups_
-  end interface
-  public :: subN_groups
-
-
   !> Query error of previous MPI calls
-  interface MPIerr
+  interface error_MPI
     module procedure get_MPIerr_
   end interface
-  public :: MPIerr
+  public :: error_MPI
   
   !> Print information about the @bud
   interface print
@@ -419,23 +381,8 @@
     type(BUD_TYPE_NAME_), intent(inout) :: this
     integer :: err
 
-    ! Currently we do not allow external memory
-    ! tracking.
-    if ( this%Comm /= MPI_Comm_Null ) then
-      ! reset everything
-      ! A disconnect is less obstructive than
-      ! a free. Perhaps we may choose to use Free
-      ! anyway... ?
-      call MPI_Group_Free(this%Grp, this%err)
-      call MPI_Comm_Disconnect(this%Comm, this%err)
-    end if
+    call delete(this%comm)
 
-    ! Ensure they are nullified
-    this%Comm = MPI_Comm_Null
-    this%Grp = MPI_Group_Null
-    
-    this%P = 0
-    this%NP = 1
     this%dist = DIST_NONE
     this%BS = -1
 
@@ -468,6 +415,7 @@
     to%D%dist = from%D%dist
     to%D%ng = from%D%ng
     to%D%BS = from%D%BS
+    to%D%error_ = from%D%error_
 
     call assert(from%D%nl, to%D%nl)
     call assert(from%D%l2g, to%D%l2g)
@@ -480,7 +428,7 @@
 
     subroutine assert(froml, tol)
       integer(BUD_PREC), pointer :: froml(:), tol(:)
-      integer :: lb, ub
+      integer(BUD_PREC) :: lb, ub
 
       if ( associated(froml) ) then
         lb = lbound(froml,1)
@@ -495,90 +443,70 @@
 
   ! First we implement the easy stuff
   !> Query the associated communicator
-  elemental function comm_(this) result(comm)
+  function comm_(this) result(comm)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer(ii_) :: comm
+    type(BUD_TYPE_MP_COMM) :: comm
     comm = this%D%comm
   end function comm_
-
-  !> Query the associated group
-  elemental function group_(this) result(grp)
-    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer(ii_) :: grp
-    grp = this%D%Grp
-  end function group_
 
   !> Query the current processor ID in the communicator
   elemental function P_(this) result(P)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_) :: P
-    P = this%D%P
+    P = comm_rank(this%D%comm)
   end function P_
-
-  !> Query pointer to the current processor ID in the communicator
-  function Pp_(this) result(Pp)
-    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer(ii_), pointer :: Pp
-    Pp => this%D%P
-  end function Pp_
 
   !> Query the number of processors in the communicator
   elemental function NP_(this) result(NP)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_) :: NP
-    NP = this%D%NP
+    NP = comm_size(this%D%comm)
   end function NP_
 
-  !> Query pointer to the number of processors in the communicator
-  function NPp_(this) result(NPp)
-    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer(ii_), pointer :: NPp
-    NPp => this%D%NP
-  end function NPp_
 
   !> Query the default size of the distribution
-  elemental function size_(this) result(n)
+  elemental function size_(this) result(ng)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer(ii_) :: n
-    n = this%D%ng
+    integer(BUD_PREC) :: ng
+    ng = this%D%ng
   end function size_
 
   !> Query the block-size, `-1` if non-block-cyclic
   elemental function blocksize_(this) result(BS)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer(ii_) :: BS
+    integer(BUD_PREC) :: BS
     BS = this%D%BS
   end function blocksize_
 
   !> Assert the distribution type
   elemental function is_dist_(this, dist) result(is)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer(ii_), intent(in) :: dist
+    integer, intent(in) :: dist
     logical :: is
     is = this%D%dist == dist
   end function is_dist_
 
   !> Query distribution type used 
-  elemental function dtype_(this) result(dist)
+  elemental function dist_type_(this) result(dist)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer(ii_) :: dist
+    integer :: dist
     dist = this%D%dist
-  end function dtype_
+  end function dist_type_
 
 
   !> Query several contained quantities
-  subroutine attach_(this, D, P, NP, ng, Comm, Grp, BS, err)
+  subroutine attach_(this, D, dist, P, NP, ng, BS)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     logical, intent(in), optional :: D
-    integer(ii_), intent(out), optional :: P, NP, ng, Comm, Grp, BS, err
+    integer, intent(out), optional :: dist
+    integer(ii_), intent(out), optional :: P, NP
+    integer(BUD_PREC), intent(out), optional :: BS, ng
 
-    if ( present(P) ) P = this%D%P
-    if ( present(NP) ) NP = this%D%NP
+    if ( present(dist) ) dist = this%D%dist
+    if ( present(P) ) P = rank(this%D%comm)
+    if ( present(NP) ) NP = comm_size(this%D%comm)
     if ( present(ng) ) ng = this%D%ng
-    if ( present(Comm) ) Comm = this%D%Comm
-    if ( present(Grp) ) Grp = this%D%Grp
     if ( present(BS) ) BS = this%D%BS
-    if ( present(err) ) err = this%D%err
 
   end subroutine attach_
   
@@ -593,34 +521,25 @@
   !! @param[in] Comm the communicator that we will dublicate and attach
   subroutine new_(this, Comm)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    integer(ii_), intent(in) :: Comm
-
+    BUD_CLASS(BUD_TYPE_MP_COMM), intent(inout) :: Comm
+    
     call initialize(this)
 
-    ! dublicate communicator (ensures that we can delete it again)
-    call MPI_Comm_dup(Comm, this%D%comm, this%D%err)
-
-    ! Create the group
-    call MPI_Comm_group(this%D%comm, this%D%Grp, this%D%err)
+    this%D%comm = Comm
     
-    ! Figure out number of processors and the rank
-    call MPI_Comm_Rank( this%D%comm, this%D%P, this%D%err)
-    call MPI_Comm_Size( this%D%comm, this%D%NP, this%D%err)
-
   end subroutine new_
 
-
+  
   !> Create a new block cyclic distribution
   subroutine new_block_cyclic_(this, Comm, bs, ng, dist)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    integer(ii_), intent(in) :: Comm, BS
-    integer(BUD_PREC), intent(in) :: ng
-    integer(ii_), intent(in) :: dist
+    BUD_CLASS(BUD_TYPE_MP_COMM), intent(inout) :: Comm
+    integer(BUD_PREC), intent(in) :: BS, ng
+    integer, intent(in) :: dist
 
     select case ( dist )
     case ( &
-      DIST_BLOCK_CYCLIC_FIRST &
-!      DIST_BLOCK_CYCLIC_LAST, &
+      DIST_BLOCK_CYCLIC_FIRST_SPLIT &
       )
 
       ! Create a new object with communicator
@@ -631,6 +550,27 @@
       ! for splitting this information.
       this%D%BS = BS
       this%D%ng = ng
+
+    case ( &
+      DIST_BLOCK_LAST_ALL &
+      )
+      
+      ! Create a new object with communicator
+      ! and populate 'P' and 'NP'
+      call new(this, Comm)
+
+      ! we do not use any explicit terminology
+      ! for splitting this information.
+      this%D%BS = BS
+      this%D%ng = ng
+      
+      ! Assert that this is a viable distribution
+      ! I.e. for block-distributions no processor
+      ! must be empty...
+      if ( ng - BS * comm_size(comm) > BS ) then
+        call delete(this)
+        return
+      end if
 
     case default
 
@@ -644,17 +584,16 @@
 
   end subroutine new_block_cyclic_
 
-  !> Create a new block distribution
-  subroutine new_block_(this, Comm, ng, dist)
+  !> Create a new block/cyclic distribution
+  subroutine new_block_or_cyclic_(this, Comm, ng, dist)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    integer(ii_), intent(in) :: Comm
+    BUD_CLASS(BUD_TYPE_MP_COMM), intent(inout) :: Comm
     integer(BUD_PREC), intent(in) :: ng
-    integer(ii_), intent(in) :: dist
+    integer, intent(in) :: dist
 
     select case ( dist )
     case ( &
-      DIST_BLOCK_FIRST, &
-      DIST_BLOCK_LAST &
+      DIST_BLOCK_LAST_ALL &
       )
 
       ! Create a new object with communicator
@@ -663,7 +602,19 @@
 
       ! we do not use any explicit terminology
       ! for splitting this information.
-      this%D%BS = ng / this%D%NP
+      this%D%BS = ng / comm_size(Comm)
+      this%D%ng = ng
+      
+    case ( &
+      DIST_CYCLIC_FIRST &
+      )
+
+      ! Create a new object with communicator
+      ! and populate 'P' and 'NP'
+      call new(this, Comm)
+
+      ! we do not use any explicit terminology
+      ! for splitting this information.
       this%D%ng = ng
 
     case default
@@ -676,310 +627,155 @@
     ! Copy distribution to the container
     this%D%dist = dist
 
-  end subroutine new_block_
-
-    !> Create a new block cyclic distribution
-  subroutine new_fake_block_cyclic_(this, NP, BS, ng, dist)
-    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    integer(ii_), intent(in) :: NP, BS
-    integer(BUD_PREC), intent(in) :: ng
-    integer(ii_), intent(in) :: dist
-
-    select case ( dist )
-    case ( &
-      DIST_BLOCK_CYCLIC_FIRST &
-!      DIST_BLOCK_CYCLIC_LAST, &
-      )
-
-      ! Create a new object with communicator
-      ! and populate 'P' and 'NP'
-      call initialize(this)
-      this%D%NP = NP
-
-      ! we do not use any explicit terminology
-      ! for splitting this information.
-      this%D%BS = BS
-      this%D%ng = ng
-      
-    case default
-
-      call delete(this)
-      return
-      
-    end select
-
-    this%D%dist = dist
-
-  end subroutine new_fake_block_cyclic_
-
-
-  !> Create a new block distribution (non-cyclic)
-  subroutine new_fake_block_(this, NP, ng, dist)
-    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    integer(BUD_PREC), intent(in) :: NP, ng
-    integer(ii_), intent(in) :: dist
-    
-    select case ( dist )
-    case ( &
-      DIST_BLOCK_FIRST, &
-      DIST_BLOCK_LAST &
-      )
-
-      ! Create a new object with communicator
-      ! and populate 'P' and 'NP'
-      call initialize(this)
-      this%D%NP = NP
-
-      ! we do not use any explicit terminology
-      ! for splitting this information.
-      this%D%BS = ng / this%D%NP
-      this%D%ng = ng
-      
-    case default
-
-      call delete(this)
-      return
-      
-    end select
-
-    this%D%dist = dist
-
-  end subroutine new_fake_block_
+  end subroutine new_block_or_cyclic_
 
 
   ! Interface for number of local elements
-  elemental function size_local_default_(this) result(nl)
+  elemental function size_local_(this, P) result(nl)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    integer(ii_), intent(in), optional :: P
+
+    integer(ii_) :: lP, NP
     integer(BUD_PREC) :: nl, i, ir, irB
 
-    if ( this%D%NP == 1 ) then
+    NP = comm_size(this%D%Comm)
+    if ( NP == 1 ) then
       nl = this%D%ng
       return
     end if
 
-    select case ( this%D%dist )
-    case ( DIST_BLOCK_CYCLIC_FIRST )
-      
-      ! count number of blocks per node
-      i = this%D%ng / ( this%D%NP * this%D%BS )
-      ! count remaining elements
-      ir = this%D%ng - i * this%D%NP*this%D%BS
-      ! remaining blocks
-      irB = ir / this%D%BS
-      ! correct for number of filled blocks
-      ir = ir - irB * this%D%BS
-      ! Calculate number of elements
-      nl = i * this%D%BS
-      if ( this%D%P < irB ) then
-        nl = nl + this%D%BS
-      else if ( this%D%P == irB ) then
-        nl = nl + ir
-      end if
-      
-!!$    case ( DIST_BLOCK_CYCLIC_LAST )
-!!$
-!!$      ! count number of blocks per node
-!!$      i = this%D%ng / ( this%D%NP * this%D%BS )
-!!$      ! count remaining elements
-!!$      ir = this%D%ng - i * this%D%NP*this%D%BS
-!!$      ! remaining blocks
-!!$      irB = ir / this%D%BS
-!!$      ! correct for number of filled blocks
-!!$      ir = ir - irB * this%D%BS
-!!$      ! Calculate number of elements
-!!$      nl = i * this%D%BS
-!!$      irB = this%D%NP - irB
-!!$      if ( irB < this%D%P ) then
-!!$        nl = nl + this%D%BS
-!!$      else if ( this%D%P == irB ) then
-!!$        nl = nl + ir
-!!$      end if
-      
-    case ( DIST_BLOCK_LAST )
-      
-      if ( this%D%P + 1 == this%D%NP ) then
-        nl = this%D%ng - this%D%BS * this%D%P
-      else
-        nl = this%D%BS
-      end if
-
-    case ( DIST_BLOCK_FIRST )
-      
-      if ( this%D%P == 0 ) then
-        nl = this%D%ng - this%D%BS * (this%D%NP-1)
-      else
-        nl = this%D%BS
-      end if
-
-    end select
-    
-  end function size_local_default_
-
-  ! Interface for number of local elements
-  elemental function size_local_ng_(this, ng) result(nl)
-    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer(BUD_PREC), intent(in) :: ng
-
-    integer(BUD_PREC) :: nl, i, ir, irB
-
-    if ( this%D%NP == 1 ) then
-      nl = ng
-      return
+    if ( present(P) ) then
+      lP = P
+    else
+      lP = comm_rank(this%D%comm)
     end if
 
     select case ( this%D%dist )
-    case ( DIST_BLOCK_CYCLIC_FIRST )
+    case ( DIST_BLOCK_CYCLIC_FIRST_SPLIT )
+
+      ! ASSERTED
       
       ! count number of blocks per node
-      i = ng / ( this%D%NP * this%D%BS )
-      ! count remaining elements
-      ir = ng - i * this%D%NP*this%D%BS
-      ! remaining blocks
+      i = this%D%ng / ( NP * this%D%BS )
+      ! count elements not in default blocks
+      ir = this%D%ng - i * NP*this%D%BS
+      ! elements not in blocks may still be divided into blocks
       irB = ir / this%D%BS
-      ! correct for number of filled blocks
-      ir = ir - irB * this%D%BS
-      ! Calculate number of elements
-      nl = i * this%D%BS
-      if ( this%D%P < irB ) then
-        nl = nl + this%D%BS
-      else if ( this%D%P == irB ) then
-        nl = nl + ir
+      if ( lP < irB ) then
+        ! this is the blocks that are completely filled
+        nl = i * this%D%BS + this%D%BS
+      else if ( lP == irB ) then
+        ! correct for number of elements in the last block
+        nl = i * this%D%BS + ir - irB * this%D%BS
       end if
       
-!!$    case ( DIST_BLOCK_CYCLIC_LAST )
-!!$
-!!$      ! count number of blocks per node
-!!$      i = ng / ( this%D%NP * this%D%BS )
-!!$      ! count remaining elements
-!!$      ir = ng - i * this%D%NP*this%D%BS
-!!$      ! remaining blocks
-!!$      irB = ir / this%D%BS
-!!$      ! correct for number of filled blocks
-!!$      ir = ir - irB * this%D%BS
-!!$      ! Calculate number of elements
-!!$      nl = i * this%D%BS
-!!$      irB = this%D%NP - irB
-!!$      if ( irB < this%D%P ) then
-!!$        nl = nl + this%D%BS
-!!$      else if ( this%D%P == irB ) then
-!!$        nl = nl + ir
-!!$      end if
-      
-    case ( DIST_BLOCK_LAST )
-      
-      nl = ng / this%D%NP
-      if ( this%D%P + 1 == this%D%NP ) then
-        nl = this%D%ng - nl * this%D%P
-      end if
+    case ( DIST_BLOCK_LAST_ALL )
 
-    case ( DIST_BLOCK_FIRST )
+      ! ASSERTED
       
-      nl = ng / this%D%NP
-      if ( this%D%P == 0 ) then
-        nl = this%D%ng - nl * (this%D%NP-1)
+      if ( lP + 1 == NP ) then
+        nl = this%D%ng - this%D%BS * lP
+      else
+        nl = this%D%BS
+      end if
+      
+    case ( DIST_CYCLIC_FIRST )
+
+      ! ASSERTED
+
+      nl = this%D%ng / NP
+      i = this%D%ng - nl * NP
+      if ( lP < i ) then
+        nl = nl + 1
       end if
 
     end select
     
-  end function size_local_ng_
+  end function size_local_
 
 
-  elemental function l2g_default_(this, il) result(ig)
+  elemental function local_to_global_(this, il, P) result(ig)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_PREC), intent(in) :: il
+    integer(ii_), intent(in), optional :: P
+
+    integer(ii_) :: lP, NP
     integer(BUD_PREC) :: ig
 
+    NP = comm_size(this%D%comm)
+
+    if ( NP == 1 ) then
+      ig = il
+      return
+    end if
+
+    if ( present(P) ) then
+      lP = P
+    else
+      lP = comm_rank(this%D%comm)
+    end if
+
     select case ( this%D%dist )
-    case ( DIST_BLOCK_CYCLIC_FIRST )
+    case ( DIST_BLOCK_CYCLIC_FIRST_SPLIT )
+
+      ! ASSERTED
       
       ! get local block
       ig = (il - 1) / this%D%BS
-      !  Calculate global index
-      ig = ( ig*(this%D%NP-1) + this%D%P ) * this%D%BS + il
+      !  ig*(this%D%NP-1) == the number of blocks in all other
+      !     P (remember il contains the local offset-blocks)
+      ig = ( ig*(NP-1) + lP ) * this%D%BS + il
       
-!!$    case ( DIST_BLOCK_CYCLIC_LAST )
-!!$      ! get local block
-!!$      ig = (il -1) / this%D%BS
-!!$      !  Calculate global index
-!!$      ig = ( ig*(this%D%NP-1) + this%D%NP-this%D%P-1 ) * this%D%BS + il
+    case ( DIST_BLOCK_LAST_ALL )
 
-    case ( DIST_BLOCK_LAST )
+      ! ASSERTED
+      
+      ig = this%D%BS * lP + il
 
-      ig = this%D%BS * this%D%P + il
+    case ( DIST_CYCLIC_FIRST )
+            
+      ! ASSERTED 
 
-    case ( DIST_BLOCK_FIRST )
-
-      if ( this%D%P == 0 ) then
-        ! simple case
-        ig = il
-      else
-        ig = this%D%ng + this%D%BS * (this%D%P-this%D%NP) &
-          + il
-      end if
+      ig = (il - 1) * NP + lP
 
     end select
     
-  end function l2g_default_
+  end function local_to_global_
 
 
-  elemental function l2g_ng_(this, il, ng) result(ig)
-    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer(BUD_PREC), intent(in) :: il, ng
-    integer(BUD_PREC) :: ig
-
-    select case ( this%D%dist )
-    case ( DIST_BLOCK_CYCLIC_FIRST )
-      
-      ! get local block
-      ig = (il - 1) / this%D%BS
-      !  Calculate global index
-      ig = ( ig*(this%D%NP-1) + this%D%P ) * this%D%BS + il
-      
-!!$    case ( DIST_BLOCK_CYCLIC_LAST )
-!!$      ! get local block
-!!$      ig = (il -1) / this%D%BS
-!!$      !  Calculate global index
-!!$      ig = ( ig*(this%D%NP-1) + this%D%NP-this%D%P-1 ) * this%D%BS + il
-
-    case ( DIST_BLOCK_LAST )
-
-      ig = (ng / this%D%NP) * this%D%P + il
-
-    case ( DIST_BLOCK_FIRST )
-
-      if ( this%D%P == 0 ) then
-        ! simple case
-        ig = il
-      else
-        ! block-size
-        ig = ng / this%D%NP
-        ! calculate global index (correcting for
-        ! initial remainder)
-        ig = ng + ig * (this%D%P-this%D%NP) + il
-      end if
-
-    end select
-    
-  end function l2g_ng_
-
-
-  elemental function g2l_default_(this, ig) result(il)
+  elemental function global_to_local_(this, ig, P) result(il)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_PREC), intent(in) :: ig
+    integer(ii_), intent(in), optional :: P
     integer(BUD_PREC) :: il
 
+    integer(ii_) :: lP, NP
     integer(BUD_PREC) :: tmp(2)
 
-    select case ( this%D%dist )
-    case ( DIST_BLOCK_CYCLIC_FIRST )
+    NP = comm_size(this%D%comm)
+    if ( NP == 1 ) then
+      il = ig
+      return
+    end if
 
+    if ( present(P) ) then
+      lP = P
+    else
+      lP = comm_rank(this%D%comm)
+    end if
+
+    select case ( this%D%dist )
+    case ( DIST_BLOCK_CYCLIC_FIRST_SPLIT )
+
+      ! ASSERTED
+      
       ! Find global block number
       il = (ig-1) / this%D%BS
       ! Subtract global base line to find
       ! element number within the block
       tmp(1) = ig - il * this%D%BS
       ! Find the block number on the local node
-      tmp(2) = (il - this%D%P) / this%D%NP
+      tmp(2) = (il - lP) / NP
       ! Generate the local orbital pointer based
       ! on the local block number
       il = tmp(2) * this%D%BS + tmp(1)
@@ -987,194 +783,59 @@
       !  if it is not then this
       !  local orbital is not on this node
       !  and so we return -1 to indicate this.
-      if ( ( tmp(2)*this%D%NP+this%D%P ) * this%D%BS + tmp(1) /= ig ) then
+      if ( ( tmp(2)*NP+lP ) * this%D%BS + tmp(1) /= ig ) then
         il = -1
       end if
 
-    case ( DIST_BLOCK_LAST )
+    case ( DIST_BLOCK_LAST_ALL )
+
+      ! ASSERTED
 
       ! get residing node
       tmp(1) = (ig-1) / this%D%BS
-      ! we are on the last block
-      if ( tmp(1) == this%D%NP ) tmp(1) = tmp(1) - 1
-      if ( tmp(1) == this%D%P ) then
-        ! this asserts that we are on the correct node
-        il = ig - tmp(1) * this%D%BS
-      else
-        ! we are on the wrong node and hence return
-        ! -1 to signal this
-        il = -1
-      end if
+      il = ig - this%D%BS * tmp(1)
 
-    case ( DIST_BLOCK_FIRST )
+    case ( DIST_CYCLIC_FIRST )
 
-      ! calculate the offset of the first node
-      tmp(2) = this%D%ng - this%D%BS * this%D%NP
+      ! ASSERTED
       
-      if ( ig <= tmp(2) .and. this%D%P == 0 ) then
-        il = ig
-      else
-        ! calculate node
-        il = ig - tmp(2)
-        tmp(1) = il / this%D%BS
-
-        if ( tmp(1) == this%D%P - 1 ) then
-          ! we are on the correct node
-          il = il - this%D%BS * tmp(1)
-        else
-          ! we are on the wrong node and hence return
-          ! -1 to signal this
-          il = -1
-        end if
-      end if
+      il = (ig-1) / NP + 1
       
     end select
     
-  end function g2l_default_
+  end function global_to_local_
 
 
-  elemental function g2l_ng_(this, ig, ng) result(il)
-    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer(BUD_PREC), intent(in) :: ig, ng
-    integer(BUD_PREC) :: il
-
-    integer(BUD_PREC) :: tmp(2)
-
-    select case ( this%D%dist )
-    case ( DIST_BLOCK_CYCLIC_FIRST )
-
-      ! Find global block number
-      il = (ig-1) / this%D%BS
-      ! Subtract global base line to find
-      ! element number within the block
-      tmp(1) = ig - il * this%D%BS
-      ! Find the block number on the local node
-      tmp(2) = (il - this%D%P) / this%D%NP
-      ! Generate the local orbital pointer based
-      ! on the local block number
-      il = tmp(1) + tmp(2) * this%D%BS
-      ! Check that this is consistent
-      !  if it is not then this
-      !  local orbital is not on this node
-      !  and so we return -1 to indicate this.
-      if ( (il - tmp(1) + this%D%P) * this%D%BS + tmp(1) /= ig ) then
-        il = -1
-      end if
-
-    case ( DIST_BLOCK_LAST )
-
-      ! calculate block size
-      tmp(2) = ng / this%D%NP
-      
-      tmp(1) = (ig-1) / tmp(2)
-      ! we are on the last block
-      if ( tmp(1) == this%D%NP ) tmp(1) = tmp(1) - 1
-      if ( tmp(1) == this%D%P ) then
-        ! this asserts that we are on the correct node
-        il = ig - tmp(1) * tmp(2)
-      else
-        ! we are on the wrong node and hence return
-        ! -1 to signal this
-        il = -1
-      end if
-
-    case ( DIST_BLOCK_FIRST )
-
-      ! calculate block-size and the offset of the first node
-      tmp(1) = ng / this%D%NP
-      tmp(2) = ng - tmp(1) * this%D%NP
-      
-      if ( ig <= tmp(2) .and. this%D%P == 0 ) then
-        il = ig
-      else
-        ! calculate node
-        il = ig - tmp(2)
-        tmp(2) = il / tmp(1)
-
-        if ( tmp(2) == this%D%P - 1 ) then
-          ! we are on the correct node
-          il = il - tmp(1) * tmp(2)
-        else
-          ! we are on the wrong node and hence return
-          ! -1 to signal this
-          il = -1
-        end if
-      end if
-
-    end select
-    
-  end function g2l_ng_
-
-
-
-  elemental function g2P_default_(this, ig) result(P)
+  elemental function global_to_rank_(this, ig) result(P)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_PREC), intent(in) :: ig
-    integer(BUD_PREC) :: P
+    integer(ii_) :: P
+    integer(ii_) :: NP
+
+    NP = comm_size(this%D%comm)
+    if ( NP == 1 ) then
+      P = 0
+      return
+    end if
 
     select case ( this%D%dist )
-    case ( DIST_BLOCK_CYCLIC_FIRST )
+    case ( DIST_BLOCK_CYCLIC_FIRST_SPLIT )
 
-      P = mod( (ig-1) / this%D%BS , this%D%NP)
+      P = mod( (ig-1) / this%D%BS , NP)
 
-!!$    case ( DIST_BLOCK_CYCLIC_LAST )
-!!$      ! get local block
-!!$      ig = (il -1) / this%D%BS
-!!$      !  Calculate global index
-!!$      ig = ( ig*(this%D%NP-1) + this%D%NP-this%D%P-1 ) * this%D%BS + il
-
-    case ( DIST_BLOCK_LAST )
+    case ( DIST_BLOCK_LAST_ALL )
 
       P = (ig-1) / this%D%BS
-      if ( P == this%D%NP ) P = P - 1
 
-    case ( DIST_BLOCK_FIRST )
+    case ( DIST_CYCLIC_FIRST )
 
-      P = this%D%ng - this%D%BS * this%D%NP
-      if ( ig <= this%D%BS + P ) then
-        P = 0
-      else
-        P = (ig-P-1) / this%D%BS
-      end if
+      P = mod(ig-1,NP)
       
     end select
     
-  end function g2P_default_
+  end function global_to_rank_
   
-  elemental function g2P_ng_(this, ig, ng) result(P)
-    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer(BUD_PREC), intent(in) :: ig, ng
-    integer(BUD_PREC) :: P
 
-    select case ( this%D%dist )
-    case ( DIST_BLOCK_CYCLIC_FIRST )
-      ! get local block
-
-      P = mod( (ig-1) / this%D%BS , this%D%NP)
-
-!!$    case ( DIST_BLOCK_CYCLIC_LAST )
-!!$      ! get local block
-!!$      ig = (il -1) / this%D%BS
-!!$      !  Calculate global index
-!!$      ig = ( ig*(this%D%NP-1) + this%D%NP-this%D%P-1 ) * this%D%BS + il
-
-    case ( DIST_BLOCK_LAST )
-
-      P = (ig-1) / (ng / this%D%NP)
-      if ( P == this%D%NP ) P = P - 1
-
-    case ( DIST_BLOCK_FIRST )
-
-      P = ng / this%D%NP
-      if ( ig <= P + ng - P * this%D%NP ) then
-        P = 0
-      else
-        P = (ig-ng+P*this%D%NP-1) / P + 1
-      end if
-
-    end select
-    
-  end function g2P_ng_
 
   !> Query whether a communicator is not MPI_COMM_NULL
   !!
@@ -1184,370 +845,20 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     logical :: is
     is = is_initd(this)
-    if ( is ) is = this%D%Comm /= MPI_Comm_Null
+    if ( is ) is = is_comm(this%D%Comm)
   end function is_comm_
 
 
 
-  !> Convert a `sub` distribution to a fake distribution on non-`sub` processors
-  !!
-  !! Enables to *copy* a distribution to a *fake* distribution
-  !! via a common set-distribution and a common `root`.
-  !! Note that `root` must be equivalent on all nodes.
-  subroutine fake_sub_(set, sub)
-    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: set, sub
-    integer(ii_) :: root, nbot
-
-    ! if the node is not part of the set distribution
-    if ( .not. is_comm(set) ) return
-    
-    call sub1_root_NP(set, sub, root, nbot)
-
-    call fake_sub(set, sub, root)
-
-  end subroutine fake_sub_
-
-
-  !> Copy a distribution via a set communicator and "sub_root" node
-  !!
-  !! Enables to *copy* a distribution to a *fake* distribution
-  !! via a common set-distribution and a common `sub_root`.
-  !! Note that `sub_root` must be equivalent on all nodes.
-  !!
-  !! A fake distribution allows one to use a common
-  !! interface for determining the parent processor.
-  subroutine fake_sub_explicit_(set, sub, sub_root)
-    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: set
-    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: sub
-    integer(ii_), intent(in) :: sub_root
-    integer(ii_), allocatable :: rank(:)
-
-    ! The ID of the root process in `sub` on distribution
-    ! `set`.
-    integer(ii_) :: set_root
-    integer(ii_) :: Grp, Comm
-    ! The ID of the root process in the new communication
-    ! group.
-    integer(ii_) :: grp_root
-    integer(ii_) :: i, j
-
-    if ( .not. is_comm(set) ) return
-
-    ! Create a group of all processor not
-    ! in sub and the root node of sub.
-    allocate(rank(set%D%NP))
-    rank(:) = -set%D%NP
-    if ( .not. is_comm(sub) ) then
-      rank(set%D%P+1) =  set%D%P
-    else if ( set%D%P == sub_root ) then
-      ! this signals to all processors which
-      ! will be the b-casting node
-      rank(set%D%P+1) = -set%D%P
-    end if
-
-    ! reduce ranks needed in the new group
-    call MPI_AllReduce( MPI_IN_PLACE, rank, &
-      set%D%NP, MPI_Integer, MPI_MAX, set%D%Comm, &
-      set%D%err)
-    
-    ! Compress the list and figure out
-    ! the set_root and grp_root
-    set_root = -1
-    grp_root = -1
-    j = 0
-    do i = 1 , set%D%NP
-      if ( rank(i) /= -set%D%NP ) then
-        j = j + 1
-        if ( rank(i) < 0 ) then
-          rank(j) = -rank(i)
-          set_root = -rank(i)
-          grp_root = j - 1
-        else
-          rank(j) = rank(i)
-          ! this catches whether the ID is 0
-          if ( rank(i) == 0 .and. grp_root == -1 ) then
-            set_root = 0
-            grp_root = j - 1
-          end if
-        end if
-      end if
-    end do
-
-    ! At this point we have a list of ranks
-    ! that we need to communicate between.
-
-    ! Create the group
-    call MPI_Group_incl(set%D%Grp, j, rank, Grp, set%D%err)
-
-    ! Create the common communicator
-    call MPI_Comm_create(set%D%Comm, Grp, Comm, set%D%err)
-
-    ! If the communicator is NULL we return
-    ! immediately.
-    ! We free the Group as that has still been created
-    ! on the remote processes that are not part
-    ! of the group.
-    if ( Comm == MPI_Comm_Null ) then
-      call MPI_Group_Free(Grp, set%D%err)
-      return
-    end if
-
-    ! Ensure empty sub
-    if ( .not. is_comm(sub) ) then
-      call delete(sub)
-      call initialize(sub)
-    else if ( set%D%P == set_root ) then
-      ! or  ( sub%D%P == 0 )
-      ! or  ( MPI_Group_Rank(Grp) == grp_root )
-    end if
-    
-    call MPI_Bcast(sub%D%NP, 1, MPI_Integer, &
-      grp_root, Comm, sub%D%err)
-    call MPI_Bcast(sub%D%dist, 1,MPI_Integer, &
-      grp_root, Comm, sub%D%err)
-    
-    select case ( sub%D%dist )
-    case ( DIST_BLOCK_CYCLIC_FIRST, &
-      DIST_BLOCK_FIRST, &
-      DIST_BLOCK_LAST )
-
-      call MPI_Bcast(sub%D%ng, 1, MPI_Integer, &
-        grp_root, Comm, sub%D%err)
-      call MPI_Bcast(sub%D%BS, 1, MPI_Integer, &
-        grp_root, Comm, sub%D%err)
-
-    case ( DIST_EXPLICIT )
-
-      ! TODO, implement Bcast of arrays
-      
-    case default
-
-    end select
-
-    call MPI_Group_Free(Grp, set%D%err)
-    call MPI_Comm_Free(Comm, set%D%err)
-
-  end subroutine fake_sub_explicit_
-
-  
-  !> Retrieve a common rank array from a subset distribution
-  !!
-  !! This returns an array which contains the
-  !! `sub` processor IDs equivalent in the `set`
-  !! communicator.
-  !!
-  !! This equates to the equivalence equation:
-  !! `rank(dist_P(sub)) == dist_P(set)`
-  !!
-  !! Hence, upon exit `rank` has size `dist_NP(sub)`.
-  subroutine sub1_ranks_(set, sub, rank)
-    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: set
-    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: sub
-    integer(ii_), intent(inout), allocatable :: rank(:)
-    integer(ii_) :: sub_root, nbot
-    integer(ii_) :: err
-
-    if ( .not. is_comm(set) ) return
-
-    ! gather information about the root node
-    ! of the sub communicator as well as the
-    ! number of processors in the sub communicator
-    call sub1_root_NP(set, sub, sub_root, nbot)
-    
-    ! be sure to allocate array
-    if ( .not. allocated(rank) ) &
-      allocate(rank(nbot))
-    if ( size(rank) /= nbot ) then
-      deallocate(rank)
-      allocate(rank(nbot))
-    end if
-
-    ! Initialize to "non-set" array
-    rank = -1
-
-    ! populate the rank array
-    if ( is_comm(sub) ) then
-      rank(sub%D%P+1) = set%D%P
-    end if
-
-    ! Make sure everybody has aligned data
-    call MPI_AllReduce( MPI_IN_PLACE, rank, &
-      nbot, MPI_Integer, MPI_MAX, set%D%Comm, &
-      set%D%err)
-
-    ! Now every processor knows which processor
-    ! has which node ID
-
-    ! For the processors in the set which
-    ! did not have `sub` we create a "fake"
-    ! distribution such that they can re-create
-    ! the data
-    call fake_sub(set, sub, sub_root)
-    
-  end subroutine sub1_ranks_
-
-
-  !> Retrieve common information about set/sub relationship
-  !!
-  !! Query the `root` and number of nodes in `sub` distribution in the
-  !! `set` distribution.
-  subroutine sub1_root_(set, sub, sub_root)
-    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: set
-    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: sub
-    integer(ii_), intent(out) :: sub_root
-    
-    if ( .not. is_comm(set) ) return
-    
-    ! First figure out size of sub
-    sub_root = -1
-    if ( is_comm(sub) ) then
-      if ( sub%D%P == 0 ) then
-        sub_root = set%D%P
-      end if
-    end if
-
-    ! Distribute root node and number of nodes
-    call MPI_AllReduce( MPI_IN_PLACE, sub_root, 1, &
-      MPI_Integer, MPI_Max, set%D%Comm, set%D%err)
-
-  end subroutine sub1_root_
-
-  !> Retrieve common information about set/sub relationship
-  !!
-  !! Query the `root` and number of nodes in `sub` distribution in the
-  !! `set` distribution.
-  subroutine sub1_root_NP_(set, sub, sub_root, sub_NP)
-    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: set
-    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: sub
-    integer(ii_), intent(out) :: sub_root, sub_NP
-    
-    if ( .not. is_comm(set) ) return
-    
-    ! First figure out size of sub
-    sub_root = -1
-    if ( is_comm(sub) ) then
-      if ( sub%D%P == 0 ) then
-        sub_root = set%D%P
-        sub_NP = sub%D%NP
-      end if
-    end if
-
-    ! Distribute root node and number of nodes
-    call MPI_AllReduce( MPI_IN_PLACE, sub_root, 1, &
-      MPI_Integer, MPI_Max, set%D%Comm, set%D%err)
-    if ( sub_root >= 0 ) then
-      call MPI_Bcast( sub_NP, 1, &
-        MPI_Integer, sub_root, set%D%Comm, set%D%err)
-    end if
-
-    ! For now we actually do not check
-    ! whether the action is an illegal or valid
-    ! action.
-    ! This may happen if the user passes different
-    ! `sub` distributions which may or
-    ! may not be associated.
-
-  end subroutine sub1_root_NP_
-
-
-  !> Retrieve common information about set/sub relationship for N subsets
-  !!
-  !! Query the `root` and number of nodes in `sub` distribution in the
-  !! `set` distribution.
-  subroutine subN_groups_(set, sub, sub_root, Ng, groups)
-    use BUD_CC2(BUD_MOD,_utils), only: sort_quick
-    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: set, sub
-    integer, intent(out) :: sub_root
-    integer, intent(out) :: Ng
-    integer, intent(inout), allocatable :: groups(:)
-    
-    integer, allocatable :: procs(:)
-    integer :: i
-
-    Ng = 0
-    ! first deallocate groups
-    if ( allocated(groups) ) deallocate(groups)
-    
-    if ( .not. is_comm(set) ) return
-
-    ! figure out how many groups there are
-    ! 1. the root node from each sub-group
-    !    b-cast its parent rank value
-    !    which is unique.
-    ! 2. Every sub-node has information about the parent
-    !    node ID
-    if ( is_comm(sub) ) then
-      sub_root = rank(set)
-      call MPI_Bcast(sub_root, 1, MPI_Integer, &
-        0, sub%D%Comm, sub%D%err)
-    else
-      ! signal this node is not part of a
-      ! sub-set group
-      sub_root = -1
-    end if
-
-    ! make list of each groups parent ID
-    Ng = size(set)
-
-    ! Allocate an array to contain the groups
-    allocate(procs(Ng))
-    ! initialize to minimum
-    procs = -1
-    procs(rank(set)+1) = sub_root
-
-    ! Distribute root node and number of nodes
-    call MPI_AllReduce( MPI_IN_PLACE, procs, Ng, &
-      MPI_Integer, MPI_Max, set%D%Comm, set%D%err)
-
-    ! sort the array to easier figure out the
-    ! number of different elements
-    call sort_quick(Ng, procs)
-
-    ! figure out how many different segments there are
-    Ng = 0
-    do i = 1 , size(procs)
-      if ( procs(i) == -1 ) cycle
-      if ( i == 1 ) then
-        Ng = 1
-      else if ( procs(i-1) /= procs(i) ) then
-        Ng = Ng + 1
-      end if
-    end do
-
-    ! allocate and populate root-ID for the groups
-    allocate(groups(Ng))
-
-    ! figure out how many different segments there are
-    Ng = 0
-    do i = 1 , size(procs)
-      if ( procs(i) == -1 ) cycle
-      if ( i == 1 ) then
-        Ng = 1
-        groups(Ng) = procs(i)
-      else if ( procs(i-1) /= procs(i) ) then
-        Ng = Ng + 1
-        groups(Ng) = procs(i)
-      end if
-    end do
-
-    if ( Ng /= size(groups) ) then
-      sub_root = -1
-      Ng = 0
-      deallocate(groups)
-    end if
-
-    ! clean-up
-    deallocate(procs)
-    
-  end subroutine subN_groups_
-
-  
   !> Function for retrieving the latest error messag
   elemental function get_MPIerr_(this) result(err)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_) :: err
     if ( is_initd(this) ) then
-      err = this%D%err
+      err = this%D%error_
+      if ( err == MPI_SUCCESS ) then
+        err = error_MPI(this%D%comm)
+      end if
     else
       err = MPI_SUCCESS
     end if
@@ -1588,59 +899,28 @@
       return
     end if
 
-    
-    if ( this%D%Comm == MPI_Comm_Null ) then
-      write(fmt, '(a,i0,a)') '(t',lindent,',4a,10(i0,a))'
-      select case ( this%D%dist )
-      case ( DIST_BLOCK_CYCLIC_FIRST ) 
-        write(*,fmt) "<", trim(name), " FakeComm", &
-          ", BCF block-size=", this%D%BS, &
-          ", default-ng=", this%D%ng, &
-          ", P=",this%D%P, ", NP=",this%D%NP, &
-          ", refs: ", references(this), ">"
-      case ( DIST_BLOCK_FIRST ) 
-        write(*,fmt) "<", trim(name), " FakeComm", &
-          ", BF block-size=", this%D%BS, &
-          ", default-ng=", this%D%ng, &
-          ", P=",this%D%P, ", NP=",this%D%NP, &
-          ", refs: ", references(this), ">"
-      case ( DIST_BLOCK_LAST ) 
-        write(*,fmt) "<", trim(name), " FakeComm", &
-          ", BL block-size=", this%D%BS, &
-          ", default-ng=", this%D%ng, &
-          ", P=",this%D%P, ", NP=",this%D%NP, &
-          ", refs: ", references(this), ">"
-      case default
-        write(*,'(a,i0,a)') "<Not implemented distribution: ",this%D%dist,">"
-      end select
-      
-    else
-      write(fmt, '(a,i0,a)') '(t',lindent,',3a,10(i0,a))'
-      select case ( this%D%dist )
-      case ( DIST_BLOCK_CYCLIC_FIRST ) 
-        write(*,fmt) "<", trim(name), " Comm=", this%D%Comm, &
-          ", BCF block-size=", this%D%BS, &
-          ", default-ng=", this%D%ng, &
-          ", P=",this%D%P, ", NP=",this%D%NP, &
-          ", refs: ", references(this), ">"
-      case ( DIST_BLOCK_FIRST ) 
-        write(*,fmt) "<", trim(name), " Comm=", this%D%Comm, &
-          ", BF block-size=", this%D%BS, &
-          ", default-ng=", this%D%ng, &
-          ", P=",this%D%P, ", NP=",this%D%NP, &
-          ", refs: ", references(this), ">"
-      case ( DIST_BLOCK_LAST ) 
-        write(*,fmt) "<", trim(name), " Comm=", this%D%Comm, &
-          ", BL block-size=", this%D%BS, &
-          ", default-ng=", this%D%ng, &
-          ", P=",this%D%P, ", NP=",this%D%NP, &
-          ", refs: ", references(this), ">"
-
-      case default
-        write(*,'(a,i0,a)') "<Not implemented distribution: ",this%D%dist,">"
-      end select
-
-    end if
+    write(fmt, '(a,i0,a)') '(t',lindent,',3a)'
+    lindent = lindent + 2 ! step indentation
+    write(*,fmt) "<<", trim(name), " Dist1D>"
+    ! Print the communicator
+    call print(this%D%comm, indent = lindent)
+    write(fmt, '(a,i0,a)') '(t',lindent,',3a,10(i0,a))'
+    select case ( this%D%dist )
+    case ( DIST_BLOCK_CYCLIC_FIRST_SPLIT ) 
+      write(*,fmt) "< Block-Cyclic-FS", &
+        ", bs=", this%D%BS, ", ng=", this%D%ng, ">"
+    case ( DIST_BLOCK_LAST_ALL ) 
+      write(*,fmt) "< Block-LA", &
+        ", bs=", this%D%BS, ", ng=", this%D%ng, ">"
+    case ( DIST_CYCLIC_FIRST ) 
+      write(*,fmt) "< Cyclic-F", &
+        ", ng=", this%D%ng, ">"
+    case default
+      write(*,'(a,i0,a)') "<Not implemented distribution: ",this%D%dist,">"
+    end select
+    lindent = lindent - 2 ! go back to requested indentation
+    write(fmt, '(a,i0,a)') '(t',lindent,',a,i0,a)'
+    write(*,fmt) " <Dist1D-refs: ", references(this), ">>"
     
   end subroutine print_
 

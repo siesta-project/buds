@@ -72,7 +72,7 @@ $(LIBRARIES): $(OBJECTS)
 lib: $(LIBRARIES)
 
 # Create target
-source: $(SOURCES)
+source: source-src source-mpi
 
 # Include the makefile in the test directory
 include $(TOP_DIR)/src/test/Makefile.inc
