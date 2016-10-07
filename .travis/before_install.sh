@@ -26,3 +26,10 @@ case "$TRAVIS_OS_NAME" in
     ;;
 esac
 
+# Common options
+if [[ ${COVERAGE:-false} != false ]]; then
+    {
+	echo FFLAGS = -fprofile-arcs -ftest-coverage -O0 --coverage
+	echo LINK_FLAGS = -shared --coverage
+    } >> setup.make
+fi

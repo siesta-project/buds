@@ -7,6 +7,7 @@ matrix:
    include:
    - os: linux
      sudo: required
+     env: COVERAGE=true
    - os: linux
      sudo: required
      env: BUDS_OPT=3
@@ -29,4 +30,4 @@ script:
    - .travis/script.sh
 
 after_success:
-   - bash <(curl -s https://codecov.io/bash)
+   - if [[ ${COVERAGE:-false} != false ]]; then bash <(curl -s https://codecov.io/bash) ; fi
