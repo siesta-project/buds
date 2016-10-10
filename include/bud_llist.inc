@@ -367,7 +367,7 @@
 
   !> @cond BUD_DEVELOPER
   
-  pure subroutine common_delete_(D)
+  pure subroutine delete_(D)
     type(BUD_TYPE_NAME_), intent(inout) :: D
     type(BUD_LINKED_LIST_NAME), pointer :: head, tmp
 
@@ -427,7 +427,7 @@
     nullify(D%ll)
     nullify(D%head)
 
-  end subroutine common_delete_
+  end subroutine delete_
 
   !> @endcond BUD_DEVELOPER
 
@@ -439,8 +439,6 @@
 
     call initialize(this)
 
-    call tag_object_(this)
-    
   end subroutine new_
 
   !! @param[inout] this new @bud upon exit

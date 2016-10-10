@@ -448,7 +448,7 @@
   !! This routine is only used internally to clean-up
   !! any data in the type.
   !! Should never be made public.
-  pure subroutine common_delete_(this)
+  pure subroutine delete_(this)
     type(BUD_TYPE_NAME_), intent(inout) :: this
 
     ! Currently we do not allow external memory
@@ -461,7 +461,7 @@
     this%incr_n = 10
     this%sorted = .false.
     
-  end subroutine common_delete_
+  end subroutine delete_
 
   !> @endcond BUD_DEVELOPER
 

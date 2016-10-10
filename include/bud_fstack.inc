@@ -252,7 +252,7 @@
 
   !> @cond BUD_DEVELOPER
 
-  pure subroutine common_delete_(D)
+  pure subroutine delete_(D)
     type(BUD_TYPE_NAME_), intent(inout) :: D
     
     if ( associated(D%T) ) then
@@ -267,7 +267,7 @@
     D%nel_max = 0
     D%nel = 0
     
-  end subroutine common_delete_
+  end subroutine delete_
 
   !> @endcond BUD_DEVELOPER
 
@@ -320,8 +320,6 @@
     ! prepare data locations
     allocate(this%D%T(nel))
 
-    call tag_object_(this)
-    
   end subroutine new_
 
 

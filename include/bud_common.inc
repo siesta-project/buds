@@ -46,12 +46,6 @@
   !>@{
   ! needed comment
 
-  ! We force `common_delete_` to be private.
-  ! This will prohibit a mistaken public designation of the
-  ! routine.
-  ! Internal routine for clearing the data container in the @bud
-  private :: common_delete_
-  private :: common_copy_
 
   !> Assignment of @bud to another @bud
   !!
@@ -63,9 +57,10 @@
   !!
   !! `lhs` will be un-associated if `rhs` is un-associated.
   interface assignment(=)
-    module procedure assign_
+    module procedure common_assign_
   end interface
   public :: assignment(=)
+  private :: common_assign_
 
   !> Initialization of data container
   !!
@@ -74,28 +69,30 @@
   !! Subsequently the type container will be allocated
   !! and the reference counted data will be 1.
   interface initialize
-    module procedure initialize_
+    module procedure common_initialize_
   end interface
   public :: initialize
+  private :: common_initialize_
 
   !> Query whether @bud is associated with any data
   !!
   !! Returns `.true.` if the @bud is already containing data.\n
   !! Typically the `new` routine will call `initialize`.
   interface is_initialized
-    module procedure is_initialized_
+    module procedure common_is_initialized_
   end interface
   public :: is_initialized
+  private :: common_is_initialized_
 
   !> @iSee is_initialized
   interface initialized
-    module procedure is_initialized_
+    module procedure common_is_initialized_
   end interface
   public :: initialized
 
   !> @iSee is_initialized
   interface is_initd
-    module procedure is_initialized_
+    module procedure common_is_initialized_
   end interface
   public :: is_initd
 
@@ -104,13 +101,15 @@
   !! Returns `.true.` if the two passed @buds are the same
   !! data.
   interface is_same
-    module procedure is_same_
+    module procedure common_is_same_
   end interface
   public :: is_same
+  private :: common_is_same_
+
 
   !> @iSee is_same
   interface same
-    module procedure is_same_
+    module procedure common_is_same_
   end interface
   public :: same
 
@@ -125,9 +124,10 @@
   !! deleted. Else this @bud will return an un-associated @bud
   !! and any other @buds that point to the same data will retain the data.
   interface delete
-    module procedure delete_
+    module procedure common_delete_
   end interface
   public :: delete
+  private :: common_delete_
 #endif
 
 
@@ -137,9 +137,10 @@
   !! This will for all purposes be regarded as a new instance.
   !!
   interface copy
-    module procedure copy_
+    module procedure common_copy_
   end interface
   public :: copy
+  private :: common_copy_
 #endif
 
 #ifndef BUD_NO_NULLIFY
@@ -153,10 +154,10 @@
   !! This routine should be used with _extreme_ care and very
   !! rarely.
   interface nullify
-    module procedure nullify_
+    module procedure common_nullify_
   end interface
   public :: nullify
-  
+  private :: common_nullify_
 #endif
 
   !> Query number of references to the @bud
@@ -164,13 +165,14 @@
   !! Get number of times this @bud has been assigned
   !! in the reference counted object.
   interface references
-    module procedure references_
+    module procedure common_references_
   end interface
   public :: references
+  private :: common_references_
 
   !> @iSee references
   interface refs
-    module procedure references_
+    module procedure common_references_
   end interface
   public :: refs
 
@@ -182,9 +184,10 @@
   !! the value.
   !! If it is zero, there has been no error and one may safely proceed.
   interface error
-    module procedure error_
+    module procedure common_error_
   end interface
   public :: error
+  private :: common_error_
 
   !>>@}
 
@@ -234,7 +237,7 @@ contains
 
   
   !> @param[inout] this @bud that is initialized
-  subroutine initialize_(this)
+  subroutine common_initialize_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
     integer :: error
@@ -259,25 +262,25 @@ contains
     this%D%error_ = 0
 
     ! Tag the object (always)
-    call tag_object_(this)
+    call common_tag_object_(this)
     
-  end subroutine initialize_
+  end subroutine common_initialize_
 
   !> @param[in] this check if this @bud is initialized
   !! @return `.true.` if it is associated, else `.false.`
-  pure function is_initialized_(this) result(init)
+  pure function common_is_initialized_(this) result(init)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
 
     logical :: init
 
     init = associated(this%D)
     
-  end function is_initialized_
+  end function common_is_initialized_
 
   !> @param[in] lhs first @bud 
   !! @param[in] rhs second @bud
   !! @return `.true.` if `lhs` and `rhs` point to the same data
-  elemental function is_same_(lhs, rhs) result(same)
+  elemental function common_is_same_(lhs, rhs) result(same)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: lhs, rhs
     logical :: same
     
@@ -287,16 +290,16 @@ contains
     ! the underlying data is the same.
     same = associated(lhs%D, target=rhs%D)
     
-  end function is_same_
+  end function common_is_same_
 
   
 #ifndef BUD_NO_DELETE
   
   !> @param[inout] this returned @bud is un-initialized with no data associated
 #ifndef BUD_DELETE_NOELEMENTAL
-  elemental subroutine delete_(this)
+  elemental subroutine common_delete_(this)
 #else
-  subroutine delete_(this)
+  subroutine common_delete_(this)
 #endif
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
@@ -312,7 +315,7 @@ contains
       ! Use the routine provided for this specific
       ! type to clean up any internal structure
       
-      call common_delete_(this%D)
+      call delete_(this%D)
       
       ! Deallocate the currently referenced storage
       deallocate(this%D, stat=error)
@@ -327,26 +330,26 @@ contains
     ! This is important to use the correct initialized functions
     nullify(this%D)
     
-  end subroutine delete_
+  end subroutine common_delete_
 
 #endif
 
   
 #ifndef BUD_NO_NULLIFY
   !> @param[inout] this nullify references from this @bud
-  elemental subroutine nullify_(this)
+  elemental subroutine common_nullify_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     
     if (.not. is_initd(this) ) return
     
     nullify(this%D)
     
-  end subroutine nullify_
+  end subroutine common_nullify_
 #endif
   
   !> @param[inout] lhs contains `rhs` after exit
   !! @param[in] rhs copy the containing element @bud
-  subroutine assign_(lhs, rhs)
+  subroutine common_assign_(lhs, rhs)
 
     ! No copying of data is involved, simply an increment of the
     ! reference counter.
@@ -371,12 +374,12 @@ contains
     lhs%D => rhs%D
     lhs%D%refs_ = rhs%D%refs_ + 1
     
-  end subroutine assign_
+  end subroutine common_assign_
 
 
   !> @param[in] this reference counted @bud
   !! @return number of times `this` has been referenced
-  elemental function references_(this) result(refs)
+  elemental function common_references_(this) result(refs)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     
     integer :: refs
@@ -387,12 +390,12 @@ contains
       refs = 0
     end if
     
-  end function references_
+  end function common_references_
 
   
   !> @param[in] this reference counted @bud
   !! @return current error from last call
-  elemental function error_(this) result(error)
+  elemental function common_error_(this) result(error)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     
     integer :: error
@@ -403,28 +406,28 @@ contains
       error = 0
     end if
     
-  end function error_
+  end function common_error_
 
   
   !> @cond BUD_DEVELOPER
   
   ! The remaining procedures are currently
   ! not used by public buds
-  elemental function id_(this) result(str)
+  elemental function common_id_(this) result(str)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     
     character(len=BUD_ID_LEn) :: str
     
     str = this%D%id_
     
-  end function id_
+  end function common_id_
 
-  subroutine tag_object_(this)
+  subroutine common_tag_object_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout)  :: this
 
     ! currently we do not tag the types
     
-  end subroutine tag_object_
+  end subroutine common_tag_object_
 
   !> @endcond BUD_DEVELOPER
 

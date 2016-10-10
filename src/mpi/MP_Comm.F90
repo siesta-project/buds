@@ -247,21 +247,19 @@ module BUD_MOD_NAME
     !> @iSee new
     generic, public :: new => new_, new_fake_
 
-    !> @iSee #comm
-    procedure, public :: comm => comm_
+    !> @iSee #communicator
+    procedure, public :: communicator => comm_
 
     !> @iSee #group
     procedure, public :: group => group_
 
     !> @iSee #comm_rank
     procedure, public :: comm_rank => P_
-    !> @iSee #comm_rank
-    procedure, public :: rank => P_
     !> @iSee #comm_size
     procedure, public :: comm_size => NP_
 
-    !> @iSee #is_comm
-    procedure, public :: is_comm => is_comm_
+    !> @iSee #is_communicator
+    procedure, public :: is_communicator => is_comm_
 
     !> @iSee #is_group
     procedure, public :: is_group => is_group_
@@ -476,10 +474,10 @@ module BUD_MOD_NAME
   !> Query communicator of the distribution
   !!
   !! @note Do not free this communicator.
-  interface comm
+  interface communicator
     module procedure comm_
   end interface
-  public :: comm
+  public :: communicator
 
   !> Query group of the distribution
   !!
@@ -495,12 +493,6 @@ module BUD_MOD_NAME
   end interface
   public :: comm_rank
 
-  !> @iSee #comm_rank
-  interface rank
-    module procedure P_
-  end interface
-  public :: rank
-
   !> Query number of processors in distribution
   interface comm_size
     module procedure NP_
@@ -514,10 +506,10 @@ module BUD_MOD_NAME
   public :: size
 
   !> Query whether the communicator is anything but `MPI_Comm_Null`
-  interface is_comm
+  interface is_communicator
     module procedure is_comm_
   end interface
-  public :: is_comm
+  public :: is_communicator
 
   !> Query whether the group is anything but `MPI_Group_Null`
   interface is_group
@@ -993,7 +985,7 @@ module BUD_MOD_NAME
   !! This routine is only used internally to clean-up
   !! any data in the type.
   !! Should never be made public.
-  subroutine common_delete_(this)
+  subroutine delete_(this)
     type(BUD_TYPE_NAME_), intent(inout) :: this
     integer :: err
 
@@ -1015,7 +1007,7 @@ module BUD_MOD_NAME
     this%P = 0
     this%NP = 1
 
-  end subroutine common_delete_
+  end subroutine delete_
 
 
   !> @endcond BUD_DEVELOPER
@@ -1330,11 +1322,11 @@ module BUD_MOD_NAME
     if ( present(root) ) root = -1
     if ( present(size) ) size = 0
     
-    if ( .not. is_comm(parent) ) return
+    if ( .not. is_communicator(parent) ) return
 
-    if ( is_comm(child) ) then
-      if ( rank(child) == 0 ) then
-        if ( present(root) ) root = rank(parent)
+    if ( is_communicator(child) ) then
+      if ( comm_rank(child) == 0 ) then
+        if ( present(root) ) root = comm_rank(parent)
         if ( present(size) ) size = comm_size(child)
       end if
     end if
@@ -1367,14 +1359,14 @@ module BUD_MOD_NAME
 
     ! signal no root (in case there is an error)
     ranks = -1
-    if ( .not. is_comm(parent) ) return
+    if ( .not. is_communicator(parent) ) return
 
-    if ( is_comm(child) ) then
+    if ( is_communicator(child) ) then
       if ( comm_size(child) < n ) then
         ! do nothing, this will signal a too small array
         ranks = -2
       else
-        ranks(rank(child)+1) = rank(parent)
+        ranks(comm_rank(child)+1) = comm_rank(parent)
       end if
     end if
 
@@ -1410,13 +1402,13 @@ module BUD_MOD_NAME
 
     integer :: child_size
     
-    if ( .not. is_comm(child) ) return
+    if ( .not. is_communicator(child) ) return
 
     ! Retrieve the root of the child
     call child_Bcast(parent, child, size = child_size )
 
     ! Create a new distribution on those that is not child
-    if ( .not. is_comm(child) ) then
+    if ( .not. is_communicator(child) ) then
       ! All are the root!
       call new(child, 0, child_size)
     end if
@@ -1438,7 +1430,7 @@ module BUD_MOD_NAME
     integer(ii_) :: Com
 
     call delete(split)
-    if ( .not. is_comm(this) ) return
+    if ( .not. is_communicator(this) ) return
 
     ! Split the communicators
     call MPI_Comm_Split(this%D%comm, color, key, &
@@ -1466,7 +1458,7 @@ module BUD_MOD_NAME
     integer(ii_) :: Com
 
     call delete(split)
-    if ( .not. is_comm(this) ) return
+    if ( .not. is_communicator(this) ) return
     
     ! Split the communicators
     call MPI_Comm_Split_Type(this%D%comm, split_type, key, &

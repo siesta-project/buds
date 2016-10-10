@@ -7,11 +7,19 @@
   !!
   !! Intrinsic fortran array data-type.
   !!
-  !! The contained array may be of various data types
-  !! and can be accessed through a variety of ways.
+  !! The contained array may be of various data types.
+  !! Each data type may be deciphered through this list of
+  !! prefixes:
+  !!   - `logical` (`b`)
+  !!   - `integer(selected_int_kind(4))` (`s`), short
+  !!   - `integer(selected_int_kind(9))` (`i`), int
+  !!   - `integer(selected_int_kind(18))` (`l`), long
+  !!   - `real(selected_real_kind(6))` (`r), float
+  !!   - `real(selected_real_kind(15))` (`d`), double
+  !!   - `complex(selected_real_kind(6))` (`c`), float complex
+  !!   - `complex(selected_real_kind(15))` (`z`), double complex
   !!
-  !! The reference counting makes it easy to decide when
-  !! to delete the data associated with the object.
+  !! It does not contain anything but the intrinsic array.
   !!
   
   ! The following pre-processor variables are currently used when
@@ -85,9 +93,6 @@
     !> @iSee #size
     procedure, public :: size => size_
 
-    !> @iSee #init_value
-    procedure, public :: init_value => init_value_
-
 #endif
   end type BUD_TYPE_NAME
 
@@ -101,9 +106,9 @@
 
     !> Array stored in the @bud
 #ifdef BUD_TYPE_VAR_PREC
-    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: array BUD_DIM_SPEC(:) => null()
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), allocatable :: array BUD_DIM_SPEC(:)
 #else
-    BUD_TYPE_VAR, pointer BUD_FORTRAN_CONTIGUOUS :: array BUD_DIM_SPEC(:) => null()
+    BUD_TYPE_VAR, allocatable :: array BUD_DIM_SPEC(:)
 #endif
 
     ! Consistent data in the reference counted object
@@ -113,9 +118,9 @@
 
   !> @endcond BUD_DEVELOPER
 
-  !> Create a new BUD_TYPE_NAME.
+  !> Create a new array object either by size or by copy
   !!
-  !! This allocates the array in the @bud.
+  !! Initialization routine for allocating an array.
   !!
   !! The dimensions of the contained array may be
   !! explicitly passed, or an array may be passed
@@ -123,7 +128,7 @@
   !!
   !! @note
   !! If the array is created from dimensions, the initial
-  !! value of the array is arbitrary.
+  !! value of the array may be arbitrary (compiler dependent).
   interface BUD_TYPE_NEW
     module procedure new_dim_
     module procedure new_copy_
@@ -143,7 +148,7 @@
   !! The array-pointer will _always_ be contiguous.
   !!
   !! @note
-  !! Do not deallocate the array-pointer.
+  !! The internal array is `allocatable` so you may not deallocate the array-pointer.
   interface array_p
     module procedure arrayp_
   end interface
@@ -167,14 +172,12 @@
   end interface
   public :: size
 
-  !> Initialize array values to a specific value.
-  !!
-  !! All elements of the array will sub-sequently have
-  !! the supplied value.
-  interface init_value
-    module procedure init_value_
+  
+  !> Set all values in the array to a specific value.
+  interface assignment(=)
+    module procedure assign_value_
   end interface
-  public :: init_value
+  private :: assign_value_
   
   !> Print, to std-out, some basic information of the data-container
   !!
@@ -202,16 +205,15 @@
   !! This routine is only used internally to clean-up
   !! any data in the type.
   !! Should never be made public.
-  pure subroutine common_delete_(this)
+  pure subroutine delete_(this)
     type(BUD_TYPE_NAME_), intent(inout) :: this
 
     ! Currently we do not allow external memory
     ! tracking.
-    if ( .not. associated(this%array) ) return
+    if ( .not. allocated(this%array) ) return
     deallocate(this%array)
-    nullify(this%array)
     
-  end subroutine common_delete_
+  end subroutine delete_
 
   !> @endcond BUD_DEVELOPER
 
@@ -287,9 +289,7 @@
     allocate(this%D%array(d1,d2,d3,d4))
 #endif
 
-    if ( present(val) ) then
-      call init_value(this, val)
-    end if
+    if ( present(val) ) this = val
 
   end subroutine new_dim_
 
@@ -430,20 +430,19 @@
   !> @param[in] this array @bud
   !! @param[in] v all elements of the contained array will be
   !!              equal to `v` after the call
-  subroutine init_value_(this, v)
+  subroutine assign_value_(this, v)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in) :: v
 #else
     BUD_TYPE_VAR, intent(in) :: v
 #endif
-    integer :: i
 
     if ( is_initd(this) ) then
       this%D%array = v
     end if
 
-  end subroutine init_value_
+  end subroutine assign_value_
 
 
   !> @param[in] this array @bud

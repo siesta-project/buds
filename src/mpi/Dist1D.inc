@@ -377,7 +377,7 @@
   !! This routine is only used internally to clean-up
   !! any data in the type.
   !! Should never be made public.
-  subroutine common_delete_(this)
+  subroutine delete_(this)
     type(BUD_TYPE_NAME_), intent(inout) :: this
     integer :: err
 
@@ -395,7 +395,7 @@
       nullify(this%nl,this%l2g,this%g2P)
     end if
     
-  end subroutine common_delete_
+  end subroutine delete_
 
 
   !> @endcond BUD_DEVELOPER
@@ -845,7 +845,7 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     logical :: is
     is = is_initd(this)
-    if ( is ) is = is_comm(this%D%Comm)
+    if ( is ) is = is_communicator(this%D%Comm)
   end function is_comm_
 
 

@@ -13,39 +13,39 @@
   
 # ifndef BUD_NO_DELETE
   !> @iSee delete
-  procedure, public :: delete => delete_
+  procedure, public :: delete => common_delete_
 # endif
 # ifndef BUD_NO_NULLIFY
   !> @iSee nullify
-  procedure, public :: nullify => nullify_
+  procedure, public :: nullify => common_nullify_
 # endif
 # ifndef BUD_NO_COPY
   !> @iSee copy
-  procedure, public :: copy => copy_
+  procedure, public :: copy => common_copy_
 # endif
 
 
   !> @iSee initialize
-  procedure, public :: initialize => initialize_
+  procedure, public :: initialize => common_initialize_
 
   !> @iSee is_initialized
-  procedure, public :: is_initialized => is_initialized_
+  procedure, public :: is_initialized => common_is_initialized_
   !> @iSee is_initialized
-  procedure, public :: is_initd => is_initialized_
+  procedure, public :: is_initd => common_is_initialized_
   !> @iSee is_initialized
-  procedure, public :: initialized => is_initialized_
+  procedure, public :: initialized => common_is_initialized_
   !> @iSee is_same
-  procedure, public :: is_same => is_same_
+  procedure, public :: is_same => common_is_same_
   !> @iSee is_same
-  procedure, public :: same => is_same_
+  procedure, public :: same => common_is_same_
   
   !> @iSee references
-  procedure, public :: references => references_
+  procedure, public :: references => common_references_
   !> @iSee references
-  procedure, public :: refs => references_
+  procedure, public :: refs => common_references_
 
   !> @iSee error
-  procedure, public :: error => error_
+  procedure, public :: error => common_error_
 
   
 # ifndef BUD_NO_PRINT

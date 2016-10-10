@@ -68,6 +68,11 @@
 # define BUD_FORTRAN 1995
 #endif
 
+#ifndef BUD_FORTRAN_TARGET
+# define BUD_FORTRAN_TARGET , target
+#endif
+
+
 #if BUD_FORTRAN >= 2003
   ! In case BUD_FORTRAN version is above 2003
   ! we have a couple of different specifications

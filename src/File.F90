@@ -320,7 +320,7 @@ module BUD_MOD_NAME
   !! Should never be made public.
   !!
   !! @param[inout] this contained data to be deleted
-  subroutine common_delete_(this)
+  subroutine delete_(this)
     type(BUD_TYPE_NAME_), intent(inout) :: this
     integer :: stat
     
@@ -339,7 +339,7 @@ module BUD_MOD_NAME
     this%unit = -1
     this%error_ = stat
     
-  end subroutine common_delete_
+  end subroutine delete_
 
   !> @param[inout] this force the status to be 0
   subroutine stat_reset_(this)

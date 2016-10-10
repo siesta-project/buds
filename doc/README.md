@@ -6,12 +6,20 @@ __Welcome to the documentation of buds BUDS_VERSION.__
 
 Implementation of generic interface for creating
 reference counted variables.  
-Reference counted variables enables garbage-collection
-for variables with the added benefit of never having to
-dublicate data.
 
-This is useful when using data-types/objects which you do not know
-when to delete because of unknown depedencies.
+The creation of buds was originated from the SIESTA density functional
+theory code which is comprising more than 100.000 lines of code.
+A recuring problem was how to silently handle whether certain data-structures
+used throughout the code was actually needed or whether they could be
+deleted.  
+One possible solution is via the use of reference counted objects (derived
+types) which enables an automatic garbage-collection once the object is free
+from references.
+Secondly, this method of storing data-structures ensures that no data-dublication
+is necessary.
+
+Through the use of this library we try to circumvent some of the more basic
+fortran data-types to be reference counted.
 
 ## Documentation  {#mainDocumentation}
 
