@@ -11,9 +11,9 @@
 
 
 ! Define default variable for the file
-# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,File)
+# define BUD_MOD_NAME BUD_CC2(BUD_MOD,_File)
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,File)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,File)
+# define BUD_TYPE_NEW BUD_CC2(BUD_NEW,_File)
   
 #define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
 #define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
@@ -23,6 +23,14 @@
 !! @ingroup bud-intrinsic
 !!
 !! Perform file operations such as open/close/delete etc.
+!!
+!! This enables a consistent data-type which contains the
+!! unit of a file while implementing specific queries
+!! regarding files.
+!!
+!! I.e. one may create a file object and determine whether
+!! it exists or not. One may also use the object to 
+!!
 !!
 !! Exposes functionality regarding files.
 !! It allows interaction with the files in a standard way
@@ -56,9 +64,9 @@ module BUD_MOD_NAME
   contains
 #   include "bud_common_type.inc"
 
-    !> @iSee BUD_CC3(BUD_NEW,_,File)
-    procedure, public :: BUD_CC3(BUD_NEW,_,File) => new_
-    !> @iSee BUD_CC3(BUD_NEW,_,File)
+    !> @iSee BUD_CC2(BUD_NEW,_File)
+    procedure, public :: BUD_CC2(BUD_NEW,_File) => new_
+    !> @iSee BUD_CC2(BUD_NEW,_File)
     procedure, public :: new => new_
 
     !> @iSee open
@@ -92,7 +100,7 @@ module BUD_MOD_NAME
     !> @iSee exists
     procedure, public :: exists => exists_
 
-    !> @iSee file_delete
+    !> @iSee delete_file
     procedure, public :: delete_file => delete_file_
 
     !> @iSee get_stat
@@ -132,12 +140,12 @@ module BUD_MOD_NAME
   !!
   !! @note
   !! This will _not_ open the file.
-  interface BUD_CC3(BUD_NEW,_,File)
+  interface BUD_CC2(BUD_NEW,_File)
     module procedure new_
   end interface
-  public :: BUD_CC3(BUD_NEW,_,File)
+  public :: BUD_CC2(BUD_NEW,_File)
 
-  !> @iSee BUD_CC3(BUD_NEW,_,File)
+  !> @iSee BUD_CC2(BUD_NEW,_File)
   interface new
     module procedure new_
   end interface
@@ -283,7 +291,8 @@ module BUD_MOD_NAME
   !! Perform an actual delete of the file.
   !! If the file is opened it will be closed afterwards.
   !!
-  !! The file @bud will not be deleted, nor the filename.
+  !! The file object will not be deleted as one may then query
+  !! the status of the operation.
   interface delete_file
     module procedure delete_file_
   end interface
@@ -716,7 +725,7 @@ module BUD_MOD_NAME
         iostat = this%D%error_ )
       
     end if
-    
+
   end subroutine delete_file_
 
   

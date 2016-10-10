@@ -174,6 +174,9 @@
 
   
   !> Set all values in the array to a specific value.
+  !!
+  !! This is preferred over a routine call as it
+  !! is not ambiguous.
   interface assignment(=)
     module procedure assign_value_
   end interface
@@ -415,11 +418,18 @@
   pure function size_(this, dim) result(d)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer, intent(in), optional :: dim
-
     integer :: d
 
     if ( is_initd(this) ) then
-      d = size(this%D%array, dim=dim)
+      if ( present(dim) ) then
+        ! this is required because
+        ! g95 complains about missing interface
+        ! due to dim being optional
+        d = dim
+        d = size(this%D%array, d)
+      else
+        d = size(this%D%array)
+      end if
     else
       d = 0
     end if

@@ -23,7 +23,7 @@ contains
     call new(a,10)
     ! Try to retrieve the pointer
     i => array_p(a)
-    call init_value(a, 0)
+    a = 0
     b = a
     ! Print a (check double references)
     call print(a)
@@ -49,7 +49,7 @@ contains
     integer, pointer :: i(:,:)
     call new(a,10,20)
     i => array_p(a)
-    call init_value(a, 0)
+    a = 0
     b = a
     call print(a)
     call print(b)
@@ -69,7 +69,7 @@ contains
     integer, pointer :: i(:,:,:)
     call new(a,10,20,30)
     i => array_p(a)
-    call init_value(a, 0)
+    a = 0
     b = a
     call print(a)
     call print(b)

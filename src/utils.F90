@@ -155,7 +155,7 @@ contains
   elemental function BUD_CC2(modp_,is_)(i,n) result(p)
     integer(is_), intent(in) :: i, n
     integer(is_) :: p
-    p = mod(i-1,n) + 1
+    p = mod(i-1_is_,n) + 1
   end function
 
   !> @param[in] i number to extract the remainer of
@@ -164,7 +164,7 @@ contains
   elemental function BUD_CC2(modp_,ii_)(i,n) result(p)
     integer(ii_), intent(in) :: i, n
     integer(ii_) :: p
-    p = mod(i-1,n) + 1
+    p = mod(i-1_ii_,n) + 1
   end function
 
   !> @param[in] i number to extract the remainer of
@@ -173,7 +173,7 @@ contains
   elemental function BUD_CC2(modp_,il_)(i,n) result(p)
     integer(il_), intent(in) :: i, n
     integer(il_) :: p
-    p = mod(i-1,n) + 1
+    p = mod(i-1_il_,n) + 1
   end function 
 
   

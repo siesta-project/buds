@@ -199,9 +199,8 @@ bud_File.f90: File.F90
 # For now everything depends on the utility program
 UTIL_OBJECTS = \
 	bud_utils.o
-$(UTIL_OBJECTS): FIND_integer.inc
-$(UTIL_OBJECTS): SORT_integer.inc
-$(UTIL_OBJECTS): UNIQ_integer.inc
+bud_utils.f90: utils.F90
+bud_utils.f90: FIND_integer.inc SORT_integer.inc UNIQ_integer.inc
 $(src_OBJECTS): $(UTIL_OBJECTS)
 src_OBJECTS += $(UTIL_OBJECTS)
 bud_utils.f90: utils.F90

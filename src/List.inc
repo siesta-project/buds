@@ -2,16 +2,16 @@
   
 #include "bud_utils.inc"
 
-  !> @defgroup list List
+  !> @defgroup list List with set-like operations
   !! @ingroup bud-intrinsic
   !!
-  !! A List implementation with set-like operations. 
+  !! A list implementation with set-like operations. 
   !!
   !! The list is the equivalent of the #Array1D structure
   !! however with a large set of intrinsic functionality
   !! not available for the #Array1D @bud.
   !!
-  !! The List enables:
+  !! The `List` enables:
   !!  1. Sorting
   !!  2. Set operations; union, intersection, complement
   !!  3. Reverse elements
@@ -107,7 +107,7 @@
 
     !> @iSee #size
     procedure, public :: size => size_
-    !> @iSee #sizep
+    !> @iSee #size_p
     procedure, public :: size_p => sizep_
 
     !> @iSee #size_max
@@ -194,7 +194,7 @@
     integer(BUD_TYPE_VAR_PREC) :: incr_n = 10
 
     !> List content stored in the @bud
-    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: lst(:) => null()
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), allocatable :: lst(:)
 
     !> Whether this list is a sorted list, or not
     !!
@@ -453,9 +453,8 @@
 
     ! Currently we do not allow external memory
     ! tracking.
-    if ( .not. associated(this%lst) ) return
+    if ( .not. allocated(this%lst) ) return
     deallocate(this%lst)
-    nullify(this%lst)
     this%n = 0
     this%max_n = 0
     this%incr_n = 10
@@ -850,7 +849,7 @@
     BUD_TYPE_VAR, pointer BUD_FORTRAN_CONTIGUOUS :: p(:)
 #endif
 
-    ! only return the currently known values
+    ! return the full list values
     p => this%D%lst
     
   end function max_listp_
@@ -892,7 +891,6 @@
     end do
     
     deallocate(this%D%lst)
-    nullify(this%D%lst)
     allocate(this%D%lst(this%D%n+n))
     ! set the new maximum size of the list
     this%D%max_n = lmax_n
@@ -925,7 +923,6 @@
     end if
     
     deallocate(this%D%lst)
-    nullify(this%D%lst)
     allocate(this%D%lst(max_n))
     
     ! set the new maximum size of the list
@@ -1223,6 +1220,7 @@
   !> @param[inout] this the list which will be returned with reversed elements
   subroutine reverse_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+
     integer(BUD_TYPE_VAR_PREC) :: i, n
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: l(:)
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC) :: tmp
@@ -1328,9 +1326,10 @@
     max_n = max_size_(this)
     
     ! Create fmt
-    write(fmt, '(a,i0,a)') '(t',lindent,',3a,10(i0,a))'
+    write(fmt, '(a,i0,a)') '(t',lindent,',3a,2(i0,a),l1,a,i0)'
     
     write(*,fmt) "<", trim(name), " size/max=", n,'/',max_n, &
+      ", sorted=", is_sorted(this), &
       ", refs: ", references(this), ">"
 
   end subroutine print_
