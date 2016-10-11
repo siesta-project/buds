@@ -78,6 +78,9 @@ pure subroutine BUD_FIND (n, array, val, idx)
 
   ! Used internal variables
   integer(BUD_PREC) :: h, FM
+
+  integer(BUD_PREC), parameter :: two = int(2, BUD_PREC)
+
   
   ! Initialize to default value
   idx = -1
@@ -108,13 +111,13 @@ pure subroutine BUD_FIND (n, array, val, idx)
   idx = h ! Start in the middle
   ! The integer correction (due to round of errors when 
   ! calculating the new half...
-  FM = MOD(h,BUD_CC2(2_,BUD_PREC))
+  FM = MOD(h,two)
   do while ( h > 0 ) ! While we are still searching...
 
     if ( h >= 3 ) then
       h = h + FM
       ! This will only add 1 every other time 
-      FM = MOD(h,BUD_CC2(2_,BUD_PREC))
+      FM = MOD(h,two)
     end if
 
     ! integer division is fast

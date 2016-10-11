@@ -539,8 +539,12 @@
     c = a
     do i = 1 , n
       this%D%lst(i) = c
-      c = c + step
+      c = c + lstep
     end do
+    
+    if ( lstep > 0 ) then
+      this%D%sorted = .true.
+    end if
     
   end subroutine new_range_
 
@@ -569,17 +573,22 @@
 
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: lst(:), ths(:)
     integer(BUD_TYPE_VAR_PREC) :: i, n
+    type(BUD_TYPE_NAME), intent(in) :: tmp
 
     n = size(list)
 
-    call new_dim_(this, n)
+    call new_dim_(tmp, n)
 
-    ths => list_p(this)
+    ths => list_p(tmp)
     lst => list_p(list)
 
     do i = 1 , n
       ths(i) = index(list, i)
     end do
+    
+    ! Doing it like this allows for using the same list
+    this = tmp
+    call delete(tmp)
 
   end subroutine new_index_list_range_
   
@@ -590,19 +599,23 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     type(BUD_TYPE_NAME), intent(in) :: list, lookup
 
+    type(BUD_TYPE_NAME), intent(in) :: tmp
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: ths(:), look(:)
     integer(BUD_TYPE_VAR_PREC) :: i, n
 
     n = size(lookup)
 
-    call new_dim_(this, n)
+    call new_dim_(tmp, n)
 
-    ths => list_p(this)
+    ths => list_p(tmp)
     look => list_p(lookup)
 
     do i = 1 , n
       ths(i) = index(list, look(i))
     end do
+
+    this = tmp
+    call delete(tmp)
 
   end subroutine new_index_list_list_
 
@@ -818,9 +831,12 @@
   subroutine merge_(A, B, C)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: A, B
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: C
+    type(BUD_TYPE_NAME) :: tmp
 
-    call copy(A, C)
-    call push(C, B)
+    call copy(A, tmp)
+    call push(tmp, B)
+    C = tmp
+    call delete(tmp)
     
   end subroutine merge_
 
@@ -986,7 +1002,7 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: A, B
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: C
 
-    type(BUD_TYPE_NAME) :: D
+    type(BUD_TYPE_NAME) :: tmp, D
     integer(BUD_TYPE_VAR_PREC) :: i, n
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: l(:)
 
@@ -995,10 +1011,13 @@
 
     ! Quick return if the list is
     n = min(size(A), size(B))
-    if ( n == 0 ) return
+    if ( n == 0 ) then
+      call delete(C)
+      return
+    end if
 
     ! Prepare list `C`
-    call new_dim_(C, n)
+    call new_dim_(tmp, n)
 
     ! Prefer to not copy any of the sets...
     if ( is_sorted(A) .and. .not. is_sorted(B) ) then
@@ -1007,7 +1026,7 @@
       l = list_p(B)
       do i = 1 , size(B)
         if ( in_list(A, l(i)) ) then
-          call push(C, l(i))
+          call push(tmp, l(i))
         end if
       end do
 
@@ -1017,7 +1036,7 @@
       l = list_p(A)
       do i = 1 , size(A)
         if ( in_list(B, l(i)) ) then
-          call push(C, l(i))
+          call push(tmp, l(i))
         end if
       end do
 
@@ -1037,7 +1056,7 @@
       l = list_p(A)
       do i = 1 , size(A)
         if ( in_list(D, l(i)) ) then
-          call push(C, l(i))
+          call push(tmp, l(i))
         end if
       end do
 
@@ -1058,13 +1077,16 @@
       l = list_p(B)
       do i = 1 , size(B)
         if ( in_list(D, l(i)) ) then
-          call push(C, l(i))
+          call push(tmp, l(i))
         end if
       end do
 
       call delete(D)
 
     end if
+
+    C = tmp
+    call delete(tmp)
       
   end subroutine intersect_
 
@@ -1076,7 +1098,7 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: A, B
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: C
 
-    type(BUD_TYPE_NAME) :: D
+    type(BUD_TYPE_NAME) :: tmp, D
     integer(BUD_TYPE_VAR_PREC) :: i, n
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: l(:)
 
@@ -1090,32 +1112,32 @@
 
     ! Get maximum size of the union and allocate
     n = size(A) + size(B)
-    call new_dim_(C, n)
+    call new_dim_(tmp, n)
     
     ! Prefer to not copy any of the sets...
     if ( is_sorted(A) .and. .not. is_sorted(B) ) then
 
       ! First populate A
-      call push(C, A)
+      call push(tmp, A)
       
       ! we search in A
       l = list_p(B)
       do i = 1 , size(B)
         if ( .not. in_list(A, l(i)) ) then
-          call push(C, l(i))
+          call push(tmp, l(i))
         end if
       end do
 
     else if ( .not. is_sorted(A) .and. is_sorted(B) ) then
       
       ! First populate B
-      call push(C, B)
+      call push(tmp, B)
 
       ! we search in B
       l = list_p(A)
       do i = 1 , size(A)
         if ( .not. in_list(B, l(i)) ) then
-          call push(C, l(i))
+          call push(tmp, l(i))
         end if
       end do
 
@@ -1131,13 +1153,13 @@
       end if
 
       ! First populate B
-      call push(C, B)
+      call push(tmp, B)
 
       ! we search in B
       l = list_p(A)
       do i = 1 , size(A)
         if ( .not. in_list(D, l(i)) ) then
-          call push(C, l(i))
+          call push(tmp, l(i))
         end if
       end do
 
@@ -1155,19 +1177,22 @@
       end if
 
       ! First populate A
-      call push(C, A)
+      call push(tmp, A)
 
       ! we search in A
       l = list_p(B)
       do i = 1 , size(B)
         if ( .not. in_list(D, l(i)) ) then
-          call push(C, l(i))
+          call push(tmp, l(i))
         end if
       end do
 
       call delete(D)
 
     end if
+
+    C = tmp
+    call delete(tmp)
       
   end subroutine union_
 
@@ -1179,7 +1204,7 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: A, B
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: C
 
-    type(BUD_TYPE_NAME) :: D
+    type(BUD_TYPE_NAME) :: tmp ,D
     integer(BUD_TYPE_VAR_PREC) :: i, n
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: l(:)
 
@@ -1193,7 +1218,7 @@
 
     ! Get maximum size of the union and allocate
     n = size(B)
-    call new_dim_(C, n)
+    call new_dim_(tmp, n)
 
     if ( is_sorted(A) ) then
       D = A
@@ -1208,12 +1233,15 @@
     l = list_p(B)
     do i = 1 , size(B)
       if ( .not. in_list(D, l(i)) ) then
-        call push(C, l(i))
+        call push(tmp, l(i))
       end if
     end do
 
     call delete(D)
 
+    C = tmp
+    call delete(tmp)
+    
   end subroutine complement_
 
 
