@@ -70,7 +70,7 @@ SP_R = \
 	bud_SP_CSR0.o \
 	bud_SP_CSR_C.o
 $(SP_R:.o=.f90): SP_common.inc SP_CSR.inc
-$(SP_R): SP_common.inc SP_CSR.inc
+$(SP_R): SP_common.inc SP_CSR.inc bud_List.o
 src_OBJECTS += $(SP_R)
 bud_SP_CSR.f90: SP_CSR.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@

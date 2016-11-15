@@ -9,6 +9,9 @@
   !!
   !! A sparse pattern is denoted by a two-dimensional format based on
   !! rows and columns.
+  !! There are several different types of sparse patterns, and here we
+  !! implement a couple of variants.
+  !! The most used ones are probably the CSR and CSC patterns.
 
 
   !> Return number of non-zero elements stored in the sparse pattern
@@ -82,7 +85,6 @@
   ! Include common data routines
   ! Note that 'CONTAINS' is present in this include file.
 # include "bud_common.inc"
-
   
   
   !> @param[in] this the sparse pattern

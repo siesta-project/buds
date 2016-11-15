@@ -46,6 +46,7 @@
 !! `integer(selected_int_kind(9))` data type
 !! @{
 module BUD_MOD_NAME
+# define BUD_LIST_NAME BUD_CC2(BUD_TYPE,iList)
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iSP_CSC0)
 # define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,SP_CSC0)
 # define BUD_TYPE_VAR integer
@@ -60,6 +61,7 @@ end module
 !! `integer(selected_int_kind(18))` data type
 !! @{
 module BUD_MOD_NAME
+# define BUD_LIST_NAME BUD_CC2(BUD_TYPE,lList)
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,lSP_CSC0)
 # define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,SP_CSC0)
 # define BUD_TYPE_VAR integer
