@@ -9,7 +9,7 @@
   !! From this object the full matrix may be constructed or interacted
   !! with.
   !!
-  
+
 !# define BUD_INCLUDE_TYPE "SP_Array_type.inc"
 # define BUD_INCLUDE_TYPE_ "SP_Array_type_.inc"
 
@@ -35,7 +35,7 @@
   !> Retrieve pointer to the sparse pattern
   interface sparse_pattern_p
     module procedure get_elem1p_
-  end interface 
+  end interface
   public :: sparse_pattern_p
 
   !> Retrieve the array @bud
@@ -43,13 +43,13 @@
     module procedure get_elem2_
   end interface
   public :: array
-  
+
   !> Retrieve a pointer to the array @bud
   interface array_p
     module procedure get_elem2p_
   end interface
   public :: array_p
-  
+
 #include "bud_coll.inc"
 
 
@@ -62,12 +62,12 @@
 #else
     BUD_TYPE_VAR, pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC(:)
 #endif
-    
+
     p => array_p(this%D%e2)
-    
+
   end function get_matrixp_
 
-  
+
 #undef BUD_TYPE_NEW
 
   ! Associated with the Array
@@ -76,11 +76,11 @@
 
 #include "bud_cleanup.inc"
 
-  
+
   ! project-bud -- local file settings
   !     Anything below this line may be overwritten by scripts
   !     Below are non-editable settings
-  
+
   ! Local Variables:
   !  mode: f90
   !  f90-if-indent: 2
@@ -92,5 +92,5 @@
   !  f90-program-indent: 2
   !  f90-do-indent: 2
   ! End:
-  
-  
+
+

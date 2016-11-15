@@ -1,8 +1,8 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
 
   ! Simple type for inclusion in the type scopes.
-  ! This adds all OO routines 
-  
+  ! This adds all OO routines
+
 #if BUD_FORTRAN >= 2003
 
   !> @name Intrinsic @bud procedures
@@ -10,7 +10,7 @@
   !! @buds.
   !>@{
   ! needed comment to separate the next interface
-  
+
 # ifndef BUD_NO_DELETE
   !> @iSee delete
   procedure, public :: delete => common_delete_
@@ -38,7 +38,7 @@
   procedure, public :: is_same => common_is_same_
   !> @iSee is_same
   procedure, public :: same => common_is_same_
-  
+
   !> @iSee references
   procedure, public :: references => common_references_
   !> @iSee references
@@ -47,7 +47,7 @@
   !> @iSee error
   procedure, public :: error => common_error_
 
-  
+
 # ifndef BUD_NO_PRINT
   !> @iSee print
   procedure, public :: print => print_
@@ -62,7 +62,7 @@
 
 #endif
 
-  
+
 ! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings

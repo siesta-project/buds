@@ -23,20 +23,20 @@
   ! and the real variables
   !  rr == real (4-byte)
   !  rd == double (8-byte)
-  !  re == long double, currently not supported 
+  !  re == long double, currently not supported
 
   !> @cond BUD_DEVELOPER
-  
+
   integer, private, parameter :: rr_ = selected_real_kind(p=6) ! single (real*4)
   integer, private, parameter :: rd_ = selected_real_kind(p=15) ! double (real*8)
   !integer, private, parameter :: re_ = selected_real_kind(p=18)
-    
+
   integer, private, parameter :: is_ = selected_int_kind(4) ! short (integer*2)
   integer, private, parameter :: ii_ = selected_int_kind(9) ! int (integer*4)
   integer, private, parameter :: il_ = selected_int_kind(18) ! long (integer*8)
 
   !> @endcond BUD_DEVELOPER
-  
+
   !> Size of ID parameter for bud data-containers
   integer, private, parameter :: BUD_ID_LEn = 36
 
@@ -47,7 +47,7 @@
   character(len=*), parameter, private :: &
     BUD_MOd = 'BUD_CC2(BUD_MOD,_)BUD_MOD_NAME'
 # endif
-  
+
 # ifdef BUD_TYPE_NAME_STR
   !> Name of @bud in this module
   character(len=*), parameter, private :: &
@@ -56,8 +56,8 @@
 
 
 #endif
-  
-  
+
+
 ! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings

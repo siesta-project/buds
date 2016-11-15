@@ -144,7 +144,7 @@
 #endif
 
 #ifndef BUD_NO_NULLIFY
-  
+
   !> Nullifies the current @bud
   !!
   !! This will not decrement the reference counter but
@@ -198,7 +198,7 @@
   interface
     subroutine BUD_ERROR(str)
       character(len=*), intent(in), optional :: str
-    end subroutine 
+    end subroutine
   end interface
 #else
 # ifndef _BUD_ERROR_H
@@ -210,7 +210,7 @@
 
 contains
 
-  
+
   ! contains in non-modules freak doxygen out...
   !> @endcond ALWAYS_SKIP
 
@@ -233,21 +233,21 @@ contains
     to%D%error_ = from%D%error_
 
   end subroutine common_copy_
-  
 
-  
+
+
   !> @param[inout] this @bud that is initialized
   subroutine common_initialize_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
     integer :: error
-    
+
     ! First, remove the current reference
     call delete(this)
 
     ! Allocate fresh storage
     allocate(this%D, stat=error)
-    
+
     if ( 0 /= error ) then
 #if defined(BUD_ERROR)
       call BUD_ERROR("Error allocating data structure")
@@ -257,13 +257,13 @@ contains
 
     ! Set the initial reference count
     this%D%refs_ = 1
-    
+
     ! Set the initial error
     this%D%error_ = 0
 
     ! Tag the object (always)
     call common_tag_object_(this)
-    
+
   end subroutine common_initialize_
 
   !> @param[in] this check if this @bud is initialized
@@ -274,27 +274,27 @@ contains
     logical :: init
 
     init = associated(this%D)
-    
+
   end function common_is_initialized_
 
-  !> @param[in] lhs first @bud 
+  !> @param[in] lhs first @bud
   !! @param[in] rhs second @bud
   !! @return `.true.` if `lhs` and `rhs` point to the same data
   elemental function common_is_same_(lhs, rhs) result(same)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: lhs, rhs
     logical :: same
-    
+
     same = is_initd(lhs) .and. is_initd(rhs)
     if ( .not. same ) return
     ! this checks that the memory location of
     ! the underlying data is the same.
     same = associated(lhs%D, target=rhs%D)
-    
+
   end function common_is_same_
 
-  
+
 #ifndef BUD_NO_DELETE
-  
+
   !> @param[inout] this returned @bud is un-initialized with no data associated
 #ifndef BUD_DELETE_NOELEMENTAL
   elemental subroutine common_delete_(this)
@@ -304,19 +304,19 @@ contains
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
     integer :: error
-    
+
     if (.not. is_initd(this) ) return
-    
+
     this%D%refs_ = this%D%refs_ - 1
-    
+
     if ( 0 == this%D%refs_ ) then
-      
+
       ! Safe to delete the data now.
       ! Use the routine provided for this specific
       ! type to clean up any internal structure
-      
+
       call delete_(this%D)
-      
+
       ! Deallocate the currently referenced storage
       deallocate(this%D, stat=error)
       if ( 0 /= error ) then
@@ -326,34 +326,34 @@ contains
       end if
 
     end if
-    
+
     ! This is important to use the correct initialized functions
     nullify(this%D)
-    
+
   end subroutine common_delete_
 
 #endif
 
-  
+
 #ifndef BUD_NO_NULLIFY
   !> @param[inout] this nullify references from this @bud
   elemental subroutine common_nullify_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    
+
     if (.not. is_initd(this) ) return
-    
+
     nullify(this%D)
-    
+
   end subroutine common_nullify_
 #endif
-  
+
   !> @param[inout] lhs contains `rhs` after exit
   !! @param[in] rhs copy the containing element @bud
   subroutine common_assign_(lhs, rhs)
 
     ! No copying of data is involved, simply an increment of the
     ! reference counter.
-    
+
     ! IMPORTANT NOTE: Assignment must take the form of a subroutine, and
     ! not of a function, since the "inout" intent is essential. One has
     ! to clean up "lhs" before making it point to the same place as
@@ -365,7 +365,7 @@ contains
 
     ! Delete to remove the current reference of "this"
     call delete(lhs)
-    
+
     ! If RHS is empty, return immediately
     ! Note that LHS is still deleted
     if ( .not. is_initd(rhs) ) return
@@ -373,7 +373,7 @@ contains
     ! Establish the new reference and increment the reference counter.
     lhs%D => rhs%D
     lhs%D%refs_ = rhs%D%refs_ + 1
-    
+
   end subroutine common_assign_
 
 
@@ -381,7 +381,7 @@ contains
   !! @return number of times `this` has been referenced
   elemental function common_references_(this) result(refs)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    
+
     integer :: refs
 
     if ( is_initd(this) ) then
@@ -389,15 +389,15 @@ contains
     else
       refs = 0
     end if
-    
+
   end function common_references_
 
-  
+
   !> @param[in] this reference counted @bud
   !! @return current error from last call
   elemental function common_error_(this) result(error)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    
+
     integer :: error
 
     if ( is_initd(this) ) then
@@ -405,41 +405,41 @@ contains
     else
       error = 0
     end if
-    
+
   end function common_error_
 
-  
+
   !> @cond BUD_DEVELOPER
-  
+
   ! The remaining procedures are currently
   ! not used by public buds
   elemental function common_id_(this) result(str)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    
+
     character(len=BUD_ID_LEn) :: str
-    
+
     str = this%D%id_
-    
+
   end function common_id_
 
   subroutine common_tag_object_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout)  :: this
 
     ! currently we do not tag the types
-    
+
   end subroutine common_tag_object_
 
   !> @endcond BUD_DEVELOPER
 
   !> @cond BUD_DOC_INC
-  
+
   !> @}
 
   !> @endcond BUD_DOC_INC
 
   !>>@}
 
-  
+
 ! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings

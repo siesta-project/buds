@@ -23,7 +23,7 @@ pure subroutine BUD_FIND (n, array, val, idx)
   ! Initialize to default value
   idx = -1
   if ( n == 0 ) return
-  
+
   ! The two easiest cases, i.e. they are not in the array...
   if ( val < array(1) ) then
     return
@@ -36,17 +36,17 @@ pure subroutine BUD_FIND (n, array, val, idx)
     idx = n
     return
   end if
-  
+
   ! If it is size 1 or 2, we can immediately return,
   ! we have already checked the first/last index
   if ( n <= 2 ) return
 
-  a = 1 
+  a = 1
   b = n
   idx = 1
   d = n
 
-  do while ( a + 1 < b .or. idx + 1 < d ) 
+  do while ( a + 1 < b .or. idx + 1 < d )
     i = (a+b)/2
     if ( array(i) < val ) then
       a = i
@@ -60,9 +60,9 @@ pure subroutine BUD_FIND (n, array, val, idx)
       d = i
     end if
   end do
-  
+
   if ( b == idx .and. array(idx) /= val ) idx = -1
-  
+
 end subroutine
 
 #undef BUD_FIND
@@ -81,11 +81,11 @@ pure subroutine BUD_FIND (n, array, val, idx)
 
   integer(BUD_PREC), parameter :: two = int(2, BUD_PREC)
 
-  
+
   ! Initialize to default value
   idx = -1
   if ( n == 0 ) return
-  
+
   ! The two easiest cases, i.e. they are not in the array...
   if ( val < array(1) ) then
     return
@@ -98,25 +98,25 @@ pure subroutine BUD_FIND (n, array, val, idx)
     idx = n
     return
   end if
-    
+
   ! If it is size 1 or 2, we can immediately return,
   ! we have already checked the first/last index
   if ( n <= 2 ) return
-  
+
   ! An *advanced* search algorithm...
-  
+
   ! Search the sorted array for an entry
   ! We know it *must* have one
   h = n / 2
   idx = h ! Start in the middle
-  ! The integer correction (due to round of errors when 
+  ! The integer correction (due to round of errors when
   ! calculating the new half...
   FM = MOD(h,two)
   do while ( h > 0 ) ! While we are still searching...
 
     if ( h >= 3 ) then
       h = h + FM
-      ! This will only add 1 every other time 
+      ! This will only add 1 every other time
       FM = MOD(h,two)
     end if
 
@@ -124,11 +124,11 @@ pure subroutine BUD_FIND (n, array, val, idx)
     h = h / 2
 
     if ( val < array(idx) ) then
-      ! the value we search for is smaller than 
+      ! the value we search for is smaller than
       ! the current checked value, hence we step back
       idx = idx - h
     else if ( array(idx) < val ) then
-      ! the value we search for is larger than 
+      ! the value we search for is larger than
       ! the current checked value, hence we step forward
       idx = idx + h
     else
@@ -139,7 +139,7 @@ pure subroutine BUD_FIND (n, array, val, idx)
   end do
 
   ! We need to ensure a range to search in
-  ! The missing integers are *only* necesseary when 
+  ! The missing integers are *only* necesseary when
   ! the search pattern is in the same direction.
   ! This can easily be verified...
   h  = 1 + FM
@@ -152,7 +152,7 @@ pure subroutine BUD_FIND (n, array, val, idx)
   ! Hence we start by searching around it
   ! However, we know that val /= array(i)
 
-  do idx = FM,  h 
+  do idx = FM,  h
     if ( val == array(idx) ) return
   end do
 

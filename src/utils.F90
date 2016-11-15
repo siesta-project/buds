@@ -60,7 +60,7 @@ module BUD_MOD_NAME
     module procedure BUD_CC2(sort_heap_idx_,is_)
     module procedure BUD_CC2(sort_heap_idx_,ii_)
     module procedure BUD_CC2(sort_heap_idx_,il_)
-  end interface 
+  end interface
 
   !> Quick-sort array
   !!
@@ -75,7 +75,7 @@ module BUD_MOD_NAME
     module procedure BUD_CC2(sort_quick_idx_,is_)
     module procedure BUD_CC2(sort_quick_idx_,ii_)
     module procedure BUD_CC2(sort_quick_idx_,il_)
-  end interface 
+  end interface
 
 
   ! Find routines
@@ -89,7 +89,7 @@ module BUD_MOD_NAME
     module procedure BUD_CC2(find_bin_,is_)
     module procedure BUD_CC2(find_bin_,ii_)
     module procedure BUD_CC2(find_bin_,il_)
-  end interface 
+  end interface
 
   !> Searches for a specific integer value in a sorted array (heuristic search)
   !!
@@ -99,9 +99,9 @@ module BUD_MOD_NAME
     module procedure BUD_CC2(find_binheur_,is_)
     module procedure BUD_CC2(find_binheur_,ii_)
     module procedure BUD_CC2(find_binheur_,il_)
-  end interface 
+  end interface
 
-  
+
   ! Unique count scenes
   public :: nuniq_sorted
   !> Count number of unique value for a sorted array
@@ -111,7 +111,7 @@ module BUD_MOD_NAME
     module procedure BUD_CC2(nuniq_sorted_,is_)
     module procedure BUD_CC2(nuniq_sorted_,ii_)
     module procedure BUD_CC2(nuniq_sorted_,il_)
-  end interface 
+  end interface
 
   public :: nuniq
   !> Count number of unique values in a non-sorted array.
@@ -128,9 +128,9 @@ module BUD_MOD_NAME
     module procedure BUD_CC2(nuniq_pvt_,is_)
     module procedure BUD_CC2(nuniq_pvt_,ii_)
     module procedure BUD_CC2(nuniq_pvt_,il_)
-  end interface 
+  end interface
 
-  
+
   public :: modp
   !> Return wrapped integer by modulo operation
   !!
@@ -144,11 +144,11 @@ module BUD_MOD_NAME
     module procedure BUD_CC2(modp_,is_)
     module procedure BUD_CC2(modp_,ii_)
     module procedure BUD_CC2(modp_,il_)
-  end interface 
+  end interface
 
 contains
 
-  
+
   !> @param[in] i number to extract the remainer of
   !! @param[in] n divisor
   !! @return the remainder of `(i+1) % n`
@@ -174,15 +174,15 @@ contains
     integer(il_), intent(in) :: i, n
     integer(il_) :: p
     p = mod(i-1_il_,n) + 1
-  end function 
+  end function
 
-  
+
 #undef BUD_PREC
 #define BUD_PREC is_
 # include "SORT_integer.inc"
 # include "FIND_integer.inc"
 # include "UNIQ_integer.inc"
-  
+
 #undef BUD_PREC
 #define BUD_PREC ii_
 # include "SORT_integer.inc"

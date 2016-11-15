@@ -40,7 +40,7 @@ pure subroutine BUD_CC2(sort_ps_,BUD_PREC)(n, array, sarray)
       ! We assume that for array segments below 35 elements
       ! it will be faster to do array search
       expSearch: do j = 2 , i - 1
-        ! It will always be better to search for the end 
+        ! It will always be better to search for the end
         ! of the overlapping region. i.e. less elements to move
         if ( array(i) <= sarray(j) ) then
           h = j
@@ -144,11 +144,11 @@ contains
     ! Take all the values which are smaller than sarray(1)
     !      do while ( array(lA-1) < array(lA) .and. &
     !           array(lA) < sarray(1) .and. &
-    !           lA <= n ) 
+    !           lA <= n )
     !         lA = lA + 1
     !      end do
     ! Take all the values which are EQUAL to sarray(1)
-    !      do while ( array(lA) == sarray(1) .and. lA <= n ) 
+    !      do while ( array(lA) == sarray(1) .and. lA <= n )
     !         lA = lA + 1
     !      end do
 
@@ -167,7 +167,7 @@ contains
     integer(BUD_PREC), intent(in) :: n, array(n)
     integer(BUD_PREC), intent(inout) :: sarray(n)
     integer(BUD_PREC), intent(in) :: sA
-    integer(BUD_PREC), intent(out) :: P ! 
+    integer(BUD_PREC), intent(out) :: P !
 
     ! The last insertion point
     integer(BUD_PREC) :: lA,i
@@ -306,7 +306,7 @@ contains
     integer(BUD_PREC), intent(inout) :: pvt(n)
     integer(BUD_PREC), intent(in) :: person
     integer(BUD_PREC) :: sw, parent, child
-    
+
     ! initialize
     parent = person                    ! assume person is a parent
     child = 2 * parent                 ! first child of parent
@@ -333,7 +333,7 @@ contains
         child = sw * 2
       end if
     end do
-    
+
   end subroutine siftDown
 !> @endcond BUD_DEVELOPER
 
@@ -346,7 +346,7 @@ end subroutine
 recursive pure subroutine BUD_CC2(sort_quick_,BUD_PREC)(n, array)
   integer(BUD_PREC), intent(in) :: n
   integer(BUD_PREC), intent(inout) :: array(n)
-  
+
   integer(BUD_PREC) :: div
 
   integer(BUD_PREC), parameter :: one = int(1, BUD_PREC)
@@ -357,7 +357,7 @@ recursive pure subroutine BUD_CC2(sort_quick_,BUD_PREC)(n, array)
   call partition(n, array, div)
   call BUD_CC2(sort_quick_,BUD_PREC)(div-one, array(1))
   call BUD_CC2(sort_quick_,BUD_PREC)(n-div+one, array(div))
-  
+
 !> @cond BUD_DEVELOPER
 contains
 
@@ -368,9 +368,9 @@ contains
     integer(BUD_PREC), intent(out) :: mark
 
     integer(BUD_PREC) :: i, j, x, t
-    
+
     integer(BUD_PREC), parameter :: one = int(1, BUD_PREC)
-    
+
     i = n / 2
     ! Find the median of the searched elements
     if ( array(1) < array(n) ) then
@@ -403,7 +403,7 @@ contains
         if ( array(j) <= x ) exit
         j = j - ONE
       end do
-      
+
       i = i + ONE
       do while ( i < n )
         if ( array(i) >= x ) exit
@@ -423,7 +423,7 @@ contains
         return
       end if
     end do
-    
+
   end subroutine partition
 !> @endcond BUD_DEVELOPER
 
@@ -438,7 +438,7 @@ pure subroutine BUD_CC2(sort_quick_idx_,BUD_PREC)(n, array, pvt)
   integer(BUD_PREC), intent(out) :: pvt(n)
 
   integer(BUD_PREC) :: i
-  
+
   if ( n <= 1 ) return
 
   ! initialize the pivoting table
@@ -453,26 +453,26 @@ pure subroutine BUD_CC2(sort_quick_idx_,BUD_PREC)(n, array, pvt)
 
 !> @cond BUD_DEVELOPER
 contains
-  
+
   recursive pure subroutine BUD_FIND_LOCAL (n, array, m, pvt)
     integer(BUD_PREC), intent(in) :: n
     integer(BUD_PREC), intent(in) :: array(n)
     integer(BUD_PREC), intent(in) :: m
     integer(BUD_PREC), intent(out) :: pvt(m)
-    
+
     integer(BUD_PREC) :: div
-    
+
     if ( m <= 1 ) return
-    
+
     ! Retrieve the partition ID
     call partition(n, array, m, pvt, div)
     call BUD_FIND_LOCAL (n, array(1), div-int(1,BUD_PREC), pvt(1))
     call BUD_FIND_LOCAL (n, array(1), m-div, pvt(div))
-    
+
   end subroutine
 
 #undef BUD_FIND_LOCAL
-  
+
   ! Partition an array by swapping
   pure subroutine partition(n, array, m, pvt, mark)
     integer(BUD_PREC), intent(in) :: n
@@ -480,13 +480,13 @@ contains
     integer(BUD_PREC), intent(in) :: m
     integer(BUD_PREC), intent(inout) :: pvt(m)
     integer(BUD_PREC), intent(out) :: mark
-    
+
     integer(BUD_PREC) :: i, j, t, x
 
     i = pvt(1)
     j = pvt(m)
     t = pvt(m/2)
-    
+
     ! Find the median of the searched elements
     if ( array(i) < array(j) ) then
       if ( array(j) < array(t) ) then
@@ -518,7 +518,7 @@ contains
         if ( array(pvt(j)) <= x ) exit
         j = j - 1
       end do
-      
+
       i = i + 1
       do while ( i < m )
         if ( array(pvt(i)) >= x ) exit
@@ -538,7 +538,7 @@ contains
         return
       end if
     end do
-    
+
   end subroutine partition
 !> @endcond BUD_DEVELOPER
 

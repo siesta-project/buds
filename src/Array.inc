@@ -1,5 +1,5 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
-  
+
 #include "bud_utils.inc"
 
   !> @defgroup array Array
@@ -21,7 +21,7 @@
   !!
   !! It does not contain anything but the intrinsic array.
   !!
-  
+
   ! The following pre-processor variables are currently used when
   ! included:
   !  - BUD_MOD_NAME of the module
@@ -36,7 +36,7 @@
 #define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
 #define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
 #define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
-  
+
   !> BUD_MOD_NAME documentation
   !!
   !! @details
@@ -55,7 +55,7 @@
 #  error "bud_Array: Does not handle array sizes larger than 4"
 #endif
 
-  
+
   !> Array data type
   !!
   !! This data type contains the reference counted
@@ -63,7 +63,7 @@
   type BUD_TYPE_NAME
 
     !> @cond BUD_DEVELOPER
-    
+
     !> Stored pointer which contains the reference counting etc.
     type(BUD_TYPE_NAME_), pointer :: D => null()
 
@@ -76,12 +76,12 @@
     !> @name Private procedures
     !> @{
     ! Doxygen needed line
-    
+
     procedure, private :: new_dim_
     procedure, private :: new_copy_
 
     !> @}
-    
+
     !> @iSee BUD_NEW_TYPE
     generic, public :: BUD_NEW_TYPE => new_dim_, new_copy_
     !> @iSee BUD_NEW_TYPE
@@ -97,7 +97,7 @@
   end type BUD_TYPE_NAME
 
   !> @cond BUD_DEVELOPER
-  
+
   !> @bud container for BUD_TYPE_NAME
   !!
   !! Contains an array of BUD_DIM dimensions.
@@ -172,7 +172,7 @@
   end interface
   public :: size
 
-  
+
   !> Set all values in the array to a specific value.
   !!
   !! This is preferred over a routine call as it
@@ -181,7 +181,7 @@
     module procedure assign_value_
   end interface
   private :: assign_value_
-  
+
   !> Print, to std-out, some basic information of the data-container
   !!
   !! Print out XML-like information regarding the data-container.
@@ -194,14 +194,14 @@
   end interface
   public :: print
 
-  
+
   ! Include common data routines
   ! Note that 'CONTAINS' is present in this include file.
 # include "bud_common.inc"
 
-  
+
   !> @cond BUD_DEVELOPER
-  
+
   !> Internal routine for cleaning up the data container.
   !!
   !! @dev_note
@@ -215,7 +215,7 @@
     ! tracking.
     if ( .not. allocated(this%array) ) return
     deallocate(this%array)
-    
+
   end subroutine delete_
 
   !> @endcond BUD_DEVELOPER
@@ -233,10 +233,10 @@
     call new(to, from%D%array)
 
     call common_copy_(from, to)
-    
+
   end subroutine copy_
 
-  
+
   !> @param[inout] this array @bud
   !! @param[in] d1 size of the internal reference counted array (dim=1)
 #if BUD_DIM > 1
@@ -484,7 +484,7 @@
     if ( present(indent) ) lindent = indent
 
     write(fmt, '(a,i0,a)') '(t',lindent,',3a)'
-    
+
     if ( .not. is_initd(this) ) then
       write(*,fmt) "<", trim(name), " not initialized>"
       return
@@ -501,10 +501,10 @@
 #if BUD_DIM > 3
     d4 = size_(this, 4)
 #endif
-    
+
     ! Create fmt
     write(fmt, '(a,i0,a)') '(t',lindent,',3a,10(i0,a))'
-    
+
     write(*,fmt) "<", trim(name), " d1=", d1, &
 #if BUD_DIM > 1
       " d2=",d2, &
@@ -519,7 +519,7 @@
 
   end subroutine print_
 
-  
+
   ! Local pre-processor variables that
   ! undefine the variables that are not needed anymore.
 #undef BUD_TYPE_NEW
@@ -527,8 +527,8 @@
 #undef BUD_TYPE_VAR_PREC
 
 #include "bud_cleanup.inc"
-  
-  
+
+
 ! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings

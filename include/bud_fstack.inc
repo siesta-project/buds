@@ -40,7 +40,7 @@
   !! This is internally controlled and is mentioned for the relevant types.
 
   !> @endcond BUD_DOC_INC
-  
+
   !> Finite stack with cyclic ability
   !!
   !! Container for a finite stack of a single @bud (BUD_STACK_TYPE).
@@ -88,13 +88,13 @@
     procedure, public :: size => size_elem_
     !> @iSee #size_max
     procedure, public :: size_max => size_max_elem_
-    
+
 #endif
   end type BUD_TYPE_NAME
 
 
   !> @cond BUD_DEVELOPER
-  
+
   !> @bud container for BUD_TYPE_NAME
   type BUD_TYPE_NAME_
 
@@ -108,9 +108,9 @@
     !! Hence creating extreme stacks may still be memory efficient.
     integer :: nel_max
 
-    !> Current number of elements in the stack. 
+    !> Current number of elements in the stack.
     integer :: nel
-    
+
     !> Array of elements (stack).
     type(BUD_STACK_TYPE), pointer :: T(:) => null()
 
@@ -120,7 +120,7 @@
   end type BUD_TYPE_NAME_
 
   !> @endcond BUD_DEVELOPER
-  
+
 
   ! special counter for deleting all elements
   ! of a stack using:
@@ -147,13 +147,13 @@
     module procedure new_
   end interface
   public :: BUD_TYPE_NEW
-  
+
   !> @iSee BUD_TYPE_NEW
   interface new
     module procedure new_
   end interface
   public :: new
-  
+
   !> Adds/Pushes new element to the stack
   !!
   !! If the stack is full the oldest element will be deleted
@@ -199,7 +199,7 @@
     module procedure retain_
   end interface
   public :: retain
-  
+
   !> Retrieve specific element from the stack
   !!
   !! If the requested element is beyond the number of
@@ -208,7 +208,7 @@
     module procedure get_elem_
   end interface
   public :: element
-  
+
   !> Retrieve pointer to specific element in the stack
   !!
   !! Retrieving a pointer does not change the reference status
@@ -227,14 +227,14 @@
     module procedure size_elem_
   end interface
   public :: size
-  
+
   !> Query maximum number of allowed elements in this stack
   interface size_max
     module procedure size_max_elem_
   end interface
   public :: size_max
 
-  
+
   !> Print, to std-out, some basic information of the data-container
   !!
   !! Print out XML-like information regarding the data-container.
@@ -246,7 +246,7 @@
     module procedure print_
   end interface
   public :: print
-  
+
   ! all default reference counted stuff
 # include "bud_common.inc"
 
@@ -254,19 +254,19 @@
 
   pure subroutine delete_(D)
     type(BUD_TYPE_NAME_), intent(inout) :: D
-    
+
     if ( associated(D%T) ) then
-      
+
       ! Deallocate array
       call delete(D%T)
       deallocate(D%T)
       nullify(D%T)
-      
+
     end if
-    
+
     D%nel_max = 0
     D%nel = 0
-    
+
   end subroutine delete_
 
   !> @endcond BUD_DEVELOPER
@@ -280,7 +280,7 @@
     integer :: i
     type(BUD_STACK_TYPE), pointer :: p
     type(BUD_STACK_TYPE) :: cp
-    
+
     call delete(to)
     if ( .not. is_initd(from) ) return
 
@@ -292,10 +292,10 @@
       call push(to, cp)
       call delete(cp)
     end do
-    
+
     ! Copy the common data-content
     call common_copy_(from, to)
-    
+
   end subroutine copy_
 
   !> @param[inout] this initialize the finite stack
@@ -316,7 +316,7 @@
 
     this%D%nel_max = nel
     this%D%nel = 0
-    
+
     ! prepare data locations
     allocate(this%D%T(nel))
 
@@ -338,22 +338,22 @@
     if ( .not. is_initd(this) ) return
 
     el = size(this)
-    
+
     if ( el == size_max(this) ) then
-      
+
       ! cycle stack and push
       this%D%T = cshift(this%D%T,+1)
       call delete(this%D%T(el))
       this%D%T(el) = item
-      
+
     else
       el = el + 1
       ! simply add it to the stack
       this%D%nel = el
       this%D%T(el) = item
-      
+
     end if
-    
+
   end subroutine push_
 
 
@@ -371,23 +371,23 @@
     end if
 
     el = size(this)
-    
+
     ! easy case if it is empty
     if ( 0 == el ) then
-      
+
       call delete(item)
       return
-      
+
     end if
-    
+
     ! retrieve the latest value
     item = this%D%T(el)
 
     call pop(this)
-    
+
   end subroutine pop_
-  
-  
+
+
   !> @param[inout] this stack that gets removed an item
   !! @param[in] top @opt=1 number of popped elements from top.
   !!                If BUD_FSTACK_ALL is supplied it will
@@ -403,36 +403,36 @@
 
     ! it is already empty...
     if ( .not. is_initd(this) ) return
-    
+
     ! number of elements
     el = size(this)
 
     if ( present(top) .or. .not. present(bot) ) then
-      
+
       ! regular top-popping
       lnpop = 1
-    
+
       if ( present(top) ) lnpop = top
-      
+
       ! BUD_FSTACK_ALL == 0, we delete all
       if ( lnpop == BUD_FSTACK_ALL ) lnpop = el
 
-      ! we should not pop anything 
+      ! we should not pop anything
       if ( lnpop < 0 ) return
-      
+
       do while ( lnpop > 0 )
-        
+
         ! easy case if it is empty
         if ( 0 == el ) return
-        
+
         ! Delete the local item and decrease counter
         call delete(this%D%T(el))
         this%D%nel = this%D%nel - 1
-        
+
         el = el - 1
         lnpop = lnpop - 1
       end do
-      
+
     else ! bot has been supplied
 
       ! bottom popping
@@ -440,24 +440,24 @@
 
       ! in case of a negative number we cannot pop anything
       if ( lnpop < 0 ) return
-    
+
       do while ( lnpop > 0 )
-        
+
         ! easy case if it is empty
         if ( 0 == el ) return
-        
+
         ! Delete the local item and decrease counter
         call delete(this%D%T(1))
         this%D%nel = this%D%nel - 1
         ! shift to attain the correct order
         this%D%T = cshift(this%D%T,-1)
-        
+
         el = el - 1
         lnpop = lnpop - 1
       end do
 
     end if
-    
+
   end subroutine pop_delete_
 
 
@@ -468,10 +468,10 @@
   subroutine retain_(this, top, bot)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer, intent(in), optional :: top, bot
-    
+
     integer :: lnpop
     integer :: el
-    
+
     if ( .not. is_initd(this) ) return
 
     ! number of elements
@@ -483,26 +483,26 @@
       lnpop = 1
       if ( present(top) ) lnpop = el - top
 
-      ! we should not pop anything 
+      ! we should not pop anything
       if ( lnpop < 0 ) return
 
       call pop(this, bot=lnpop)
-      
+
     else
 
       ! retain 'n' items from the bottom
       lnpop = el - bot
 
-      ! we should not pop anything 
+      ! we should not pop anything
       if ( lnpop < 0 ) return
 
       call pop(this, top=lnpop)
-      
+
     end if
-    
+
   end subroutine retain_
 
-  
+
   !> @param[in] this stack to retrieve element from
   !! @param[inout] elem returned item stored in element `iel`
   !! @param[in] iel @opt=`size(this)` index of element to return. May be negative to offset from the top
@@ -529,7 +529,7 @@
     if ( el <= size(this) ) then
       elem = this%D%T(el)
     end if
-    
+
   end subroutine get_elem_
 
   !> @param[in] this stack to retrieve pointer element from
@@ -554,11 +554,11 @@
         el = iel
       end if
     end if
-    
+
     if ( el <= size(this) ) then
       p => this%D%T(el)
     end if
-      
+
   end function get_elemp_
 
 
@@ -573,8 +573,8 @@
       nel = this%D%nel
     end if
   end function size_elem_
-    
-  
+
+
   !> @param[inout] this stack that is queried maximum size of
   !! @return maximum number of allowed elements
   elemental function size_max_elem_(this) result (nel_max)
@@ -587,7 +587,7 @@
     end if
   end function size_max_elem_
 
-  
+
   !> @param[in] this data type
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
@@ -598,18 +598,18 @@
 
     integer :: lindent
     integer :: i
-    
+
     ! 4-byte variable
     character(len=32) :: fmt
     character(len=256) :: name
-    
+
     name = BUD_TYPE_NAME_STR
     if ( present(info) ) name = info
     lindent = 1
     if ( present(indent) ) lindent = indent
 
     write(fmt, '(a,i0,a)') '(t',lindent,',3a)'
-    
+
     if ( .not. is_initd(this) ) then
       write(*,fmt) "<", trim(name), " not initialized>"
       return
@@ -627,7 +627,7 @@
 
   end subroutine print_
 
-  
+
 #undef BUD_MOD_NAME
 #undef BUD_TYPE_NAME
 #undef BUD_TYPE_NAME_
@@ -635,7 +635,7 @@
 #undef BUD_TYPE_NEW
 #undef BUD_STACK_TYPE
 
-  
+
   ! project-bud -- local file settings
   !     Anything below this line may be overwritten by scripts
   !     Below are non-editable settings

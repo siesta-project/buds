@@ -6,7 +6,7 @@
 !  - BUD_TYPE_NAME_ name of the internal data pointer
 !  - BUD_TYPE_NAME_STR the routine name in "string" format (for IO)
 !  - BUD_TYPE_NEW the routine name for creating a new type
-  
+
 #include "bud_utils.inc"
 
 
@@ -14,7 +14,7 @@
 # define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,File)
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,File)
 # define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,File)
-  
+
 #define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
 #define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
 #define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
@@ -29,7 +29,7 @@
 !! regarding files.
 !!
 !! I.e. one may create a file object and determine whether
-!! it exists or not. One may also use the object to 
+!! it exists or not. One may also use the object to
 !!
 !!
 !! Exposes functionality regarding files.
@@ -49,7 +49,7 @@ module BUD_MOD_NAME
   !> Initial unit to open files with
   integer, parameter :: FILE_UNIT_STARt = 1000
 
-  
+
   !> File @bud
   !!
   !! This generic file type enables opening/closing/deleting
@@ -111,7 +111,7 @@ module BUD_MOD_NAME
 
 
   !> @cond BUD_DEVELOPER
-  
+
   !> @bud container for BUD_TYPE_NAME
   !!
   !! Contains information regarding a file.
@@ -126,12 +126,12 @@ module BUD_MOD_NAME
 
     ! Consistent data in the reference counted object
 #   include "bud_common_type_.inc"
-    
+
   end type BUD_TYPE_NAME_
 
   !> @endcond BUD_DEVELOPER
 
-  
+
 
   !> Create a new file @bud
   !!
@@ -203,7 +203,7 @@ module BUD_MOD_NAME
     module procedure unopened_unit_
   end interface
   public :: unopened_unit
-  
+
   !> Query filename of the file @bud
   !!
   !! This *MUST* only be called on an initialized
@@ -214,11 +214,11 @@ module BUD_MOD_NAME
     module procedure filename_
   end interface
   public :: filename
-  
+
   !> Unit of opened file @bud
-  !! 
+  !!
   !! Retrieve the unit of the file in case it is
-  !! opened.  
+  !! opened.
   !! If the file is not opened, `-1` will be returned.
   interface get_unit
     module procedure get_unit_
@@ -239,7 +239,7 @@ module BUD_MOD_NAME
   end interface
   public :: is_open
 
-  !> Query whether file exists 
+  !> Query whether file exists
   !!
   !! Checks whether the file exists on disk.
   !! This is independent of `is_open` and may
@@ -266,7 +266,7 @@ module BUD_MOD_NAME
     module procedure is_formatted_
   end interface
   public :: is_formatted
-  
+
   !> Query file opened in UNFORMATTED mode
   interface is_unformatted
     module procedure is_unformatted_
@@ -285,7 +285,7 @@ module BUD_MOD_NAME
   end interface
   public :: get_stat
 
-  
+
   !> Delete file on disk
   !!
   !! Perform an actual delete of the file.
@@ -309,7 +309,7 @@ module BUD_MOD_NAME
     module procedure print_
   end interface
   public :: print
-  
+
   ! Include common data routines
   ! Note that 'CONTAINS' is present in this include file.
   ! the common_delete_ ensures a closed file
@@ -318,7 +318,7 @@ module BUD_MOD_NAME
 # include "bud_common.inc"
 #undef BUD_DELETE_NOELEMENTAL
 
-  
+
   !> @cond BUD_DEVELOPER
 
   !> Internal routine for cleaning up the data container.
@@ -332,7 +332,7 @@ module BUD_MOD_NAME
   subroutine delete_(this)
     type(BUD_TYPE_NAME_), intent(inout) :: this
     integer :: stat
-    
+
     logical :: is_open
 
     inquire( this%unit , opened = is_open )
@@ -347,7 +347,7 @@ module BUD_MOD_NAME
     this%file = ' '
     this%unit = -1
     this%error_ = stat
-    
+
   end subroutine delete_
 
   !> @param[inout] this force the status to be 0
@@ -358,7 +358,7 @@ module BUD_MOD_NAME
 
   !> @endcond BUD_DEVELOPER
 
-  
+
   !> @param[in] from origin of data
   !> @param[inout] to copy data to this object
   subroutine copy_(from, to)
@@ -371,11 +371,11 @@ module BUD_MOD_NAME
     call initialize(to)
 
     call common_copy_(from, to)
-        
+
     ! Copy data
     to%D%file = from%D%file
     to%D%unit = from%D%unit
-    
+
   end subroutine copy_
 
 
@@ -395,7 +395,7 @@ module BUD_MOD_NAME
     else
       this%D%file = trim(filename)
     end if
-    
+
   end subroutine new_
 
 
@@ -406,30 +406,30 @@ module BUD_MOD_NAME
 
     unit = FILE_UNIT_STARt - 1
     is_open = .true.
-    
+
     do while ( is_open )
       unit = unit + 1
       inquire( unit , opened = is_open )
     end do
-    
+
   end function unopened_unit_
-  
+
   !> @param[in] this query filename from this file @bud
   !! @return filename of the file @bud
   pure function filename_(this) result(filename)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    
+
     character(len=len_trim(this%D%file)) :: filename
 
     filename = trim(this%D%file)
 
   end function filename_
-  
+
   !> @param[in] this file @bud
   !! @return unit of the opened file (-1 if unopened)
   function get_unit_(this) result(unit)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    
+
     integer :: unit
 
     if ( .not. is_initd(this) ) then
@@ -441,7 +441,7 @@ module BUD_MOD_NAME
     unit = this%D%unit
 
   end function get_unit_
-  
+
   !> @param[in] this file @bud
   !! @return `.true.` if the file is opened
   function is_open_(this) result(is)
@@ -459,7 +459,7 @@ module BUD_MOD_NAME
       is = .false.
       return
     end if
-    
+
     inquire( this%D%unit, opened = is, &
       iostat = this%D%error_)
 
@@ -484,7 +484,7 @@ module BUD_MOD_NAME
     else
       exist = .false.
     end if
-    
+
   end function exists_
 
 
@@ -502,17 +502,17 @@ module BUD_MOD_NAME
 
       direct = (dir == 'YES') .or. &
         (dir == 'yes')
-      
+
     else
 
       call stat_reset_(this)
       direct = .false.
-      
+
     end if
-    
+
   end function is_direct_
 
-  
+
   !> @param[in] this file @bud
   !! @return `.true.` if the file is opened in access=SEQUENTIAL mode
   function is_sequential_(this) result(sequential)
@@ -532,9 +532,9 @@ module BUD_MOD_NAME
 
       call stat_reset_(this)
       sequential = .false.
-      
+
     end if
-    
+
   end function is_sequential_
 
 
@@ -557,9 +557,9 @@ module BUD_MOD_NAME
 
       call stat_reset_(this)
       formatted = .false.
-      
+
     end if
-    
+
   end function is_formatted_
 
 
@@ -582,9 +582,9 @@ module BUD_MOD_NAME
 
       call stat_reset_(this)
       unformatted = .false.
-      
+
     end if
-    
+
   end function is_unformatted_
 
 
@@ -601,16 +601,16 @@ module BUD_MOD_NAME
     else
       stat = 0
     end if
-    
+
   end function get_stat_
 
-  
+
   !> @param[inout] this file @bud
   !! @param[in] D (dummy argument which should _NEVER_ be used, forces explicit interface usage)
   !! @param[in] form @opt='FORMATTED' format of opened file
   !! @param[in] access @opt='SEQUENTIAL' file access pattern
   !! @param[in] action @opt='READWRITE' file R/W access
-  !! @param[in] status @opt='OLD' file-existance 
+  !! @param[in] status @opt='OLD' file-existance
   subroutine open_(this, D, form, access, action, status)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     character(len=*), intent(in), optional :: D, form, access, action, status
@@ -639,7 +639,7 @@ module BUD_MOD_NAME
       form = lform, access = laccess, action = laction, &
       status = lstatus, &
       iostat = this%D%error_ )
-    
+
   end subroutine open_
 
   !> @param[inout] this file @bud
@@ -655,7 +655,7 @@ module BUD_MOD_NAME
     close( this%D%unit, iostat = this%D%error_ )
 
     this%D%unit = -1
-    
+
   end subroutine close_
 
   !> @param[inout] this file @bud
@@ -663,9 +663,9 @@ module BUD_MOD_NAME
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
     if ( .not. is_open(this) ) return
-      
+
     rewind( this%D%unit, iostat = this%D%error_ )
-    
+
   end subroutine rewind_
 
   !> @param[inout] this file @bud
@@ -679,24 +679,24 @@ module BUD_MOD_NAME
       call stat_reset_(this)
       return
     end if
-    
+
     if ( present(n) ) then
-      
+
       do i = 1, n
-        
+
         backspace( this%D%unit, &
           iostat = this%D%error_ )
-        
+
         if ( this%D%error_ /= 0 ) return
       end do
-      
+
     else
-      
+
       backspace( this%D%unit, &
         iostat = this%D%error_ )
-      
+
     end if
-    
+
   end subroutine backspace_
 
   !> @param[inout] this file @bud
@@ -707,28 +707,28 @@ module BUD_MOD_NAME
     ! immediately return if the object
     ! has not been created.
     if ( .not. is_initd(this) ) return
-    
+
     if ( is_open(this) ) then
-      
+
       close( this%D%unit, STATUS = 'DELETE', &
         iostat = this%D%error_ )
 
       ! reset status as not opened
       this%D%unit = -1
-      
+
     else if ( exists(this) ) then
-      
+
       unit = unopened_unit()
       ! it does not matter how it is opened
       open( unit, file = this%D%file )
       close( unit, STATUS = 'DELETE', &
         iostat = this%D%error_ )
-      
+
     end if
 
   end subroutine delete_file_
 
-  
+
   !> @param[in] this data type
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
@@ -749,7 +749,7 @@ module BUD_MOD_NAME
     if ( present(indent) ) lindent = indent
 
     write(fmt, '(a,i0,a)') '(t',lindent,',3a)'
-    
+
     if ( .not. is_initd(this) ) then
       write(*,fmt) "<", trim(name), " not initialized>"
       return
@@ -757,7 +757,7 @@ module BUD_MOD_NAME
 
     ! Create fmt
     write(fmt, '(a,i0,a)') '(t',lindent,',4a,4(a,l1),a,i0,a)'
-    
+
     write(*,fmt) "<", trim(name), &
       " file=", filename(this), &
       ", open=", is_open(this), &

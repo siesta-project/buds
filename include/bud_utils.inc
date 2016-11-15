@@ -25,7 +25,7 @@
   !! prefix for modules etc.
   !!
   !! @{
-  
+
   ! function name for new routines
   ! Although all interfaces need not have explicit names
   ! we allow both the "new" and the "new<T>" construct
@@ -34,7 +34,7 @@
   !> \def BUD_NEW
   !! The name for creating a new @bud
 #define BUD_NEW new
-  
+
   !> \def BUD_MOD
   !! The prefix used for @bud modules.
   !!
@@ -45,7 +45,7 @@
   !! The prefix used for @bud types, this should generally not be altered.
   !!
   !! Default to `` (empty).
-#define BUD_TYPE 
+#define BUD_TYPE
 
   !> \def BUD_FORTRAN
   !! Denote the fortran standard that the compiler supports.
@@ -77,7 +77,7 @@
   ! In case BUD_FORTRAN version is above 2003
   ! we have a couple of different specifications
   ! that are standard and common.
-  
+
 # ifndef BUD_FORTRAN_FINALIZE
 #  define BUD_FORTRAN_FINALIZE 1
 # endif
@@ -92,7 +92,7 @@
 
 # define BUD_FORTRAN_CONTIGUOUS
 # define BUD_CLASS type
-  
+
 #endif
 
 
@@ -100,17 +100,17 @@
   !! Concatenate two arguments \a a and \a b.
 #define BUD_CC2(a,b) BUD_CCX2(a,b)
 #define BUD_CCX2(a,b) a ## b
-  
+
   !> \def BUD_CC3(a,b,c)
   !! Concatenate three arguments \a a, \a b and \a c.
 #define BUD_CC3(a,b,c) BUD_CCX3(a,b,c)
 #define BUD_CCX3(a,b,c) a ## b ## c
-  
+
   !> \def BUD_CC4(a,b,c,d)
   !! Concatenate four arguments \a a, \a b, \a c and \a d.
 #define BUD_CC4(a,b,c,d) BUD_CCX4(a,b,c,d)
 #define BUD_CCX4(a,b,c,d) a ## b ## c ## d
-  
+
   !> \def BUD_CC5(a,b,c,d,e)
   !! Concatenate five arguments \a a, \a b, \a c, \a d and \a e.
 #define BUD_CC5(a,b,c,d,e) BUD_CCX5(a,b,c,d,e)
@@ -124,7 +124,7 @@
   !> \def BUD_XSTR(x)
   !! Creates a string of the expanded argument.
 #define BUD_XSTR(x) BUD_STR(x)
-  
+
   !> \def BUD_STR(x)
   !! Creates a string of the argument.
 #define BUD_STR(x) #x
@@ -132,7 +132,7 @@
   !> @}
 
   !> @endcond BUD_DOC_INC
-  
+
 #endif
 
   ! Check that the DIM_SPEC has not been specified
@@ -157,7 +157,7 @@
 # define BUD_DIM_SPEC(a)
 #endif
 
-  
+
   ! project-bud -- local file settings
   !     Anything below this line may be overwritten by scripts
   !     Below are non-editable settings

@@ -92,7 +92,7 @@
 
     procedure, private :: set_data_
     procedure, private :: set_data_idx_
-    
+
     procedure, private :: add_node_
     procedure, private :: add_node_data_
 
@@ -138,13 +138,13 @@
 
     !> @iSee #itt_step
     generic, public :: itt_step => itt_step_, itt_step_i_
-    
+
 #endif
   end type BUD_TYPE_NAME
 
 
   !> @cond BUD_DOC_INC
-  
+
   !> Linked list container for BUD_TYPE_NAME
   !!
   !! The actual data container for the linked list.
@@ -202,7 +202,7 @@
     module procedure new_data_
   end interface
   public :: BUD_TYPE_NEW
-  
+
   !> @iSee BUD_TYPE_NEW
   interface new
     module procedure new_
@@ -235,7 +235,7 @@
   end interface
   public :: size
 
-  
+
   !> Overwrite/Set data at an element in the list
   !!
   !! Assign the data at the index or head of the
@@ -246,7 +246,7 @@
   end interface
   public :: set_data
 
-  
+
   !> Add a new node to the end of the linked list
   !!
   !! Possibly assign data to the new node.
@@ -264,7 +264,7 @@
     module procedure add_node_data_
   end interface
   public :: add_node
-  
+
 
   !> Query data from node in the linked list
   !!
@@ -361,12 +361,12 @@
     module procedure print_
   end interface
   public :: print
-  
+
   ! all default reference counted stuff
 # include "bud_common.inc"
 
   !> @cond BUD_DEVELOPER
-  
+
   pure subroutine delete_(D)
     type(BUD_TYPE_NAME_), intent(inout) :: D
     type(BUD_LINKED_LIST_NAME), pointer :: head, tmp
@@ -390,7 +390,7 @@
     ! If the linked list is not associated we
     ! need not do anything
     if ( associated(head) ) then
-      
+
 #ifdef BUD_LIST_DOUBLY
       do while ( associated(head%prev) )
         if ( associated(head%prev, D%ll) ) exit
@@ -416,7 +416,7 @@
       end do
 
     end if
-    
+
     ! deallocate head of list
     if ( associated(D%ll) ) then
       call delete(D%ll%D)
@@ -452,11 +452,11 @@
     allocate(this%D%ll)
     this%D%head => this%D%ll
     this%D%head%D = D
-    
+
   end subroutine new_data_
 
   !> @cond BUD_DEVELOPER
-  
+
   subroutine get_ll_headp(this, head)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     type(BUD_LINKED_LIST_NAME), pointer :: head
@@ -475,11 +475,11 @@
 #endif
 
   end subroutine get_ll_headp
-  
+
   subroutine get_ll_tailp(this, tail)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     type(BUD_LINKED_LIST_NAME), pointer :: tail
-    
+
     if ( .not. is_initd(this) ) then
       nullify(tail)
       return
@@ -525,7 +525,7 @@
 #else
     if ( lindex < 0 ) return
 #endif
-    
+
     do while ( lindex > 0 .and. associated(node%next) )
       node => node%next
       lindex = lindex - 1
@@ -536,7 +536,7 @@
       nullify(node)
       return
     end if
-    
+
   end subroutine get_ll_idxp
 
   ! Create a new node at this tip
@@ -569,22 +569,22 @@
   end subroutine append_node
 
   !> @endcond BUD_DEVELOPER
-  
-  
+
+
   !> @param[inout] this linked list that is queried
   !! @return number of nodes in the list
   function size_llist_(this) result (nnodes)
     BUD_CLASS(BUD_TYPE_NAME), intent(in), target :: this
     integer :: nnodes
     type(BUD_LINKED_LIST_NAME), pointer :: head, tmp
-    
+
     nnodes = 0
 
     if ( .not. is_initd(this) ) return
 
     ! Retrieve a pointer
     call get_ll_headp(this, head)
-    
+
     ! Start counting from the top node
     tmp => head
     do while ( associated(tmp) )
@@ -598,7 +598,7 @@
 
   end function size_llist_
 
-    
+
   !> @param[inout] this add a new element to the linked list
   subroutine add_node_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
@@ -613,9 +613,9 @@
       ! Create node
       allocate(this%D%ll)
       this%D%head => this%D%ll
-      
+
       return
-      
+
     end if
 
     ! get current head from this head
@@ -623,7 +623,7 @@
 
     ! create new node
     call append_node(tail)
-    
+
   end subroutine add_node_
 
 
@@ -641,7 +641,7 @@
     end if
     call append_node(tail)
     tail%next%D = D
-    
+
   end subroutine add_node_data_
 
 
@@ -650,11 +650,11 @@
   subroutine set_data_(this, D)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     type(BUD_LIST_TYPE), intent(in) :: D
-    
+
     if ( is_initd(this) ) then
       this%D%head%D = D
     end if
-    
+
   end subroutine set_data_
 
   !> @param[inout] this linked list item where the data is overwritten
@@ -669,7 +669,7 @@
     call get_ll_idxp(this, node, index)
     if ( .not. associated(node) ) return
     node%D = D
-    
+
   end subroutine set_data_idx_
 
   !> Set the head of the linked list
@@ -681,7 +681,7 @@
     call get_ll_idxp(this, node, index)
     if ( .not. associated(node) ) return
     this%D%head => node
-    
+
   end subroutine set_head_idx_
 
 
@@ -727,9 +727,9 @@
       call new(itt)
 
       itt%D%head => this%D%head
-      
+
       itterated = associated(itt%D%head)
-      
+
     else
 
       itt%D%head => itt%D%head%next
@@ -739,7 +739,7 @@
       if ( itterated ) then
         itterated = .not. associated(itt%D%head, this%D%head)
       end if
-      
+
     end if
 
     if ( .not. itterated ) then
@@ -776,15 +776,15 @@
       call new(itt)
 
       itt%D%head => this%D%head
-      
+
       itterated = associated(itt%D%head)
-      
+
     else if ( i > 0 ) then
 
       do while ( is /= i )
         is = is + 1
         itt%D%head => itt%D%head%next
-        
+
         itterated = associated(itt%D%head)
 
         if ( itterated ) then
@@ -799,9 +799,9 @@
 #ifdef BUD_LIST_DOUBLY
       do while ( is /= i )
         is = is - 1
-        
+
         itt%D%head => itt%D%head%prev
-        
+
         itterated = associated(itt%D%head)
 
         if ( itterated ) then
@@ -811,18 +811,18 @@
 
       end do
 #endif
-      
+
     end if
 
     if ( .not. itterated ) then
-      
+
       ! be sure to not accidentially delete the
       ! looped construct
       nullify(itt%D%head)
-      
+
       ! we are at the end of the linked list
       call delete(itt)
-      
+
     end if
 
   end function itt_step_i_
@@ -843,7 +843,7 @@
 
     ! Find the node
     call get_ll_idxp(this, node, index)
-    
+
     ! Quick return if the node does not exist
     if ( .not. associated(node) ) return
 
@@ -867,9 +867,9 @@
 #else
 
 #error "MISSING: remove_node for single lists"
-    
+
 #endif
-    
+
   end subroutine remove_node_
 
   !> @param[inout] this the linked list which should get the data in a node removed
@@ -925,7 +925,7 @@
       ! an additional copy.
 #endif
       if ( associated(t, to%D%head) ) return
-      
+
     end do
 
 #ifdef BUD_LIST_DOUBLY
@@ -943,8 +943,8 @@
 #endif
 
   end subroutine copy_
-  
-  
+
+
   !> @param[in] this linked list
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
@@ -959,14 +959,14 @@
     ! 4-byte variable
     character(len=32) :: fmt
     character(len=256) :: name
-    
+
     name = BUD_TYPE_NAME_STR
     if ( present(info) ) name = info
     lindent = 1
     if ( present(indent) ) lindent = indent
 
     write(fmt, '(a,i0,a)') '(t',lindent,',3a)'
-    
+
     if ( .not. is_initd(this) ) then
       write(*,fmt) "<", trim(name), " not initialized>"
       return
@@ -988,7 +988,7 @@
     lindent = lindent - 2 ! go back to requested indentation
     write(fmt, '(a,i0,a)') '(t',lindent,',a,i0,a)'
     write(*,fmt) " <llist-refs: ", references(this), ">>"
-    
+
   end subroutine print_
 
 #undef BUD_MOD_NAME
@@ -1000,7 +1000,7 @@
 #undef BUD_LINKED_LIST_NAME
 #undef BUD_LIST_DOUBLY
 
-  
+
   ! project-buds -- local file settings
   !     Anything below this line may be overwritten by scripts
   !     Below are non-editable settings

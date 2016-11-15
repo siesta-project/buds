@@ -1,5 +1,5 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
-  
+
   ! The following pre-processor variables are currently used when
   ! included:
   !  - BUD_TYPE_NAME of the type
@@ -8,7 +8,7 @@
   !  - BUD_TYPE_NEW, the routine name for creating a new type
   !  - BUD_ITEM_TYPE, the @bud contained in the single item
 
-  
+
   ! Include the common utilities
 #include "bud_utils.inc"
 
@@ -35,7 +35,7 @@
   type BUD_TYPE_NAME
 
     !> @cond BUD_DEVELOPER
-    
+
     !> Stored pointer which contains the reference counting etc.
     type(BUD_TYPE_NAME_), pointer :: D => null()
 
@@ -48,12 +48,12 @@
     !> @name Private procedures
     !> @{
     ! Doxygen needed line
-    
+
     procedure, private :: new_
     procedure, private :: new_data_
 
     !> @}
-    
+
     !> @iSee BUD_NEW_TYPE
     generic, public :: BUD_NEW_TYPE => new_, new_data_
     !> @iSee BUD_NEW_TYPE
@@ -72,7 +72,7 @@
 #endif
   end type BUD_TYPE_NAME
 
-  
+
   !> @cond BUD_DEVELOPER
 
   !> Data container for the @bud.
@@ -91,14 +91,14 @@
   end type BUD_TYPE_NAME_
 
   !> @endcond BUD_DEVELOPER
-  
+
 
   !> Create a new @bud prepared for containing a BUD_ITEM_TYPE
   !!
   !! Initialize the object and prepare it for use.
   !!
   !! There are two variants:
-  !!  1. no passed BUD_ITEM_TYPE, and 
+  !!  1. no passed BUD_ITEM_TYPE, and
   !!  2. passed BUD_ITEM_TYPE
   !! which either initializes the object with
   !! an empty contained BUD_ITEM_TYPE or with a reference to the passed
@@ -108,7 +108,7 @@
     module procedure new_data_
   end interface
   public :: BUD_TYPE_NEW
-  
+
   !> @iSee BUD_TYPE_NEW
   interface new
     module procedure new_
@@ -170,17 +170,17 @@
     module procedure print_
   end interface
   public :: print
-  
+
   ! all default reference counted stuff
 # include "bud_common.inc"
 
   !> @cond BUD_DEVELOPER
-  
+
   pure subroutine delete_(D)
     type(BUD_TYPE_NAME_), intent(inout) :: D
-    
+
     call delete(D%item)
-    
+
   end subroutine delete_
 
   !> @endcond BUD_DEVELOPER
@@ -199,11 +199,11 @@
     call common_copy_(from, to)
 
     call copy(from%D%item, to%D%item)
-    
+
   end subroutine copy_
-  
-  
-  !> @param[inout] this type to be initialized 
+
+
+  !> @param[inout] this type to be initialized
   subroutine new_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
@@ -229,13 +229,13 @@
   subroutine set_data_(this, item)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     type(BUD_ITEM_TYPE), intent(in) :: item
-    
+
     if ( is_initd(this) ) then
       this%D%item = item
     else
       call new(this, item)
     end if
-    
+
   end subroutine set_data_
 
   !> @param[in] this item containing @bud
@@ -243,13 +243,13 @@
   subroutine get_data_(this, item)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     type(BUD_ITEM_TYPE), intent(inout) :: item
-    
+
     if ( is_initd(this) ) then
       item = this%D%item
     else
       call delete(item)
     end if
-    
+
   end subroutine get_data_
 
   !> @param[inout] item item to store @bud-data in
@@ -259,10 +259,10 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
 
     call get_data(this, item)
-    
+
   end subroutine get_data_assign_
 
-  
+
   !> @param[in] this data type
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
@@ -276,14 +276,14 @@
     ! 4-byte variable
     character(len=32) :: fmt
     character(len=256) :: name
-    
+
     name = BUD_TYPE_NAME_STR
     if ( present(info) ) name = info
     lindent = 1
     if ( present(indent) ) lindent = indent
 
     write(fmt, '(a,i0,a)') '(t',lindent,',3a)'
-    
+
     if ( .not. is_initd(this) ) then
       write(*,fmt) "<", trim(name), " not initialized>"
       return
@@ -296,7 +296,7 @@
     lindent = lindent - 2 ! go back to requested indentation
     write(fmt, '(a,i0,a)') '(t',lindent,',a,i0,a)'
     write(*,fmt) " <item-refs: ", references(this), ">>"
-    
+
   end subroutine print_
 
 #undef BUD_MOD_NAME
@@ -306,7 +306,7 @@
 #undef BUD_TYPE_NEW
 #undef BUD_ITEM_TYPE
 
-  
+
   ! project-buds -- local file settings
   !     Anything below this line may be overwritten by scripts
   !     Below are non-editable settings

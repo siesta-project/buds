@@ -7,7 +7,7 @@
 #endif
 
   !> @cond BUD_DEVELOPER
-  
+
   !> Reference counter for @bud
   !! Tracks the number of times this data structure is referenced
   integer :: refs_ = 0
@@ -24,7 +24,7 @@
 
   !> @endcond BUD_DEVELOPER
 
-  
+
 ! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings

@@ -7,7 +7,7 @@
 #endif
 
 
-!> @param[in] n size of array 
+!> @param[in] n size of array
 !! @param[in] array sorted array where we count unique numbers
 !! @return number of unique values in sorted array
 pure function BUD_CC2(nuniq_sorted_,BUD_PREC)(n, array) result(nuniq)
@@ -25,10 +25,10 @@ pure function BUD_CC2(nuniq_sorted_,BUD_PREC)(n, array) result(nuniq)
       nuniq = nuniq + 1
     end if
   end do
-  
+
 end function
 
-!> @param[in] n size of array 
+!> @param[in] n size of array
 !! @param[in] array sorted array where we count unique numbers
 !! @return number of unique values in sorted array
 pure function BUD_CC2(nuniq_,BUD_PREC)(n, array) result(nuniq)
@@ -54,10 +54,10 @@ pure function BUD_CC2(nuniq_,BUD_PREC)(n, array) result(nuniq)
   end do
 
   deallocate(pvt)
-  
+
 end function
 
-!> @param[in] n size of array 
+!> @param[in] n size of array
 !! @param[in] array sorted array where we count unique numbers
 !! @param[in] pvt pivoting array that creates a sorted array
 !! @return number of unique values in sorted array

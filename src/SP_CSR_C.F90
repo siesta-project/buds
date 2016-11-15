@@ -22,7 +22,7 @@
 !!
 !! @note The indices stored in the arrays are C-indexed
 !! but retrieving a pointer through `attach` is still
-!! fortran-indexed.  
+!! fortran-indexed.
 !!
 !! \code{.f90}
 !!   integer :: nr, nz, ir, idx

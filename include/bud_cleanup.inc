@@ -26,7 +26,7 @@
 
   ! bud_item
 #undef BUD_ITEM_TYPE
-  
+
   ! These flags control the input sequence
 #undef BUD_COMMON_DECLARATIONS_H
 

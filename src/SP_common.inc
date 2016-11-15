@@ -26,13 +26,13 @@
   !> Number of rows in the sparse pattern
   interface rows
     module procedure rows_
-  end interface 
+  end interface
   public :: rows
-  
+
   !> Number of columns in the sparse pattern
   interface columns
     module procedure columns_
-  end interface 
+  end interface
   public :: columns
 
 
@@ -44,13 +44,13 @@
   !!  3. `size(this, 2)` will return `columns(this)`
   interface size
     module procedure size_
-  end interface 
+  end interface
   public :: size
 
 
   !> Retrieve access to sparse pattern variables via pointers.
   !!
-  !! Manually access the sparsity pattern by retrieving 
+  !! Manually access the sparsity pattern by retrieving
   !! pointers and interact externally with the
   !! sparsity pattern.
   !!
@@ -65,10 +65,10 @@
   !! Add error checking for `D` parameter.
   interface attach
     module procedure attach_
-  end interface 
+  end interface
   public :: attach
 
-  
+
   !> Print, to std-out, some basic information of the data-container
   !!
   !! Print out XML-like information regarding the data-container.
@@ -85,8 +85,8 @@
   ! Include common data routines
   ! Note that 'CONTAINS' is present in this include file.
 # include "bud_common.inc"
-  
-  
+
+
   !> @param[in] this the sparse pattern
   !! @return number of non-zero elements in the pattern
   elemental function nonzeros_(this) result(nnzs)
@@ -94,8 +94,8 @@
     integer :: nnzs
     nnzs = this%D%nz
   end function nonzeros_
-  
-  
+
+
   !> @param[in] this the sparse pattern
   !! @return number of rows in the pattern
   elemental function rows_(this) result(rows)
@@ -104,7 +104,7 @@
     rows = this%D%nr
   end function rows_
 
-  
+
   !> @param[in] this the sparse pattern
   !! @return number of columns in the pattern
   elemental function columns_(this) result(cols)
@@ -135,7 +135,7 @@
     else
       size = this%D%nz
     end if
-    
+
   end function size_
 
   !> @param[in] this sparse pattern
@@ -158,7 +158,7 @@
     if ( present(indent) ) lindent = indent
 
     write(fmt, '(a,i0,a)') '(t',lindent,',3a)'
-    
+
     if ( .not. is_initd(this) ) then
       write(*,fmt) "<", trim(name), " not initialized>"
       return
@@ -166,14 +166,14 @@
 
     ! Create fmt
     write(fmt, '(a,i0,a)') '(t',lindent,',3a,4(i0,a))'
-    
+
     write(*,fmt) "<", trim(name), " rows=", this%D%nr, &
       ", cols=", this%D%nc, ", nnzs=",this%D%nz, &
       ", refs: ", references(this), ">"
-    
+
   end subroutine print_
 
-  
+
 ! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings

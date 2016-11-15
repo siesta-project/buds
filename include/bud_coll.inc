@@ -40,7 +40,7 @@
 #include "bud_common_declarations.inc"
 
   !> @cond BUD_DOC_INC
-  
+
   ! We use "collection" as "set" may be confusing as nothing is _set_.
   !> @defgroup bud-coll Collection @bud of several @buds
   !!
@@ -114,7 +114,7 @@
   type BUD_TYPE_NAME
 
     !> @cond BUD_DEVELOPER
-    
+
     !> Stored pointer which contains the reference counting etc.
     type(BUD_TYPE_NAME_), pointer :: D => null()
 
@@ -189,7 +189,7 @@
 
 
   !> @cond BUD_DEVELOPER
-  
+
   !> Internal data container for BUD_TYPE_NAME
   !!
   !! @details
@@ -227,7 +227,7 @@
 #ifdef BUD_COLL_6
   !! 6. BUD_COLL_6
 #endif
-  type BUD_TYPE_NAME_    
+  type BUD_TYPE_NAME_
 
     !> First element of collection (BUD_COLL_1)
     type(BUD_COLL_1) :: e1
@@ -249,14 +249,14 @@
     !> Sixth element of collection (BUD_COLL_6)
     type(BUD_COLL_6) :: e6
 #endif
-    
+
     ! Consistent data in the reference counted object
 #   include "bud_common_type_.inc"
 
   end type BUD_TYPE_NAME_
 
   !> @endcond BUD_DEVELOPER
-  
+
 
   !> Initialize collection
   !!
@@ -279,7 +279,7 @@
   public :: new
 
 
-  
+
 #if BUD_COLL_SAME == 0
   interface assignment(=)
     module procedure BUD_CC3(get_elem,1,_assign_)
@@ -389,7 +389,7 @@
     module procedure get_elem1p_
   end interface
   public :: element1_p
-    
+
   !> @cond BUD_DEVELOPER
 
   ! we do not document these sub-routines as they are encompassed
@@ -422,7 +422,7 @@
   end interface
   public :: element3_p
 #endif
-  
+
 #ifdef BUD_COLL_4
   interface element4
     module procedure get_elem4_
@@ -437,7 +437,7 @@
   end interface
   public :: element4_p
 #endif
-  
+
 #ifdef BUD_COLL_5
   interface element5
     module procedure get_elem5_
@@ -480,11 +480,11 @@
     module procedure print_
   end interface print
   public :: print
-  
+
   ! all default reference counted stuff
 # include "bud_common.inc"
 
-  
+
   !> @cond BUD_DEVELOPER
 
   pure subroutine delete_(D)
@@ -504,7 +504,7 @@
 #ifdef BUD_COLL_6
     call delete(D%e6)
 #endif
-    
+
   end subroutine delete_
 
   !> @endcond BUD_DEVELOPER
@@ -537,7 +537,7 @@
 #ifdef BUD_COLL_6
     call copy(from%D%e6, to%D%e6)
 #endif
-    
+
   end subroutine copy_
 
   !> @param[inout] this new initialized @bud
@@ -602,16 +602,16 @@
 #ifdef BUD_COLL_6
     this%D%e6 = f
 #endif
-    
+
   end subroutine new_data_
 
-  
+
   !> @param[inout] this initialize @bud with no data
   subroutine new_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    
+
     call initialize(this)
-    
+
   end subroutine new_
 
 
@@ -643,7 +643,7 @@
 # include "bud_coll_elem.inc"
 #endif
 
-  
+
   !> @param[in] this data type
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
@@ -652,7 +652,7 @@
     character(len=*), intent(in), optional :: info
     integer, intent(in), optional :: indent
     integer :: lindent
-    
+
     ! 4-byte variable
     character(len=32) :: fmt
     character(len=256) :: name
@@ -661,9 +661,9 @@
     if ( present(info) ) name = info
     lindent = 1
     if ( present(indent) ) lindent = indent
-    
+
     write(fmt, '(a,i0,a)') '(t',lindent,',3a)'
-    
+
     if ( .not. is_initd(this) ) then
       write(*,fmt) "<", trim(name), " not initialized>"
       return

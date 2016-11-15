@@ -14,7 +14,7 @@ subroutine BUD_CC3(get_elem,BUD_COLL_NUM,_)(this, item)
   else
     item = this%D% BUD_CC2(e,BUD_COLL_NUM)
   end if
-  
+
 end subroutine
 
 
@@ -32,10 +32,10 @@ subroutine BUD_CC3(get_elem,BUD_COLL_NUM,_assign_)(item, this)
   else
     item = this%D% BUD_CC2(e,BUD_COLL_NUM)
   end if
-  
+
 end subroutine
 
-#endif 
+#endif
 
 
 !> @param[inout] this @bud container
@@ -47,7 +47,7 @@ subroutine BUD_CC3(set_elem,BUD_COLL_NUM,_)(this, item)
   if ( .not. is_initd(this) ) return
 
   this%D% BUD_CC2(e,BUD_COLL_NUM) = item
-  
+
 end subroutine
 
 !> @param[inout] this collection to retrieve data from
@@ -55,15 +55,15 @@ end subroutine
 function BUD_CC3(get_elem,BUD_COLL_NUM,p_)(this) result(p)
   BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
   type(BUD_COLL_CURRENT), pointer :: p
-  
+
   if ( .not. is_initd(this) ) then
     ! it is empty, so return an empty item
     nullify(p)
   else
     p => this%D% BUD_CC2(e,BUD_COLL_NUM)
   end if
-  
-end function 
+
+end function
 
 
 ! Prepare next input

@@ -21,7 +21,7 @@
   !        (this is equivalent to the SIESTA sparsity)
   !      This does not allow C-interoperability (do NOT set
   !      BUD_SP_INTEROP_C in this case)
-  !      
+  !
   !  - BUD_SP_INTEROP_C=0|1
   !    Use C-indexing with BUD_SP_INTEROP_C == 1
   !    All subsequent operations correspond to a
@@ -68,7 +68,7 @@
 # define BUD_SP_PTR_B
 #endif
 
-  
+
 #if BUD_SP_INTEROP_C == 0
 # define BUD_SP_IDX(a) (a)
 # define BUD_SP_IDXF(a) (a)
@@ -79,15 +79,15 @@
 # error "SP_INTEROP_C *MUST* be either 0 or 1"
 #endif
 
-  
+
 #include "bud_utils.inc"
-  
+
 #define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
 #define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
 #define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
 
   use BUD_CC3(BUD_MOD,_,SP_generic)
-  
+
   ! This *MUST* be the first statement
   ! Common parameters and variables used
 # include "bud_common_declarations.inc"
@@ -96,16 +96,16 @@
   type BUD_TYPE_NAME
 
     !> @cond BUD_DEVELOPER
-    
+
     !> Stored pointer which contains the reference counting etc.
     type(BUD_TYPE_NAME_), pointer :: D => null()
 
     !> @endcond BUD_DEVELOPER
-    
+
 #if BUD_FORTRAN >= 2003
   contains
 #   include "bud_common_type.inc"
-    
+
     !> @name Private procedures
     !> @{
     ! Doxygen needed line
@@ -178,7 +178,7 @@
     generic, public :: translate_column => translate_col_el_, &
       translate_col_list_
 
-    
+
     !> @iSee #sort
     procedure, public :: sort => sort_
 
@@ -188,14 +188,14 @@
 #endif
   end type BUD_TYPE_NAME
 
-  
+
   !> @cond BUD_DEVELOPER
-  
+
   !> @bud container for BUD_TYPE_NAME
   !!
   !! Contains the sparsity pattern for a CSR matrix.
   type BUD_TYPE_NAME_
-    
+
     !> Number of rows in the matrix
     integer(BUD_TYPE_VAR_PREC) :: nr = 0
     !> Number of columns in the matrix
@@ -224,8 +224,8 @@
   end type BUD_TYPE_NAME_
 
   !> @endcond BUD_DEVELOPER
-  
-  
+
+
   !> Create a new sparse matrix
   !!
   !! You may either create an empty sparse matrix with
@@ -236,7 +236,7 @@
     module procedure new_copy_
   end interface
   public :: BUD_TYPE_NEW
-  
+
   !> @iSee BUD_TYPE_NEW
   interface new
     module procedure new_dim_
@@ -253,7 +253,7 @@
   !!
 #if BUD_SP_CSR == 0
 # if BUD_SP_INTEROP_C == 0
-  !! `M(ir,col(pointer(ir)))` 
+  !! `M(ir,col(pointer(ir)))`
 # else
   !! `M(ir,col(pointer(ir)+1))`
 # endif
@@ -267,7 +267,7 @@
   end interface
   public :: offset_p
 
-  
+
   !> Retrieve a pointer to the column indices
   interface column_p
     module procedure columnp_
@@ -288,17 +288,17 @@
   interface remove_row
     module procedure remove_row_el_
     module procedure remove_row_list_
-  end interface 
+  end interface
   public :: remove_row
 
   !> Remove columns from the sparse pattern
   interface remove_column
     module procedure remove_col_el_
     module procedure remove_col_list_
-  end interface 
+  end interface
   public :: remove_column
 
-  
+
   !> Translate rows in the sparse pattern to new rows
   !!
   !! This will essentially change all entries for given
@@ -308,7 +308,7 @@
   interface translate_row
     module procedure translate_row_el_
     module procedure translate_row_list_
-  end interface 
+  end interface
   public :: translate_row
 
 
@@ -321,7 +321,7 @@
   interface translate_column
     module procedure translate_col_el_
     module procedure translate_col_list_
-  end interface 
+  end interface
   public :: translate_column
 
 
@@ -348,10 +348,10 @@
   ! Include the common elements of a sparsity method
   ! This includes "bud_common.inc"
 # include "SP_common.inc"
-  
+
 
   !> @cond BUD_DEVELOPER
-  
+
   !> Internal routine for cleaning up the data container.
   !!
   !! @dev_note
@@ -376,28 +376,28 @@
 #endif
 
   end subroutine delete_
-  
+
   !> @endcond BUD_DEVELOPER
 
-  
+
   !> @param[in] from the original `bud` which is copied to `to`
   !! @param[inout] to the output `bud` with the full copied data
   subroutine copy_(from, to)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
-    
+
     call delete(to)
     if ( .not. is_initd(from) ) return
-    
+
     call new(to, from%D%nr, from%D%nc, from%D%nz, &
       from%D%rptr, from%D%col)
     to%D%sorted = from%D%sorted
-    
+
     ! Copy the common data-content
     call common_copy_(from, to)
 
   end subroutine copy_
-  
+
   !> @param[inout] this the sparse matrix
   !! @param[in] nr number of rows of the matrix
   !! @param[in] nc number of columns of the matrix
@@ -412,7 +412,7 @@
     this%D%nc = nc
     this%D%nz = nz
     this%D%sorted = .false.
-    
+
     allocate(this%D%rptr(nr+1))
 #if BUD_SP_CSR == 1
     allocate(this%D%nrow(nr))
@@ -421,7 +421,7 @@
 
   end subroutine new_dim_
 
-  
+
   !> @param[inout] this the new sparse matrix
   !! @param[in] nr number of rows of the matrix
   !! @param[in] nc number of columns of the matrix
@@ -473,9 +473,9 @@
   function offsetp_(this) result(rptr)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: rptr(:)
-    
+
     rptr => this%D%rptr
-    
+
   end function offsetp_
 
   !> @param[in] this sparse matrix
@@ -485,9 +485,9 @@
     integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: col(:)
 
     col => this%D%col
-    
+
   end function columnp_
-  
+
   !> @param[in] this sparse matrix
   !> @param[in] r only retrieve the columns that reside in row `r`
   !! @return a pointer to the column indices for the sparse matrix of row `r` (contiguous)
@@ -497,7 +497,7 @@
     integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: col(:)
 
     col => this%D%col(this%D%rptr(r)BUD_SP_PTR_A:this%D%rptr(r+1)BUD_SP_PTR_B)
-    
+
   end function column_rp_
 
 #if BUD_SP_CSR == 1
@@ -508,11 +508,11 @@
     integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: nrow(:)
 
     nrow => this%D%nrow
-    
+
   end function nrowp_
 #endif
 
-  
+
   !> @param[in] this sparse matrix @bud
   !! @param[out] nr @opt number of rows in SP
   !! @param[out] nc @opt number of columns in SP
@@ -544,7 +544,7 @@
 #if BUD_SP_CSR == 1
     if ( present(nrow) ) nrow => this%D%nrow
 #endif
-    
+
   end subroutine attach_
 
 
@@ -564,27 +564,27 @@
     integer(BUD_TYPE_VAR_PREC), intent(in) :: ir
     integer(BUD_TYPE_VAR_PREC), intent(in) :: ic
     integer(BUD_TYPE_VAR_PREC) :: idx
-    
+
     if ( .not. this%D%sorted ) then
-      
+
       do idx = this%D%rptr(ir) BUD_SP_PTR_A , this%D%rptr(ir+1) BUD_SP_PTR_B
         if ( this%D%col(idx) == ic ) return
       end do
-      
+
       idx = -1
-      
+
       return
-      
+
     end if
 
     call find_bin(this%D%rptr(ir+1)-this%D%rptr(ir), &
       this%D%col(this%D%rptr(ir) BUD_SP_PTR_A:), ic, idx)
     if ( idx > 0 ) idx = this%D%rptr(ir) BUD_SP_PTR_B + idx
-    
+
   end function index_
 
 
-  
+
   !> @param[in] this sparse pattern to sort (in-place)
   !! @param[out] err associated error message of the sparsity pattern
   !! @param[out] pvt @opt=@none if requested the pivoting array for the sorted sparsity pattern
@@ -603,12 +603,12 @@
 
     ! Initialize error
     err = 0
-    
+
     ! Get sparse matrix array
     call attach(this, nr=nr, nz=nz, rptr=rptr, col=col)
 
     if ( present(pvt) ) then
-      
+
       if ( size(pvt) < nz ) then
         err = SP_INPUT + 3
         pvt = -1
@@ -616,7 +616,7 @@
       end if
 
       do ir = 1 , nr
-        
+
         nz = rptr(ir+1) - rptr(ir)
         ptr = rptr(ir) - BUD_SP_PTR
 
@@ -639,15 +639,15 @@
 
         col => column_p(this, ir)
         nz = size(col)
-        
+
         call sort_quick(nz, col)
 
       end do
-      
+
     end if
 
     this%D%sorted = .true.
-    
+
   end subroutine sort_
 
 
@@ -705,18 +705,18 @@
     call delete(L1)
     call delete(L2)
     call delete(L)
-    
+
   end subroutine union_
 
-  
+
   !> @param[in] from the originating sparse pattern
   !! @param[in] n number of elements in `remove`
-  !! @param[in] remove columns that are removed 
+  !! @param[in] remove columns that are removed
   !! @param[inout] to sparse pattern after deleting the columns
   subroutine remove_col_el_(from, n, remove, to)
 
     use BUD_CC3(BUD_MOD,_,BUD_LIST_NAME)
-    
+
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
     integer(BUD_TYPE_VAR_PREC), intent(in) :: n, remove(n)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
@@ -739,7 +739,7 @@
   subroutine remove_col_list_(from, remove, to)
 
     use BUD_CC3(BUD_MOD,_,BUD_LIST_NAME)
-    
+
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
     BUD_CLASS(BUD_LIST_NAME), intent(in) :: remove
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
@@ -772,7 +772,7 @@
   subroutine translate_col_el_(from, nin, in_col, nout, out_col, to)
 
     use BUD_CC3(BUD_MOD,_,BUD_LIST_NAME)
-    
+
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
     integer(BUD_TYPE_VAR_PREC), intent(in) :: nin, in_col(nin), nout, out_col(nout)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
@@ -789,7 +789,7 @@
 
   end subroutine translate_col_el_
 
-  
+
   !> @param[in] from the originating sparse pattern
   !! @param[in] in_col a list set of columns that will be translated into `out_col` (preferentially this should be sorted)
   !! @param[in] out_col a list set of translation columns
@@ -797,7 +797,7 @@
   subroutine translate_col_list_(from, in_col, out_col, to)
 
     use BUD_CC3(BUD_MOD,_,BUD_LIST_NAME)
-    
+
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
     BUD_CLASS(BUD_LIST_NAME) :: in_col, out_col
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
@@ -811,7 +811,7 @@
 
     call attach(from, nr=nr, nc=nc, nz=nz, rptr=rptr, col=col)
 
-    ! Retrieve list 
+    ! Retrieve list
     oc => list_p(out_col)
 
     ! Create a list with the columns
@@ -852,12 +852,12 @@
 
   !> @param[in] from the originating sparse pattern
   !! @param[in] n number of elements in `remove`
-  !! @param[in] remove rows that are removed 
+  !! @param[in] remove rows that are removed
   !! @param[inout] to sparse pattern after deleting the rows
   subroutine remove_row_el_(from, n, remove, to)
 
     use BUD_CC3(BUD_MOD,_,BUD_LIST_NAME)
-    
+
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
     integer(BUD_TYPE_VAR_PREC), intent(in) :: n, remove(n)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
@@ -880,7 +880,7 @@
   subroutine remove_row_list_(from, remove, to)
 
     use BUD_CC3(BUD_MOD,_,BUD_LIST_NAME)
-    
+
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
     BUD_CLASS(BUD_LIST_NAME), intent(in) :: remove
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
@@ -903,7 +903,7 @@
 
   end subroutine remove_row_list_
 
-  
+
 
   !> @param[in] from the originating sparse pattern
   !! @param[in] nin number of elements in `in_row`
@@ -914,7 +914,7 @@
   subroutine translate_row_el_(from, nin, in_row, nout, out_row, to)
 
     use BUD_CC3(BUD_MOD,_,BUD_LIST_NAME)
-    
+
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
     integer(BUD_TYPE_VAR_PREC), intent(in) :: nin, in_row(nin), nout, out_row(nout)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
@@ -938,7 +938,7 @@
   subroutine translate_row_list_(from, in_row, out_row, to)
 
     use BUD_CC3(BUD_MOD,_,BUD_LIST_NAME)
-    
+
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
     BUD_CLASS(BUD_LIST_NAME) :: in_row, out_row
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
@@ -951,11 +951,11 @@
     integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: or(:)
 
     call attach(from, nr=nr, nc=nc)
-    
+
     ! This algorithm moves in_row to out_row, and possibly deletes
     ! rows.
     allocate(lrow(nc))
-    
+
     ! Initialize the sparse lists
     do ir = 1 , nr
       call new(lrow(ir), BUD_CC2(1_,BUD_TYPE_VAR_PREC))
@@ -974,18 +974,18 @@
       ! Figure out if this is in in_row (i.e. should it be translated)
       idx = index(in_row, ir)
       if ( idx < 1 ) then
-        
+
         ! The column is not translated
         call push(lrow(ir), i, col)
-        
+
       else if ( or(idx) >= BUD_SP_IDX(1) ) then
-        
+
         ! Find where the new column has moved
         r = BUD_SP_IDXF(or(idx))
         call push(lrow(r), i, col)
-        
+
       end if
-      
+
     end do
 
     ! Now re-create the new sparsity pattern
@@ -1020,7 +1020,7 @@
       rptr(ir+1) = rptr(ir) + size(lrow(r))
 
       call delete(lrow(r))
-      
+
     end do
 
     ! Now we have, rptr, and column
@@ -1032,11 +1032,11 @@
 
     call delete(tmp)
     deallocate(lrow)
-      
+
   end subroutine translate_row_list_
 
 
-  
+
 ! Local pre-processor variables that
 ! undefine the variables that are not needed anymore.
 #undef BUD_MOD_NAME
@@ -1056,8 +1056,8 @@
 #undef BUD_SP_IDXF
 
 #include "bud_cleanup.inc"
-  
-  
+
+
 ! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings

@@ -1,11 +1,11 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
-  
+
 #include "bud_utils.inc"
 
   !> @defgroup list List with set-like operations
   !! @ingroup bud-intrinsic
   !!
-  !! A list implementation with set-like operations. 
+  !! A list implementation with set-like operations.
   !!
   !! The list is the equivalent of the #Array1D structure
   !! however with a large set of intrinsic functionality
@@ -22,7 +22,7 @@
   !! The list also implements index functions which are extremely fast
   !! if the list is sorted. In such cases the list may be used as pivoting
   !! array.
-  
+
   ! The following pre-processor variables are currently used when
   ! included:
   !  - BUD_MOD_NAME of the module
@@ -37,7 +37,7 @@
 #define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
 #define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
 #define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
-  
+
   !> BUD_MOD_NAME documentation
   !!
   !! @details
@@ -63,7 +63,7 @@
   type BUD_TYPE_NAME
 
     !> @cond BUD_DEVELOPER
-    
+
     !> Stored pointer which contains the reference counting etc.
     type(BUD_TYPE_NAME_), pointer :: D => null()
 
@@ -76,7 +76,7 @@
     !> @name Private procedures
     !> @{
     ! Doxygen needed line
-    
+
     procedure, private :: new_dim_
     procedure, private :: new_copy_
     procedure, private :: new_copy_n_
@@ -91,9 +91,9 @@
 
     procedure, private :: new_index_list_range_
     procedure, private :: new_index_list_list_
-    
+
     !> @}
-    
+
     !> @iSee BUD_NEW_TYPE
     generic, public :: BUD_NEW_TYPE => new_dim_, new_copy_, &
       new_copy_n_, new_range_
@@ -129,7 +129,7 @@
     !> @iSee #pop
     procedure, public :: pop => pop_value_
 
-    
+
     ! Set operations
     !> @iSee #union
     procedure, public :: union => union_
@@ -137,7 +137,7 @@
     procedure, public :: complement => complement_
     !> @iSee #intersect
     procedure, public :: intersect => intersect_
-    
+
 
     !> @iSee #unique
     procedure, public :: unique => unique_
@@ -181,7 +181,7 @@
   end type BUD_TYPE_NAME
 
   !> @cond BUD_DEVELOPER
-  
+
   !> @bud container for BUD_TYPE_NAME
   !!
   !! Contains a List of integers.
@@ -196,7 +196,7 @@
 
     !> Current maximum number of values
     integer(BUD_TYPE_VAR_PREC) :: max_n = 0
-    
+
     !> Incremental extension when the list is not enough
     !! In some cases this may be advantageous to be a relatively low number.
     integer(BUD_TYPE_VAR_PREC) :: incr_n = 10
@@ -209,7 +209,7 @@
     !! A sorted list has certain efficient properties
     !! when querying certain elements.
     logical :: sorted = .false.
-    
+
     ! Consistent data in the reference counted object
 #   include "bud_common_type_.inc"
 
@@ -235,7 +235,7 @@
     module procedure new_range_
   end interface
   public :: BUD_TYPE_NEW
-  
+
   !> @iSee BUD_TYPE_NEW
   interface new
     module procedure new_dim_
@@ -298,7 +298,7 @@
   end interface
   public :: size
 
-  
+
   !> Track the current size of list (number of current elements)
   !!
   !! Returns a pointer to the size of the list.
@@ -404,7 +404,7 @@
   !! or an additive number of values (`n`).
   interface extend
     module procedure extend_
-  end interface 
+  end interface
   public :: extend
 
   !> Shrinks the List to the number of elements currently in the List (or an explicit size)
@@ -461,7 +461,7 @@
   end interface
   public :: is_sorted
 
-  
+
   !> Print, to std-out, some basic information of the data-container
   !!
   !! Print out XML-like information regarding the data-container.
@@ -474,14 +474,14 @@
   end interface
   public :: print
 
-  
+
   ! Include common data routines
   ! Note that 'CONTAINS' is present in this include file.
 # include "bud_common.inc"
 
 
   !> @cond BUD_DEVELOPER
-  
+
   !> Internal routine for cleaning up the data container.
   !!
   !! @dev_note
@@ -499,12 +499,12 @@
     this%max_n = 0
     this%incr_n = 10
     this%sorted = .false.
-    
+
   end subroutine delete_
 
   !> @endcond BUD_DEVELOPER
 
-  
+
   !> @param[in] from the origin of data
   !! @param[inout] to the destination of the data
   subroutine copy_(from, to)
@@ -517,9 +517,9 @@
     call new_copy_n_(to, from%D%n, from%D%lst)
 
     call common_copy_(from, to)
-    
+
   end subroutine copy_
-  
+
 
   !> @param[inout] this array @bud
   !! @param[in] n size of list
@@ -551,12 +551,12 @@
     integer(BUD_TYPE_VAR_PREC) :: n
 
     n = size(list,dim=1)
-    
+
     call new_copy_n_(this, n, list)
 
   end subroutine new_copy_
 
-  
+
   !> @param[inout] this array @bud
   !! @param[in] a first value of the range
   !! @param[in] b last value of the range
@@ -571,7 +571,7 @@
 
     lstep = 1
     if ( present(step) ) lstep = step
-    
+
     n = (b - a) / lstep
     call new_dim_(this, n)
 
@@ -581,11 +581,11 @@
       this%D%lst(i) = c
       c = c + lstep
     end do
-    
+
     if ( lstep > 0 ) then
       this%D%sorted = .true.
     end if
-    
+
   end subroutine new_range_
 
   !> @param[inout] this list @bud
@@ -604,7 +604,7 @@
 
   end subroutine new_copy_n_
 
-  
+
   !> @param[inout] this list @bud
   !! @param[in] list list to convert to a list index using `[1:size(list)]`
   subroutine new_index_list_range_(this, list)
@@ -625,13 +625,13 @@
     do i = 1 , n
       ths(i) = index(list, i)
     end do
-    
+
     ! Doing it like this allows for using the same list
     this = tmp
     call delete(tmp)
 
   end subroutine new_index_list_range_
-  
+
   !> @param[inout] this list @bud
   !! @param[in] list list to lookup values from `lookup`
   !! @param[in] lookup the lookup values in `list`
@@ -729,7 +729,7 @@
     integer(BUD_TYPE_VAR_PREC), intent(in) :: incr_n
 
     if ( .not. is_initd(this) ) return
-    
+
     this%D%incr_n = incr_n
 
   end subroutine set_incr_n
@@ -742,14 +742,14 @@
 
     incr_n = 0
     if ( .not. is_initd(this) ) return
-    
+
     incr_n = this%D%incr_n
 
   end subroutine get_incr_n
-  
+
 
   !> @cond BUD_DEVELOPER
-  
+
   !> Initialize `bud` if not initialized with size `n`, else extend by `n`
   !!
   !! If `this` is not initialized the `bud` will be initialized and
@@ -764,18 +764,18 @@
     integer(BUD_TYPE_VAR_PREC), intent(in) :: n
 
     if ( is_initd(this) ) then
-      
+
       if ( this%D%max_n < this%D%n + n ) then
         call extend(this, max_n= &
           max(this%D%n+n,this%D%max_n+this%D%incr_n))
       end if
 
     else
-      
+
       call new_dim_(this, n)
-      
+
     end if
-    
+
   end subroutine assert_init_size_add
 
   !> @endcond BUD_DEVELOPER
@@ -810,7 +810,7 @@
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in) :: list(n)
     integer(BUD_TYPE_VAR_PREC) :: i
     logical :: sorted
-    
+
     call assert_init_size_add(this, n)
 
     if ( this%D%n > 0 ) then
@@ -828,7 +828,7 @@
       sorted = sorted .and. &
         list(i-1) <= list(i)
     end do
-    
+
     this%D%n = this%D%n + n
 
     this%D%sorted = this%D%sorted .and. sorted
@@ -844,10 +844,10 @@
     if ( .not. is_initd(other) ) return
 
     call push(this, other%D%n, other%D%lst)
-    
+
   end subroutine push_list_
 
-  
+
   !> @param[inout] this List
   !! @return the last element in the list (also decrement list size)
   !!         if there are no elements `0` will be returned.
@@ -859,10 +859,10 @@
       val = 0
       return
     end if
-    
+
     val = this%D%lst(this%D%n)
     this%D%n = this%D%n - 1
-    
+
   end function pop_value_
 
   !> @param[in] A first list
@@ -877,7 +877,7 @@
     call push(tmp, B)
     C = tmp
     call delete(tmp)
-    
+
   end subroutine merge_
 
   !> @param[in] this list @bud
@@ -907,10 +907,10 @@
 
     ! return the full list values
     p => this%D%lst
-    
+
   end function max_listp_
 
-  
+
   !> @param[in] this @bud container
   !! @param[in] max_n maximum number of allowed elements that should be available in the list
   !! @param[in] n @opt number of elements that needs to be available in its current state
@@ -945,7 +945,7 @@
     do i = 1, this%D%n
       tmp(i) = this%D%lst(i)
     end do
-    
+
     deallocate(this%D%lst)
     allocate(this%D%lst(this%D%n+n))
     ! set the new maximum size of the list
@@ -957,7 +957,7 @@
 
   end subroutine extend_
 
-  
+
   !> @param[inout] this @bud container
   !! @param[in] max_n new maximum number of allowed elements that should be available in the list
   subroutine shrink_n_(this, max_n)
@@ -968,7 +968,7 @@
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), allocatable :: tmp(:)
 
     n = min(max_n, this%D%n)
-    
+
     ! Reduce the array to the new size
     ! we only need to copy the elements
     if ( n > 0 ) then
@@ -977,10 +977,10 @@
         tmp(i) = this%D%lst(i)
       end do
     end if
-    
+
     deallocate(this%D%lst)
     allocate(this%D%lst(max_n))
-    
+
     ! set the new maximum size of the list
     if ( n > 0 ) then
       do i = 1, n
@@ -989,7 +989,7 @@
       this%D%n = n
       deallocate(tmp)
     end if
-    
+
     this%D%max_n = max_n
 
   end subroutine shrink_n_
@@ -1005,7 +1005,7 @@
 
   end subroutine shrink_
 
-  
+
   !> @param[inout] this clear the elements without shrinking the allocated list
   !! @param[in] n @opt=0 the retained elements in the list
   subroutine clear_(this, n)
@@ -1014,24 +1014,24 @@
     integer(BUD_TYPE_VAR_PREC) :: ln
 
     if ( .not. is_initd(this) ) return
-    
+
     ln = 0
     if ( present(n) ) ln = n
 
     this%D%n = ln
-    
+
   end subroutine clear_
-  
+
 
   !> @param[inout] this list @bud (sorted on exit)
   subroutine sort_(this)
     use BUD_CC2(BUD_MOD,_utils), only: sort_heap
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    
+
     call sort_heap(this%D%n, this%D%lst)
 
     this%D%sorted = .true.
-    
+
   end subroutine sort_
 
 
@@ -1101,7 +1101,7 @@
       end do
 
       call delete(D)
-      
+
     else
 
       ! We will sort list B and then perform the list insertion
@@ -1127,7 +1127,7 @@
 
     C = tmp
     call delete(tmp)
-      
+
   end subroutine intersect_
 
 
@@ -1153,13 +1153,13 @@
     ! Get maximum size of the union and allocate
     n = size(A) + size(B)
     call new_dim_(tmp, n)
-    
+
     ! Prefer to not copy any of the sets...
     if ( is_sorted(A) .and. .not. is_sorted(B) ) then
 
       ! First populate A
       call push(tmp, A)
-      
+
       ! we search in A
       l = list_p(B)
       do i = 1 , size(B)
@@ -1169,7 +1169,7 @@
       end do
 
     else if ( .not. is_sorted(A) .and. is_sorted(B) ) then
-      
+
       ! First populate B
       call push(tmp, B)
 
@@ -1204,7 +1204,7 @@
       end do
 
       call delete(D)
-      
+
     else
 
       ! We will sort list B and then perform the list insertion
@@ -1233,7 +1233,7 @@
 
     C = tmp
     call delete(tmp)
-      
+
   end subroutine union_
 
 
@@ -1266,9 +1266,9 @@
       call copy(A, D)
       call sort(D)
     end if
-      
+
     ! This is easy...
-    
+
     ! we search in A
     l = list_p(B)
     do i = 1 , size(B)
@@ -1281,7 +1281,7 @@
 
     C = tmp
     call delete(tmp)
-    
+
   end subroutine complement_
 
   !> @param[inout] this the list which will be returned with reversed elements
@@ -1312,7 +1312,7 @@
     call shrink(tmp, j)
     this = tmp
     call delete(tmp)
-    
+
   end subroutine unique_
 
   !> @param[inout] this the list which will be returned with reversed elements
@@ -1322,16 +1322,16 @@
     integer(BUD_TYPE_VAR_PREC) :: i, n
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: l(:)
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC) :: tmp
-    
+
     n = size(this)
     l => list_p(this)
-    
+
     do i = 1 , n / 2
       tmp = l(i)
       l(i) = l(n+1-i)
       l(n+1-i) = tmp
     end do
-    
+
   end subroutine reverse_
 
   !> @param[inout] this list @bud
@@ -1349,7 +1349,7 @@
         val = this%D%lst(i)
       end if
     end do
-    
+
   end function minval_
 
   !> @param[inout] this list @bud
@@ -1367,11 +1367,11 @@
         val = this%D%lst(i)
       end if
     end do
-    
+
   end function maxval_
 
 
-  
+
   !> @param[inout] this list @bud
   !! @param[in] val the value to be indexed in the list
   !! @return the index of `val` in the list (-1 if not found)
@@ -1382,7 +1382,7 @@
     integer(BUD_TYPE_VAR_PREC) :: idx
 
     if ( this%D%sorted ) then
-      
+
       ! we may easily find indices of a sorted array
       call find_bin(this%D%n, this%D%lst, val, idx)
 
@@ -1393,9 +1393,9 @@
       do idx = 1 , this%D%n
         if ( this%D%lst(idx) == val ) return
       end do
-      
+
     end if
-    
+
     idx = 0
 
   end function index_
@@ -1412,7 +1412,7 @@
 
   end function in_list_
 
-  
+
   !> @param[in] this list @bud
   !! @return .true. if `this` is a sorted list
   pure function is_sorted_(this) result(sorted)
@@ -1423,7 +1423,7 @@
     if ( .not. sorted ) then
       sorted = size(this) == 1
     end if
-    
+
   end function is_sorted_
 
 
@@ -1449,7 +1449,7 @@
     if ( present(indent) ) lindent = indent
 
     write(fmt, '(a,i0,a)') '(t',lindent,',3a)'
-    
+
     if ( .not. is_initd(this) ) then
       write(*,fmt) "<", trim(name), " not initialized>"
       return
@@ -1458,17 +1458,17 @@
     ! Get size
     n = size_(this)
     max_n = max_size_(this)
-    
+
     ! Create fmt
     write(fmt, '(a,i0,a)') '(t',lindent,',3a,2(i0,a),l1,a,i0)'
-    
+
     write(*,fmt) "<", trim(name), " size/max=", n,'/',max_n, &
       ", sorted=", is_sorted(this), &
       ", refs: ", references(this), ">"
 
   end subroutine print_
 
-  
+
   ! Local pre-processor variables that
   ! undefine the variables that are not needed anymore.
 #undef BUD_TYPE_NEW
@@ -1476,8 +1476,8 @@
 #undef BUD_TYPE_VAR_PREC
 
 #include "bud_cleanup.inc"
-  
-  
+
+
 ! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings
