@@ -139,6 +139,9 @@
     procedure, public :: intersect => intersect_
     
 
+    !> @iSee #unique
+    procedure, public :: unique => unique_
+
     !> @iSee #reverse
     procedure, public :: reverse => reverse_
 
@@ -162,6 +165,11 @@
 
     !> @iSee #index
     procedure, public :: index => index_
+
+    !> @iSee #minval
+    procedure, public :: minval => minval_
+    !> @iSee #maxval
+    procedure, public :: maxval => maxval_
 
     !> @iSee #in_list
     procedure, public :: in_list => in_list_
@@ -323,6 +331,19 @@
   public :: index
 
 
+  !> Returns the minimum value in the list
+  interface minval
+    module procedure minval_
+  end interface
+  public :: minval
+
+  !> Returns the maximum value in the list
+  interface maxval
+    module procedure maxval_
+  end interface
+  public :: maxval
+
+
   !> Push a new value to the list (added at the end)
   !!
   !! Will append a new value in the list (at the end).
@@ -335,7 +356,9 @@
   !! re-instantiated, if needed.
   interface push
     module procedure push_value_, push_array_, push_list_
-  end interface push
+  end interface
+  public :: push
+
 
   !> Pop the last element in the list
   !!
@@ -343,7 +366,8 @@
   !! The list will never be re-allocated.
   interface pop
     module procedure pop_value_
-  end interface pop
+  end interface
+  public :: pop
 
   !> Merges two lists into a new list.
   !!
@@ -355,7 +379,8 @@
   !! \endcode
   interface merge
     module procedure merge_
-  end interface merge
+  end interface
+  public :: merge
 
   !> Sorts the entries in the list
   !!
@@ -369,7 +394,8 @@
   !! \endcode
   interface sort
     module procedure sort_
-  end interface sort
+  end interface
+  public :: sort
 
 
   !> Ensures that the list may contain a given number of values
@@ -378,7 +404,8 @@
   !! or an additive number of values (`n`).
   interface extend
     module procedure extend_
-  end interface extend
+  end interface 
+  public :: extend
 
   !> Shrinks the List to the number of elements currently in the List (or an explicit size)
   !!
@@ -386,40 +413,53 @@
   !! the last elements will silently be removed.
   interface shrink
     module procedure shrink_, shrink_n_
-  end interface shrink
+  end interface
+  public :: shrink
 
 
   !> Returns the union of two lists in a third list
   interface union
     module procedure union_
-  end interface union
+  end interface
+  public :: union
 
   !> Returns the intersection of two lists in a third list
   interface intersect
     module procedure intersect_
-  end interface intersect
+  end interface
+  public :: intersect
 
   !> Returns the complement of two lists in a third list
   interface complement
     module procedure complement_
-  end interface complement
+  end interface
+  public :: complement
+
+  !> Reduces the list to only the unique elements
+  interface unique
+    module procedure unique_
+  end interface
+  public :: unique
 
   !> Reverses the list
   interface reverse
     module procedure reverse_
-  end interface reverse
+  end interface
+  public :: reverse
 
 
   !> Query whether a value is in the list
   interface in_list
     module procedure in_list_
-  end interface in_list
+  end interface
+  public :: in_list
 
   !> Query whether the list is sorted. It will return `.true.` if the list has
   !! size == 1, or if it has been sorted.
   interface is_sorted
     module procedure is_sorted_
-  end interface is_sorted
+  end interface
+  public :: is_sorted
 
   
   !> Print, to std-out, some basic information of the data-container
@@ -573,7 +613,7 @@
 
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: lst(:), ths(:)
     integer(BUD_TYPE_VAR_PREC) :: i, n
-    type(BUD_TYPE_NAME), intent(in) :: tmp
+    type(BUD_TYPE_NAME) :: tmp
 
     n = size(list)
 
@@ -599,7 +639,7 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     type(BUD_TYPE_NAME), intent(in) :: list, lookup
 
-    type(BUD_TYPE_NAME), intent(in) :: tmp
+    type(BUD_TYPE_NAME) :: tmp
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: ths(:), look(:)
     integer(BUD_TYPE_VAR_PREC) :: i, n
 
@@ -1244,6 +1284,36 @@
     
   end subroutine complement_
 
+  !> @param[inout] this the list which will be returned with reversed elements
+  subroutine unique_(this)
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+
+    type(BUD_TYPE_NAME) :: tmp
+
+    integer(BUD_TYPE_VAR_PREC) :: i, j, n
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: l(:)
+
+    n = size(this)
+    call copy(this, tmp)
+    call sort(tmp)
+
+    ! Retrieve the list value pointer
+    l => list_p(tmp)
+    j = 1
+    do i = 2 , n
+      if ( l(j) /= l(i) ) then
+        j = j + 1
+        l(j) = l(i)
+      end if
+    end do
+
+    ! Ensure that the number of elements is
+    ! correct.
+    call shrink(tmp, j)
+    this = tmp
+    call delete(tmp)
+    
+  end subroutine unique_
 
   !> @param[inout] this the list which will be returned with reversed elements
   subroutine reverse_(this)
@@ -1264,11 +1334,47 @@
     
   end subroutine reverse_
 
+  !> @param[inout] this list @bud
+  !! @return the value of the minimum value in the list
+  pure function minval_(this) result(val)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC) :: val
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC) :: i
+
+    val = this%D%lst(1)
+    if ( this%D%sorted ) return
+
+    do i = 2 , size(this)
+      if ( this%D%lst(i) < val ) then
+        val = this%D%lst(i)
+      end if
+    end do
+    
+  end function minval_
+
+  !> @param[inout] this list @bud
+  !! @return the value of the maximum value in the list
+  pure function maxval_(this) result(val)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC) :: val
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC) :: i
+
+    val = this%D%lst(size(this))
+    if ( this%D%sorted ) return
+
+    do i = 1 , size(this) - 1
+      if ( this%D%lst(i) > val ) then
+        val = this%D%lst(i)
+      end if
+    end do
+    
+  end function maxval_
+
 
   
   !> @param[inout] this list @bud
   !! @param[in] val the value to be indexed in the list
-  !! @return the index of `val` in the list (0 if not found)
+  !! @return the index of `val` in the list (-1 if not found)
   pure function index_(this, val) result(idx)
     use BUD_CC2(BUD_MOD,_utils), only: find_bin
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
