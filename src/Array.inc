@@ -245,6 +245,9 @@
   !! @param[in] d3 size of the internal reference counted array (dim=3)
 #if BUD_DIM > 3
   !! @param[in] d4 size of the internal reference counted array (dim=4)
+#if BUD_DIM > 4
+  !! @param[in] d5 size of the internal reference counted array (dim=5)
+#endif
 #endif
 #endif
 #endif
@@ -258,6 +261,8 @@
     d1, d2, d3, &
 #elif BUD_DIM == 4
     d1, d2, d3, d4, &
+#elif BUD_DIM == 5
+    d1, d2, d3, d4, d5, &
 #endif
     val)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
@@ -269,6 +274,8 @@
     integer, intent(in) :: d1, d2, d3
 #elif BUD_DIM == 4
     integer, intent(in) :: d1, d2, d3, d4
+#elif BUD_DIM == 5
+    integer, intent(in) :: d1, d2, d3, d4, d5
 #endif
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in), optional :: val
@@ -290,6 +297,8 @@
     allocate(this%D%array(d1,d2,d3))
 #elif BUD_DIM == 4
     allocate(this%D%array(d1,d2,d3,d4))
+#elif BUD_DIM == 5
+    allocate(this%D%array(d1,d2,d3,d4,d5))
 #endif
 
     if ( present(val) ) this = val
@@ -315,6 +324,8 @@
     integer :: d1, d2, d3
 #elif BUD_DIM == 4
     integer :: d1, d2, d3, d4
+#elif BUD_DIM == 5
+    integer :: d1, d2, d3, d4, d5
 #endif
 
     d1 = size(array,dim=1)
@@ -327,6 +338,9 @@
 #if BUD_DIM > 3
     d4 = size(array,dim=4)
 #endif
+#if BUD_DIM > 4
+    d5 = size(array,dim=5)
+#endif
 
     ! initialize and create data-container
 #if BUD_DIM == 1
@@ -337,6 +351,8 @@
     call new_dim_(this, d1, d2, d3)
 #elif BUD_DIM == 4
     call new_dim_(this, d1, d2, d3, d4)
+#elif BUD_DIM == 5
+    call new_dim_(this, d1, d2, d3, d4, d5)
 #endif
 
     ! copy data
@@ -368,6 +384,9 @@
   !! @param[in] i3 index in the array
 #if BUD_DIM > 3
   !! @param[in] i4 index in the array
+#if BUD_DIM > 4
+  !! @param[in] i5 index in the array
+#endif
 #endif
 #endif
 #endif
@@ -381,6 +400,8 @@
     i1, i2, i3 &
 #elif BUD_DIM == 4
     i1, i2, i3, i4 &
+#elif BUD_DIM == 5
+    i1, i2, i3, i4, i5 &
 #endif
     ) result(v)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
@@ -392,6 +413,8 @@
     integer, intent(in) :: i1, i2, i3
 #elif BUD_DIM == 4
     integer, intent(in) :: i1, i2, i3, i4
+#elif BUD_DIM == 5
+    integer, intent(in) :: i1, i2, i3, i4, i5
 #endif
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC) :: v
@@ -407,6 +430,8 @@
     v = this%D%array(i1,i2,i3)
 #elif BUD_DIM == 4
     v = this%D%array(i1,i2,i3,i4)
+#elif BUD_DIM == 5
+    v = this%D%array(i1,i2,i3,i4,i5)
 #endif
 
   end function get_array_idx_
@@ -472,6 +497,8 @@
     integer :: d1, d2, d3
 #elif BUD_DIM == 4
     integer :: d1, d2, d3, d4
+#elif BUD_DIM == 5
+    integer :: d1, d2, d3, d4, d5
 #endif
 
     ! 4-byte variable
@@ -501,6 +528,9 @@
 #if BUD_DIM > 3
     d4 = size_(this, 4)
 #endif
+#if BUD_DIM > 4
+    d5 = size_(this, 5)
+#endif
 
     ! Create fmt
     write(fmt, '(a,i0,a)') '(t',lindent,',3a,10(i0,a))'
@@ -514,6 +544,9 @@
 #endif
 #if BUD_DIM > 3
       " d4=",d4, &
+#endif
+#if BUD_DIM > 5
+      " d5=",d5, &
 #endif
       ", refs: ", references(this), ">"
 
