@@ -48,7 +48,7 @@
 
   ! First we need to use the parameters
   use BUD_CC3(BUD_MOD,_,List_common)
-  
+
   ! This *MUST* be the first statement
   ! Common parameters and variables used
 # include "bud_common_declarations.inc"
@@ -88,12 +88,12 @@
 
     procedure, private :: shrink_
     procedure, private :: shrink_n_
-    
+
 # ifdef BUD_IS_INTEGER
     procedure, private :: new_index_list_range_
     procedure, private :: new_index_list_list_
 # endif
-    
+
     !> @}
 
     !> @iSee BUD_NEW_TYPE
@@ -146,7 +146,7 @@
     !> @iSee #unique
     procedure, public :: unique => unique_
 # endif
-    
+
     !> @iSee #reverse
     procedure, public :: reverse => reverse_
 
@@ -187,7 +187,7 @@
     !> @iSee #is_sorted
     procedure, public :: is_sorted => is_sorted_
 # endif
-    
+
 #endif
   end type BUD_TYPE_NAME
 
@@ -338,7 +338,7 @@
   end interface
   public :: size_max_p
 
-  
+
 #ifdef BUD_IS_INTEGER
   !> Returns index of the queried element. If non-existing returns `-1`.
   interface index
@@ -417,7 +417,7 @@
   end interface
   public :: sort
 #endif
-  
+
 
   !> Ensures that the list may contain a given number of values
   !!
@@ -439,7 +439,7 @@
 
 
 #ifdef BUD_IS_INTEGER
-  
+
   !> Returns the union of two lists in a third list
   interface union
     module procedure union_
@@ -463,7 +463,7 @@
     module procedure unique_
   end interface
   public :: unique
-  
+
   !> Query whether a value is in the list
   interface in_list
     module procedure in_list_
@@ -478,7 +478,7 @@
   public :: is_sorted
 
 #endif
-  
+
   !> Reverses the list
   interface reverse
     module procedure reverse_
@@ -566,7 +566,7 @@
 #ifdef BUD_IS_INTEGER
     this%D%sorted = .false.
 #endif
-    
+
   end subroutine new_dim_
 
 
@@ -830,7 +830,7 @@
       this%D%sorted = .false.
     end if
 #endif
-    
+
   end subroutine push_value_
 
 
@@ -856,7 +856,7 @@
       sorted = .true.
     end if
 #endif
-    
+
     this%D%lst(this%D%n+1) = list(1)
     do i = 2 , n
       this%D%lst(this%D%n+i) = list(i)
@@ -1409,7 +1409,7 @@
 #ifdef BUD_IS_INTEGER
     if ( this%D%sorted ) return
 #endif
-    
+
     do i = 1 , size(this) - 1
       if ( this%D%lst(i) > val ) then
         val = this%D%lst(i)

@@ -15,10 +15,10 @@ module BUD_CC3(BUD_MOD,_,List_common)
 
   ! Ensure these are public
   public
-  
+
   !> Maximum name length of the list
   integer, parameter :: LIST_MAX_NAME_LEn = 64
-  
+
 end module
 !! @}
 
