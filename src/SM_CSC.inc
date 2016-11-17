@@ -153,10 +153,10 @@
     !> @iSee #offset_p
     procedure, public :: offset_p => offsetp_
 
-#if BUD_SM_CSC == 1
+# if BUD_SM_CSC == 1
     !> @iSee #ncolumn_p
     procedure, public :: ncolumn_p => ncolumnp_
-#endif
+# endif
 
     !> @iSee #row_p
     generic, public :: row_p => rowp_, row_cp_
@@ -203,7 +203,7 @@
     !> Number of non-zero elements in the sparse matrix
     integer(BUD_TYPE_VAR_PREC) :: nz = 0
 
-    !> Whether the sparse matrix has been sorted, see #sort_sp
+    !> Whether the sparse matrix has been sorted, see #sort
     logical :: sorted = .false.
 
     !> Index of the equivalent column (size `nr+1`)
@@ -457,7 +457,7 @@
     end do
 #endif
 
-    this%D%row = row
+    this%D%row(:) = row(:)
 
   end subroutine new_copy_
 

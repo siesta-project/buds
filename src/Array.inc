@@ -356,7 +356,8 @@
 #endif
 
     ! copy data
-    this%D%array = array
+    ! (required to not check for allocation)
+    this%D%array BUD_DIM_SPEC(:) = array BUD_DIM_SPEC(:)
 
   end subroutine new_copy_
 
@@ -474,7 +475,8 @@
 #endif
 
     if ( is_initd(this) ) then
-      this%D%array = v
+      ! Required to not make any allocatable checks
+      this%D%array BUD_DIM_SPEC(:) = v
     end if
 
   end subroutine assign_value_
