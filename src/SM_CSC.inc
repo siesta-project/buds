@@ -10,7 +10,7 @@
   !
   ! Additionally the CSC pattern format may be
   ! controlled via these flags:
-  !  - BUD_SP_CSC
+  !  - BUD_SM_CSC
   !    case ( 0 ) ! default
   !      standard CSC format (MKL-SpBLAS)
   !    case ( 1 )
@@ -20,63 +20,63 @@
   !      the number of non-zero elements per row
   !        (this is equivalent to the SIESTA sparsity)
   !      This does not allow C-interoperability (do NOT set
-  !      BUD_SP_INTEROP_C in this case)
+  !      BUD_SM_INTEROP_C in this case)
   !
-  !  - BUD_SP_INTEROP_C=0|1
-  !    Use C-indexing with BUD_SP_INTEROP_C == 1
+  !  - BUD_SM_INTEROP_C=0|1
+  !    Use C-indexing with BUD_SM_INTEROP_C == 1
   !    All subsequent operations correspond to a
   !    C-index method.
-  !    Cannot be used together with BUD_SP_CSC == 1
+  !    Cannot be used together with BUD_SM_CSC == 1
 
-#ifndef BUD_SP_CSC
-# define BUD_SP_CSC 0
+#ifndef BUD_SM_CSC
+# define BUD_SM_CSC 0
 #endif
 
-#ifndef BUD_SP_INTEROP_C
-# define BUD_SP_INTEROP_C 0
+#ifndef BUD_SM_INTEROP_C
+# define BUD_SM_INTEROP_C 0
 #endif
 
-#if BUD_SP_CSC == 0
-#elif BUD_SP_CSC == 1
-# if BUD_SP_INTEROP_C == 1
-#  error "SP_INTEROP_C may not be defined when using SP_CSC == 1"
+#if BUD_SM_CSC == 0
+#elif BUD_SM_CSC == 1
+# if BUD_SM_INTEROP_C == 1
+#  error "SM_INTEROP_C may not be defined when using SM_CSC == 1"
 # endif
 #else
-# error "SP_CSC *MUST* be either 0 or 1"
+# error "SM_CSC *MUST* be either 0 or 1"
 #endif
 
 
-#if BUD_SP_CSC == 0
-# if BUD_SP_INTEROP_C == 0
-#  define BUD_SP_MOD modp
+#if BUD_SM_CSC == 0
+# if BUD_SM_INTEROP_C == 0
+#  define BUD_SM_MOD modp
    ! This is the initial pointer value for the
    ! first pointer element
-#  define BUD_SP_PTR 1
+#  define BUD_SM_PTR 1
    ! this is the addition to the pointer arrays
-#  define BUD_SP_PTR_A
-#  define BUD_SP_PTR_B -1
+#  define BUD_SM_PTR_A
+#  define BUD_SM_PTR_B -1
 # else
-#  define BUD_SP_MOD mod
-#  define BUD_SP_PTR 0
-#  define BUD_SP_PTR_A +1
-#  define BUD_SP_PTR_B
+#  define BUD_SM_MOD mod
+#  define BUD_SM_PTR 0
+#  define BUD_SM_PTR_A +1
+#  define BUD_SM_PTR_B
 # endif
 #else
-# define BUD_SP_MOD modp
-# define BUD_SP_PTR 0
-# define BUD_SP_PTR_A +1
-# define BUD_SP_PTR_B
+# define BUD_SM_MOD modp
+# define BUD_SM_PTR 0
+# define BUD_SM_PTR_A +1
+# define BUD_SM_PTR_B
 #endif
 
 
-#if BUD_SP_INTEROP_C == 0
-# define BUD_SP_IDX(a) (a)
-# define BUD_SP_IDXF(a) (a)
-#elif BUD_SP_INTEROP_C == 1
-# define BUD_SP_IDX(a) (a-1)
-# define BUD_SP_IDXF(a) (a+1)
+#if BUD_SM_INTEROP_C == 0
+# define BUD_SM_IDX(a) (a)
+# define BUD_SM_IDXF(a) (a)
+#elif BUD_SM_INTEROP_C == 1
+# define BUD_SM_IDX(a) (a-1)
+# define BUD_SM_IDXF(a) (a+1)
 #else
-# error "SP_INTEROP_C *MUST* be either 0 or 1"
+# error "SM_INTEROP_C *MUST* be either 0 or 1"
 #endif
 
 
@@ -86,13 +86,13 @@
 #define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
 #define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
 
-  use BUD_CC3(BUD_MOD,_,SP_generic)
+  use BUD_CC3(BUD_MOD,_,SM_common)
 
   ! This *MUST* be the first statement
   ! Common parameters and variables used
 # include "bud_common_declarations.inc"
 
-  !> Sparse pattern type in the CSC format
+  !> Sparse matrix type in the CSC format
   type BUD_TYPE_NAME
 
     !> @cond BUD_DEVELOPER
@@ -153,7 +153,7 @@
     !> @iSee #offset_p
     procedure, public :: offset_p => offsetp_
 
-#if BUD_SP_CSC == 1
+#if BUD_SM_CSC == 1
     !> @iSee #ncolumn_p
     procedure, public :: ncolumn_p => ncolumnp_
 #endif
@@ -200,21 +200,21 @@
     integer(BUD_TYPE_VAR_PREC) :: nr = 0
     !> Number of columns in the pattern
     integer(BUD_TYPE_VAR_PREC) :: nc = 0
-    !> Number of non-zero elements in the sparse pattern
+    !> Number of non-zero elements in the sparse matrix
     integer(BUD_TYPE_VAR_PREC) :: nz = 0
 
-    !> Whether the sparse pattern has been sorted, see #sort_sp
+    !> Whether the sparse matrix has been sorted, see #sort_sp
     logical :: sorted = .false.
 
     !> Index of the equivalent column (size `nr+1`)
     integer(BUD_TYPE_VAR_PREC), allocatable :: cptr(:)
 
-#if BUD_SP_CSC == 1
+#if BUD_SM_CSC == 1
     !> Number of non-zero elements per column (`ncol(i)=cptr(i+1)-cptr(i)`)
     integer(BUD_TYPE_VAR_PREC), allocatable :: ncol(:)
 #endif
 
-    !> The row index of the equivalent sparse pattern (size `nz`)
+    !> The row index of the equivalent sparse matrix (size `nz`)
     integer(BUD_TYPE_VAR_PREC), allocatable :: row(:)
 
     ! Consistent data in the reference counted object
@@ -225,10 +225,10 @@
   !> @endcond BUD_DEVELOPER
 
 
-  !> Create a new sparse pattern
+  !> Create a new sparse matrix
   !!
-  !! You may either create an empty sparse pattern with
-  !! a fixed size, or create a sparse pattern from
+  !! You may either create an empty sparse matrix with
+  !! a fixed size, or create a sparse matrix from
   !! existing data.
   interface BUD_TYPE_NEW
     module procedure new_dim_
@@ -250,15 +250,15 @@
   !!
   !! A pointer with the column offsets.
   !!
-#if BUD_SP_CSC == 0
-# if BUD_SP_INTEROP_C == 1
+#if BUD_SM_CSC == 0
+# if BUD_SM_INTEROP_C == 1
   !! `M(row(pointer(ic)+1),ic)` is the first sparse
   !! element in column `ic`.
 # else
   !! `M(row(pointer(ic)),ic)` is the first sparse
   !! element in column `ic`.
 # endif
-#elif BUD_SP_CSC == 1
+#elif BUD_SM_CSC == 1
   !! `M(row(pointer(ic)+1),ic)` is the first sparse
   !! element in column `ic`.
 #endif
@@ -268,14 +268,14 @@
   public :: offset_p
 
 
-  !> Retrieve a pointer to the row indices in the sparse pattern
+  !> Retrieve a pointer to the row indices in the sparse matrix
   interface row_p
     module procedure rowp_
     module procedure row_cp_
   end interface
   public :: row_p
 
-#if BUD_SP_CSC == 1
+#if BUD_SM_CSC == 1
   !> Retrieve a pointer to the number of entries per column
   interface ncolumn_p
     module procedure ncolumnp_
@@ -284,14 +284,14 @@
 #endif
 
 
-  !> Remove rows from the sparse pattern
+  !> Remove rows from the sparse matrix
   interface remove_row
     module procedure remove_row_el_
     module procedure remove_row_list_
   end interface
   public :: remove_row
 
-  !> Remove columns from the sparse pattern
+  !> Remove columns from the sparse matrix
   interface remove_column
     module procedure remove_col_el_
     module procedure remove_col_list_
@@ -299,7 +299,7 @@
   public :: remove_column
 
 
-  !> Translate rows in the sparse pattern to new rows
+  !> Translate rows in the sparse matrix to new rows
   !!
   !! This will essentially change all entries for given
   !! rows into a new set of rows.
@@ -312,7 +312,7 @@
   public :: translate_row
 
 
-  !> Translate columns in the sparse pattern to new columns
+  !> Translate columns in the sparse matrix to new columns
   !!
   !! This will essentially change all entries for given
   !! columns into a new set of columns.
@@ -325,9 +325,9 @@
   public :: translate_column
 
 
-  !> Sorts rows in the sparse pattern
+  !> Sorts rows in the sparse matrix
   !!
-  !! Sorts the sparse pattern such that the row
+  !! Sorts the sparse matrix such that the row
   !! index is always increasing for each column.
   !! This will generally allow faster access patterns.
   !!
@@ -340,7 +340,7 @@
 
 
   ! Include the common elements of a sparsity method
-# include "SP_common.inc"
+# include "SM_common.inc"
 
 
   !> @cond BUD_DEVELOPER
@@ -364,7 +364,7 @@
     if ( .not. allocated(this%row) ) return
     deallocate(this%cptr)
     deallocate(this%row)
-#if BUD_SP_CSC == 1
+#if BUD_SM_CSC == 1
     deallocate(this%ncol)
 #endif
 
@@ -392,7 +392,7 @@
   end subroutine copy_
 
 
-  !> @param[inout] this the sparse pattern
+  !> @param[inout] this the sparse matrix
   !! @param[in] nr number of rows of the pattern
   !! @param[in] nc number of columns of the pattern
   !! @param[in] nz number of non-zero elements the pattern
@@ -408,7 +408,7 @@
     this%D%sorted = .false.
 
     allocate(this%D%cptr(nc+1))
-#if BUD_SP_CSC == 1
+#if BUD_SM_CSC == 1
     allocate(this%D%ncol(nc))
 #endif
     allocate(this%D%row(nz))
@@ -416,7 +416,7 @@
   end subroutine new_dim_
 
 
-  !> @param[inout] this the new sparse pattern
+  !> @param[inout] this the new sparse matrix
   !! @param[in] nr number of rows of the pattern
   !! @param[in] nc number of columns of the pattern
   !! @param[in] nz number of non-zero elements of the pattern
@@ -429,13 +429,13 @@
     ! limiting ptr
     integer(BUD_TYPE_VAR_PREC), intent(in) :: cptr(nc), row(nz)
 
-#if BUD_SP_CSC == 1
+#if BUD_SM_CSC == 1
     integer(BUD_TYPE_VAR_PREC) :: ic
 #endif
 
     ! Copy over information
     ! It must be based on the starting index
-    if ( cptr(1) /= BUD_SP_PTR ) then
+    if ( cptr(1) /= BUD_SM_PTR ) then
       call delete(this)
       return
     end if
@@ -449,9 +449,9 @@
     ! create last pointer (to one plus number of elements)
     ! This ensures simple loops without taking care of
     ! the last index
-    this%D%cptr(this%D%nc+1) = this%D%nz + BUD_SP_PTR
+    this%D%cptr(this%D%nc+1) = this%D%nz + BUD_SM_PTR
 
-#if BUD_SP_CSC == 1
+#if BUD_SM_CSC == 1
     do ic = 1 , nc
       this%D%ncol(ic) = this%D%cptr(ic+1) - this%D%cptr(ic)
     end do
@@ -462,8 +462,8 @@
   end subroutine new_copy_
 
 
-  !> @param[in] this sparse pattern
-  !! @return a pointer to the column offsets for the sparse pattern (contiguous)
+  !> @param[in] this sparse matrix
+  !! @return a pointer to the column offsets for the sparse matrix (contiguous)
   function offsetp_(this) result(cptr)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: cptr(:)
@@ -473,8 +473,8 @@
   end function offsetp_
 
 
-  !> @param[in] this sparse pattern
-  !! @return a pointer to the row indices for the sparse pattern (contiguous)
+  !> @param[in] this sparse matrix
+  !! @return a pointer to the row indices for the sparse matrix (contiguous)
   function rowp_(this) result(row)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: row(:)
@@ -483,19 +483,19 @@
 
   end function rowp_
 
-  !> @param[in] this sparse pattern
+  !> @param[in] this sparse matrix
   !> @param[in] c only retrieve the rows that reside in column `c`
-  !! @return a pointer to the row indices for the sparse pattern (contiguous)
+  !! @return a pointer to the row indices for the sparse matrix (contiguous)
   function row_cp_(this,c) result(row)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_TYPE_VAR_PREC), intent(in) :: c
     integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: row(:)
 
-    row => this%D%row(this%D%cptr(c)BUD_SP_PTR_A:this%D%cptr(c+1)BUD_SP_PTR_B)
+    row => this%D%row(this%D%cptr(c)BUD_SM_PTR_A:this%D%cptr(c+1)BUD_SM_PTR_B)
 
   end function row_cp_
 
-#if BUD_SP_CSC == 1
+#if BUD_SM_CSC == 1
   !> @param[in] this sparse matrix
   !! @return a pointer to the array that holds the number of entries per column
   function ncolumnp_(this) result(ncol)
@@ -507,17 +507,17 @@
   end function ncolumnp_
 #endif
 
-  !> @param[in] this sparse pattern @bud
-  !! @param[out] nr @opt number of rows in SP
-  !! @param[out] nc @opt number of columns in SP
-  !! @param[out] nz @opt number of non-zero elements in SP
-  !! @param[out] cptr @opt column pointer (`cptr(2)BUD_SP_PTR_A` is starting index of `ic=2`)
+  !> @param[in] this sparse matrix @bud
+  !! @param[out] nr @opt number of rows in SM
+  !! @param[out] nc @opt number of columns in SM
+  !! @param[out] nz @opt number of non-zero elements in SM
+  !! @param[out] cptr @opt column pointer (`cptr(2)BUD_SM_PTR_A` is starting index of `ic=2`)
   !! @param[out] row @opt row index
-#if BUD_SP_CSC == 1
+#if BUD_SM_CSC == 1
   !! @param[out] ncol @opt number of non-zero elements per column
 #endif
   subroutine attach_(this, D, nr, nc, nz, cptr, row &
-#if BUD_SP_CSC == 1
+#if BUD_SM_CSC == 1
     , ncol &
 #endif
     )
@@ -527,7 +527,7 @@
     logical, intent(in), optional :: D
     integer(BUD_TYPE_VAR_PREC), intent(out), optional :: nr, nc, nz
     integer(BUD_TYPE_VAR_PREC), intent(out), pointer BUD_FORTRAN_CONTIGUOUS, optional :: cptr(:), row(:)
-#if BUD_SP_CSC == 1
+#if BUD_SM_CSC == 1
     integer(BUD_TYPE_VAR_PREC), intent(out), pointer BUD_FORTRAN_CONTIGUOUS, optional :: ncol(:)
 #endif
 
@@ -536,7 +536,7 @@
     if ( present(nz) ) nz = this%D%nz
     if ( present(cptr) ) cptr => this%D%cptr
     if ( present(row) ) row => this%D%row
-#if BUD_SP_CSC == 1
+#if BUD_SM_CSC == 1
     if ( present(ncol) ) ncol => this%D%ncol
 #endif
 
@@ -544,7 +544,7 @@
 
 
     !> @param[in] this the sparse matrix (sorted, @isee #sp_sort
-#if BUD_SP_CSC == 0 && BUD_SP_INTEROP_C == 1
+#if BUD_SM_CSC == 0 && BUD_SM_INTEROP_C == 1
   !! @param[in] ir row index (0-based)
   !! @param[in] ic column index (0-based)
   !! @return the sparse index of `M(ir,ic)`, `<0` if `M(ir,ic) = 0` (0-based)
@@ -562,7 +562,7 @@
 
     if ( .not. this%D%sorted ) then
 
-      do idx = this%D%cptr(ic) BUD_SP_PTR_A , this%D%cptr(ic+1) BUD_SP_PTR_B
+      do idx = this%D%cptr(ic) BUD_SM_PTR_A , this%D%cptr(ic+1) BUD_SM_PTR_B
         if ( this%D%row(idx) == ir ) return
       end do
 
@@ -573,13 +573,13 @@
     end if
 
     call find_bin(this%D%cptr(ic+1)-this%D%cptr(ic), &
-      this%D%row(this%D%cptr(ic) BUD_SP_PTR_A:), ir, idx)
-    if ( idx > 0 ) idx = this%D%cptr(ic) BUD_SP_PTR_B + idx
+      this%D%row(this%D%cptr(ic) BUD_SM_PTR_A:), ir, idx)
+    if ( idx > 0 ) idx = this%D%cptr(ic) BUD_SM_PTR_B + idx
 
   end function index_
 
 
-  !> @param[in] this sparse pattern to sort (in-place)
+  !> @param[in] this sparse matrix to sort (in-place)
   !! @param[out] err associated error message of the sparsity pattern
   !! @param[out] pvt @opt=@none if requested the pivoting array for the sorted sparsity pattern
   subroutine sort_(this, pvt)
@@ -597,13 +597,13 @@
     ! Initialize error
     this%D%error_ = 0
 
-    ! Get sparse pattern array
+    ! Get sparse matrix array
     call attach(this, nc=nc, nz=nz, cptr=cptr, row=row)
 
     if ( present(pvt) ) then
 
       if ( size(pvt) < nz ) then
-        this%D%error_ = SP_INPUT + 3
+        this%D%error_ = SM_INPUT + 3
         pvt = -1
         return
       end if
@@ -611,7 +611,7 @@
       do ic = 1 , nc
 
         nz = cptr(ic+1) - cptr(ic)
-        ptr = cptr(ic) - BUD_SP_PTR
+        ptr = cptr(ic) - BUD_SM_PTR
 
         ! get pivoting array
         tvt => pvt(ptr+1:)
@@ -644,8 +644,8 @@
   end subroutine sort_
 
 
-  !> @param[in] sp1 the first sparse pattern
-  !> @param[in] sp2 the second sparse pattern
+  !> @param[in] sp1 the first sparse matrix
+  !> @param[in] sp2 the second sparse matrix
   !> @param[inout] sp the union of `sp1` and `sp2`
   subroutine union_(sp1, sp2, sp)
 
@@ -659,13 +659,13 @@
     integer(BUD_TYPE_VAR_PREC), allocatable :: cptr(:)
     integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: row(:)
 
-    ! A union removes dublicate entries...
+    ! A union removes duplicate entries...
     ! This may be undesired.. :(
     call attach(sp1, nr=nr, nc=nc)
 
     ! Create a list with the pointers
     allocate(cptr(nc+1))
-    cptr(1) = BUD_SP_PTR
+    cptr(1) = BUD_SM_PTR
     do ic = 1 , nc
 
       ! Create union...
@@ -702,10 +702,10 @@
   end subroutine union_
 
 
-  !> @param[in] from the originating sparse pattern
+  !> @param[in] from the originating sparse matrix
   !! @param[in] n number of elements in `remove`
   !! @param[in] remove rows that are removed
-  !! @param[inout] to sparse pattern after deleting the rows
+  !! @param[inout] to sparse matrix after deleting the rows
   subroutine remove_row_el_(from, n, remove, to)
 
     use BUD_CC3(BUD_MOD,_,BUD_LIST_NAME)
@@ -726,9 +726,9 @@
 
   end subroutine remove_row_el_
 
-  !> @param[in] from the originating sparse pattern
+  !> @param[in] from the originating sparse matrix
   !! @param[in] remove list with rows that are removed
-  !! @param[inout] to sparse pattern after deleting the rows
+  !! @param[inout] to sparse matrix after deleting the rows
   subroutine remove_row_list_(from, remove, to)
 
     use BUD_CC3(BUD_MOD,_,BUD_LIST_NAME)
@@ -757,12 +757,12 @@
 
 
 
-  !> @param[in] from the originating sparse pattern
+  !> @param[in] from the originating sparse matrix
   !! @param[in] nin number of elements in `in_row`
   !! @param[in] in_row the set of rows that will be translated into `out_row` (preferentially this should be sorted)
   !! @param[in] nout number of elements in `out_row`
   !! @param[in] out_row the set of translation rows
-  !! @param[inout] to the resulting sparse pattern after translating the rows
+  !! @param[inout] to the resulting sparse matrix after translating the rows
   subroutine translate_row_el_(from, nin, in_row, nout, out_row, to)
 
     use BUD_CC3(BUD_MOD,_,BUD_LIST_NAME)
@@ -783,10 +783,10 @@
 
   end subroutine translate_row_el_
 
-  !> @param[in] from the originating sparse pattern
+  !> @param[in] from the originating sparse matrix
   !! @param[in] in_row a list set of rows that will be translated into `out_row` (preferentially this should be sorted)
   !! @param[in] out_row a list set of translation rows
-  !! @param[inout] to the resulting sparse pattern after translating the rows
+  !! @param[inout] to the resulting sparse matrix after translating the rows
   subroutine translate_row_list_(from, in_row, out_row, to)
 
     use BUD_CC3(BUD_MOD,_,BUD_LIST_NAME)
@@ -811,16 +811,16 @@
     call new(lrow, nz)
     allocate(tcptr(nc+1))
 
-    ! Now start create the sparse pattern
+    ! Now start create the sparse matrix
     tcptr(1) = cptr(1)
     do ic = 1, nc
 
       ! figure out if they should be translated
-      do i = cptr(ic) BUD_SP_PTR_A, cptr(ic+1) BUD_SP_PTR_B
+      do i = cptr(ic) BUD_SM_PTR_A, cptr(ic+1) BUD_SM_PTR_B
         idx = index(in_row, row(i))
         if ( idx <= 0 ) then
           call push(lrow, row(i))
-        else if ( or(idx) >= BUD_SP_IDX(1) ) then
+        else if ( or(idx) >= BUD_SM_IDX(1) ) then
           ! we have a translation
           ! check if the resulting translated row is
           ! negative, if so, it means deletion
@@ -831,12 +831,12 @@
       end do
 
       ! update the following pointer
-      tcptr(ic+1) = size(lrow) + BUD_SP_PTR
+      tcptr(ic+1) = size(lrow) + BUD_SM_PTR
 
     end do
 
     ! Correct the number of rows in the final
-    ! sparse pattern
+    ! sparse matrix
     row => list_p(in_row)
     do i = 1 , size(in_row)
       if ( .not. in_list(out_row, row(i)) ) then
@@ -855,10 +855,10 @@
 
 
 
-  !> @param[in] from the originating sparse pattern
+  !> @param[in] from the originating sparse matrix
   !! @param[in] n number of elements in `remove`
   !! @param[in] remove columns that are removed
-  !! @param[inout] to sparse pattern after deleting the columns
+  !! @param[inout] to sparse matrix after deleting the columns
   subroutine remove_col_el_(from, n, remove, to)
 
     use BUD_CC3(BUD_MOD,_,BUD_LIST_NAME)
@@ -879,9 +879,9 @@
 
   end subroutine remove_col_el_
 
-  !> @param[in] from the originating sparse pattern
+  !> @param[in] from the originating sparse matrix
   !! @param[in] remove list with columns that are removed
-  !! @param[inout] to sparse pattern after deleting the columns
+  !! @param[inout] to sparse matrix after deleting the columns
   subroutine remove_col_list_(from, remove, to)
 
     use BUD_CC3(BUD_MOD,_,BUD_LIST_NAME)
@@ -910,12 +910,12 @@
 
 
 
-  !> @param[in] from the originating sparse pattern
+  !> @param[in] from the originating sparse matrix
   !! @param[in] nin number of elements in `in_col`
   !! @param[in] in_col the set of columns that will be translated into `out_col` (preferentially this should be sorted)
   !! @param[in] nout number of elements in `out_col`
   !! @param[in] out_col the set of translation columns
-  !! @param[inout] to the resulting sparse pattern after translating the rows
+  !! @param[inout] to the resulting sparse matrix after translating the rows
   subroutine translate_col_el_(from, nin, in_col, nout, out_col, to)
 
     use BUD_CC3(BUD_MOD,_,BUD_LIST_NAME)
@@ -936,10 +936,10 @@
 
   end subroutine translate_col_el_
 
-  !> @param[in] from the originating sparse pattern
+  !> @param[in] from the originating sparse matrix
   !! @param[in] in_col a list set of cols that will be translated into `out_col`
   !! @param[in] out_col a list set of translation columns (preferentially this should be sorted)
-  !! @param[inout] to the resulting sparse pattern after translating the columns
+  !! @param[inout] to the resulting sparse matrix after translating the columns
   subroutine translate_col_list_(from, in_col, out_col, to)
 
     use BUD_CC3(BUD_MOD,_,BUD_LIST_NAME)
@@ -983,10 +983,10 @@
         ! The column is not translated
         call push(lcol(ic), i, row)
 
-      else if ( oc(idx) >= BUD_SP_IDX(1) ) then
+      else if ( oc(idx) >= BUD_SM_IDX(1) ) then
 
         ! Find where the new column has moved
-        c = BUD_SP_IDXF(oc(idx))
+        c = BUD_SM_IDXF(oc(idx))
         call push(lcol(c), i, row)
 
       end if
@@ -1008,7 +1008,7 @@
 
     ! Now re-create the pointers
     allocate(cptr(nnc+1))
-    cptr(1) = BUD_SP_PTR
+    cptr(1) = BUD_SM_PTR
     ! Loop on old columns
     ic = 0
     do c = 1 , nc
@@ -1053,11 +1053,11 @@
 #undef BUD_TYPE_VAR_PREC
 
   ! Control variables
-#undef BUD_SP_CSC
-#undef BUD_SP_INTEROP_C
-#undef BUD_SP_MOD
-#undef BUD_SP_IDX
-#undef BUD_SP_IDXF
+#undef BUD_SM_CSC
+#undef BUD_SM_INTEROP_C
+#undef BUD_SM_MOD
+#undef BUD_SM_IDX
+#undef BUD_SM_IDXF
 
 #include "bud_cleanup.inc"
 

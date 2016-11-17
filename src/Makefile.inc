@@ -60,124 +60,124 @@ bud_LL_Array3D.f90: LL_Array1D.F90
 	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/Array1D/Array3D/g' $(src_DIR)/LL_Array1D.F90 > $(_TMP_FILE)
 	$(src_FPP)
 
-SP_generic = bud_SP_generic.o
-src_OBJECTS += $(SP_generic)
-bud_SP_generic.f90: SP_generic.F90
+SM_common = bud_SM_common.o
+src_OBJECTS += $(SM_common)
+bud_SM_common.f90: SM_common.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
 
-SP_R = \
-	bud_SP_CSR.o \
-	bud_SP_CSR0.o \
-	bud_SP_CSR_C.o
-$(SP_R:.o=.f90): SP_common.inc SP_CSR.inc
-$(SP_R): SP_common.inc SP_CSR.inc bud_List.o
-src_OBJECTS += $(SP_R)
-bud_SP_CSR.f90: SP_CSR.F90
+SM_R = \
+	bud_SM_CSR.o \
+	bud_SM_CSR0.o \
+	bud_SM_CSR_C.o
+$(SM_R:.o=.f90): SM_common.inc SM_CSR.inc
+$(SM_R): SM_common.inc SM_CSR.inc bud_List.o
+src_OBJECTS += $(SM_R)
+bud_SM_CSR.f90: SM_CSR.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
-bud_SP_CSR0.f90: SP_CSR0.F90
+bud_SM_CSR0.f90: SM_CSR0.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
-bud_SP_CSR_C.f90: SP_CSR_C.F90
-	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
-
-SP_C = \
-	bud_SP_CSC.o \
-	bud_SP_CSC0.o \
-	bud_SP_CSC_C.o
-$(SP_C:.o=.f90): SP_common.inc SP_CSC.inc
-$(SP_C): SP_common.inc SP_CSC.inc
-src_OBJECTS += $(SP_C)
-bud_SP_CSC.f90: SP_CSC.F90
-	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
-bud_SP_CSC0.f90: SP_CSC0.F90
-	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
-bud_SP_CSC_C.f90: SP_CSC_C.F90
+bud_SM_CSR_C.f90: SM_CSR_C.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
 
+SM_C = \
+	bud_SM_CSC.o \
+	bud_SM_CSC0.o \
+	bud_SM_CSC_C.o
+$(SM_C:.o=.f90): SM_common.inc SM_CSC.inc
+$(SM_C): SM_common.inc SM_CSC.inc
+src_OBJECTS += $(SM_C)
+bud_SM_CSC.f90: SM_CSC.F90
+	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
+bud_SM_CSC0.f90: SM_CSC0.F90
+	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
+bud_SM_CSC_C.f90: SM_CSC_C.F90
+	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
 
-SP_ARR_R = \
-	bud_SP_CSR_Array1D.o \
-	bud_SP_CSR_Array2D.o \
-	bud_SP_CSR_Array3D.o \
-	bud_SP_CSR0_Array1D.o \
-	bud_SP_CSR0_Array2D.o \
-	bud_SP_CSR0_Array3D.o \
-	bud_SP_CSR_C_Array1D.o \
-	bud_SP_CSR_C_Array2D.o \
-	bud_SP_CSR_C_Array3D.o
-$(SP_ARR_R): SP_Array.inc SP_Array_type_.inc $(SP_R) $(ARRAY_OBJECTS)
-src_OBJECTS += $(SP_ARR_R)
-bud_SP_CSR_Array1D.f90: SP_CSR_Array1D.F90
+
+SM_ARR_R = \
+	bud_SM_CSR_Array1D.o \
+	bud_SM_CSR_Array2D.o \
+	bud_SM_CSR_Array3D.o \
+	bud_SM_CSR0_Array1D.o \
+	bud_SM_CSR0_Array2D.o \
+	bud_SM_CSR0_Array3D.o \
+	bud_SM_CSR_C_Array1D.o \
+	bud_SM_CSR_C_Array2D.o \
+	bud_SM_CSR_C_Array3D.o
+$(SM_ARR_R): SM_Array.inc SM_Array_type_.inc $(SM_R) $(ARRAY_OBJECTS)
+src_OBJECTS += $(SM_ARR_R)
+bud_SM_CSR_Array1D.f90: SM_CSR_Array1D.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
-bud_SP_CSR_Array2D.f90: _TMP_FILE=SP_CSR_Array2D.F90
-bud_SP_CSR_Array2D.f90: SP_CSR_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/2D/g' $(src_DIR)/SP_CSR_Array1D.F90 > $(_TMP_FILE)
+bud_SM_CSR_Array2D.f90: _TMP_FILE=SM_CSR_Array2D.F90
+bud_SM_CSR_Array2D.f90: SM_CSR_Array1D.F90
+	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/2D/g' $(src_DIR)/SM_CSR_Array1D.F90 > $(_TMP_FILE)
 	$(src_FPP)
-bud_SP_CSR_Array3D.f90: _TMP_FILE=SP_CSR_Array3D.F90
-bud_SP_CSR_Array3D.f90: SP_CSR_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/1D/3D/g' $(src_DIR)/SP_CSR_Array1D.F90 > $(_TMP_FILE)
+bud_SM_CSR_Array3D.f90: _TMP_FILE=SM_CSR_Array3D.F90
+bud_SM_CSR_Array3D.f90: SM_CSR_Array1D.F90
+	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/1D/3D/g' $(src_DIR)/SM_CSR_Array1D.F90 > $(_TMP_FILE)
 	$(src_FPP)
-bud_SP_CSR0_Array1D.f90: SP_CSR0_Array1D.F90
+bud_SM_CSR0_Array1D.f90: SM_CSR0_Array1D.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
-bud_SP_CSR0_Array2D.f90: _TMP_FILE=SP_CSR0_Array2D.F90
-bud_SP_CSR0_Array2D.f90: SP_CSR0_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/2D/g' $(src_DIR)/SP_CSR0_Array1D.F90 > $(_TMP_FILE)
+bud_SM_CSR0_Array2D.f90: _TMP_FILE=SM_CSR0_Array2D.F90
+bud_SM_CSR0_Array2D.f90: SM_CSR0_Array1D.F90
+	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/2D/g' $(src_DIR)/SM_CSR0_Array1D.F90 > $(_TMP_FILE)
 	$(src_FPP)
-bud_SP_CSR0_Array3D.f90: _TMP_FILE=SP_CSR0_Array3D.F90
-bud_SP_CSR0_Array3D.f90: SP_CSR0_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/1D/3D/g' $(src_DIR)/SP_CSR0_Array1D.F90 > $(_TMP_FILE)
+bud_SM_CSR0_Array3D.f90: _TMP_FILE=SM_CSR0_Array3D.F90
+bud_SM_CSR0_Array3D.f90: SM_CSR0_Array1D.F90
+	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/1D/3D/g' $(src_DIR)/SM_CSR0_Array1D.F90 > $(_TMP_FILE)
 	$(src_FPP)
-bud_SP_CSR_C_Array1D.f90: SP_CSR_C_Array1D.F90
+bud_SM_CSR_C_Array1D.f90: SM_CSR_C_Array1D.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
-bud_SP_CSR_C_Array2D.f90: _TMP_FILE=SP_CSR_C_Array2D.F90
-bud_SP_CSR_C_Array2D.f90: SP_CSR_C_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/2D/g' $(src_DIR)/SP_CSR_C_Array1D.F90 > $(_TMP_FILE)
+bud_SM_CSR_C_Array2D.f90: _TMP_FILE=SM_CSR_C_Array2D.F90
+bud_SM_CSR_C_Array2D.f90: SM_CSR_C_Array1D.F90
+	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/2D/g' $(src_DIR)/SM_CSR_C_Array1D.F90 > $(_TMP_FILE)
 	$(src_FPP)
-bud_SP_CSR_C_Array3D.f90: _TMP_FILE=SP_CSR_C_Array3D.F90
-bud_SP_CSR_C_Array3D.f90: SP_CSR_C_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/1D/3D/g' $(src_DIR)/SP_CSR_C_Array1D.F90 > $(_TMP_FILE)
+bud_SM_CSR_C_Array3D.f90: _TMP_FILE=SM_CSR_C_Array3D.F90
+bud_SM_CSR_C_Array3D.f90: SM_CSR_C_Array1D.F90
+	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/1D/3D/g' $(src_DIR)/SM_CSR_C_Array1D.F90 > $(_TMP_FILE)
 	$(src_FPP)
 
-SP_ARR_C = \
-	bud_SP_CSC_Array1D.o \
-	bud_SP_CSC_Array2D.o \
-	bud_SP_CSC_Array3D.o \
-	bud_SP_CSC0_Array1D.o \
-	bud_SP_CSC0_Array2D.o \
-	bud_SP_CSC0_Array3D.o \
-	bud_SP_CSC_C_Array1D.o \
-	bud_SP_CSC_C_Array2D.o \
-	bud_SP_CSC_C_Array3D.o
-$(SP_ARR_C): SP_Array.inc SP_Array_type_.inc $(SP_C) $(ARRAY_OBJECTS)
-#src_OBJECTS += $(SP_ARR_C)
-bud_SP_CSC_Array1D.f90: SP_CSC_Array1D.F90
+SM_ARR_C = \
+	bud_SM_CSC_Array1D.o \
+	bud_SM_CSC_Array2D.o \
+	bud_SM_CSC_Array3D.o \
+	bud_SM_CSC0_Array1D.o \
+	bud_SM_CSC0_Array2D.o \
+	bud_SM_CSC0_Array3D.o \
+	bud_SM_CSC_C_Array1D.o \
+	bud_SM_CSC_C_Array2D.o \
+	bud_SM_CSC_C_Array3D.o
+$(SM_ARR_C): SM_Array.inc SM_Array_type_.inc $(SM_C) $(ARRAY_OBJECTS)
+#src_OBJECTS += $(SM_ARR_C)
+bud_SM_CSC_Array1D.f90: SM_CSC_Array1D.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
-bud_SP_CSC_Array2D.f90: _TMP_FILE=SP_CSC_Array2D.F90
-bud_SP_CSC_Array2D.f90: SP_CSC_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/2D/g' $(src_DIR)/SP_CSC_Array1D.F90 > $(_TMP_FILE)
+bud_SM_CSC_Array2D.f90: _TMP_FILE=SM_CSC_Array2D.F90
+bud_SM_CSC_Array2D.f90: SM_CSC_Array1D.F90
+	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/2D/g' $(src_DIR)/SM_CSC_Array1D.F90 > $(_TMP_FILE)
 	$(src_FPP)
-bud_SP_CSC_Array3D.f90: _TMP_FILE=SP_CSC_Array3D.F90
-bud_SP_CSC_Array3D.f90: SP_CSC_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/1D/3D/g' $(src_DIR)/SP_CSC_Array1D.F90 > $(_TMP_FILE)
+bud_SM_CSC_Array3D.f90: _TMP_FILE=SM_CSC_Array3D.F90
+bud_SM_CSC_Array3D.f90: SM_CSC_Array1D.F90
+	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/1D/3D/g' $(src_DIR)/SM_CSC_Array1D.F90 > $(_TMP_FILE)
 	$(src_FPP)
-bud_SP_CSC0_Array1D.f90: SP_CSC0_Array1D.F90
+bud_SM_CSC0_Array1D.f90: SM_CSC0_Array1D.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
-bud_SP_CSC0_Array2D.f90: _TMP_FILE=SP_CSC0_Array2D.F90
-bud_SP_CSC0_Array2D.f90: SP_CSC0_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/2D/g' $(src_DIR)/SP_CSC0_Array1D.F90 > $(_TMP_FILE)
+bud_SM_CSC0_Array2D.f90: _TMP_FILE=SM_CSC0_Array2D.F90
+bud_SM_CSC0_Array2D.f90: SM_CSC0_Array1D.F90
+	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/2D/g' $(src_DIR)/SM_CSC0_Array1D.F90 > $(_TMP_FILE)
 	$(src_FPP)
-bud_SP_CSC0_Array3D.f90: _TMP_FILE=SP_CSC0_Array3D.F90
-bud_SP_CSC0_Array3D.f90: SP_CSC0_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/1D/3D/g' $(src_DIR)/SP_CSC0_Array1D.F90 > $(_TMP_FILE)
+bud_SM_CSC0_Array3D.f90: _TMP_FILE=SM_CSC0_Array3D.F90
+bud_SM_CSC0_Array3D.f90: SM_CSC0_Array1D.F90
+	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/1D/3D/g' $(src_DIR)/SM_CSC0_Array1D.F90 > $(_TMP_FILE)
 	$(src_FPP)
-bud_SP_CSC_C_Array1D.f90: SP_CSC_C_Array1D.F90
+bud_SM_CSC_C_Array1D.f90: SM_CSC_C_Array1D.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
-bud_SP_CSC_C_Array2D.f90: _TMP_FILE=SP_CSC_C_Array2D.F90
-bud_SP_CSC_C_Array2D.f90: SP_CSC_C_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/2D/g' $(src_DIR)/SP_CSC_C_Array1D.F90 > $(_TMP_FILE)
+bud_SM_CSC_C_Array2D.f90: _TMP_FILE=SM_CSC_C_Array2D.F90
+bud_SM_CSC_C_Array2D.f90: SM_CSC_C_Array1D.F90
+	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/2D/g' $(src_DIR)/SM_CSC_C_Array1D.F90 > $(_TMP_FILE)
 	$(src_FPP)
-bud_SP_CSC_C_Array3D.f90: _TMP_FILE=SP_CSC_C_Array3D.F90
-bud_SP_CSC_C_Array3D.f90: SP_CSC_C_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/1D/3D/g' $(src_DIR)/SP_CSC_C_Array1D.F90 > $(_TMP_FILE)
+bud_SM_CSC_C_Array3D.f90: _TMP_FILE=SM_CSC_C_Array3D.F90
+bud_SM_CSC_C_Array3D.f90: SM_CSC_C_Array1D.F90
+	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/1D/3D/g' $(src_DIR)/SM_CSC_C_Array1D.F90 > $(_TMP_FILE)
 	$(src_FPP)
 
 

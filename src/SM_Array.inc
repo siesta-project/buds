@@ -10,8 +10,8 @@
   !! with.
   !!
 
-!# define BUD_INCLUDE_TYPE "SP_Array_type.inc"
-# define BUD_INCLUDE_TYPE_ "SP_Array_type_.inc"
+!# define BUD_INCLUDE_TYPE "SM_Array_type.inc"
+# define BUD_INCLUDE_TYPE_ "SM_Array_type_.inc"
 
 
   !> Retrieve pointer data in the sparse matrix
@@ -26,17 +26,17 @@
   public :: matrix_p
 
 
-  !> Retrieve the sparse pattern
-  interface sparse_pattern
+  !> Retrieve the sparse matrix
+  interface sparse_matrix
     module procedure get_elem1_
   end interface
-  public :: sparse_pattern
+  public :: sparse_matrix
 
-  !> Retrieve pointer to the sparse pattern
-  interface sparse_pattern_p
+  !> Retrieve pointer to the sparse matrix
+  interface sparse_matrix_p
     module procedure get_elem1p_
   end interface
-  public :: sparse_pattern_p
+  public :: sparse_matrix_p
 
   !> Retrieve the array @bud
   interface array

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This small script dublicates certain files
+# This small script duplicates certain files
 # in case small changes has been done.
 
 for dat in FS_Array1D C2_Array1D FS_C2_Array1D

@@ -307,7 +307,7 @@
 
 
   !> @param[inout] this array @bud
-  !! @param[in] array array to dublicate in `this` (dimensions _and_ values)
+  !! @param[in] array array to duplicate in `this` (dimensions _and_ values)
   subroutine new_copy_(this, array)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 #ifdef BUD_TYPE_VAR_PREC

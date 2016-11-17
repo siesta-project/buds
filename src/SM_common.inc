@@ -1,20 +1,20 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
 
-  !> @defgroup sp Sparse pattern
+  !> @defgroup sp Sparse matrix
   !! @ingroup bud-intrinsic
   !!
   !! @brief
-  !! Sparse pattern for reduced storage formats of dense patterns
+  !! Sparse matrix for reduced storage formats of dense patterns
   !! with many zero elements.
   !!
-  !! A sparse pattern is denoted by a two-dimensional format based on
+  !! A sparse matrix is denoted by a two-dimensional format based on
   !! rows and columns.
-  !! There are several different types of sparse patterns, and here we
+  !! There are several different types of sparse matrixs, and here we
   !! implement a couple of variants.
   !! The most used ones are probably the CSR and CSC patterns.
 
 
-  !> Return number of non-zero elements stored in the sparse pattern
+  !> Return number of non-zero elements stored in the sparse matrix
   !!
   !! This corresponds to the `size` of the `col` array
   !! contained in the object.
@@ -23,20 +23,20 @@
   end interface
   public :: nonzeros
 
-  !> Number of rows in the sparse pattern
+  !> Number of rows in the sparse matrix
   interface rows
     module procedure rows_
   end interface
   public :: rows
 
-  !> Number of columns in the sparse pattern
+  !> Number of columns in the sparse matrix
   interface columns
     module procedure columns_
   end interface
   public :: columns
 
 
-  !> Dimensions of the sparse pattern
+  !> Dimensions of the sparse matrix
   !!
   !! This routine will return 1 of 3 possible scenarios:
   !!  1. `size(this)` will return `nonzeros(this)`
@@ -48,7 +48,7 @@
   public :: size
 
 
-  !> Retrieve access to sparse pattern variables via pointers.
+  !> Retrieve access to sparse matrix variables via pointers.
   !!
   !! Manually access the sparsity pattern by retrieving
   !! pointers and interact externally with the
@@ -59,7 +59,7 @@
   !!
   !! @note
   !! Currently this is the only way to interact with the
-  !! sparse pattern.
+  !! sparse matrix.
   !!
   !! @todo
   !! Add error checking for `D` parameter.
@@ -87,7 +87,7 @@
 # include "bud_common.inc"
 
 
-  !> @param[in] this the sparse pattern
+  !> @param[in] this the sparse matrix
   !! @return number of non-zero elements in the pattern
   elemental function nonzeros_(this) result(nnzs)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
@@ -96,7 +96,7 @@
   end function nonzeros_
 
 
-  !> @param[in] this the sparse pattern
+  !> @param[in] this the sparse matrix
   !! @return number of rows in the pattern
   elemental function rows_(this) result(rows)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
@@ -105,7 +105,7 @@
   end function rows_
 
 
-  !> @param[in] this the sparse pattern
+  !> @param[in] this the sparse matrix
   !! @return number of columns in the pattern
   elemental function columns_(this) result(cols)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
@@ -114,9 +114,9 @@
   end function columns_
 
 
-  !> @param[in] this the sparse pattern
+  !> @param[in] this the sparse matrix
   !> @param[in] dim @opt=0 the dimension query
-  !! @return size of the sparse pattern dependent on value of `dim`: 0=nonzeros, 1=rows, 2=columns.
+  !! @return size of the sparse matrix dependent on value of `dim`: 0=nonzeros, 1=rows, 2=columns.
   elemental function size_(this, dim) result(size)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer, intent(in), optional :: dim
@@ -138,7 +138,7 @@
 
   end function size_
 
-  !> @param[in] this sparse pattern
+  !> @param[in] this sparse matrix
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement
   subroutine print_(this, info, indent)

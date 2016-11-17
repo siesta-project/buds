@@ -571,7 +571,7 @@
 
 
   !> @param[inout] this list @bud
-  !! @param[in] list list to dublicate in `this` (dimensions _and_ values)
+  !! @param[in] list list to duplicate in `this` (dimensions _and_ values)
   subroutine new_copy_(this, list)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in) :: list(:)
@@ -620,7 +620,7 @@
 
   !> @param[inout] this list @bud
   !! @param[in] n size of list
-  !! @param[in] list list to dublicate in `this` (dimensions _and_ values)
+  !! @param[in] list list to duplicate in `this` (dimensions _and_ values)
   subroutine new_copy_n_(this, n, list)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer(BUD_INT_PREC), intent(in) :: n

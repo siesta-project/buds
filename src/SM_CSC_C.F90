@@ -3,13 +3,16 @@
 ! Get default commands
 #include "bud_utils.inc"
 
-!> @defgroup sp-csc CSC (Compressed Sparse Column)
+!> @defgroup sp-csc-c CSC-C (Compressed Sparse Column C-indexed)
 !! @ingroup sm
 !!
-!! A compressed sparse column pattern implementation.
+!! A compressed sparse column pattern implementation using
+!! C-indexing.
+!! This implementation relies on every index lookup to be
+!! 0-based.
 !!
-!! This only contains the indices for the sparse pattern, the
-!! data for the sparse pattern should be contained in an additional
+!! This only contains the indices for the sparse matrix, the
+!! data for the sparse matrix should be contained in an additional
 !! data array of the corresponding data type.
 !!
 !! The CSC sparsity pattern stored can be sorted in each
@@ -24,8 +27,8 @@
 !!   call attach(this, nr=nc, nz=nz, cptr=cptr, row=row)
 !!
 !!   do ic = 1 , nc
-!!     do idx = cptr(ic) , cptr(ic+1) - 1
-!!       ! access M(row(idx),ic)
+!!     do idx = cptr(ic) + 1 , cptr(ic+1)
+!!       ! access M(row(idx)+1,ic)
 !!     end do
 !!   end do
 !! \endcode
@@ -48,37 +51,48 @@
 !! @{
 
 
-# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,iSP_CSC)
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,iSM_CSC_C)
 !> @defgroup BUD_MOD_NAME Integer (int)
 !! `integer(selected_int_kind(9))` data type
 !! @{
 module BUD_MOD_NAME
 # define BUD_LIST_NAME BUD_CC2(BUD_TYPE,iList)
-# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iSP_CSC)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,SP_CSC)
+# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iSM_CSC_C)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,SM_CSC_C)
 # define BUD_TYPE_VAR integer
 # define BUD_TYPE_VAR_PREC ii_
-# define BUD_SP_CSC 0
-#include "SP_CSC.inc"
+# define BUD_SM_CSC 0
+# define BUD_SM_INTEROP_C 1
+#include "SM_CSC.inc"
 end module
 !> @}
 
-# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,lSP_CSC)
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,lSM_CSC_C)
 !> @defgroup BUD_MOD_NAME Integer (long)
 !! `integer(selected_int_kind(18))` data type
 !! @{
 module BUD_MOD_NAME
 # define BUD_LIST_NAME BUD_CC2(BUD_TYPE,lList)
-# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,lSP_CSC)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,SP_CSC)
+# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,lSM_CSC_C)
+# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,SM_CSC_C)
 # define BUD_TYPE_VAR integer
 # define BUD_TYPE_VAR_PREC il_
-# define BUD_SP_CSC 0
-#include "SP_CSC.inc"
+# define BUD_SM_CSC 0
+# define BUD_SM_INTEROP_C 1
+#include "SM_CSC.inc"
 end module
 !> @}
 
-! GROUP sp-csc
+# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,SM_CSC_C)
+!> @defgroup BUD_MOD_NAME all sparse matrices in CSC-C format
+!! @{
+module BUD_MOD_NAME
+  use BUD_CC3(BUD_MOD,_,iSM_CSC_C)
+  use BUD_CC3(BUD_MOD,_,lSM_CSC_C)
+end module
+!> @}
+
+! GROUP sp-csc-c
 !> @}
 
 

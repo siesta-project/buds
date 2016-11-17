@@ -3,10 +3,10 @@
   ! Get default commands
 #include "bud_utils.inc"
 
-  ! This module contains generic variables that may be
-  ! accessed in the sparse pattern modules.
+  ! This module contains common variables that may be
+  ! accessed in the sparse matrix modules.
 
-#define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,SP_generic)
+#define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,SM_common)
 
 module BUD_MOD_NAME
 
@@ -20,18 +20,18 @@ module BUD_MOD_NAME
   !! This may mean that the entry is beyond the pattern size.
 
   !> Definition of no errors in the call
-  integer, parameter, public :: SP_NONE = 0
+  integer, parameter, public :: SM_NONE = 0
 
   !> Signals two or more equivalent sparse elements
-  integer, parameter, public :: SP_ENTRY_MULTIPLE = 1
+  integer, parameter, public :: SM_ENTRY_MULTIPLE = 1
 
-  !> The input argument that is wrong by `err-SP_INPUT`
+  !> The input argument that is wrong by `err-SM_INPUT`
   !!
   !! This constant is an offset in the error number that
-  !! refers to the input parameter `err - SP_INPUT`.
-  !! I.e. if `err = SP_INPUT + 2`, the second argument
+  !! refers to the input parameter `err - SM_INPUT`.
+  !! I.e. if `err = SM_INPUT + 2`, the second argument
   !! is erroneous.
-  integer, parameter, public :: SP_INPUT = 1000
+  integer, parameter, public :: SM_INPUT = 1000
 
 end module
 
