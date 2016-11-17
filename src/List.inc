@@ -642,7 +642,7 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     type(BUD_TYPE_NAME), intent(in) :: list
 
-    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: lst(:), ths(:)
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: ths(:)
     integer(BUD_INT_PREC) :: i, n
     type(BUD_TYPE_NAME) :: tmp
 
@@ -651,7 +651,6 @@
     call new_dim_(tmp, n)
 
     ths => list_p(tmp)
-    lst => list_p(list)
 
     do i = 1 , n
       ths(i) = index(list, i)
