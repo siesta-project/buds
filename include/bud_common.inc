@@ -137,7 +137,7 @@
   !! This will for all purposes be regarded as a new instance.
   !!
   interface copy
-    module procedure common_copy_
+    module procedure copy_
   end interface
   public :: copy
   private :: common_copy_
