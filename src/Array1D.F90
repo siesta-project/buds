@@ -118,6 +118,25 @@ module BUD_MOD_NAME
 end module
 !> @}
 
+
+!> @defgroup Array module for all different precision objects
+!! @ingroup array-BUD_DIM
+!! Module for making everything public
+!! @{
+module BUD_CC3(BUD_MOD,_,Array1D)
+
+  use BUD_CC3(BUD_MOD,_,sArray1D)
+  use BUD_CC3(BUD_MOD,_,iArray1D)
+  use BUD_CC3(BUD_MOD,_,lArray1D)
+  use BUD_CC3(BUD_MOD,_,rArray1D)
+  use BUD_CC3(BUD_MOD,_,dArray1D)
+  use BUD_CC3(BUD_MOD,_,cArray1D)
+  use BUD_CC3(BUD_MOD,_,zArray1D)
+
+end module
+!> @}
+
+
 ! GROUP array-BUD_DIM
 !> @}
 

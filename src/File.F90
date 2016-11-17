@@ -57,6 +57,7 @@ module BUD_MOD_NAME
   !!
   !! It may also be used to retrieve a new file-unit.
   type BUD_TYPE_NAME
+
     !> Stored pointer which contains the reference counting etc.
     type(BUD_TYPE_NAME_), pointer :: D => null()
 

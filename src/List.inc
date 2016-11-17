@@ -46,12 +46,12 @@
   !! @note
   !! This documentation is duplicated in all types with different precision.
 
+  ! First we need to use the parameters
+  use BUD_CC3(BUD_MOD,_,List_common)
+  
   ! This *MUST* be the first statement
   ! Common parameters and variables used
 # include "bud_common_declarations.inc"
-
-  !> Maximum name length of the list
-  integer, parameter :: LIST_MAX_NAME_LEN = 64
 
   !> List data type
   !!
@@ -88,10 +88,12 @@
 
     procedure, private :: shrink_
     procedure, private :: shrink_n_
-
+    
+# ifdef BUD_IS_INTEGER
     procedure, private :: new_index_list_range_
     procedure, private :: new_index_list_list_
-
+# endif
+    
     !> @}
 
     !> @iSee BUD_NEW_TYPE
@@ -101,9 +103,11 @@
     generic, public :: new => new_dim_, new_copy_, &
       new_copy_n_, new_range_
 
+# ifdef BUD_IS_INTEGER
     !> @iSee new_index_list
     generic, public :: new_index_list => new_index_list_list_, &
       new_index_list_range_
+# endif
 
     !> @iSee #size
     procedure, public :: size => size_
@@ -120,15 +124,15 @@
     !> @iSee #list_max_p
     procedure, public :: list_max_p => max_listp_
 
-    !> @iSee #sort
-    procedure, public :: sort => sort_
-
     !> @iSee #push
     generic, public :: push => push_value_, push_array_, push_list_
 
     !> @iSee #pop
     procedure, public :: pop => pop_value_
 
+# ifdef BUD_IS_INTEGER
+    !> @iSee #sort
+    procedure, public :: sort => sort_
 
     ! Set operations
     !> @iSee #union
@@ -141,7 +145,8 @@
 
     !> @iSee #unique
     procedure, public :: unique => unique_
-
+# endif
+    
     !> @iSee #reverse
     procedure, public :: reverse => reverse_
 
@@ -163,20 +168,26 @@
     !> @iSee #get_incr_n
     procedure, public :: get_incr_n => get_incr_n
 
+# ifdef BUD_IS_INTEGER
     !> @iSee #index
     procedure, public :: index => index_
+# endif
 
+# ifndef BUD_IS_COMPLEX
     !> @iSee #minval
     procedure, public :: minval => minval_
     !> @iSee #maxval
     procedure, public :: maxval => maxval_
+# endif
 
+# ifdef BUD_IS_INTEGER
     !> @iSee #in_list
     procedure, public :: in_list => in_list_
 
     !> @iSee #is_sorted
     procedure, public :: is_sorted => is_sorted_
-
+# endif
+    
 #endif
   end type BUD_TYPE_NAME
 
@@ -192,23 +203,25 @@
     character(len=LIST_MAX_NAME_LEN) :: name = ' '
 
     !> Current number of stored values
-    integer(BUD_TYPE_VAR_PREC) :: n = 0
+    integer(BUD_INT_PREC) :: n = 0
 
     !> Current maximum number of values
-    integer(BUD_TYPE_VAR_PREC) :: max_n = 0
+    integer(BUD_INT_PREC) :: max_n = 0
 
     !> Incremental extension when the list is not enough
     !! In some cases this may be advantageous to be a relatively low number.
-    integer(BUD_TYPE_VAR_PREC) :: incr_n = 10
+    integer(BUD_INT_PREC) :: incr_n = 10
 
     !> List content stored in the @bud
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), allocatable :: lst(:)
 
+#ifdef BUD_IS_INTEGER
     !> Whether this list is a sorted list, or not
     !!
     !! A sorted list has certain efficient properties
     !! when querying certain elements.
     logical :: sorted = .false.
+#endif
 
     ! Consistent data in the reference counted object
 #   include "bud_common_type_.inc"
@@ -245,6 +258,7 @@
   end interface
   public :: new
 
+#ifdef BUD_IS_INTEGER
   !> Create a new list via an index transfer.
   !!
   !! This enables one to create an index list (or pivoting list)
@@ -255,7 +269,7 @@
     module procedure new_index_list_range_
   end interface
   public :: new_index_list
-
+#endif
 
   !> Retrieve pointer to array in the @bud
   !!
@@ -324,13 +338,17 @@
   end interface
   public :: size_max_p
 
+  
+#ifdef BUD_IS_INTEGER
   !> Returns index of the queried element. If non-existing returns `-1`.
   interface index
     module procedure index_
   end interface
   public :: index
+#endif
 
 
+#ifndef BUD_IS_COMPLEX
   !> Returns the minimum value in the list
   interface minval
     module procedure minval_
@@ -342,7 +360,7 @@
     module procedure maxval_
   end interface
   public :: maxval
-
+#endif
 
   !> Push a new value to the list (added at the end)
   !!
@@ -382,6 +400,8 @@
   end interface
   public :: merge
 
+
+#ifdef BUD_IS_INTEGER
   !> Sorts the entries in the list
   !!
   !! The values in the list will be sorted.
@@ -396,7 +416,8 @@
     module procedure sort_
   end interface
   public :: sort
-
+#endif
+  
 
   !> Ensures that the list may contain a given number of values
   !!
@@ -417,6 +438,8 @@
   public :: shrink
 
 
+#ifdef BUD_IS_INTEGER
+  
   !> Returns the union of two lists in a third list
   interface union
     module procedure union_
@@ -440,14 +463,7 @@
     module procedure unique_
   end interface
   public :: unique
-
-  !> Reverses the list
-  interface reverse
-    module procedure reverse_
-  end interface
-  public :: reverse
-
-
+  
   !> Query whether a value is in the list
   interface in_list
     module procedure in_list_
@@ -460,6 +476,14 @@
     module procedure is_sorted_
   end interface
   public :: is_sorted
+
+#endif
+  
+  !> Reverses the list
+  interface reverse
+    module procedure reverse_
+  end interface
+  public :: reverse
 
 
   !> Print, to std-out, some basic information of the data-container
@@ -498,7 +522,9 @@
     this%n = 0
     this%max_n = 0
     this%incr_n = 10
+#ifdef BUD_IS_INTEGER
     this%sorted = .false.
+#endif
 
   end subroutine delete_
 
@@ -525,7 +551,7 @@
   !! @param[in] n size of list
   subroutine new_dim_(this, n)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    integer(BUD_TYPE_VAR_PREC), intent(in) :: n
+    integer(BUD_INT_PREC), intent(in) :: n
 
     ! Make sure the container is initialized and ready for
     ! data-creation.
@@ -537,8 +563,10 @@
     this%D%max_n = n
     this%D%n = 0
     this%D%incr_n = 10
+#ifdef BUD_IS_INTEGER
     this%D%sorted = .false.
-
+#endif
+    
   end subroutine new_dim_
 
 
@@ -548,7 +576,7 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in) :: list(:)
 
-    integer(BUD_TYPE_VAR_PREC) :: n
+    integer(BUD_INT_PREC) :: n
 
     n = size(list,dim=1)
 
@@ -567,7 +595,7 @@
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in), optional :: step
 
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC) :: c, lstep
-    integer(BUD_TYPE_VAR_PREC) :: i, n
+    integer(BUD_INT_PREC) :: i, n
 
     lstep = 1
     if ( present(step) ) lstep = step
@@ -582,9 +610,11 @@
       c = c + lstep
     end do
 
+#ifdef BUD_IS_INTEGER
     if ( lstep > 0 ) then
       this%D%sorted = .true.
     end if
+#endif
 
   end subroutine new_range_
 
@@ -593,7 +623,7 @@
   !! @param[in] list list to dublicate in `this` (dimensions _and_ values)
   subroutine new_copy_n_(this, n, list)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    integer(BUD_TYPE_VAR_PREC), intent(in) :: n
+    integer(BUD_INT_PREC), intent(in) :: n
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in) :: list(n)
 
     ! initialize and create data-container
@@ -605,6 +635,7 @@
   end subroutine new_copy_n_
 
 
+#ifdef BUD_IS_INTEGER
   !> @param[inout] this list @bud
   !! @param[in] list list to convert to a list index using `[1:size(list)]`
   subroutine new_index_list_range_(this, list)
@@ -612,7 +643,7 @@
     type(BUD_TYPE_NAME), intent(in) :: list
 
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: lst(:), ths(:)
-    integer(BUD_TYPE_VAR_PREC) :: i, n
+    integer(BUD_INT_PREC) :: i, n
     type(BUD_TYPE_NAME) :: tmp
 
     n = size(list)
@@ -641,7 +672,7 @@
 
     type(BUD_TYPE_NAME) :: tmp
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: ths(:), look(:)
-    integer(BUD_TYPE_VAR_PREC) :: i, n
+    integer(BUD_INT_PREC) :: i, n
 
     n = size(lookup)
 
@@ -658,14 +689,14 @@
     call delete(tmp)
 
   end subroutine new_index_list_list_
-
+#endif
 
   !> @param[in] this @bud container
   !! @return the size of the contained list
   pure function size_(this) result(d)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
 
-    integer(BUD_TYPE_VAR_PREC) :: d
+    integer(BUD_INT_PREC) :: d
 
     if ( is_initd(this) ) then
       d = this%D%n
@@ -680,7 +711,7 @@
   function sizep_(this) result(d)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
 
-    integer(BUD_TYPE_VAR_PREC), pointer :: d
+    integer(BUD_INT_PREC), pointer :: d
 
     if ( is_initd(this) ) then
       d => this%D%n
@@ -696,7 +727,7 @@
   pure function max_size_(this) result(d)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
 
-    integer(BUD_TYPE_VAR_PREC) :: d
+    integer(BUD_INT_PREC) :: d
 
     if ( is_initd(this) ) then
       d = this%D%max_n
@@ -711,7 +742,7 @@
   function max_sizep_(this) result(d)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
 
-    integer(BUD_TYPE_VAR_PREC), pointer :: d
+    integer(BUD_INT_PREC), pointer :: d
 
     if ( is_initd(this) ) then
       d => this%D%max_n
@@ -726,7 +757,7 @@
   !! @param[in] incr_n the default number of values that should be
   subroutine set_incr_n(this, incr_n)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    integer(BUD_TYPE_VAR_PREC), intent(in) :: incr_n
+    integer(BUD_INT_PREC), intent(in) :: incr_n
 
     if ( .not. is_initd(this) ) return
 
@@ -738,7 +769,7 @@
   !! @param[out] incr_n the default number of values that should be
   subroutine get_incr_n(this, incr_n)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer(BUD_TYPE_VAR_PREC), intent(out) :: incr_n
+    integer(BUD_INT_PREC), intent(out) :: incr_n
 
     incr_n = 0
     if ( .not. is_initd(this) ) return
@@ -761,7 +792,7 @@
   !! @param[in] n size to be initialized/extended
   subroutine assert_init_size_add(this, n)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    integer(BUD_TYPE_VAR_PREC), intent(in) :: n
+    integer(BUD_INT_PREC), intent(in) :: n
 
     if ( is_initd(this) ) then
 
@@ -787,17 +818,19 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC) :: val
 
-    call assert_init_size_add(this, BUD_CC3(1,_,BUD_TYPE_VAR_PREC))
+    call assert_init_size_add(this, BUD_CC2(1_,BUD_INT_PREC) )
 
     this%D%n = this%D%n + 1
     this%D%lst(this%D%n) = val
 
+#ifdef BUD_IS_INTEGER
     if ( this%D%sorted .and. this%D%n > 1 ) then
       this%D%sorted = this%D%lst(this%D%n-1) <= this%D%lst(this%D%n)
     else
       this%D%sorted = .false.
     end if
-
+#endif
+    
   end subroutine push_value_
 
 
@@ -806,13 +839,14 @@
   !! @param[in] list the list to be added to the list
   subroutine push_array_(this, n, list)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    integer(BUD_TYPE_VAR_PREC), intent(in) :: n
+    integer(BUD_INT_PREC), intent(in) :: n
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in) :: list(n)
-    integer(BUD_TYPE_VAR_PREC) :: i
+    integer(BUD_INT_PREC) :: i
     logical :: sorted
 
     call assert_init_size_add(this, n)
 
+#ifdef BUD_IS_INTEGER
     if ( this%D%n > 0 ) then
       sorted = this%D%lst(this%D%n) <= list(1)
     else
@@ -821,17 +855,22 @@
       ! true if the passed list is sorted.
       sorted = .true.
     end if
-
+#endif
+    
     this%D%lst(this%D%n+1) = list(1)
     do i = 2 , n
       this%D%lst(this%D%n+i) = list(i)
+#ifdef BUD_IS_INTEGER
       sorted = sorted .and. &
         list(i-1) <= list(i)
+#endif
     end do
 
     this%D%n = this%D%n + n
 
+#ifdef BUD_IS_INTEGER
     this%D%sorted = this%D%sorted .and. sorted
+#endif
 
   end subroutine push_array_
 
@@ -916,9 +955,9 @@
   !! @param[in] n @opt number of elements that needs to be available in its current state
   subroutine extend_(this, max_n, n)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    integer(BUD_TYPE_VAR_PREC), optional :: max_n, n
+    integer(BUD_INT_PREC), optional :: max_n, n
 
-    integer(BUD_TYPE_VAR_PREC) :: lmax_n, i
+    integer(BUD_INT_PREC) :: lmax_n, i
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), allocatable :: tmp(:)
 
     ! We will select the larger of the two
@@ -962,9 +1001,9 @@
   !! @param[in] max_n new maximum number of allowed elements that should be available in the list
   subroutine shrink_n_(this, max_n)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    integer(BUD_TYPE_VAR_PREC), intent(in) :: max_n
+    integer(BUD_INT_PREC), intent(in) :: max_n
 
-    integer(BUD_TYPE_VAR_PREC) :: i, n
+    integer(BUD_INT_PREC) :: i, n
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), allocatable :: tmp(:)
 
     n = min(max_n, this%D%n)
@@ -998,7 +1037,7 @@
   subroutine shrink_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
-    integer(BUD_TYPE_VAR_PREC) :: n
+    integer(BUD_INT_PREC) :: n
 
     n = this%D%n
     call shrink(this, n)
@@ -1010,8 +1049,8 @@
   !! @param[in] n @opt=0 the retained elements in the list
   subroutine clear_(this, n)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    integer(BUD_TYPE_VAR_PREC), intent(in), optional :: n
-    integer(BUD_TYPE_VAR_PREC) :: ln
+    integer(BUD_INT_PREC), intent(in), optional :: n
+    integer(BUD_INT_PREC) :: ln
 
     if ( .not. is_initd(this) ) return
 
@@ -1023,6 +1062,7 @@
   end subroutine clear_
 
 
+#ifdef BUD_IS_INTEGER
   !> @param[inout] this list @bud (sorted on exit)
   subroutine sort_(this)
     use BUD_CC2(BUD_MOD,_utils), only: sort_heap
@@ -1043,7 +1083,7 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: C
 
     type(BUD_TYPE_NAME) :: tmp, D
-    integer(BUD_TYPE_VAR_PREC) :: i, n
+    integer(BUD_INT_PREC) :: i, n
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: l(:)
 
     ! Ensure the output list is empty
@@ -1139,7 +1179,7 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: C
 
     type(BUD_TYPE_NAME) :: tmp, D
-    integer(BUD_TYPE_VAR_PREC) :: i, n
+    integer(BUD_INT_PREC) :: i, n
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: l(:)
 
     if ( size(A) == 0 ) then
@@ -1245,7 +1285,7 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: C
 
     type(BUD_TYPE_NAME) :: tmp ,D
-    integer(BUD_TYPE_VAR_PREC) :: i, n
+    integer(BUD_INT_PREC) :: i, n
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: l(:)
 
     if ( size(A) == 0 ) then
@@ -1290,7 +1330,7 @@
 
     type(BUD_TYPE_NAME) :: tmp
 
-    integer(BUD_TYPE_VAR_PREC) :: i, j, n
+    integer(BUD_INT_PREC) :: i, j, n
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: l(:)
 
     n = size(this)
@@ -1315,11 +1355,13 @@
 
   end subroutine unique_
 
+#endif
+
   !> @param[inout] this the list which will be returned with reversed elements
   subroutine reverse_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
-    integer(BUD_TYPE_VAR_PREC) :: i, n
+    integer(BUD_INT_PREC) :: i, n
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: l(:)
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC) :: tmp
 
@@ -1334,15 +1376,19 @@
 
   end subroutine reverse_
 
+
+#ifndef BUD_IS_COMPLEX
   !> @param[inout] this list @bud
   !! @return the value of the minimum value in the list
   pure function minval_(this) result(val)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC) :: val
-    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC) :: i
+    integer(BUD_INT_PREC) :: i
 
     val = this%D%lst(1)
+#ifdef BUD_IS_INTEGER
     if ( this%D%sorted ) return
+#endif
 
     do i = 2 , size(this)
       if ( this%D%lst(i) < val ) then
@@ -1357,11 +1403,13 @@
   pure function maxval_(this) result(val)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC) :: val
-    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC) :: i
+    integer(BUD_INT_PREC) :: i
 
     val = this%D%lst(size(this))
+#ifdef BUD_IS_INTEGER
     if ( this%D%sorted ) return
-
+#endif
+    
     do i = 1 , size(this) - 1
       if ( this%D%lst(i) > val ) then
         val = this%D%lst(i)
@@ -1369,9 +1417,10 @@
     end do
 
   end function maxval_
+#endif
 
 
-
+#ifdef BUD_IS_INTEGER
   !> @param[inout] this list @bud
   !! @param[in] val the value to be indexed in the list
   !! @return the index of `val` in the list (-1 if not found)
@@ -1379,7 +1428,7 @@
     use BUD_CC2(BUD_MOD,_utils), only: find_bin
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in) :: val
-    integer(BUD_TYPE_VAR_PREC) :: idx
+    integer(BUD_INT_PREC) :: idx
 
     if ( this%D%sorted ) then
 
@@ -1425,7 +1474,7 @@
     end if
 
   end function is_sorted_
-
+#endif
 
 
   !> @param[in] this list @bud
@@ -1437,7 +1486,7 @@
     integer, intent(in), optional :: indent
 
     integer :: lindent
-    integer(BUD_TYPE_VAR_PREC) :: n, max_n
+    integer(BUD_INT_PREC) :: n, max_n
 
     ! 4-byte variable
     character(len=32) :: fmt
@@ -1463,7 +1512,9 @@
     write(fmt, '(a,i0,a)') '(t',lindent,',3a,2(i0,a),l1,a,i0)'
 
     write(*,fmt) "<", trim(name), " size/max=", n,'/',max_n, &
+#ifdef BUD_IS_INTEGER
       ", sorted=", is_sorted(this), &
+#endif
       ", refs: ", references(this), ">"
 
   end subroutine print_

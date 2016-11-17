@@ -18,7 +18,7 @@ pure subroutine BUD_FIND (n, array, val, idx)
   integer(BUD_PREC), intent(out) :: idx
 
   ! Local variables for doing the binary search
-  integer :: a, b, d, i
+  integer(BUD_PREC) :: a, b, d, i
 
   ! Initialize to default value
   idx = -1

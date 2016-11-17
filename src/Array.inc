@@ -51,8 +51,8 @@
 
 
   ! Determine the variable size
-#if BUD_DIM > 4
-#  error "bud_Array: Does not handle array sizes larger than 4"
+#if BUD_DIM > 5
+#  error "bud_Array: Does not handle array sizes larger than 5"
 #endif
 
 
