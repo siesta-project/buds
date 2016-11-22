@@ -3,7 +3,7 @@
 ! Get default commands
 #include "bud_utils.inc"
 
-!> @defgroup sp-csr0 CSR0 (Compressed Sparse Row 0-based row pointer)
+!> @defgroup sm-csr0 CSR0 (Compressed Sparse Row 0-based row pointer)
 !! @ingroup sm
 !!
 !! A compressed sparse row matrix implementation using

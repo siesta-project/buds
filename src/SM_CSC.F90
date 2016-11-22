@@ -3,7 +3,7 @@
 ! Get default commands
 #include "bud_utils.inc"
 
-!> @defgroup sp-csc CSC (Compressed Sparse Column)
+!> @defgroup sm-csc CSC (Compressed Sparse Column)
 !! @ingroup sm
 !!
 !! A compressed sparse column pattern implementation.

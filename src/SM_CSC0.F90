@@ -3,7 +3,7 @@
 ! Get default commands
 #include "bud_utils.inc"
 
-!> @defgroup sp-csc0 CSC0 (Compressed Sparse Column 0-based column pointer)
+!> @defgroup sm-csc0 CSC0 (Compressed Sparse Column 0-based column pointer)
 !! @ingroup sm
 !!
 !! A compressed sparse column matrix implementation using

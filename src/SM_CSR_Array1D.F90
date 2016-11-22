@@ -3,9 +3,9 @@
 ! Get default commands
 #include "bud_utils.inc"
 
-!> @defgroup sp-csr-array CSR format
-!! @ingroup sp-array
-!! @ingroup sp-csr
+!> @defgroup sm-csr-array CSR format
+!! @ingroup sm-array
+!! @ingroup sm-csr
 !!
 !! @{
 
@@ -16,17 +16,17 @@
 
 
 #if BUD_DIM == 1
-!> @defgroup sp-csr-array-BUD_DIM Sparse matrix
+!> @defgroup sm-csr-array-BUD_DIM Sparse matrix
 #elif BUD_DIM == 2
-!> @defgroup sp-csr-array-BUD_DIM Sparse matrix, 1 extra dimension per element
+!> @defgroup sm-csr-array-BUD_DIM Sparse matrix, 1 extra dimension per element
 #elif BUD_DIM == 3
-!> @defgroup sp-csr-array-BUD_DIM Sparse matrix, 2 extra dimensions per element
+!> @defgroup sm-csr-array-BUD_DIM Sparse matrix, 2 extra dimensions per element
 #elif BUD_DIM == 4
-!> @defgroup sp-csr-array-BUD_DIM Sparse matrix, 3 extra dimensions per element
+!> @defgroup sm-csr-array-BUD_DIM Sparse matrix, 3 extra dimensions per element
 #elif BUD_DIM == 5
-!> @defgroup sp-csr-array-BUD_DIM Sparse matrix, 4 extra dimensions per element
+!> @defgroup sm-csr-array-BUD_DIM Sparse matrix, 4 extra dimensions per element
 #endif
-!! @ingroup sp-csr-BUD_DIM
+!! @ingroup sm-csr-BUD_DIM
 !!
 !! A sparse matrix pattern with associated sparse matrix elements.
 !!

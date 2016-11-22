@@ -1,6 +1,6 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
 
-  !> @defgroup sp-array Sparse matrix (pattern and data)
+  !> @defgroup sm-array Sparse matrix (pattern and data)
   !! @ingroup bud-intrinsic
   !!
   !! @bud containing a sparse matrix pattern _and_ the

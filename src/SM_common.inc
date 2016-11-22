@@ -1,6 +1,6 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
 
-  !> @defgroup sp Sparse matrix
+  !> @defgroup sm Sparse matrix
   !! @ingroup bud-intrinsic
   !!
   !! @brief
