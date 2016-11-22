@@ -41,6 +41,18 @@ module BUD_MOD_NAME
 end module
 !> @}
 
+!> @defgroup Distribution module for all different precision objects
+!! @ingroup dist-1d
+!! Module for making everything public
+!! @{
+module BUD_CC3(BUD_MOD,_,Dist1D)
+
+  use BUD_CC3(BUD_MOD,_,iDist1D)
+  use BUD_CC3(BUD_MOD,_,lDist1D)
+
+end module
+!> @}
+
 ! GROUP dist-1d
 !> @}
 
