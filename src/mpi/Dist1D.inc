@@ -13,7 +13,7 @@
   ! We require the use of the communicator
   use BUD_CC3(BUD_MOD,_,MP_Comm)
 
-  use BUD_CC3(BUD_MOD,_,Dist_generic)
+  use BUD_CC3(BUD_MOD,_,Dist_common)
 
 #define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
 #define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
@@ -71,12 +71,14 @@
     !> @{
     ! Doxygen needed line
     
-    procedure, private :: new_, new_block_cyclic_, new_block_or_cyclic_
+    procedure, private :: new_, new_block_cyclic_, new_block_or_cyclic_, &
+    new_user_
 
     !>>@}
     
     !> @iSee new
-    generic, public :: new => new_, new_block_cyclic_, new_block_or_cyclic_
+    generic, public :: new => new_, new_block_cyclic_, new_block_or_cyclic_, &
+      new_user_
 
     !> @iSee #dist_type
     procedure, public :: dist_type => dist_type_
@@ -201,11 +203,11 @@
     ! non-local/neighbour elements.
 
     !> Number of (local) elements in the distribution
-    integer(BUD_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: nl(:) => null()
+    integer(BUD_PREC), allocatable :: nl(:)
     !> Local index to global index
-    integer(BUD_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: l2g(:) => null()
-    !> Global index to processor
-    integer(BUD_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: g2P(:) => null()
+    integer(BUD_PREC), allocatable :: l2g(:)
+    !> Global index to rank
+    integer(BUD_PREC), allocatable :: g2R(:)
 
 
     ! Consistent data in the reference counted object
@@ -218,6 +220,7 @@
     module procedure new_
     module procedure new_block_cyclic_
     module procedure new_block_or_cyclic_
+    module procedure new_user_
   end interface
   public :: BUD_TYPE_NEW
 
@@ -226,6 +229,7 @@
     module procedure new_
     module procedure new_block_cyclic_
     module procedure new_block_or_cyclic_
+    module procedure new_user_
   end interface
   public :: new
 
@@ -388,11 +392,10 @@
 
     ! Non BLOCK_CYCLIC
     this%ng = -1
-    if ( associated(this%nl) ) then
+    if ( allocated(this%nl) ) then
       deallocate(this%nl)
       deallocate(this%l2g)
-      deallocate(this%g2P)
-      nullify(this%nl,this%l2g,this%g2P)
+      deallocate(this%g2R)
     end if
     
   end subroutine delete_
@@ -417,26 +420,26 @@
     to%D%BS = from%D%BS
     to%D%error_ = from%D%error_
 
-    call assert(from%D%nl, to%D%nl)
-    call assert(from%D%l2g, to%D%l2g)
-    call assert(from%D%g2P, to%D%g2P)
+    call alloc(from%D%nl, to%D%nl)
+    call alloc(from%D%l2g, to%D%l2g)
+    call alloc(from%D%g2R, to%D%g2R)
 
     ! Copy the common data-content
     call common_copy_(from, to)
 
   contains
 
-    subroutine assert(froml, tol)
-      integer(BUD_PREC), pointer :: froml(:), tol(:)
+    subroutine alloc(froml, tol)
+      integer(BUD_PREC), allocatable :: froml(:), tol(:)
       integer(BUD_PREC) :: lb, ub
 
-      if ( associated(froml) ) then
+      if ( allocated(froml) ) then
         lb = lbound(froml,1)
         ub = ubound(froml,1)
         allocate(tol(lb:ub))
       end if
 
-    end subroutine assert
+    end subroutine alloc
       
   end subroutine copy_
 
@@ -495,18 +498,25 @@
 
 
   !> Query several contained quantities
-  subroutine attach_(this, D, dist, P, NP, ng, BS)
+  subroutine attach_(this, D, dist, P, NP, ng, BS, &
+    num_local, local2global, global2rank)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     logical, intent(in), optional :: D
     integer, intent(out), optional :: dist
     integer(ii_), intent(out), optional :: P, NP
     integer(BUD_PREC), intent(out), optional :: BS, ng
+    integer(BUD_PREC), pointer, optional :: num_local(:)
+    integer(BUD_PREC), pointer, optional :: local2global(:)
+    integer(BUD_PREC), pointer, optional :: global2rank(:)
 
     if ( present(dist) ) dist = this%D%dist
     if ( present(P) ) P = rank(this%D%comm)
     if ( present(NP) ) NP = comm_size(this%D%comm)
     if ( present(ng) ) ng = this%D%ng
     if ( present(BS) ) BS = this%D%BS
+    if ( present(num_local) ) num_local => this%D%nl
+    if ( present(local2global) ) local2global => this%D%l2g
+    if ( present(global2rank) ) global2rank => this%D%g2R
 
   end subroutine attach_
   
@@ -630,6 +640,45 @@
   end subroutine new_block_or_cyclic_
 
 
+  !> Create a new user defined distribution
+  subroutine new_user_(this, Comm, &
+    num_local, local2global, global2Rank)
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_MP_COMM), intent(inout) :: Comm
+    integer(BUD_PREC), intent(in) :: num_local(:)
+    integer(BUD_PREC), intent(in) :: local2global(:)
+    integer(BUD_PREC), intent(in) :: global2Rank(:)
+
+    integer(BUD_PREC) :: n
+
+    call new(this, Comm)
+    this%D%dist = DIST_USER
+    ! Store the maximum number of elements.
+    this%D%ng = size(global2Rank)
+
+    ! Copy the user-defined stuff to the
+    ! distribution
+    n = size(num_local)
+    if ( n /= comm_size(this) ) then
+      this%D%error_ = -1
+      return
+    end if
+    allocate(this%D%nl(0:n-1))
+    this%D%nl(:) = num_local(:)
+
+    n = size(local2global)
+    ! Assert that it has the correct size.
+    ! TODO make the test propagate to the user...
+    ! TODO make this array a searchable lookup table...
+    allocate(this%D%l2g(n))
+    this%D%l2g(:) = local2global(:)
+
+    n = size(global2Rank)
+    allocate(this%D%g2R(n))
+    this%D%g2R(:) = global2Rank(:)
+
+  end subroutine new_user_
+
   ! Interface for number of local elements
   elemental function size_local_(this, P) result(nl)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
@@ -689,6 +738,10 @@
         nl = nl + 1
       end if
 
+    case ( DIST_USER )
+
+      nl = this%D%nl(lP)
+
     end select
     
   end function size_local_
@@ -737,6 +790,10 @@
       ! ASSERTED 
 
       ig = (il - 1) * NP + lP
+
+    case ( DIST_USER )
+
+      ig = this%D%l2g(il)
 
     end select
     
@@ -800,6 +857,25 @@
       ! ASSERTED
       
       il = (ig-1) / NP + 1
+
+    case ( DIST_USER )
+
+      ! we can only get a global to local
+      ! on the local processor
+      if ( lP /= comm_rank(this%D%comm) ) then
+        
+        il = -1
+        
+      else
+        
+        do il = 1 , this%D%nl(lP)
+
+          ! If the index corresponds to the
+          if ( this%D%l2g(il) == ig ) return
+            
+        end do
+        
+      end if
       
     end select
     
@@ -830,6 +906,10 @@
     case ( DIST_CYCLIC_FIRST )
 
       P = mod(ig-1,NP)
+      
+    case ( DIST_USER )
+
+      P = this%D%g2R(ig)
       
     end select
     
@@ -914,6 +994,9 @@
         ", bs=", this%D%BS, ", ng=", this%D%ng, ">"
     case ( DIST_CYCLIC_FIRST ) 
       write(*,fmt) "< Cyclic-F", &
+        ", ng=", this%D%ng, ">"
+    case ( DIST_USER ) 
+      write(*,fmt) "< User-defined", &
         ", ng=", this%D%ng, ">"
     case default
       write(*,'(a,i0,a)') "<Not implemented distribution: ",this%D%dist,">"

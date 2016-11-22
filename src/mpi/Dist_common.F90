@@ -6,7 +6,7 @@
   ! This module contains generic variables that may be
   ! accessed in the distribution modules.
 
-#define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,Dist_generic)
+#define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,Dist_common)
 
 module BUD_MOD_NAME
 
@@ -15,10 +15,8 @@ module BUD_MOD_NAME
   !> Denote no distribution
   integer, parameter, public :: DIST_NONE = 0
 
-  ! currently this is not enabled as an implementation
-  ! is not complete. Hence it is private.
   !> User defined distribution (DIST_EXPLICIT)
-  integer, parameter, private :: DIST_USER = 1
+  integer, parameter, public :: DIST_USER = 1
 
   !> Block-cyclic distribution, remainder goes to first processors in block sizes
   integer, parameter, public :: DIST_BLOCK_CYCLIC_FIRST_SPLIT = 2

@@ -8,14 +8,14 @@ mpi_OBJECTS += $(MP_OBJECTS)
 bud_MP_Comm.f90: MP_Comm.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
 
-DIST_generic = bud_Dist_generic.o
-mpi_OBJECTS += $(DIST_generic)
-bud_Dist_generic.f90: Dist_generic.F90
+DIST_common = bud_Dist_common.o
+mpi_OBJECTS += $(DIST_common)
+bud_Dist_common.f90: Dist_common.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
 
 DIST_OBJECTS = \
 	bud_Dist1D.o
-$(DIST_OBJECTS): $(MP_OBJECTS) $(DIST_generic)
+$(DIST_OBJECTS): $(MP_OBJECTS) $(DIST_common)
 $(DIST_OBJECTS:.o=.f90): Dist1D.inc
 mpi_OBJECTS += $(DIST_OBJECTS)
 bud_Dist1D.f90: Dist1D.F90

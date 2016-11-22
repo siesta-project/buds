@@ -335,8 +335,9 @@ end subroutine
 
 ! Implement shorthands for reduce routines (currently MPI_IN_PLACE does not work)
 ! Note that these only work for integer, real, complex
-#ifndef BUD_MP_COMM_ONLY_LOGICAL
-# ifndef BUD_MP_COMM_NO_COMPLEX
+#ifndef BUD_IS_LOGICAL
+# ifndef BUD_IS_COMPLEX
+
   ! this means we are either dealing with integer, real, complex
 ! MAX (no complex)
 subroutine BUD_CC5(reduce_max_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,b,root,this)
@@ -371,6 +372,7 @@ subroutine BUD_CC5(ireduce_min_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,b,ro
   call BUD_CC5(ireduce_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,b,MPI_MIN,root,this,request)
 end subroutine
 # endif
+
 ! PROD
 subroutine BUD_CC5(reduce_prod_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,b,root,this)
   _MP_COMM_A_IN
@@ -405,7 +407,7 @@ subroutine BUD_CC5(ireduce_sum_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,b,ro
 end subroutine
 #endif
 
-#ifndef BUD_MP_COMM_NO_LOGICAL
+#ifdef BUD_IS_LOGICAL
   ! this means we are dealing with logical
 ! LAND
 subroutine BUD_CC5(reduce_land_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,b,root,this)
@@ -486,8 +488,8 @@ end subroutine
 
 ! Implement shorthands for allreduce routines (currently MPI_IN_PLACE does not work)
 ! Note that these only work for integer, real, complex
-#ifndef BUD_MP_COMM_ONLY_LOGICAL
-# ifndef BUD_MP_COMM_NO_COMPLEX
+#ifndef BUD_IS_LOGICAL
+# ifndef BUD_IS_COMPLEX
   ! this means we are either dealing with integer, real, complex
 ! MAX (no complex)
 subroutine BUD_CC5(allreduce_max_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,b,this)
@@ -518,6 +520,7 @@ subroutine BUD_CC5(iallreduce_min_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,b
   call BUD_CC5(iallreduce_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,b,MPI_MIN,this,request)
 end subroutine
 # endif
+
 ! PROD
 subroutine BUD_CC5(allreduce_prod_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,b,this)
   _MP_COMM_A_IN
@@ -548,7 +551,7 @@ subroutine BUD_CC5(iallreduce_sum_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,b
 end subroutine
 #endif
 
-#ifndef BUD_MP_COMM_NO_LOGICAL
+#ifdef BUD_IS_LOGICAL
   ! this means we are dealing with logical
 ! LAND
 subroutine BUD_CC5(allreduce_land_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,b,this)
@@ -604,9 +607,10 @@ end subroutine
 #  undef BUD_TYPE_VAR_PREC
 # endif
 # undef BUD_TYPE_VAR_MP
-# undef BUD_MP_COMM_NO_LOGICAL
-# undef BUD_MP_COMM_NO_COMPLEX
-# undef BUD_MP_COMM_ONLY_LOGICAL
+# undef BUD_IS_LOGICAL
+# undef BUD_IS_INTEGER
+# undef BUD_IS_REAL
+# undef BUD_IS_COMPLEX
 #endif
 
 #undef BUD_DIM
