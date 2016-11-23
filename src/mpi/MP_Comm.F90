@@ -1075,9 +1075,7 @@ module BUD_MOD_NAME
   
   ! Include common data routines
   ! Note that 'CONTAINS' is present in this include file.
-#define BUD_DELETE_NOELEMENTAL
 # include "bud_common.inc"
-#undef BUD_DELETE_NOELEMENTAL
 
 
   !> @cond BUD_DEVELOPER

@@ -208,7 +208,7 @@
   !! This routine is only used internally to clean-up
   !! any data in the type.
   !! Should never be made public.
-  pure subroutine delete_(this)
+  subroutine delete_(this)
     type(BUD_TYPE_NAME_), intent(inout) :: this
 
     ! Currently we do not allow external memory

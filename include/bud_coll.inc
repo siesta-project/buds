@@ -487,7 +487,7 @@
 
   !> @cond BUD_DEVELOPER
 
-  pure subroutine delete_(D)
+  subroutine delete_(D)
     type(BUD_TYPE_NAME_), intent(inout) :: D
 
     call delete(D%e1)

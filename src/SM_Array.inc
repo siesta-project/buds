@@ -38,6 +38,12 @@
   end interface
   public :: sparse_matrix_p
 
+  !> Query the index of the sparse matrix
+  interface sparse_index
+    module procedure sparse_index_
+  end interface
+  public :: sparse_index
+
   !> Retrieve the array @bud
   interface array
     module procedure get_elem2_
@@ -66,6 +72,21 @@
     p => array_p(this%D%e2)
 
   end function get_matrixp_
+
+
+  !> @param[in] this sparse matrix
+  !! @return the index of the sparse index
+  function sparse_index_(this) result(idx)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    integer :: idx
+
+#if BUD_DIM > 1
+    idx = this%D%sm_idx
+#else
+    idx = 1
+#endif
+
+  end function sparse_index_
 
 
 #undef BUD_TYPE_NEW

@@ -252,13 +252,16 @@
 
   !> @cond BUD_DEVELOPER
 
-  pure subroutine delete_(D)
+  subroutine delete_(D)
     type(BUD_TYPE_NAME_), intent(inout) :: D
+    integer :: i
 
     if ( associated(D%T) ) then
 
       ! Deallocate array
-      call delete(D%T)
+      do i = 1 , size(D%T)
+        call delete(D%T(i))
+      end do
       deallocate(D%T)
       nullify(D%T)
 

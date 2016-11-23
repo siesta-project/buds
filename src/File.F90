@@ -315,9 +315,7 @@ module BUD_MOD_NAME
   ! Note that 'CONTAINS' is present in this include file.
   ! the common_delete_ ensures a closed file
   ! Hence we *must* not use elemental
-#define BUD_DELETE_NOELEMENTAL
 # include "bud_common.inc"
-#undef BUD_DELETE_NOELEMENTAL
 
 
   !> @cond BUD_DEVELOPER

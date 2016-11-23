@@ -296,11 +296,7 @@ contains
 #ifndef BUD_NO_DELETE
 
   !> @param[inout] this returned @bud is un-initialized with no data associated
-#ifndef BUD_DELETE_NOELEMENTAL
-  elemental subroutine common_delete_(this)
-#else
   subroutine common_delete_(this)
-#endif
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
     integer :: error

@@ -367,7 +367,7 @@
 
   !> @cond BUD_DEVELOPER
 
-  pure subroutine delete_(D)
+  subroutine delete_(D)
     type(BUD_TYPE_NAME_), intent(inout) :: D
     type(BUD_LINKED_LIST_NAME), pointer :: head, tmp
 
