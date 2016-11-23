@@ -21,6 +21,25 @@ mpi_OBJECTS += $(DIST_OBJECTS)
 bud_Dist1D.f90: Dist1D.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
 
+DIST_SM_ARR_C = \
+	bud_Dist1D_SM_CSC0_Array1D.o \
+	bud_Dist1D_SM_CSC0_Array2D.o \
+	bud_Dist1D_SM_CSC0_Array3D.o
+$(DIST_SM_ARR_C): $(DIST_OBJECTS) $(SM_C) $(ARRAY_OBJECTS)
+$(DIST_SM_ARR_C:.o=.f90): Dist1D_SM_Array.inc
+$(DIST_SM_ARR_C:.o=.f90): Dist1D_SM_Array_type_.inc
+mpi_OBJECTS += $(DIST_SM_ARR_C)
+bud_Dist1D_SM_CSC0_Array1D.f90: Dist1D_SM_CSC0_Array1D.F90
+	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
+bud_Dist1D_SM_CSC0_Array2D.f90: _TMP_FILE=Dist1D_SM_CSC0_Array2D.F90
+bud_Dist1D_SM_CSC0_Array2D.f90: Dist1D_SM_CSC0_Array1D.F90
+	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/\([^t]\)1D/\12D/g' $(mpi_DIR)/Dist1D_SM_CSC0_Array1D.F90 > $(_TMP_FILE)
+	$(src_FPP)
+bud_Dist1D_SM_CSC0_Array3D.f90: _TMP_FILE=Dist1D_SM_CSC0_Array3D.F90
+bud_Dist1D_SM_CSC0_Array3D.f90: Dist1D_SM_CSC0_Array1D.F90
+	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/\([^t]\)1D/\13D/g' $(mpi_DIR)/Dist1D_SM_CSC0_Array1D.F90 > $(_TMP_FILE)
+	$(src_FPP)
+
 
 # Define objects that needs compilation
 mpi_SOURCES = $(patsubst %.o, %.f90, $(mpi_OBJECTS))
