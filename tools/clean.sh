@@ -7,6 +7,9 @@
 # Figure out the top directory of the git repo
 top_dir=`git rev-parse --show-toplevel`
 
+# Ensure that ** works
+shopt -s globstar
+
 # This function
 # takes a single source code as argument
 # and will _in-place_ remove all trailing
