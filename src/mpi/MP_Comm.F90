@@ -18,15 +18,16 @@
 !!
 !! @{
 module BUD_MOD_NAME
-  
+
+#ifdef BUD_MPI
   !> This module makes heavy usage of the
   !! MPI variables
-#ifndef BUD_MPI_INCLUDE
+# ifdef BUD_MPI_INCLUDE
+  include BUD_MPI_INCLUDE
+# else
   use mpi
-#else
-  include 'mpif.h'
+# endif
 #endif
-
 
   !> BUD_MOD_NAME documentation for the Message Passing interface.
   !1
@@ -74,16 +75,20 @@ module BUD_MOD_NAME
 
     procedure, private :: new_
     procedure, private :: new_remote_
+#ifdef BUD_MPI
     procedure, private :: new_remote_child_
+#endif
     
 #define BUD_DEFINE_PROCEDURE procedure, private, pass(this) ::
+
+#ifdef BUD_MPI
 
     ! Define all interfaces
 # define BUD_IS_LOGICAL
 # define BUD_IS_INTEGER
 # define BUD_IS_REAL
 # define BUD_IS_COMPLEX
-
+    
 #define BUD_MP_COMM_NAME Send
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME BSend
@@ -274,6 +279,8 @@ module BUD_MOD_NAME
 #undef BUD_IS_REAL
 #undef BUD_IS_COMPLEX
 
+#endif
+    
 #undef BUD_DEFINE_PROCEDURE
 
     procedure, private :: Comm_split_
@@ -288,7 +295,11 @@ module BUD_MOD_NAME
     procedure, public :: new => new_
 
     !> @iSee new_remote
+#ifdef BUD_MPI
     generic, public :: new_remote => new_remote_, new_remote_child_
+#else
+    generic, public :: new_remote => new_remote_
+#endif
 
     !> @iSee #communicator
     procedure, public :: communicator => comm_
@@ -313,6 +324,8 @@ module BUD_MOD_NAME
     !> @iSee #is_success_mpi
     procedure, public :: is_success_mpi => is_MPIsuccess_
 
+#ifdef BUD_MPI
+    
     ! Define all interfaces
 # define BUD_IS_LOGICAL
 # define BUD_IS_INTEGER
@@ -484,17 +497,27 @@ module BUD_MOD_NAME
 #undef BUD_IS_REAL
 #undef BUD_IS_COMPLEX
 
+#endif
+
     procedure, public :: Barrier => Barrier_
     procedure, public :: IBarrier => IBarrier_
 
+# ifdef BUD_MPI
     generic, public :: Comm_split => comm_split_, comm_split_type_
     procedure, public :: Comm_Compare => comm_compare_
 
     generic, public :: Comm_Create => comm_Create_, comm_create_commgrp_, &
       comm_Create_group_, comm_create_group_commgrp_
-
+# endif
 #endif
   end type BUD_TYPE_NAME
+
+#ifndef BUD_MPI
+  !> Public MPI_SUCCESS to always be able to compare.
+  integer(ii_), parameter, public :: MPI_SUCCESS = 0
+  integer(ii_), parameter :: MPI_Comm_Null = -huge(1)
+  integer(ii_), parameter :: MPI_Group_Null = -huge(1)
+#endif
 
   !> @bud container for message passing information.
   type BUD_TYPE_NAME_
@@ -549,7 +572,10 @@ module BUD_MOD_NAME
   !! In this case a remote child will be created on
   !! those nodes that do not belong to child.
   interface new_remote
-    module procedure new_remote_, new_remote_child_
+    module procedure new_remote_
+#ifdef BUD_MPI
+    module procedure new_remote_child_
+#endif
   end interface
   public :: new_remote
 
@@ -557,7 +583,10 @@ module BUD_MOD_NAME
   !!
   !! @iSee new_remote
   interface BUD_CC2(BUD_TYPE_NEW,_remote)
-    module procedure new_remote_, new_remote_child_
+    module procedure new_remote_
+#ifdef BUD_MPI
+    module procedure new_remote_child_
+#endif
   end interface
   public :: BUD_CC2(BUD_TYPE_NEW,_remote)
 
@@ -608,6 +637,7 @@ module BUD_MOD_NAME
   end interface
   public :: is_group
 
+#ifdef BUD_MPI
   !> Query data in a child communicator
   interface child_Bcast
     module procedure child_Bcast_
@@ -619,7 +649,8 @@ module BUD_MOD_NAME
     module procedure child_Bcast_ranks_
   end interface
   public :: child_Bcast_ranks
-
+#endif
+  
   !> Query error of previous MPI call
   interface error_MPI
     module procedure get_MPIerr_
@@ -638,6 +669,7 @@ module BUD_MOD_NAME
   end interface
   public :: print
 
+#ifdef BUD_MPI
   
   ! Define all interfaces
 # define BUD_IS_LOGICAL
@@ -1040,7 +1072,8 @@ module BUD_MOD_NAME
 #undef BUD_IS_INTEGER
 #undef BUD_IS_REAL
 #undef BUD_IS_COMPLEX
-
+  
+#endif
   
   !> Interface for `MPI_Barrier`
   interface Barrier
@@ -1053,6 +1086,7 @@ module BUD_MOD_NAME
   end interface
   public :: IBarrier
 
+#ifdef BUD_MPI
   !> Interface for `MPI_Comm_Split` and `MPI_Comm_Split_Type`
   interface Comm_Split
     module procedure Comm_Split_, Comm_Split_type_
@@ -1071,7 +1105,7 @@ module BUD_MOD_NAME
     module procedure Comm_Create_group_, Comm_Create_group_Commgrp_
   end interface
   public :: Comm_Create
-
+#endif
   
   ! Include common data routines
   ! Note that 'CONTAINS' is present in this include file.
@@ -1090,6 +1124,7 @@ module BUD_MOD_NAME
     type(BUD_TYPE_NAME_), intent(inout) :: this
     integer :: err
 
+#ifdef BUD_MPI
     ! Currently we do not allow external memory
     ! tracking.
     if ( this%Comm /= MPI_Comm_Null ) then
@@ -1100,7 +1135,8 @@ module BUD_MOD_NAME
       call MPI_Group_Free(this%Grp, this%error_)
       call MPI_Comm_Disconnect(this%Comm, this%error_)
     end if
-
+#endif
+    
     ! Ensure they are nullified
     this%Comm = MPI_Comm_Null
     this%Grp = MPI_Group_Null
@@ -1191,6 +1227,7 @@ module BUD_MOD_NAME
 
     call initialize(this)
 
+#ifdef BUD_MPI
     ! duplicate communicator (ensures that we can delete it again)
     ldup = .true.
     if ( present(dup) ) ldup = dup
@@ -1206,6 +1243,13 @@ module BUD_MOD_NAME
     ! Figure out number of processors and the rank
     call MPI_Comm_Rank( this%D%comm, this%D%P, this%D%error_)
     call MPI_Comm_Size( this%D%comm, this%D%NP, this%D%error_)
+
+#else
+
+    this%D%comm = Comm
+    this%D%P = 0
+    this%D%NP = 1
+#endif
 
   end subroutine new_
 
@@ -1226,6 +1270,7 @@ module BUD_MOD_NAME
         
   end subroutine new_remote_
 
+#ifdef BUD_MPI
   !> Create a fake communicator for those ranks in `child` which are not in `parent`
   !!
   !! This routine requires all ranks in `child` to participate.
@@ -1261,8 +1306,10 @@ module BUD_MOD_NAME
     end if
     
   end subroutine new_remote_child_
+#endif
 
-  
+
+#ifdef BUD_MPI
   !> @cond BUD_DEVELOPER
   ! Add all interfaces
 # define BUD_TYPE_VAR integer
@@ -1369,22 +1416,30 @@ module BUD_MOD_NAME
 # define BUD_DIM 4
 # include "MP_Comm_routine.inc"
 
+#endif
+  
   ! Common things
   subroutine Barrier_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    
+#ifdef BUD_MPI
     if ( .not. is_initd(this) ) return
 
     call MPI_Barrier(this%D%comm, this%D%error_)
+#endif
       
   end subroutine
 
   subroutine IBarrier_(this, request)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer, intent(inout) :: request
+
+#ifdef BUD_MPI
     if ( .not. is_initd(this) ) return
 
     call MPI_IBarrier(this%D%comm, request, this%D%error_)
-      
+#endif
+    
   end subroutine
 
   !> @endcond BUD_DEVELOPER
@@ -1437,6 +1492,7 @@ module BUD_MOD_NAME
     end if
   end function is_MPIsuccess_
 
+#ifdef BUD_MPI
 
   !> Bcast information about a child communicator
   !!
@@ -1473,7 +1529,7 @@ module BUD_MOD_NAME
       call AllReduce_Max(size, tmp, parent)
       size = tmp
     end if
-
+    
   end subroutine child_Bcast_
 
   
@@ -1648,6 +1704,8 @@ module BUD_MOD_NAME
     call Comm_Create_group_(parent, group%D%grp, tag, child)
     
   end subroutine Comm_Create_Group_CommGrp_
+
+#endif
   
   !> Print, to std-out, some basic information of the data-container
   !!

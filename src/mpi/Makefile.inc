@@ -45,12 +45,10 @@ bud_Dist1D_SM_CSC0_Array3D.f90: Dist1D_SM_CSC0_Array1D.F90
 mpi_SOURCES = $(patsubst %.o, %.f90, $(mpi_OBJECTS))
 # FPP_SOURCES are those sources that needs deletion upon make clean
 mpi_FPP_SOURCES = $(mpi_SOURCES)
-ifneq ($(MPI),0)
 OBJECTS += $(mpi_OBJECTS)
 SOURCES += $(mpi_SOURCES)
 FPP_SOURCES += $(mpi_FPP_SOURCES)
 F_MODS  += $(patsubst %.f90, %.mod, $(mpi_SOURCES))
-endif
 
 
 # Ensure we use the correct compiler
