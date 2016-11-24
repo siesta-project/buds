@@ -32,9 +32,8 @@
 # define BUD_SM_CSR 0
 #endif
 
-#ifndef BUD_SM_INTEROP_C
-# define BUD_SM_INTEROP_C 0
-#endif
+  ! Retrieve the settings for the sparse matrix
+# include "SM.inc"
 
 #if BUD_SM_CSR == 0
 #elif BUD_SM_CSR == 1
@@ -43,40 +42,6 @@
 # endif
 #else
 # error "SM_CSR *MUST* be either 0 or 1"
-#endif
-
-
-#if BUD_SM_CSR == 0
-# if BUD_SM_INTEROP_C == 0
-#  define BUD_SM_MOD modp
-   ! This is the initial pointer value for the
-   ! first pointer element
-#  define BUD_SM_PTR 1
-   ! this is the addition to the pointer arrays
-#  define BUD_SM_PTR_A
-#  define BUD_SM_PTR_B -1
-# else
-#  define BUD_SM_MOD mod
-#  define BUD_SM_PTR 0
-#  define BUD_SM_PTR_A +1
-#  define BUD_SM_PTR_B
-# endif
-#else
-# define BUD_SM_MOD modp
-# define BUD_SM_PTR 0
-# define BUD_SM_PTR_A +1
-# define BUD_SM_PTR_B
-#endif
-
-
-#if BUD_SM_INTEROP_C == 0
-# define BUD_SM_IDX(a) (a)
-# define BUD_SM_IDXF(a) (a)
-#elif BUD_SM_INTEROP_C == 1
-# define BUD_SM_IDX(a) (a-1)
-# define BUD_SM_IDXF(a) (a+1)
-#else
-# error "SM_INTEROP_C *MUST* be either 0 or 1"
 #endif
 
 
