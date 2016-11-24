@@ -1,5 +1,5 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
-  
+
 #include "bud_utils.inc"
 
 #ifdef BUD_MPI
@@ -11,7 +11,7 @@
   use mpi
 # endif
 #endif
-  
+
   ! We require the use of the communicator
   use BUD_CC3(BUD_MOD,_,MP_Comm)
 
@@ -38,7 +38,7 @@
   !!  - DIST_CYCLIC_FIRST
   !!    This format is a simple distribution equivalent to
   !!    the DIST_BLOCK_CYCLIC_FIRST_SPLIT with block-size 1.
-  !! 
+  !!
   !! @dev_note
   !! The following pre-processor variables are currently used when
   !! included:
@@ -72,12 +72,12 @@
     !> @name Private procedures
     !> @{
     ! Doxygen needed line
-    
+
     procedure, private :: new_, new_block_cyclic_, new_block_or_cyclic_, &
     new_user_
 
     !>>@}
-    
+
     !> @iSee new
     generic, public :: new => new_, new_block_cyclic_, new_block_or_cyclic_, &
       new_user_
@@ -111,6 +111,13 @@
     !> @iSee #size_global
     procedure, public :: size => size_
 
+    !> @iSee #consecutive
+    procedure, public :: consecutive => consecutive_
+    !> @iSee #consecutive_max
+    procedure, public :: consecutive_max => consecutive_max_
+    !> @iSee #consecutive_blocks
+    procedure, public :: consecutive_blocks => consecutive_blocks_
+
 
     !> @iSee #size_block
     procedure, public :: size_block => blocksize_
@@ -130,7 +137,7 @@
     procedure, public :: global2rank => global_to_rank_
     !> @iSee #global2rank
     procedure, public :: g2rank => global_to_rank_
-    
+
     !> @iSee #attach
     procedure, public :: attach => attach_
 
@@ -173,7 +180,7 @@
   type BUD_TYPE_NAME_
 
 #define BUD_TYPE_MP_COMM BUD_CC2(BUD_TYPE,MP_Comm)
-    
+
     !> The associated communicator
     type(BUD_TYPE_MP_COMM) :: comm
 
@@ -235,7 +242,7 @@
   end interface
   public :: new
 
-  
+
   !> Query communicator of the distribution
   interface comm
     module procedure comm_
@@ -303,7 +310,7 @@
   end interface
   public :: size_local
 
-  !> Query number of total elements 
+  !> Query number of total elements
   interface size_global
     module procedure size_
   end interface
@@ -314,6 +321,34 @@
     module procedure size_
   end interface
   public :: size
+
+  !> Query the number of consecutive elements starting from any index
+  !!
+  !! Returns the number of elements that are belonging to the
+  !! same processor as the processor holding the element
+  !! queried.
+  interface consecutive
+    module procedure consecutive_
+  end interface
+  public :: consecutive
+
+  !> Query the maximum number of consecutive elements
+  !!
+  !! Checks all consecutive blocks and returns the
+  !! longest consecutive stretch.
+  interface consecutive_max
+    module procedure consecutive_max_
+  end interface
+  public :: consecutive_max
+
+  !> Query the number of consecutive blocks
+  !!
+  !! Counts the number of consecutive blocks.
+  interface consecutive_blocks
+    module procedure consecutive_blocks_
+  end interface
+  public :: consecutive_blocks
+
 
   !> Query global index from a local index
   interface local2global
@@ -351,7 +386,7 @@
   end interface
   public :: g2rank
 
-   
+
   ! Here we create the interfaces for
   ! sub partitions
 
@@ -360,21 +395,21 @@
     module procedure get_MPIerr_
   end interface
   public :: error_MPI
-  
+
   !> Print information about the @bud
   interface print
     module procedure print_
   end interface
   public :: print
 
-  
+
   ! Include common data routines
   ! Note that 'CONTAINS' is present in this include file.
 # include "bud_common.inc"
 
 
   !> @cond BUD_DEVELOPER
-  
+
   !> Internal routine for cleaning up the data container.
   !!
   !! @dev_note
@@ -397,7 +432,7 @@
       deallocate(this%l2g)
       deallocate(this%g2R)
     end if
-    
+
   end subroutine delete_
 
 
@@ -440,7 +475,7 @@
       end if
 
     end subroutine alloc
-      
+
   end subroutine copy_
 
 
@@ -489,7 +524,7 @@
     is = this%D%dist == dist
   end function is_dist_
 
-  !> Query distribution type used 
+  !> Query distribution type used
   elemental function dist_type_(this) result(dist)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer :: dist
@@ -519,7 +554,7 @@
     if ( present(global2rank) ) global2rank => this%D%g2R
 
   end subroutine attach_
-  
+
 
   !> Basic routine for initializing a new distribution
   !!
@@ -532,14 +567,14 @@
   subroutine new_(this, Comm)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     BUD_CLASS(BUD_TYPE_MP_COMM), intent(inout) :: Comm
-    
+
     call initialize(this)
 
     this%D%comm = Comm
-    
+
   end subroutine new_
 
-  
+
   !> Create a new block cyclic distribution
   subroutine new_block_cyclic_(this, Comm, bs, ng, dist)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
@@ -564,7 +599,7 @@
     case ( &
       DIST_BLOCK_LAST_ALL &
       )
-      
+
       ! Create a new object with communicator
       ! and populate 'P' and 'NP'
       call new(this, Comm)
@@ -573,7 +608,7 @@
       ! for splitting this information.
       this%D%BS = BS
       this%D%ng = ng
-      
+
       ! Assert that this is a viable distribution
       ! I.e. for block-distributions no processor
       ! must be empty...
@@ -586,7 +621,7 @@
 
       call delete(this)
       return
-      
+
     end select
 
     ! Copy distribution to the container
@@ -614,7 +649,7 @@
       ! for splitting this information.
       this%D%BS = ng / comm_size(Comm)
       this%D%ng = ng
-      
+
     case ( &
       DIST_CYCLIC_FIRST &
       )
@@ -631,7 +666,7 @@
 
       call delete(this)
       return
-      
+
     end select
 
     ! Copy distribution to the container
@@ -703,7 +738,7 @@
     case ( DIST_BLOCK_CYCLIC_FIRST_SPLIT )
 
       ! ASSERTED
-      
+
       ! count number of blocks per node
       i = this%D%ng / ( NP * this%D%BS )
       ! count elements not in default blocks
@@ -717,17 +752,17 @@
         ! correct for number of elements in the last block
         nl = i * this%D%BS + ir - irB * this%D%BS
       end if
-      
+
     case ( DIST_BLOCK_LAST_ALL )
 
       ! ASSERTED
-      
+
       if ( lP + 1 == NP ) then
         nl = this%D%ng - this%D%BS * lP
       else
         nl = this%D%BS
       end if
-      
+
     case ( DIST_CYCLIC_FIRST )
 
       ! ASSERTED
@@ -743,8 +778,76 @@
       nl = this%D%nl(lP)
 
     end select
-    
+
   end function size_local_
+
+
+  !> Query the number of consecutive elements in the distribution
+  function consecutive_(this, ig) result(n)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    integer(BUD_PREC), intent(in) :: ig
+    integer(BUD_PREC) :: n
+
+    ! Local variables
+    integer(ii_) :: rank, ig_rank
+    integer(BUD_PREC) :: i
+
+    n = 1
+    ig_rank = global2rank(this, ig)
+    do i = ig + 1 , size(this)
+       if ( ig_rank /= global2rank(this, i) ) return
+       n = n + 1
+    end do
+
+  end function consecutive_
+
+  !> Query the maximum number of consecutive elements in the distribution
+  function consecutive_max_(this) result(nm)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    integer(BUD_PREC) :: nm
+
+    ! Local variables
+    integer(ii_) :: rank, i_rank
+    integer(BUD_PREC) :: i, n
+
+    nm = 0
+    ! current consecutive block
+    n = 1
+    i_rank = global2rank(this, BUD_CC2(1_,BUD_PREC))
+    do i = 2 , size(this)
+
+      rank = global2rank(this, i)
+      if ( i_rank /= rank ) then
+        i_rank = rank
+        nm = max(nm, n)
+        n = 0 ! it gets incremented below...
+      end if
+
+      n = n + 1
+
+    end do
+
+  end function consecutive_max_
+
+  !> Query the total number of consecutive distributed blocks
+  function consecutive_blocks_(this) result(nb)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    integer(BUD_PREC) :: nb
+
+    ! Local variables
+    integer(ii_) :: ig_rank, rank
+    integer(BUD_PREC) :: i
+
+    nb = 1
+    ig_rank = global2rank(this, BUD_CC2(1_,BUD_PREC))
+    do i = 2 , size(this)
+      if ( ig_rank /= rank ) then
+        ig_rank = rank
+        nb = nb + 1
+      end if
+    end do
+
+  end function consecutive_blocks_
 
 
   elemental function local_to_global_(this, il, P) result(ig)
@@ -772,22 +875,22 @@
     case ( DIST_BLOCK_CYCLIC_FIRST_SPLIT )
 
       ! ASSERTED
-      
+
       ! get local block
       ig = (il - 1) / this%D%BS
       !  ig*(this%D%NP-1) == the number of blocks in all other
       !     P (remember il contains the local offset-blocks)
       ig = ( ig*(NP-1) + lP ) * this%D%BS + il
-      
+
     case ( DIST_BLOCK_LAST_ALL )
 
       ! ASSERTED
-      
+
       ig = this%D%BS * lP + il
 
     case ( DIST_CYCLIC_FIRST )
-            
-      ! ASSERTED 
+
+      ! ASSERTED
 
       ig = (il - 1) * NP + lP
 
@@ -796,7 +899,7 @@
       ig = this%D%l2g(il)
 
     end select
-    
+
   end function local_to_global_
 
 
@@ -825,7 +928,7 @@
     case ( DIST_BLOCK_CYCLIC_FIRST_SPLIT )
 
       ! ASSERTED
-      
+
       ! Find global block number
       il = (ig-1) / this%D%BS
       ! Subtract global base line to find
@@ -855,7 +958,7 @@
     case ( DIST_CYCLIC_FIRST )
 
       ! ASSERTED
-      
+
       il = (ig-1) / NP + 1
 
     case ( DIST_USER )
@@ -863,22 +966,22 @@
       ! we can only get a global to local
       ! on the local processor
       if ( lP /= comm_rank(this%D%comm) ) then
-        
+
         il = -1
-        
+
       else
-        
+
         do il = 1 , this%D%nl(lP)
 
           ! If the index corresponds to the
           if ( this%D%l2g(il) == ig ) return
-            
+
         end do
-        
+
       end if
-      
+
     end select
-    
+
   end function global_to_local_
 
 
@@ -906,15 +1009,14 @@
     case ( DIST_CYCLIC_FIRST )
 
       P = mod(ig-1,NP)
-      
+
     case ( DIST_USER )
 
       P = this%D%g2R(ig)
-      
+
     end select
-    
+
   end function global_to_rank_
-  
 
 
   !> Query whether a communicator is not MPI_COMM_NULL
@@ -944,7 +1046,7 @@
     end if
   end function get_MPIerr_
 
-  
+
   !> Print, to std-out, some basic information of the data-container
   !!
   !! Print out XML-like information regarding the data-container.
@@ -973,7 +1075,7 @@
     if ( present(indent) ) lindent = indent
 
     write(fmt, '(a,i0,a)') '(t',lindent,',3a)'
-    
+
     if ( .not. is_initd(this) ) then
       write(*,fmt) "<", trim(name), " not initialized>"
       return
@@ -986,16 +1088,16 @@
     call print(this%D%comm, indent = lindent)
     write(fmt, '(a,i0,a)') '(t',lindent,',3a,10(i0,a))'
     select case ( this%D%dist )
-    case ( DIST_BLOCK_CYCLIC_FIRST_SPLIT ) 
+    case ( DIST_BLOCK_CYCLIC_FIRST_SPLIT )
       write(*,fmt) "< Block-Cyclic-FS", &
         ", bs=", this%D%BS, ", ng=", this%D%ng, ">"
-    case ( DIST_BLOCK_LAST_ALL ) 
+    case ( DIST_BLOCK_LAST_ALL )
       write(*,fmt) "< Block-LA", &
         ", bs=", this%D%BS, ", ng=", this%D%ng, ">"
-    case ( DIST_CYCLIC_FIRST ) 
+    case ( DIST_CYCLIC_FIRST )
       write(*,fmt) "< Cyclic-F", &
         ", ng=", this%D%ng, ">"
-    case ( DIST_USER ) 
+    case ( DIST_USER )
       write(*,fmt) "< User-defined", &
         ", ng=", this%D%ng, ">"
     case default
@@ -1004,7 +1106,7 @@
     lindent = lindent - 2 ! go back to requested indentation
     write(fmt, '(a,i0,a)') '(t',lindent,',a,i0,a)'
     write(*,fmt) " <Dist1D-refs: ", references(this), ">>"
-    
+
   end subroutine print_
 
 
@@ -1019,7 +1121,7 @@
 #undef BUD_PREC
 
 #include "bud_cleanup.inc"
-  
+
 
 ! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts

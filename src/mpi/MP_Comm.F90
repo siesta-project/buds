@@ -1,5 +1,5 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
-  
+
 #include "bud_utils.inc"
 
 ! Define default variable for the file
@@ -42,7 +42,7 @@ module BUD_MOD_NAME
   !!
   !! It does not contain information about any top-level @bud it may
   !! be created from.
-  !! 
+  !!
   !! @dev_note
   !! The following pre-processor variables are currently used when
   !! included:
@@ -78,7 +78,7 @@ module BUD_MOD_NAME
 #ifdef BUD_MPI
     procedure, private :: new_remote_child_
 #endif
-    
+
 #define BUD_DEFINE_PROCEDURE procedure, private, pass(this) ::
 
 #ifdef BUD_MPI
@@ -88,7 +88,7 @@ module BUD_MOD_NAME
 # define BUD_IS_INTEGER
 # define BUD_IS_REAL
 # define BUD_IS_COMPLEX
-    
+
 #define BUD_MP_COMM_NAME Send
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME BSend
@@ -105,7 +105,7 @@ module BUD_MOD_NAME
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME ISSend
 # include "MP_Comm_routine_interface.inc"
-    
+
 #define BUD_MP_COMM_NAME Send_Init
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME BSend_Init
@@ -114,7 +114,7 @@ module BUD_MOD_NAME
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME SSend_Init
 # include "MP_Comm_routine_interface.inc"
-    
+
 #define BUD_MP_COMM_NAME Recv
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME IRecv
@@ -127,7 +127,7 @@ module BUD_MOD_NAME
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME IBcast
 # include "MP_Comm_routine_interface.inc"
-    
+
 #define BUD_MP_COMM_NAME Gather
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME IGather
@@ -151,7 +151,7 @@ module BUD_MOD_NAME
 
     ! INTEGER/REAL/COMPLEX
 # undef BUD_IS_LOGICAL
-    
+
 #define BUD_MP_COMM_NAME Reduce_Prod
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME IReduce_Prod
@@ -161,7 +161,7 @@ module BUD_MOD_NAME
 #define BUD_MP_COMM_NAME IReduce_Sum
 # include "MP_Comm_routine_interface.inc"
 
-    
+
     ! INTEGER/REAL
 # undef BUD_IS_COMPLEX
 
@@ -174,7 +174,7 @@ module BUD_MOD_NAME
 #define BUD_MP_COMM_NAME IReduce_Min
 # include "MP_Comm_routine_interface.inc"
 
-    
+
     ! LOGICAL
 # undef BUD_IS_INTEGER
 # undef BUD_IS_REAL
@@ -198,7 +198,7 @@ module BUD_MOD_NAME
 #define BUD_MP_COMM_NAME IReduce_LXOR
 #define BUD_MP_COMM_ONLY_LOGICAL
 # include "MP_Comm_routine_interface.inc"
-    
+
 
 # undef BUD_IS_LOGICAL
 # define BUD_IS_LOGICAL
@@ -211,7 +211,7 @@ module BUD_MOD_NAME
 #define BUD_MP_COMM_NAME IAllReduce
 # include "MP_Comm_routine_interface.inc"
 
-    
+
     ! INTEGER/REAL/COMPLEX
 # undef BUD_IS_LOGICAL
 
@@ -228,7 +228,7 @@ module BUD_MOD_NAME
 #define BUD_MP_COMM_NO_LOGICAL
 # include "MP_Comm_routine_interface.inc"
 
-    
+
     ! INTEGER/REAL
 # undef BUD_IS_COMPLEX
 
@@ -249,12 +249,12 @@ module BUD_MOD_NAME
 #define BUD_MP_COMM_NO_LOGICAL
 # include "MP_Comm_routine_interface.inc"
 
-    
+
     ! LOGICAL
 # undef BUD_IS_INTEGER
 # undef BUD_IS_REAL
 # define BUD_IS_LOGICAL
-    
+
 #define BUD_MP_COMM_NAME AllReduce_LAND
 #define BUD_MP_COMM_ONLY_LOGICAL
 # include "MP_Comm_routine_interface.inc"
@@ -280,7 +280,7 @@ module BUD_MOD_NAME
 #undef BUD_IS_COMPLEX
 
 #endif
-    
+
 #undef BUD_DEFINE_PROCEDURE
 
     procedure, private :: Comm_split_
@@ -290,7 +290,7 @@ module BUD_MOD_NAME
     procedure, private :: Comm_create_group_, comm_create_group_commgrp_
 
     !>>@}
-    
+
     !> @iSee new
     procedure, public :: new => new_
 
@@ -325,7 +325,7 @@ module BUD_MOD_NAME
     procedure, public :: is_success_mpi => is_MPIsuccess_
 
 #ifdef BUD_MPI
-    
+
     ! Define all interfaces
 # define BUD_IS_LOGICAL
 # define BUD_IS_INTEGER
@@ -370,7 +370,7 @@ module BUD_MOD_NAME
 # include "MP_Comm_routine_interface_generic.inc"
 #define BUD_MP_COMM_NAME IBcast
 # include "MP_Comm_routine_interface_generic.inc"
-    
+
 #define BUD_MP_COMM_NAME Gather
 # include "MP_Comm_routine_interface_generic.inc"
 #define BUD_MP_COMM_NAME IGather
@@ -404,10 +404,10 @@ module BUD_MOD_NAME
 #define BUD_MP_COMM_NAME IReduce_Sum
 # include "MP_Comm_routine_interface_generic.inc"
 
-    
+
     ! INTEGER/REAL
 # undef BUD_IS_COMPLEX
-    
+
 #define BUD_MP_COMM_NAME Reduce_Max
 # include "MP_Comm_routine_interface_generic.inc"
 #define BUD_MP_COMM_NAME IReduce_Max
@@ -417,7 +417,7 @@ module BUD_MOD_NAME
 #define BUD_MP_COMM_NAME IReduce_Min
 # include "MP_Comm_routine_interface_generic.inc"
 
-    
+
     ! LOGICAL
 # undef BUD_IS_INTEGER
 # undef BUD_IS_REAL
@@ -436,7 +436,7 @@ module BUD_MOD_NAME
 #define BUD_MP_COMM_NAME IReduce_LXOR
 # include "MP_Comm_routine_interface_generic.inc"
 
-    
+
 # undef BUD_IS_LOGICAL
 # define BUD_IS_LOGICAL
 # define BUD_IS_INTEGER
@@ -537,7 +537,7 @@ module BUD_MOD_NAME
 
   end type BUD_TYPE_NAME_
 
-  
+
 
   !> Create a new message passing object.
   !!
@@ -590,7 +590,7 @@ module BUD_MOD_NAME
   end interface
   public :: BUD_CC2(BUD_TYPE_NEW,_remote)
 
-  
+
   !> Query communicator of the distribution
   !!
   !! @note Do not free this communicator.
@@ -650,7 +650,7 @@ module BUD_MOD_NAME
   end interface
   public :: child_Bcast_ranks
 #endif
-  
+
   !> Query error of previous MPI call
   interface error_MPI
     module procedure get_MPIerr_
@@ -670,7 +670,7 @@ module BUD_MOD_NAME
   public :: print
 
 #ifdef BUD_MPI
-  
+
   ! Define all interfaces
 # define BUD_IS_LOGICAL
 # define BUD_IS_INTEGER
@@ -840,7 +840,7 @@ module BUD_MOD_NAME
 
   ! INTEGER/REAL/COMPLEX
 # undef BUD_IS_LOGICAL
-  
+
   !> Interface for `MPI_Reduce` with `op = MPI_PROD`
   interface Reduce_Prod
 #define BUD_MP_COMM_NAME Reduce_Prod
@@ -853,7 +853,7 @@ module BUD_MOD_NAME
 # include "MP_Comm_routine_interface.inc"
   end interface
   public :: IReduce_Prod
-  
+
   !> Interface for `MPI_Reduce` with `op = MPI_SUM`
   interface Reduce_Sum
 #define BUD_MP_COMM_NAME Reduce_Sum
@@ -867,10 +867,10 @@ module BUD_MOD_NAME
   end interface
   public :: IReduce_Sum
 
-  
+
   ! INTEGER/REAL
 # undef BUD_IS_COMPLEX
-  
+
   !> Interface for `MPI_Reduce` with `op = MPI_MAX`
   interface Reduce_Max
 #define BUD_MP_COMM_NAME Reduce_Max
@@ -883,7 +883,7 @@ module BUD_MOD_NAME
 # include "MP_Comm_routine_interface.inc"
   end interface
   public :: IReduce_Max
-  
+
   !> Interface for `MPI_Reduce` with `op = MPI_MIN`
   interface Reduce_Min
 #define BUD_MP_COMM_NAME Reduce_Min
@@ -897,7 +897,7 @@ module BUD_MOD_NAME
   end interface
   public :: IReduce_Min
 
-  
+
   ! LOGICAL
 # undef BUD_IS_INTEGER
 # undef BUD_IS_REAL
@@ -942,7 +942,7 @@ module BUD_MOD_NAME
   end interface
   public :: IReduce_LXOR
 
-  
+
 # undef BUD_IS_LOGICAL
 # define BUD_IS_LOGICAL
 # define BUD_IS_INTEGER
@@ -961,11 +961,11 @@ module BUD_MOD_NAME
 # include "MP_Comm_routine_interface.inc"
   end interface
   public :: IAllReduce
-  
-  
+
+
   ! INTEGER/REAL/COMPLEX
 # undef BUD_IS_LOGICAL
-  
+
   !> Interface for `MPI_AllReduce` with `op = MPI_PROD`
   interface AllReduce_Prod
 #define BUD_MP_COMM_NAME AllReduce_Prod
@@ -978,7 +978,7 @@ module BUD_MOD_NAME
 # include "MP_Comm_routine_interface.inc"
   end interface
   public :: IAllReduce_Prod
-  
+
   !> Interface for `MPI_AllReduce` with `op = MPI_SUM`
   interface AllReduce_Sum
 #define BUD_MP_COMM_NAME AllReduce_Sum
@@ -991,11 +991,11 @@ module BUD_MOD_NAME
 # include "MP_Comm_routine_interface.inc"
   end interface
   public :: IAllReduce_Sum
-  
-  
+
+
   ! INTEGER/REAL
 # undef BUD_IS_COMPLEX
-  
+
   !> Interface for `MPI_AllReduce` with `op = MPI_MAX`
   interface AllReduce_Max
 #define BUD_MP_COMM_NAME AllReduce_Max
@@ -1008,7 +1008,7 @@ module BUD_MOD_NAME
 # include "MP_Comm_routine_interface.inc"
   end interface
   public :: IAllReduce_Max
-  
+
   !> Interface for `MPI_AllReduce` with `op = MPI_MIN`
   interface AllReduce_Min
 #define BUD_MP_COMM_NAME AllReduce_Min
@@ -1027,7 +1027,7 @@ module BUD_MOD_NAME
 # undef BUD_IS_INTEGER
 # undef BUD_IS_REAL
 # define BUD_IS_LOGICAL
-  
+
   !> Interface for `MPI_AllReduce` with `op = MPI_LAND`
   interface AllReduce_LAND
 #define BUD_MP_COMM_NAME AllReduce_LAND
@@ -1067,14 +1067,14 @@ module BUD_MOD_NAME
   end interface
   public :: IAllReduce_LXOR
 
-  
+
 #undef BUD_IS_LOGICAL
 #undef BUD_IS_INTEGER
 #undef BUD_IS_REAL
 #undef BUD_IS_COMPLEX
-  
+
 #endif
-  
+
   !> Interface for `MPI_Barrier`
   interface Barrier
     module procedure Barrier_
@@ -1106,14 +1106,14 @@ module BUD_MOD_NAME
   end interface
   public :: Comm_Create
 #endif
-  
+
   ! Include common data routines
   ! Note that 'CONTAINS' is present in this include file.
 # include "bud_common.inc"
 
 
   !> @cond BUD_DEVELOPER
-  
+
   !> Internal routine for cleaning up the data container.
   !!
   !! @dev_note
@@ -1136,11 +1136,11 @@ module BUD_MOD_NAME
       call MPI_Comm_Disconnect(this%Comm, this%error_)
     end if
 #endif
-    
+
     ! Ensure they are nullified
     this%Comm = MPI_Comm_Null
     this%Grp = MPI_Group_Null
-    
+
     this%P = 0
     this%NP = 1
 
@@ -1239,7 +1239,7 @@ module BUD_MOD_NAME
 
     ! Create the group
     call MPI_Comm_group(this%D%comm, this%D%Grp, this%D%error_)
-    
+
     ! Figure out number of processors and the rank
     call MPI_Comm_Rank( this%D%comm, this%D%P, this%D%error_)
     call MPI_Comm_Size( this%D%comm, this%D%NP, this%D%error_)
@@ -1267,14 +1267,14 @@ module BUD_MOD_NAME
 
     this%D%P = rank
     this%D%NP = size
-        
+
   end subroutine new_remote_
 
 #ifdef BUD_MPI
   !> Create a fake communicator for those ranks in `child` which are not in `parent`
   !!
   !! This routine requires all ranks in `child` to participate.
-  !! It requires that the `parent` communicator is defined for 
+  !! It requires that the `parent` communicator is defined for
   !! some of the ranks, while the remaining ranks in `child`, not in `parent`, should pass an empty communicator.
   !!
   !! Upon exit those ranks in `child` which are not in `parent` will have
@@ -1293,7 +1293,7 @@ module BUD_MOD_NAME
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: child
 
     integer :: child_size
-    
+
     if ( .not. is_communicator(child) ) return
 
     ! Retrieve the root of the child
@@ -1304,7 +1304,7 @@ module BUD_MOD_NAME
       ! All are the root!
       call new_remote(child, 0, child_size)
     end if
-    
+
   end subroutine new_remote_child_
 #endif
 
@@ -1326,7 +1326,7 @@ module BUD_MOD_NAME
 # include "MP_Comm_routine.inc"
 # define BUD_DIM 4
 # include "MP_Comm_routine.inc"
-  
+
 # define BUD_TYPE_VAR integer
 # define BUD_IS_INTEGER
 # define BUD_TYPE_VAR_PREC il_
@@ -1417,17 +1417,17 @@ module BUD_MOD_NAME
 # include "MP_Comm_routine.inc"
 
 #endif
-  
+
   ! Common things
   subroutine Barrier_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    
+
 #ifdef BUD_MPI
     if ( .not. is_initd(this) ) return
 
     call MPI_Barrier(this%D%comm, this%D%error_)
 #endif
-      
+
   end subroutine
 
   subroutine IBarrier_(this, request)
@@ -1439,11 +1439,11 @@ module BUD_MOD_NAME
 
     call MPI_IBarrier(this%D%comm, request, this%D%error_)
 #endif
-    
+
   end subroutine
 
   !> @endcond BUD_DEVELOPER
-  
+
 
   !> Query whether a communicator is not MPI_COMM_NULL
   !!
@@ -1456,7 +1456,7 @@ module BUD_MOD_NAME
     if ( is ) is = this%D%Comm /= MPI_Comm_Null
   end function is_comm_
 
-  
+
   !> Query whether the associated group is not MPI_GROUP_NULL
   !!
   !! This may be used to identify `fake` communicators
@@ -1510,7 +1510,7 @@ module BUD_MOD_NAME
     ! signal no root (in case there is an error)
     if ( present(root) ) root = -1
     if ( present(size) ) size = 0
-    
+
     if ( .not. is_communicator(parent) ) return
 
     if ( is_communicator(child) ) then
@@ -1529,10 +1529,10 @@ module BUD_MOD_NAME
       call AllReduce_Max(size, tmp, parent)
       size = tmp
     end if
-    
+
   end subroutine child_Bcast_
 
-  
+
   !> Bcast the ranks of all processors in a `child` communicator to a `parent` communicator
   !!
   !! @param[inout] parent the receiving communicator (must contain all processors of `child`)
@@ -1612,7 +1612,7 @@ module BUD_MOD_NAME
 
     call delete(split)
     if ( .not. is_communicator(this) ) return
-    
+
     ! Split the communicators
     call MPI_Comm_Split_Type(this%D%comm, split_type, key, &
       info, Com, this%D%error_)
@@ -1667,7 +1667,7 @@ module BUD_MOD_NAME
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: group
 
     call Comm_Create_(parent, group%D%grp, child)
-    
+
   end subroutine Comm_Create_CommGrp_
 
 
@@ -1702,11 +1702,11 @@ module BUD_MOD_NAME
     integer(ii_), intent(in) :: tag
 
     call Comm_Create_group_(parent, group%D%grp, tag, child)
-    
+
   end subroutine Comm_Create_Group_CommGrp_
 
 #endif
-  
+
   !> Print, to std-out, some basic information of the data-container
   !!
   !! Print out XML-like information regarding the data-container.
@@ -1735,13 +1735,13 @@ module BUD_MOD_NAME
     if ( present(indent) ) lindent = indent
 
     write(fmt, '(a,i0,a)') '(t',lindent,',3a)'
-    
+
     if ( .not. is_initd(this) ) then
       write(*,fmt) "<", trim(name), " not initialized>"
       return
     end if
 
-    
+
     if ( this%D%Comm == MPI_Comm_Null ) then
       write(fmt, '(a,i0,a)') '(t',lindent,',4a,3(i0,a))'
       write(*,fmt) "<", trim(name), " (remote)Comm", &
@@ -1753,7 +1753,7 @@ module BUD_MOD_NAME
         ", P=",this%D%P, ", NP=",this%D%NP, &
         ", refs: ", references(this), ">"
     end if
-    
+
   end subroutine print_
 
 end module
@@ -1771,7 +1771,7 @@ end module
 #undef BUD_PREC
 
 #include "bud_cleanup.inc"
-  
+
 
 ! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts

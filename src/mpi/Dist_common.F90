@@ -39,8 +39,8 @@ end module
 
 
 #include "bud_cleanup.inc"
-  
-  
+
+
 ! project-bud -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings

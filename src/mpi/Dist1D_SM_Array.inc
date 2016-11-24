@@ -97,10 +97,10 @@
 #else
     idx = 1
 #endif
-    
+
   end function sparse_index_
 
-  
+
 #undef BUD_TYPE_NEW
 
   ! Associated with the Array

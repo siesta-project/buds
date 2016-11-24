@@ -42,7 +42,7 @@
       BUD_CC4(__BUD_MP_COMM_NAME,logical,_,2), BUD_CC4(__BUD_MP_COMM_NAME,logical,_,3), &
       BUD_CC4(__BUD_MP_COMM_NAME,logical,_,4)
 #endif
-    
+
 #undef BUD_MP_COMM_NAME
 #undef __BUD_MP_COMM_NAME
 
