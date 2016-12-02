@@ -5,8 +5,10 @@
 #ifdef BUD_MPI
   !> This module makes heavy usage of the
   !! MPI variables
-# ifdef BUD_MPI_INCLUDE
+# if defined(BUD_MPI_INCLUDE)
   include BUD_MPI_INCLUDE
+# elif defined(BUD_MPI_MODULE)
+  use BUD_MPI_MODULE
 # else
   use mpi
 # endif
@@ -82,19 +84,20 @@
     generic, public :: new => new_, new_block_cyclic_, new_block_or_cyclic_, &
       new_user_
 
+    !> @iSee new_remote
+    procedure, public :: new_remote => globalize_
+
     !> @iSee #dist_type
     procedure, public :: dist_type => dist_type_
 
-    !> @iSee #comm
-    procedure, public :: comm => comm_
+    !> @iSee #communicator
+    procedure, public :: communicator => comm_
 
     !> @iSee #group
     procedure, public :: group => group_
 
     !> @iSee #comm_rank
     procedure, public :: comm_rank => P_
-    !> @iSee #comm_rank
-    procedure, public :: rank => P_
     !> @iSee #comm_size
     procedure, public :: comm_size => NP_
 
@@ -107,9 +110,9 @@
     !> @iSee #size_local
     procedure, public :: size_local => size_local_
     !> @iSee #size_global
-    procedure, public :: size_global => size_
+    procedure, public :: size_global => size_global_
     !> @iSee #size_global
-    procedure, public :: size => size_
+    procedure, public :: size => size_global_
 
     !> @iSee #consecutive
     procedure, public :: consecutive => consecutive_
@@ -242,24 +245,38 @@
   end interface
   public :: new
 
+  !> Create a new remote object which is created from a parent communicator and a distribution only
+  !! existing on a subset part of the ranks in parent.
+  !!
+  !! This is equivalent to creating a "fake" distribution
+  !! on remote processors which does not already have a distribution in `this`.
+  !!
+  !! Note that `this` must only be singly initialized on
+  !! the subset of ranks that belongs to `this`. All
+  !! others will create a fake distribution based on
+  !! `this`.
+  interface new_remote
+    module procedure globalize_
+  end interface
+  public :: new_remote
+
 
   !> Query communicator of the distribution
-  interface comm
+  interface communicator
     module procedure comm_
   end interface
-  public :: comm
+  public :: communicator
+
+  !> Overload the `assignment(=)` operator for retrieving the communicator
+  interface assignment(=)
+    module procedure comm_assign_
+  end interface assignment(=)
 
   !> Query ID for current processor in distribution
   interface comm_rank
     module procedure P_
   end interface
   public :: comm_rank
-
-  !> @iSee #comm_rank
-  interface rank
-    module procedure P_
-  end interface
-  public :: rank
 
   !> Query number of processors in distribution
   interface comm_size
@@ -312,13 +329,13 @@
 
   !> Query number of total elements
   interface size_global
-    module procedure size_
+    module procedure size_global_
   end interface
   public :: size_global
 
   !> @iSee size_global
   interface size
-    module procedure size_
+    module procedure size_global_
   end interface
   public :: size
 
@@ -418,7 +435,6 @@
   !! Should never be made public.
   subroutine delete_(this)
     type(BUD_TYPE_NAME_), intent(inout) :: this
-    integer :: err
 
     call delete(this%comm)
 
@@ -481,39 +497,69 @@
 
   ! First we implement the easy stuff
   !> Query the associated communicator
+  !!
+  !! @devnote this function actually points the contained
+  !! data because it is is used subsequently for an assignment
+  !! which in case will ref-step the counter. If we did
+  !! not do this, each assignment would mean two ref-steps.
   function comm_(this) result(comm)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     type(BUD_TYPE_MP_COMM) :: comm
-    comm = this%D%comm
+    if ( is_initd(this) ) then
+      comm%D => this%D%comm%D
+    else
+      call delete(comm)
+    end if
   end function comm_
+
+  !> Query the associated communicator
+  !!
+  !! @devnote this function actually points the contained
+  !! data because it is is used subsequently for an assignment
+  !! which in case will ref-step the counter. If we did
+  !! not do this, each assignment would mean two ref-steps.
+  subroutine comm_assign_(comm, this)
+    type(BUD_TYPE_MP_COMM), intent(inout) :: comm
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    if ( is_initd(this) ) then
+      comm = this%D%comm
+    else
+      call delete(comm)
+    end if
+  end subroutine comm_assign_
 
   !> Query the current processor ID in the communicator
   elemental function P_(this) result(P)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_) :: P
-    P = comm_rank(this%D%comm)
+    if ( is_initd(this) ) then
+      P = comm_rank(this%D%comm)
+    else
+      P = -1
+    end if
   end function P_
 
   !> Query the number of processors in the communicator
   elemental function NP_(this) result(NP)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_) :: NP
-    NP = comm_size(this%D%comm)
+    if ( is_initd(this) ) then
+      NP = comm_size(this%D%comm)
+    else
+      NP = 0
+    end if
   end function NP_
 
-
-  !> Query the default size of the distribution
-  elemental function size_(this) result(ng)
-    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer(BUD_PREC) :: ng
-    ng = this%D%ng
-  end function size_
 
   !> Query the block-size, `-1` if non-block-cyclic
   elemental function blocksize_(this) result(BS)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_PREC) :: BS
-    BS = this%D%BS
+    if ( is_initd(this) ) then
+      BS = this%D%BS
+    else
+      BS = 0
+    end if
   end function blocksize_
 
   !> Assert the distribution type
@@ -544,22 +590,37 @@
     integer(BUD_PREC), pointer, optional :: local2global(:)
     integer(BUD_PREC), pointer, optional :: global2rank(:)
 
-    if ( present(dist) ) dist = this%D%dist
-    if ( present(P) ) P = rank(this%D%comm)
-    if ( present(NP) ) NP = comm_size(this%D%comm)
-    if ( present(ng) ) ng = this%D%ng
-    if ( present(BS) ) BS = this%D%BS
-    if ( present(num_local) ) num_local => this%D%nl
-    if ( present(local2global) ) local2global => this%D%l2g
-    if ( present(global2rank) ) global2rank => this%D%g2R
+    if ( is_initd(this) ) then
+      
+      if ( present(dist) ) dist = this%D%dist
+      if ( present(P) ) P = rank(this%D%comm)
+      if ( present(NP) ) NP = comm_size(this%D%comm)
+      if ( present(ng) ) ng = this%D%ng
+      if ( present(BS) ) BS = this%D%BS
+      if ( present(num_local) ) num_local => this%D%nl
+      if ( present(local2global) ) local2global => this%D%l2g
+      if ( present(global2rank) ) global2rank => this%D%g2R
 
+    else
+
+      if ( present(dist) ) dist = DIST_NONE
+      if ( present(P) ) P = 0
+      if ( present(NP) ) NP = 1
+      if ( present(ng) ) ng = 0
+      if ( present(BS) ) BS = 0
+      if ( present(num_local) ) nullify(num_local)
+      if ( present(local2global) ) nullify(local2global)
+      if ( present(global2rank) ) nullify(global2rank)
+
+    end if
+      
   end subroutine attach_
 
 
   !> Basic routine for initializing a new distribution
   !!
   !! This basic method does not attach anything associated with the
-  !! distributino.
+  !! distribution.
   !! Hence it may be used to initialize and use a distribution
   !! only via the communicator.
   !! @param[inout] this the @bud distribution container
@@ -714,13 +775,32 @@
 
   end subroutine new_user_
 
+  !> Query the default size of the distribution
+  function size_global_(this) result(ng)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    integer(BUD_PREC) :: ng
+    if ( is_initd(this) ) then
+      ng = this%D%ng
+    else
+      ng = 0
+    end if
+  end function size_global_
+
   ! Interface for number of local elements
-  elemental function size_local_(this, P) result(nl)
+  function size_local_(this, P) result(nl)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_), intent(in), optional :: P
+    integer(BUD_PREC) :: nl
 
     integer(ii_) :: lP, NP
-    integer(BUD_PREC) :: nl, i, ir, irB
+    integer(BUD_PREC) :: i, ir, irB
+
+    if ( .not. is_initd(this) ) then
+      
+      nl = 0
+      return
+      
+    end if
 
     NP = comm_size(this%D%Comm)
     if ( NP == 1 ) then
@@ -745,12 +825,13 @@
       ir = this%D%ng - i * NP*this%D%BS
       ! elements not in blocks may still be divided into blocks
       irB = ir / this%D%BS
+      nl = i * this%D%BS
       if ( lP < irB ) then
         ! this is the blocks that are completely filled
-        nl = i * this%D%BS + this%D%BS
+        nl = nl + this%D%BS
       else if ( lP == irB ) then
         ! correct for number of elements in the last block
-        nl = i * this%D%BS + ir - irB * this%D%BS
+        nl = nl + ir - irB * this%D%BS
       end if
 
     case ( DIST_BLOCK_LAST_ALL )
@@ -789,7 +870,7 @@
     integer(BUD_PREC) :: n
 
     ! Local variables
-    integer(ii_) :: rank, ig_rank
+    integer(ii_) :: ig_rank
     integer(BUD_PREC) :: i
 
     n = 1
@@ -858,6 +939,11 @@
     integer(ii_) :: lP, NP
     integer(BUD_PREC) :: ig
 
+    if ( .not. is_initd(this) ) then
+      ig = -1
+      return
+    end if
+
     NP = comm_size(this%D%comm)
 
     if ( NP == 1 ) then
@@ -912,6 +998,11 @@
     integer(ii_) :: lP, NP
     integer(BUD_PREC) :: tmp(2)
 
+    if ( .not. is_initd(this) ) then
+      il = -1
+      return
+    end if
+
     NP = comm_size(this%D%comm)
     if ( NP == 1 ) then
       il = ig
@@ -952,8 +1043,13 @@
       ! ASSERTED
 
       ! get residing node
-      tmp(1) = (ig-1) / this%D%BS
+      tmp(1) = min( (ig-1) / this%D%BS , NP-1)
       il = ig - this%D%BS * tmp(1)
+      if ( il < 1 ) then
+        il = -1
+      else if ( il > ig ) then
+        il = -1
+      end if
 
     case ( DIST_CYCLIC_FIRST )
 
@@ -991,6 +1087,11 @@
     integer(ii_) :: P
     integer(ii_) :: NP
 
+    if ( .not. is_initd(this) ) then
+      P = -1
+      return
+    end if
+
     NP = comm_size(this%D%comm)
     if ( NP == 1 ) then
       P = 0
@@ -1004,7 +1105,7 @@
 
     case ( DIST_BLOCK_LAST_ALL )
 
-      P = (ig-1) / this%D%BS
+      P = min( (ig-1) / this%D%BS, NP-1)
 
     case ( DIST_CYCLIC_FIRST )
 
@@ -1019,6 +1120,117 @@
   end function global_to_rank_
 
 
+  !> Globalize the distribution to other processors not part of it themselves.
+  !!
+  !! This is equivalent to make remotes and creating a distribution
+  !! with the same parameters as this one.
+  !!
+  !! @param[in] parent the parent communicator
+  !! @param[inout] this the distribution only defined
+  !!       on some ranks in `parent`.
+  subroutine globalize_(parent, this)
+    BUD_CLASS(BUD_TYPE_MP_COMM), intent(inout) :: parent
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+
+    type(BUD_TYPE_MP_COMM) :: comm
+    
+    integer :: nranks, my_root, rk
+    integer :: itmp, idist
+    integer(BUD_PREC) :: iBS, iNG
+!    integer(BUD_PREC), allocatable :: nl(:), l2g(:), g2R(:)
+
+    ! Quick-return if parent is not a communicator
+    if ( .not. is_communicator(parent) ) return
+
+    ! Easy way to use the rank later
+    rk = comm_rank(parent)
+    
+    ! First we figure out the root in the distribution
+    itmp = -1
+    if ( initialized(this) ) then
+      if ( comm_rank(this) == 0 ) itmp = rk
+    end if
+#ifdef BUD_MPI
+    call AllReduce_Max(itmp, my_root, parent)
+#endif
+
+    ! Now we know the b-casting rank in parent
+
+    ! Globalize the things
+    if ( initialized(this) .and. rk == my_root ) then
+
+      comm = this
+
+      ! First bcast information regarding the distribution
+      nranks = comm_size(comm)
+      idist = dist_type(this)
+      iNG = size_global(this)
+      iBS = size_block(this)
+#ifdef BUD_MPI
+      call Bcast(nranks, my_root, parent)
+      call Bcast(idist, my_root, parent)
+      call Bcast(iNG, my_root, parent)
+      call Bcast(iBS, my_root, parent)
+#endif
+
+      if ( dist_type(this) == DIST_USER ) then
+
+        ! This is currently not accepted!
+        ! TODO
+
+      end if
+      
+    else if ( initialized(this) ) then
+      ! these are the ranks that are part of this
+      ! but should not overwrite anything...
+      ! these will merely be part of Bcast but
+      ! will not retain any data...
+#ifdef BUD_MPI
+      call Bcast(nranks, my_root, parent)
+      call Bcast(idist, my_root, parent)
+      call Bcast(iNG, my_root, parent)
+      call Bcast(iBS, my_root, parent)
+#endif
+      if ( idist == DIST_USER ) then
+
+        ! We also need to bcast other information
+        ! TODO
+        
+      end if
+
+    else
+      
+      ! these are the new distribution stuff
+#ifdef BUD_MPI
+      call Bcast(nranks, my_root, parent)
+      call Bcast(idist, my_root, parent)
+      call Bcast(iNG, my_root, parent)
+      call Bcast(iBS, my_root, parent)
+#endif
+      call new_remote(comm, 0, nranks)
+
+      if ( idist == DIST_BLOCK_CYCLIC_FIRST_SPLIT &
+           .or. idist == DIST_BLOCK_LAST_ALL ) then
+
+        ! Create it...
+        call new(this, comm, iBS, iNG, idist)
+
+      else if ( idist == DIST_CYCLIC_FIRST ) then
+
+        ! Create it...
+        call new(this, comm, iNG, idist)
+        
+      else
+        
+        call delete(this)
+
+      end if
+      
+    end if
+
+  end subroutine globalize_
+  
+
   !> Query whether a communicator is not MPI_COMM_NULL
   !!
   !! This may be used to identify `fake` distributions
@@ -1026,8 +1238,11 @@
   elemental function is_comm_(this) result(is)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     logical :: is
-    is = is_initd(this)
-    if ( is ) is = is_communicator(this%D%Comm)
+    if ( is_initd(this) ) then
+      is = is_communicator(this%D%comm)
+    else
+      is = .false.
+    end if
   end function is_comm_
 
 
@@ -1068,6 +1283,7 @@
     ! 4-byte variable
     character(len=32) :: fmt
     character(len=256) :: name
+    integer(BUD_PREC) :: nl, ng
 
     name = BUD_TYPE_NAME_STR
     if ( present(info) ) name = info
@@ -1081,25 +1297,29 @@
       return
     end if
 
+    ! Get size
+    nl = size_local(this)
+    ng = size_global(this)
+
     write(fmt, '(a,i0,a)') '(t',lindent,',3a)'
     lindent = lindent + 2 ! step indentation
     write(*,fmt) "<<", trim(name), " Dist1D>"
     ! Print the communicator
     call print(this%D%comm, indent = lindent)
-    write(fmt, '(a,i0,a)') '(t',lindent,',3a,10(i0,a))'
+    write(fmt, '(a,i0,a)') '(t',lindent,',2a,10(i0,a))'
     select case ( this%D%dist )
     case ( DIST_BLOCK_CYCLIC_FIRST_SPLIT )
-      write(*,fmt) "< Block-Cyclic-FS", &
-        ", bs=", this%D%BS, ", ng=", this%D%ng, ">"
+      write(*,fmt) "<Block-Cyclic-FS", &
+        ", bs=", this%D%BS, ", ng=", ng, ", nl=", nl, ">"
     case ( DIST_BLOCK_LAST_ALL )
-      write(*,fmt) "< Block-LA", &
-        ", bs=", this%D%BS, ", ng=", this%D%ng, ">"
+      write(*,fmt) "<Block-LA", &
+        ", bs=", this%D%BS, ", ng=", ng, ", nl=", nl, ">"
     case ( DIST_CYCLIC_FIRST )
-      write(*,fmt) "< Cyclic-F", &
-        ", ng=", this%D%ng, ">"
+      write(*,fmt) "<Cyclic-F", &
+        ", ng=", ng, ", nl=", nl, ">"
     case ( DIST_USER )
-      write(*,fmt) "< User-defined", &
-        ", ng=", this%D%ng, ">"
+      write(*,fmt) "<User-defined", &
+        ", ng=", ng, ", nl=", nl, ">"
     case default
       write(*,'(a,i0,a)') "<Not implemented distribution: ",this%D%dist,">"
     end select
