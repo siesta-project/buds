@@ -30,6 +30,11 @@ subroutine BUD_CC3(get_elem,BUD_COLL_NUM,_assign_)(item, this)
     ! it is empty, so return an empty item
     call delete(item)
   else
+    ! In this case when the assignment operator is
+    ! overloaded, one *does not* increment the
+    ! pointer twice!
+    ! This is only if one creates a function
+    ! which returns an assignment...
     item = this%D% BUD_CC2(e,BUD_COLL_NUM)
   end if
 

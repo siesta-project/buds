@@ -570,19 +570,19 @@
 #endif
     )
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    type(BUD_COLL_1), intent(in) :: a
-    type(BUD_COLL_2), intent(in) :: b
+    type(BUD_COLL_1), intent(inout) :: a
+    type(BUD_COLL_2), intent(inout) :: b
 #ifdef BUD_COLL_3
-    type(BUD_COLL_3), intent(in) :: c
+    type(BUD_COLL_3), intent(inout) :: c
 #endif
 #ifdef BUD_COLL_4
-    type(BUD_COLL_4), intent(in) :: d
+    type(BUD_COLL_4), intent(inout) :: d
 #endif
 #ifdef BUD_COLL_5
-    type(BUD_COLL_5), intent(in) :: e
+    type(BUD_COLL_5), intent(inout) :: e
 #endif
 #ifdef BUD_COLL_6
-    type(BUD_COLL_6), intent(in) :: f
+    type(BUD_COLL_6), intent(inout) :: f
 #endif
 
     call new(this)
