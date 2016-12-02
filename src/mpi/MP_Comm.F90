@@ -22,8 +22,10 @@ module BUD_MOD_NAME
 #ifdef BUD_MPI
   !> This module makes heavy usage of the
   !! MPI variables
-# ifdef BUD_MPI_INCLUDE
+# if defined(BUD_MPI_INCLUDE)
   include BUD_MPI_INCLUDE
+# elif defined(BUD_MPI_MODULE)
+  use BUD_MPI_MODULE
 # else
   use mpi
 # endif
@@ -501,6 +503,15 @@ module BUD_MOD_NAME
 
     procedure, public :: Barrier => Barrier_
     procedure, public :: IBarrier => IBarrier_
+
+
+    procedure, public :: Wait => Wait_
+    procedure, public :: WaitAll => WaitAll_
+    procedure, public :: WaitAny => WaitAny_
+    procedure, public :: Test => Test_
+    procedure, public :: TestAll => TestAll_
+    procedure, public :: TestAny => TestAny_
+    procedure, public :: Test_Cancelled => Test_Cancelled_
 
 # ifdef BUD_MPI
     generic, public :: Comm_split => comm_split_, comm_split_type_
@@ -1086,6 +1097,50 @@ module BUD_MOD_NAME
   end interface
   public :: IBarrier
 
+  !> Interface for `MPI_Wait`
+  interface Wait
+    module procedure Wait_
+    module procedure Wait_err_
+  end interface
+  public :: Wait
+  !> Interface for `MPI_WaitAll`
+  interface WaitAll
+    module procedure WaitAll_
+    module procedure WaitAll_err_
+  end interface
+  public :: WaitAll
+  !> Interface for `MPI_WaitAny`
+  interface WaitAny
+    module procedure WaitAny_
+    module procedure WaitAny_err_
+  end interface
+  public :: WaitAny
+
+  !> Interface for `MPI_Test`
+  interface Test
+    module procedure Test_
+    module procedure Test_err_
+  end interface
+  public :: Test
+  !> Interface for `MPI_TestAll`
+  interface TestAll
+    module procedure TestAll_
+    module procedure TestAll_err_
+  end interface
+  public :: TestAll
+  !> Interface for `MPI_TestAny`
+  interface TestAny
+    module procedure TestAny_
+    module procedure TestAny_err_
+  end interface
+  public :: TestAny
+  !> Interface for `MPI_Test_Cancelled`
+  interface Test_Cancelled
+    module procedure Test_Cancelled_
+    module procedure Test_Cancelled_err_
+  end interface
+  public :: Test_Cancelled
+
 #ifdef BUD_MPI
   !> Interface for `MPI_Comm_Split` and `MPI_Comm_Split_Type`
   interface Comm_Split
@@ -1122,18 +1177,16 @@ module BUD_MOD_NAME
   !! Should never be made public.
   subroutine delete_(this)
     type(BUD_TYPE_NAME_), intent(inout) :: this
+#ifdef BUD_MPI
     integer :: err
 
-#ifdef BUD_MPI
     ! Currently we do not allow external memory
     ! tracking.
     if ( this%Comm /= MPI_Comm_Null ) then
       ! reset everything
-      ! A disconnect is less obstructive than
-      ! a free. Perhaps we may choose to use Free
-      ! anyway... ?
+      ! free the group and communicator...
       call MPI_Group_Free(this%Grp, this%error_)
-      call MPI_Comm_Disconnect(this%Comm, this%error_)
+      call MPI_Comm_Free(this%Comm, this%error_)
     end if
 #endif
 
@@ -1190,7 +1243,11 @@ module BUD_MOD_NAME
   elemental function P_(this) result(P)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_) :: P
-    P = this%D%P
+    if ( is_initd(this) ) then
+      P = this%D%P
+    else
+      P = -1
+    end if
   end function P_
 
   !> Query pointer to the current processor ID in the communicator
@@ -1204,7 +1261,11 @@ module BUD_MOD_NAME
   elemental function NP_(this) result(NP)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_) :: NP
-    NP = this%D%NP
+    if ( is_initd(this) ) then
+      NP = this%D%NP
+    else
+      NP = 0
+    end if
   end function NP_
 
   !> Query pointer to the number of processors in the communicator
@@ -1245,10 +1306,10 @@ module BUD_MOD_NAME
     call MPI_Comm_Size( this%D%comm, this%D%NP, this%D%error_)
 
 #else
-
     this%D%comm = Comm
     this%D%P = 0
     this%D%NP = 1
+    
 #endif
 
   end subroutine new_
@@ -1420,7 +1481,7 @@ module BUD_MOD_NAME
 
   ! Common things
   subroutine Barrier_(this)
-    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
 #ifdef BUD_MPI
     if ( .not. is_initd(this) ) return
@@ -1431,7 +1492,7 @@ module BUD_MOD_NAME
   end subroutine
 
   subroutine IBarrier_(this, request)
-    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer, intent(inout) :: request
 
 #ifdef BUD_MPI
@@ -1441,6 +1502,261 @@ module BUD_MOD_NAME
 #endif
 
   end subroutine
+
+
+  ! Wait routines
+  subroutine Wait_(req, status, this)
+    integer, intent(inout) :: req
+#ifdef MPI
+    integer, intent(inout) :: status(MPI_STATUS_SIZE)
+#else
+    integer, intent(inout) :: status(:)
+#endif
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+
+#ifdef BUD_MPI
+    call MPI_Wait(req, status, this%D%error_)
+#endif
+
+  end subroutine Wait_
+  subroutine Wait_err_(req, status, err)
+    integer, intent(inout) :: req
+#ifdef MPI
+    integer, intent(inout) :: status(MPI_STATUS_SIZE)
+#else
+    integer, intent(inout) :: status(:)
+#endif
+    integer, intent(out) :: err
+
+#ifdef BUD_MPI
+    call MPI_Wait(req, status, err)
+#else
+    err = MPI_SUCCESS
+#endif
+
+  end subroutine Wait_Err_
+
+  subroutine WaitAll_(n, req, status, this)
+    integer, intent(in) :: n
+    integer, intent(inout) :: req(n)
+#ifdef MPI
+    integer, intent(inout) :: status(MPI_STATUS_SIZE,n)
+#else
+    integer, intent(inout) :: status(:,:)
+#endif
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+
+#ifdef BUD_MPI
+    call MPI_WaitAll(n, req, status, this%D%error_)
+#endif
+
+  end subroutine WaitAll_
+  subroutine WaitAll_err_(n, req, status, err)
+    integer, intent(in) :: n
+    integer, intent(inout) :: req(n)
+#ifdef MPI
+    integer, intent(inout) :: status(MPI_STATUS_SIZE,n)
+#else
+    integer, intent(inout) :: status(:,:)
+#endif
+    integer, intent(out) :: err
+
+#ifdef BUD_MPI
+    call MPI_WaitAll(n, req, status, err)
+#else
+    err = MPI_SUCCESS
+#endif
+
+  end subroutine WaitAll_Err_
+
+  subroutine WaitAny_(n, req, index, status, this)
+    integer, intent(in) :: n
+    integer, intent(inout) :: req(n)
+    integer, intent(out) :: index
+#ifdef MPI
+    integer, intent(inout) :: status(MPI_STATUS_SIZE)
+#else
+    integer, intent(inout) :: status(:)
+#endif
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+
+#ifdef BUD_MPI
+    call MPI_WaitAny(n, req, index, status, this%D%error_)
+#else
+    index = 0
+#endif
+    
+  end subroutine WaitAny_
+  subroutine WaitAny_err_(n, req, index, status, err)
+    integer, intent(in) :: n
+    integer, intent(inout) :: req(n)
+    integer, intent(out) :: index
+#ifdef MPI
+    integer, intent(inout) :: status(MPI_STATUS_SIZE)
+#else
+    integer, intent(inout) :: status(:)
+#endif
+    integer, intent(out) :: err
+
+#ifdef BUD_MPI
+    call MPI_WaitAny(n, req, index, status, err)
+#else
+    index = 0
+    err = MPI_SUCCESS
+#endif
+    
+  end subroutine WaitAny_Err_
+
+  ! Test routines
+  subroutine Test_(req, flag, status, this)
+    integer, intent(inout) :: req
+    logical, intent(out) :: flag
+#ifdef MPI
+    integer, intent(inout) :: status(MPI_STATUS_SIZE)
+#else
+    integer, intent(inout) :: status(:)
+#endif
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+
+#ifdef BUD_MPI
+    call MPI_Test(req, flag, status, this%D%error_)
+#else
+    flag = .true.
+#endif
+
+  end subroutine Test_
+  subroutine Test_err_(req, flag, status, err)
+    integer, intent(inout) :: req
+    logical, intent(out) :: flag
+#ifdef MPI
+    integer, intent(inout) :: status(MPI_STATUS_SIZE)
+#else
+    integer, intent(inout) :: status(:)
+#endif
+    integer, intent(out) :: err
+
+#ifdef BUD_MPI
+    call MPI_Test(req, flag, status, err)
+#else
+    flag = .true.
+    err = MPI_SUCCESS
+#endif
+
+  end subroutine Test_err_
+
+  subroutine TestAll_(n, req, flag, status, this)
+    integer, intent(in) :: n
+    integer, intent(inout) :: req(n)
+    logical, intent(out) :: flag
+#ifdef MPI
+    integer, intent(inout) :: status(MPI_STATUS_SIZE,n)
+#else
+    integer, intent(inout) :: status(:,:)
+#endif
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+
+#ifdef BUD_MPI
+    call MPI_TestAll(n, req, flag, status, this%D%error_)
+#else
+    flag = .true.
+#endif
+
+  end subroutine TestAll_
+  subroutine TestAll_err_(n, req, flag, status, err)
+    integer, intent(in) :: n
+    integer, intent(inout) :: req(n)
+    logical, intent(out) :: flag
+#ifdef MPI
+    integer, intent(inout) :: status(MPI_STATUS_SIZE,n)
+#else
+    integer, intent(inout) :: status(:,:)
+#endif
+    integer, intent(out) :: err
+
+#ifdef BUD_MPI
+    call MPI_TestAll(n, req, flag, status, err)
+#else
+    flag = .true.
+    err = MPI_SUCCESS
+#endif
+
+  end subroutine TestAll_err_
+
+  subroutine TestAny_(n, req, index, flag, status, this)
+    integer, intent(in) :: n
+    integer, intent(inout) :: req(n)
+    integer, intent(out) :: index
+    logical, intent(out) :: flag
+#ifdef MPI
+    integer, intent(inout) :: status(MPI_STATUS_SIZE)
+#else
+    integer, intent(inout) :: status(:)
+#endif
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+
+#ifdef BUD_MPI
+    call MPI_TestAny(n, req, index, flag, status, this%D%error_)
+#else
+    index = 0
+    flag = .true.
+#endif
+    
+  end subroutine TestAny_
+  subroutine TestAny_err_(n, req, index, flag, status, err)
+    integer, intent(in) :: n
+    integer, intent(inout) :: req(n)
+    integer, intent(out) :: index
+    logical, intent(out) :: flag
+#ifdef MPI
+    integer, intent(inout) :: status(MPI_STATUS_SIZE)
+#else
+    integer, intent(inout) :: status(:)
+#endif
+    integer, intent(out) :: err
+
+#ifdef BUD_MPI
+    call MPI_TestAny(n, req, index, flag, status, err)
+#else
+    index = 0
+    flag = .true.
+    err = MPI_SUCCESS
+#endif
+    
+  end subroutine TestAny_err_
+  
+  subroutine Test_Cancelled_(status, flag, this)
+#ifdef MPI
+    integer, intent(inout) :: status(MPI_STATUS_SIZE)
+#else
+    integer, intent(inout) :: status(:)
+#endif
+    logical, intent(out) :: flag
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+
+#ifdef BUD_MPI
+    call MPI_Test_Cancelled(status, flag, this%D%error_)
+#else
+    flag = .false.
+#endif
+    
+  end subroutine Test_Cancelled_
+  subroutine Test_Cancelled_err_(status, flag, err)
+#ifdef MPI
+    integer, intent(inout) :: status(MPI_STATUS_SIZE)
+#else
+    integer, intent(inout) :: status(:)
+#endif
+    logical, intent(out) :: flag
+    integer, intent(out) :: err
+
+#ifdef BUD_MPI
+    call MPI_Test_Cancelled(status, flag, err)
+#else
+    flag = .false.
+    err = MPI_SUCCESS
+#endif
+    
+  end subroutine Test_Cancelled_Err_
 
   !> @endcond BUD_DEVELOPER
 
@@ -1452,8 +1768,11 @@ module BUD_MOD_NAME
   elemental function is_comm_(this) result(is)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     logical :: is
-    is = is_initd(this)
-    if ( is ) is = this%D%Comm /= MPI_Comm_Null
+    if ( is_initd(this) ) then
+      is = this%D%Comm /= MPI_Comm_Null
+    else
+      is = .false.
+    end if
   end function is_comm_
 
 
@@ -1464,8 +1783,11 @@ module BUD_MOD_NAME
   elemental function is_group_(this) result(is)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     logical :: is
-    is = is_initd(this)
-    if ( is ) is = this%D%grp /= MPI_Group_Null
+    if ( is_initd(this) ) then
+      is = this%D%grp /= MPI_Group_Null
+    else
+      is = .false.
+    end if
   end function is_group_
 
 
@@ -1745,12 +2067,12 @@ module BUD_MOD_NAME
     if ( this%D%Comm == MPI_Comm_Null ) then
       write(fmt, '(a,i0,a)') '(t',lindent,',4a,3(i0,a))'
       write(*,fmt) "<", trim(name), " (remote)Comm", &
-        ", P=",this%D%P, ", NP=",this%D%NP, &
+        ", P=", this%D%P, ", NP=", this%D%NP, &
         ", refs: ", references(this), ">"
     else
       write(fmt, '(a,i0,a)') '(t',lindent,',3a,4(i0,a))'
       write(*,fmt) "<", trim(name), " Comm=", this%D%Comm, &
-        ", P=",this%D%P, ", NP=",this%D%NP, &
+        ", P=", this%D%P, ", NP=", this%D%NP, &
         ", refs: ", references(this), ">"
     end if
 
