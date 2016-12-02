@@ -198,7 +198,7 @@
     ! First distribute the distributed index
     call AllReduce_Max(dist_idx, ir, parent)
     dist_idx = ir
-    
+
     allocate(itmp1(dims))
     call AllReduce_Max(ashape, itmp1, parent)
     do ir = 1 , dims
@@ -393,7 +393,7 @@
         ! information regarding the number of
         ! elements in this local one.
         ashape(dist_idx) = out_nl
-        
+
         call new(out_arr, ashape(:))
         call new(out, out_dist, out_arr)
 
@@ -436,7 +436,7 @@
           if ( recv_R == rank .and. &
             send_R == in_rank ) then
             ! both the recieving and the sending rank
-            
+
             il = g2l(dist, ig)
             oil = g2l(out_dist, ig)
 
@@ -454,7 +454,7 @@
           else if ( recv_R == rank ) then
 
             oil = g2l(out_dist, ig)
-            
+
 # if BUD_DIM == 1
             call Recv(odat(oil), MPI_ANY_SOURCE, ig, &
               parent, stat)
