@@ -52,7 +52,7 @@ F_MODS  += $(patsubst %.f90, %.mod, $(mpi_SOURCES))
 
 
 # Ensure we use the correct compiler
-$(mpi_FPP_SOURCES): INCLUDES += -I$(mpi_DIR)
+$(mpi_FPP_SOURCES): INCLUDES += -I$(src_DIR) -I$(mpi_DIR)
 
 
 source-mpi: $(mpi_SOURCES)

@@ -1,3 +1,6 @@
+
+#define BUD_TYPE_MP_COMM BUD_CC2(BUD_TYPE,MP_Comm)
+
 #if BUD_DIM > 1
   !> Integer corresponding to the sparse index (`1<=sm_idx<=BUD_DIM`)
   !! The default sparse dimension is the last dimension.
