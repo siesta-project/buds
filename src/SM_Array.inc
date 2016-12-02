@@ -99,7 +99,7 @@
   pure function dimensions_(this) result(d)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer :: d
-    
+
     if ( is_initd(this) ) then
       d = BUD_DIM
     else
@@ -107,7 +107,7 @@
     end if
 
   end function dimensions_
-  
+
 #undef BUD_TYPE_NEW
 
   ! Associated with the Array

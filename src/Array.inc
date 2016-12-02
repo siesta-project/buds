@@ -249,7 +249,7 @@
     call new(to, ashape)
     arr => array_p(to)
     arr BUD_DIM_SPEC(:) = from%D%array BUD_DIM_SPEC(:)
-    
+
     call common_copy_(from, to)
 
   end subroutine copy_

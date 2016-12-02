@@ -516,7 +516,7 @@
       if ( present(ncol) ) nullify(ncol)
 #endif
     end if
-    
+
   end subroutine attach_
 
 

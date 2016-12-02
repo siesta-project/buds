@@ -52,11 +52,11 @@ program dist
   call print_world_self()
 
   call MPI_Finalize(err)
-  
+
 contains
 
   subroutine print_world_self()
-    
+
     if ( rank == 0 ) then
        call print(self)
        call print(world)
@@ -65,7 +65,7 @@ contains
 
     if ( is_initd(world) ) &
          call Barrier(world)
-    
+
   end subroutine print_world_self
 
 
@@ -96,7 +96,7 @@ contains
           ! Correct pointers...
           ncol(ic) = 3
           ptr(ic+1) = ptr(ic) + 3
-          
+
           idx = ptr(ic) + 1 ! we know it is CSC0
           if ( ic - 1 < 1 ) then
              ind(idx) = N
@@ -104,7 +104,7 @@ contains
              ind(idx) = ic - 1
           end if
           arr(idx) = -1
-          
+
           idx = idx + 1
           ind(idx) = ic
           arr(idx) = 0
@@ -132,7 +132,7 @@ contains
     ! Create the distribution
     call new(d1, self, BS, N, &
          DIST_BLOCK_CYCLIC_FIRST_SPLIT)
-    
+
     ! Create all the output distributions
     call distribute(dsmA1, world, d1, dsmA2)
     call delete(d1)
@@ -186,7 +186,7 @@ contains
           ! Correct pointers...
           ncol(ic) = 3
           ptr(ic+1) = ptr(ic) + 3
-          
+
           idx = ptr(ic) + 1 ! we know it is CSC0
           if ( ic - 1 < 1 ) then
              ind(idx) = N
@@ -194,7 +194,7 @@ contains
              ind(idx) = ic - 1
           end if
           arr(idx) = -1
-          
+
           idx = idx + 1
           ind(idx) = ic
           arr(idx) = 0
@@ -218,14 +218,14 @@ contains
        call delete(arr1)
 
     end if
-    
+
     call Comm_Split(world, mod(rank, 2), rank, comm1)
 
     ! Create the distribution
     call new(d1, comm1, BS, N, &
          DIST_BLOCK_CYCLIC_FIRST_SPLIT)
     call delete(comm1)
-    
+
     ! Create all the output distributions
     call distribute(dsmA1, world, d1, dsmA2)
     call delete(d1)
@@ -244,7 +244,7 @@ contains
 
     call delete(dsmA1)
     call delete(dsmA2)
-    
+
     print *,'dist_2 -- end', rank
 
     call Barrier(world)
@@ -278,7 +278,7 @@ contains
           ! Correct pointers...
           ncol(ic) = 3
           ptr(ic+1) = ptr(ic) + 3
-          
+
           idx = ptr(ic) + 1 ! we know it is CSC0
           if ( ic - 1 < 1 ) then
              ind(idx) = N
@@ -286,7 +286,7 @@ contains
              ind(idx) = ic - 1
           end if
           arr(idx) = -1
-          
+
           idx = idx + 1
           ind(idx) = ic
           arr(idx) = 0
@@ -310,14 +310,14 @@ contains
        call delete(arr1)
 
     end if
-    
+
     call Comm_Split(world, mod(rank, 3), rank, comm1)
 
     ! Create the distribution
     call new(d1, comm1, BS, N, &
          DIST_BLOCK_CYCLIC_FIRST_SPLIT)
     call delete(comm1)
-    
+
     ! Create all the output distributions
     call distribute(dsmA1, world, d1, dsmA2)
     call delete(d1)
@@ -336,7 +336,7 @@ contains
 
     call delete(dsmA1)
     call delete(dsmA2)
-    
+
     print *,'dist_3 -- end', rank
 
     call Barrier(world)
@@ -370,7 +370,7 @@ contains
           ! Correct pointers...
           ncol(ic) = 3
           ptr(ic+1) = ptr(ic) + 3
-          
+
           idx = ptr(ic) + 1 ! we know it is CSC0
           if ( ic - 1 < 1 ) then
              ind(idx) = N
@@ -378,7 +378,7 @@ contains
              ind(idx) = ic - 1
           end if
           arr(idx) = -1
-          
+
           idx = idx + 1
           ind(idx) = ic
           arr(idx) = 0
@@ -402,13 +402,13 @@ contains
        call delete(arr1)
 
     end if
-    
+
     call Comm_Split(world, 0, rank, comm1)
 
     ! Create the distribution
     call new(d1, comm1, N, DIST_BLOCK_LAST_ALL)
     call delete(comm1)
-    
+
     ! Create all the output distributions
     call distribute(dsmA1, world, d1, dsmA2)
     call delete(d1)
@@ -456,5 +456,5 @@ contains
     call Barrier(world)
 
   end subroutine dist_4
-  
+
 end program dist

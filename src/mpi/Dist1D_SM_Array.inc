@@ -23,10 +23,10 @@
 #endif
 
   use BUD_CC3(BUD_MOD,_,MP_Comm)
-  
+
 #include "bud_common_declarations.inc"
 
-  
+
 !# define BUD_INCLUDE_TYPE "Dist1D_SM_Array_type.inc"
 # define BUD_INCLUDE_TYPE_ "Dist1D_SM_Array_type_.inc"
 
@@ -158,7 +158,7 @@
   pure function dimensions_(this) result(d)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer :: d
-    
+
     if ( is_initd(this) ) then
       d = BUD_DIM
     else
@@ -226,7 +226,7 @@
     comm = dist
     sm = this
     arr = this
-    
+
     ! We need to bcast the basic information
     ! regarding the matrix size
     call attach(sm, nr=nr, nc=nc)
@@ -248,7 +248,7 @@
     nc = ir
 #endif
 
-    
+
     ! figure out the sparse-index, and the
     ! dimensions up till the sparse-index
     ! First, find the sparse index
@@ -288,7 +288,7 @@
     ! First we let all ranks know their root-rank in the
     ! top distribution
     if ( is_communicator(out_comm) ) then
-      
+
       if ( comm_rank(out_comm) == 0 ) then
         ir = comm_rank(parent)
       else
@@ -302,16 +302,16 @@
 #else
       my_root = ir
 #endif
-      
+
       ! at this point my_root is the rank of the
       ! root node in the `this` distribution
 
     else
-      
+
       ! this node is not going to recieve any
       ! data. Thus it has no "root" node.
       my_root = -1
-      
+
     end if
 
     ! Figure out the sizes of the input distribution
@@ -350,7 +350,7 @@
       ! First we need to create a "remote" group that
       ! has the same size as the remote distribution
       if ( my_distr ) then
-        
+
         ! This is the group that has dist
         call new_remote(parent, out_dist)
         call create_ranks(out_dist)
@@ -370,7 +370,7 @@
         out_nz = reduce_size(fake_dist)
         call sub_dist(fake_dist)
         call delete(fake_dist)
-        
+
       end if
 
       ! Be sure to deallocate the ranks for the next
@@ -384,7 +384,7 @@
     call delete(sm)
     call delete(arr)
     call delete(out_comm)
-    
+
   contains
 
     subroutine create_ranks(dist)
@@ -426,7 +426,7 @@
 #elif defined(BUD_SM_CSR)
       call attach(sm, rptr=ptr, col=ind)
 #endif
-      
+
       ! First we need to know the size of the sparse
       ! matrix. So we do a loop on each rank that
       ! should recieve data.
@@ -436,10 +436,10 @@
         ! node, that is send to ir
         n = 0
         do il = 1 , nl
-          
+
           ! Get global index
           ig = l2g(dist, il)
-          
+
           ! Get recieving node
           recv_R = g2rank(out_dist, ig)
           if ( recv_R /= ir ) cycle
@@ -450,7 +450,7 @@
 
           ! Count number of elements send
           n = n + id2 - id1
-          
+
         end do
 
 #ifdef BUD_MPI
@@ -512,10 +512,10 @@
       integer(ii_), allocatable :: reqs(:), stats(:,:)
       integer(ii_) :: stat(MPI_STATUS_SIZE)
 #endif
-      
+
       ! Whether we should run or quit immediately
       run = .true.
-      
+
       ! Check that the sparse matrix coincides
       ! with the distribution
       nullify(ptr, ind)
@@ -565,7 +565,7 @@
 #endif
 
         odat => array_p(out_arr)
-        
+
         ! Immediately clean-up after
         ! we have retrieved the wanted information
         call delete(out_arr)
@@ -575,12 +575,12 @@
         ! TODO check that the sparsity pattern
         ! has consecutive indices
         optr(1) = BUD_SM_PTR
-        
+
       end if
 
 #ifdef BUD_MPI
       if ( is_initd(dist) ) then
-        
+
         ! Only ranks that have dist allocated
         ! will be sending stuff
         allocate(reqs(nl), stats(MPI_STATUS_SIZE, nl))
@@ -588,13 +588,13 @@
         do il = 1 , nl
           reqs(il) = MPI_REQUEST_NULL
         end do
-        
+
       end if
 #endif
 
       ! Loop on global indices
       do ig = 1 , ng
-        
+
         ! Figure out the sending rank
         ! Now this rank, has to be the rank
         ! in the input distribution.
@@ -610,7 +610,7 @@
         if ( recv_R == rank .and. &
           send_R == in_rank ) then
           ! both the recieving and the sending rank
-          
+
           il = g2l(dist, ig)
           oil = g2l(out_dist, ig)
 
@@ -624,11 +624,11 @@
 
           ! Immediately copy (correct for offset)
           oid1 = optr(oil) BUD_SM_PTR_A - id1
-          
+
           do i = id1 , id2
             oind(oid1+i) = ind(i)
           end do
-          
+
 #ifdef BUD_MPI
         else if ( recv_R == rank ) then
           ! only the recieving rank
@@ -640,7 +640,7 @@
             parent, stat)
           call MPI_Get_Count(stat, MPI_INTEGER, oid2, i)
           optr(oil+1) = optr(oil) + oid2
-            
+
         else if ( send_R == in_rank ) then
           ! only the sending rank
 
@@ -650,7 +650,7 @@
           ! distribution
           id1 = ptr(il) BUD_SM_PTR_A
           id2 = ptr(il+1) BUD_SM_PTR_B
-          
+
           call ISSend(ind(id1:id2), recv_R, ig, parent, reqs(il))
 
 #else
@@ -693,28 +693,28 @@
       ! Now we need to redistribute the array data
       ! Retrieve the data-pointer
       dat => array_p(arr)
-      
+
       if ( sm_idx == dims ) then
         ! The easy stuff is when the sparse
-        ! dimension is the same as 
+        ! dimension is the same as
 
         ! Loop on global indices
         do ig = 1 , ng
-          
+
           send_R = g2rank(dist, ig)
           recv_R = ranks(g2rank(out_dist, ig))
 
           if ( recv_R == rank .and. &
             send_R == in_rank ) then
             ! both the recieving and the sending rank
-            
+
             il = g2l(dist, ig)
             oil = g2l(out_dist, ig)
 
             id1 = ptr(il) BUD_SM_PTR_A
             id2 = ptr(il+1) BUD_SM_PTR_B
             oid1 = optr(oil) BUD_SM_PTR_A - id1
-            
+
             do i = id1 , id2
 #if BUD_DIM == 1
               odat(oid1+i) = dat(i)
@@ -782,16 +782,16 @@
 #endif
 
       else if ( sm_idx == 1 ) then
-        
+
         ! the first index is the sparse element
 #if BUD_DIM > 2
        do i3 = 1 , ashape(3)
 #endif
         do i2 = 1 , ashape(2)
-          
+
          ! Loop on global indices
          do ig = 1 , ng
-           
+
            send_R = g2rank(dist, ig)
            recv_R = ranks(g2rank(out_dist, ig))
 
@@ -815,7 +815,7 @@
 
 #ifdef BUD_MPI
            else if ( recv_R == rank ) then
-             
+
              oil = g2l(out_dist, ig)
              oid1 = optr(oil) BUD_SM_PTR_A
              oid2 = optr(oil+1) BUD_SM_PTR_B
@@ -857,21 +857,21 @@
          if ( allocated(reqs) ) &
            call WaitAll(nl, reqs, stats, parent)
 #endif
-         
+
         end do ! i2
 #if BUD_DIM > 2
        end do ! i3
 #endif
-       
+
 #if BUD_DIM > 1
       else if ( sm_idx == 2 ) then
-        
+
 # if BUD_DIM == 3
        do i3 = 1 , ashape(3)
-         
+
          ! Loop on global indices
          do ig = 1 , ng
-           
+
            send_R = g2rank(dist, ig)
            recv_R = ranks(g2rank(out_dist, ig))
 
@@ -935,11 +935,11 @@
 #endif
 
       call delete(out_comm)
-      
+
     end subroutine sub_dist
 
   end subroutine distribute_
-  
+
 
 #undef BUD_TYPE_NEW
 

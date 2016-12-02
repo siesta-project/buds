@@ -591,7 +591,7 @@
     integer(BUD_PREC), pointer, optional :: global2rank(:)
 
     if ( is_initd(this) ) then
-      
+
       if ( present(dist) ) dist = this%D%dist
       if ( present(P) ) P = rank(this%D%comm)
       if ( present(NP) ) NP = comm_size(this%D%comm)
@@ -613,7 +613,7 @@
       if ( present(global2rank) ) nullify(global2rank)
 
     end if
-      
+
   end subroutine attach_
 
 
@@ -796,10 +796,10 @@
     integer(BUD_PREC) :: i, ir, irB
 
     if ( .not. is_initd(this) ) then
-      
+
       nl = 0
       return
-      
+
     end if
 
     NP = comm_size(this%D%Comm)
@@ -1133,7 +1133,7 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
     type(BUD_TYPE_MP_COMM) :: comm
-    
+
     integer :: nranks, my_root, rk
     integer :: itmp, idist
     integer(BUD_PREC) :: iBS, iNG
@@ -1144,7 +1144,7 @@
 
     ! Easy way to use the rank later
     rk = comm_rank(parent)
-    
+
     ! First we figure out the root in the distribution
     itmp = -1
     if ( initialized(this) ) then
@@ -1179,7 +1179,7 @@
         ! TODO
 
       end if
-      
+
     else if ( initialized(this) ) then
       ! these are the ranks that are part of this
       ! but should not overwrite anything...
@@ -1195,11 +1195,11 @@
 
         ! We also need to bcast other information
         ! TODO
-        
+
       end if
 
     else
-      
+
       ! these are the new distribution stuff
 #ifdef BUD_MPI
       call Bcast(nranks, my_root, parent)
@@ -1219,17 +1219,17 @@
 
         ! Create it...
         call new(this, comm, iNG, idist)
-        
+
       else
-        
+
         call delete(this)
 
       end if
-      
+
     end if
 
   end subroutine globalize_
-  
+
 
   !> Query whether a communicator is not MPI_COMM_NULL
   !!

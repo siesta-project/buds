@@ -1309,7 +1309,7 @@ module BUD_MOD_NAME
     this%D%comm = Comm
     this%D%P = 0
     this%D%NP = 1
-    
+
 #endif
 
   end subroutine new_
@@ -1585,7 +1585,7 @@ module BUD_MOD_NAME
 #else
     index = 0
 #endif
-    
+
   end subroutine WaitAny_
   subroutine WaitAny_err_(n, req, index, status, err)
     integer, intent(in) :: n
@@ -1604,7 +1604,7 @@ module BUD_MOD_NAME
     index = 0
     err = MPI_SUCCESS
 #endif
-    
+
   end subroutine WaitAny_Err_
 
   ! Test routines
@@ -1700,7 +1700,7 @@ module BUD_MOD_NAME
     index = 0
     flag = .true.
 #endif
-    
+
   end subroutine TestAny_
   subroutine TestAny_err_(n, req, index, flag, status, err)
     integer, intent(in) :: n
@@ -1721,9 +1721,9 @@ module BUD_MOD_NAME
     flag = .true.
     err = MPI_SUCCESS
 #endif
-    
+
   end subroutine TestAny_err_
-  
+
   subroutine Test_Cancelled_(status, flag, this)
 #ifdef MPI
     integer, intent(inout) :: status(MPI_STATUS_SIZE)
@@ -1738,7 +1738,7 @@ module BUD_MOD_NAME
 #else
     flag = .false.
 #endif
-    
+
   end subroutine Test_Cancelled_
   subroutine Test_Cancelled_err_(status, flag, err)
 #ifdef MPI
@@ -1755,7 +1755,7 @@ module BUD_MOD_NAME
     flag = .false.
     err = MPI_SUCCESS
 #endif
-    
+
   end subroutine Test_Cancelled_Err_
 
   !> @endcond BUD_DEVELOPER
