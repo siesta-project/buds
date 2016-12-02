@@ -2,7 +2,6 @@ test_src_DIR = $(TOP_DIR)/src/test
 # Where to create the output of tests
 test_out_DIR = test
 
-
 # Ensure the include path gets updated
 INCLUDES += -I$(test_src_DIR)
 # Ensure the linking to the library
@@ -14,46 +13,46 @@ LDFLAGS += -L.
 test_COMMON_OBJECTS = test_utils.o
 test_COMMON_OBJECTS := $(addprefix $(test_out_DIR)/,$(test_COMMON_OBJECTS))
 
-test_TESTS += array
-test_OBJECTS += array.o
+src_TESTS += array
+t_src_OBJECTS += array.o
 $(test_out_DIR)/array: $(test_COMMON_OBJECTS) $(test_out_DIR)/array.o
 	$(FC) -o $@ $^ -l$(BUDS_LIB) $(FFLAGS) $(INCLUDES) $(LDFLAGS)
 	@echo "#### TEST -- running: $@" >> run_tests.sh
 	@echo $@ >> run_tests.sh
 
-test_TESTS += fs_array
-test_OBJECTS += fs_array.o
+src_TESTS += fs_array
+t_src_OBJECTS += fs_array.o
 $(test_out_DIR)/fs_array: $(test_COMMON_OBJECTS) $(test_out_DIR)/fs_array.o
 	$(FC) -o $@ $^ -l$(BUDS_LIB) $(FFLAGS) $(INCLUDES) $(LDFLAGS)
 	@echo "#### TEST -- running: $@" >> run_tests.sh
 	@echo $@ >> run_tests.sh
 
-#test_TESTS += c2_array
-#test_OBJECTS += c2_array.o
+#src_TESTS += c2_array
+#t_src_OBJECTS += c2_array.o
 $(test_out_DIR)/c2_array: $(test_COMMON_OBJECTS) $(test_out_DIR)/c2_array.o
 	$(FC) -o $@ $^ -l$(BUDS_LIB) $(FFLAGS) $(INCLUDES) $(LDFLAGS)
 	@echo "#### TEST -- running: $@" >> run_tests.sh
 	@echo $@ >> run_tests.sh
 
-test_TESTS += ll_array
-test_OBJECTS += ll_array.o
+src_TESTS += ll_array
+t_src_OBJECTS += ll_array.o
 $(test_out_DIR)/ll_array: $(test_COMMON_OBJECTS) $(test_out_DIR)/ll_array.o
 	$(FC) -o $@ $^ -l$(BUDS_LIB) $(FFLAGS) $(INCLUDES) $(LDFLAGS)
 	@echo "#### TEST -- running: $@" >> run_tests.sh
 	@echo $@ >> run_tests.sh
 
 
-$(test_OBJECTS): $(test_COMMON_OBJECTS)
-test_OBJECTS := $(test_COMMON_OBJECTS) $(addprefix $(test_out_DIR)/,$(test_OBJECTS))
-test_TESTS := $(addprefix $(test_out_DIR)/,$(test_TESTS))
+$(t_src_OBJECTS): $(test_COMMON_OBJECTS)
+t_src_OBJECTS := $(test_COMMON_OBJECTS) $(addprefix $(test_out_DIR)/,$(t_src_OBJECTS))
+src_TESTS := $(addprefix $(test_out_DIR)/,$(src_TESTS))
 
 # This forces all tests in this directory to ALWAYS be runned
-.PHONY: $(test_TESTS)
-TESTS += $(test_TESTS)
+.PHONY: $(src_TESTS)
+TESTS += $(src_TESTS)
 
 # Ensure the directory is created
-$(test_OBJECTS): test-buds
-$(test_OBJECTS): $(BUDS_LIB_SHARED)
+$(t_src_OBJECTS): test-buds
+$(t_src_OBJECTS): $(BUDS_LIB_SHARED)
 
 
 test-buds:
@@ -61,15 +60,16 @@ test-buds:
 	@echo 'export LD_LIBRARY_PATH=.:$$LD_LIBRARY_PATH' > run_tests.sh
 
 
-test-run: $(TESTS)
+test-run: $(src_TESTS)
+test-run:
 	sh run_tests.sh
 test: test-run
 
 
 clean-src-test:
-	-rm -f $(test_OBJECTS) run_tests.sh
+	-rm -f $(t_src_OBJECTS) run_tests.sh
 	-rm -f $(test_out_DIR)/*.mod
-	-rm -f $(test_TESTS)
+	-rm -f $(src_TESTS)
 
 clean: clean-src-test
 
