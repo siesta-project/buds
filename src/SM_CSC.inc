@@ -496,15 +496,27 @@
     integer(BUD_TYPE_VAR_PREC), intent(out), pointer BUD_FORTRAN_CONTIGUOUS, optional :: ncol(:)
 #endif
 
-    if ( present(nr) ) nr = this%D%nr
-    if ( present(nc) ) nc = this%D%nc
-    if ( present(nz) ) nz = this%D%nz
-    if ( present(cptr) ) cptr => this%D%cptr
-    if ( present(row) ) row => this%D%row
+    if ( is_initd(this) ) then
+      if ( present(nr) ) nr = this%D%nr
+      if ( present(nc) ) nc = this%D%nc
+      if ( present(nz) ) nz = this%D%nz
+      if ( present(cptr) ) cptr => this%D%cptr
+      if ( present(row) ) row => this%D%row
 #if BUD_SM_CSC == 1
-    if ( present(ncol) ) ncol => this%D%ncol
+      if ( present(ncol) ) ncol => this%D%ncol
 #endif
 
+    else
+      if ( present(nr) ) nr = 0
+      if ( present(nc) ) nc = 0
+      if ( present(nz) ) nz = 0
+      if ( present(cptr) ) nullify(cptr)
+      if ( present(row) ) nullify(row)
+#if BUD_SM_CSC == 1
+      if ( present(ncol) ) nullify(ncol)
+#endif
+    end if
+    
   end subroutine attach_
 
 

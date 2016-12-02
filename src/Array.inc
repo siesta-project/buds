@@ -78,14 +78,14 @@
     ! Doxygen needed line
 
     procedure, private :: new_dim_
-    procedure, private :: new_copy_
+    procedure, private :: new_shape_
 
     !> @}
 
     !> @iSee BUD_NEW_TYPE
-    generic, public :: BUD_NEW_TYPE => new_dim_, new_copy_
+    generic, public :: BUD_NEW_TYPE => new_dim_, new_shape_
     !> @iSee BUD_NEW_TYPE
-    generic, public :: new => new_dim_, new_copy_
+    generic, public :: new => new_dim_, new_shape_
 
     !> @iSee #array_p
     procedure, public :: array_p => arrayp_
@@ -131,14 +131,14 @@
   !! value of the array may be arbitrary (compiler dependent).
   interface BUD_TYPE_NEW
     module procedure new_dim_
-    module procedure new_copy_
+    module procedure new_shape_
   end interface
   public :: BUD_TYPE_NEW
 
   !> @iSee BUD_TYPE_NEW
   interface new
     module procedure new_dim_
-    module procedure new_copy_
+    module procedure new_shape_
   end interface
   public :: new
 
@@ -171,6 +171,12 @@
     module procedure size_
   end interface
   public :: size
+
+  !> Query dimensions of array
+  interface dimensions
+    module procedure dimensions_
+  end interface
+  public :: dimensions
 
 
   !> Set all values in the array to a specific value.
@@ -226,12 +232,24 @@
   subroutine copy_(from, to)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
+    integer :: i, ashape( BUD_DIM )
+#ifdef BUD_TYPE_VAR_PREC
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer :: arr BUD_DIM_SPEC(:)
+#else
+    BUD_TYPE_VAR, pointer :: arr BUD_DIM_SPEC(:)
+#endif
 
     call delete(to)
     if ( .not. is_initd(from) ) return
 
-    call new(to, from%D%array)
-
+    do i = 1 , BUD_DIM
+      ashape(i) = size(from, i)
+    end do
+    ! Create the output data
+    call new(to, ashape)
+    arr => array_p(to)
+    arr BUD_DIM_SPEC(:) = from%D%array BUD_DIM_SPEC(:)
+    
     call common_copy_(from, to)
 
   end subroutine copy_
@@ -305,61 +323,42 @@
 
   end subroutine new_dim_
 
-
   !> @param[inout] this array @bud
-  !! @param[in] array array to duplicate in `this` (dimensions _and_ values)
-  subroutine new_copy_(this, array)
+  !! @param[in] shape array with dimensions (padded with ones)
+  !! @param[in] val @opt=@null initial value of all elements
+  subroutine new_shape_(this, shape, val)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    integer, intent(in) :: shape(:)
 #ifdef BUD_TYPE_VAR_PREC
-    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in) :: array BUD_DIM_SPEC(:)
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in), optional :: val
 #else
-    BUD_TYPE_VAR, intent(in) :: array BUD_DIM_SPEC(:)
+    BUD_TYPE_VAR, intent(in), optional :: val
 #endif
 
+    integer :: i, as( BUD_DIM )
+
+    ! Make sure the container is initialized and ready for
+    ! data-creation.
+
+    as(:) = 1
+    do i = 1 , min( BUD_DIM , size(shape) )
+      as(i) = shape(i)
+    end do
+
+    ! Allocate the value array
 #if BUD_DIM == 1
-    integer :: d1
+    call new(this, as(1), val=val)
 #elif BUD_DIM == 2
-    integer :: d1, d2
+    call new(this, as(1), as(2), val=val)
 #elif BUD_DIM == 3
-    integer :: d1, d2, d3
+    call new(this, as(1), as(2), as(3), val=val)
 #elif BUD_DIM == 4
-    integer :: d1, d2, d3, d4
+    call new(this, as(1), as(2), as(3), as(4), val=val)
 #elif BUD_DIM == 5
-    integer :: d1, d2, d3, d4, d5
+    call new(this, as(1), as(2), as(3), as(4), as(5), val=val)
 #endif
 
-    d1 = size(array,dim=1)
-#if BUD_DIM > 1
-    d2 = size(array,dim=2)
-#endif
-#if BUD_DIM > 2
-    d3 = size(array,dim=3)
-#endif
-#if BUD_DIM > 3
-    d4 = size(array,dim=4)
-#endif
-#if BUD_DIM > 4
-    d5 = size(array,dim=5)
-#endif
-
-    ! initialize and create data-container
-#if BUD_DIM == 1
-    call new_dim_(this, d1)
-#elif BUD_DIM == 2
-    call new_dim_(this, d1, d2)
-#elif BUD_DIM == 3
-    call new_dim_(this, d1, d2, d3)
-#elif BUD_DIM == 4
-    call new_dim_(this, d1, d2, d3, d4)
-#elif BUD_DIM == 5
-    call new_dim_(this, d1, d2, d3, d4, d5)
-#endif
-
-    ! copy data
-    ! (required to not check for allocation)
-    this%D%array BUD_DIM_SPEC(:) = array BUD_DIM_SPEC(:)
-
-  end subroutine new_copy_
+  end subroutine new_shape_
 
 
   !> @param[in] this array @bud
@@ -372,7 +371,11 @@
     BUD_TYPE_VAR, pointer  BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC(:)
 #endif
 
-    p => this%D%array
+    if ( is_initd(this) ) then
+      p => this%D%array
+    else
+      nullify(p)
+    end if
 
   end function arrayp_
 
@@ -461,6 +464,20 @@
     end if
 
   end function size_
+
+  !> @param[in] this @bud container
+  !! @return the number of dimensions of contained array
+  pure function dimensions_(this) result(d)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    integer :: d
+
+    if ( is_initd(this) ) then
+      d = BUD_DIM
+    else
+      d = -1
+    end if
+
+  end function dimensions_
 
 
   !> @param[in] this array @bud

@@ -30,13 +30,25 @@
 #ifdef BUD_SM_CSR
 # if BUD_SM_CSR == 1
 #  undef BUD_SM_MOD
+#  undef BUD_SM_PTR
+#  undef BUD_SM_PTR_A
+#  undef BUD_SM_PTR_B
 #  define BUD_SM_MOD modp
+#  define BUD_SM_PTR 0
+#  define BUD_SM_PTR_A +1
+#  define BUD_SM_PTR_B 
 # endif
 #endif
 #ifdef BUD_SM_CSC
 # if BUD_SM_CSC == 1
 #  undef BUD_SM_MOD
+#  undef BUD_SM_PTR
+#  undef BUD_SM_PTR_A
+#  undef BUD_SM_PTR_B
 #  define BUD_SM_MOD modp
+#  define BUD_SM_PTR 0
+#  define BUD_SM_PTR_A +1
+#  define BUD_SM_PTR_B 
 # endif
 #endif
 

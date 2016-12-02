@@ -44,6 +44,12 @@
   end interface
   public :: sparse_index
 
+  !> Query the size of the matrix (dimension)
+  interface dimensions
+    module procedure dimensions_
+  end interface
+  public :: dimensions
+
   !> Retrieve the array @bud
   interface array
     module procedure get_elem2_
@@ -88,7 +94,20 @@
 
   end function sparse_index_
 
+  !> @param[in] this @bud container
+  !! @return the number of dimensions of contained array
+  pure function dimensions_(this) result(d)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    integer :: d
+    
+    if ( is_initd(this) ) then
+      d = BUD_DIM
+    else
+      d = -1
+    end if
 
+  end function dimensions_
+  
 #undef BUD_TYPE_NEW
 
   ! Associated with the Array
