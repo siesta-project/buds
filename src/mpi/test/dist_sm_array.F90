@@ -73,7 +73,7 @@ contains
     integer, pointer :: ptr(:), ind(:), ncol(:)
     real, pointer :: arr(:)
     integer :: ic, i, idx
-    print *,'dist_1 -- start'
+    print *,'dist-sm-arr_1 -- start'
 
     if ( comm_rank(world) == 0 ) then
 
@@ -152,7 +152,7 @@ contains
     call delete(dsmA1)
     call delete(dsmA2)
 
-    print *,'dist_1 -- end', rank
+    print *,'dist-sm-arr_1 -- end', rank
 
     call Barrier(world)
 
@@ -163,7 +163,7 @@ contains
     integer, pointer :: ptr(:), ind(:), ncol(:)
     real, pointer :: arr(:)
     integer :: ic, i, idx
-    print *,'dist_2 -- start'
+    print *,'dist-sm-arr_2 -- start'
 
     if ( comm_rank(world) == 0 ) then
 
@@ -245,7 +245,7 @@ contains
     call delete(dsmA1)
     call delete(dsmA2)
 
-    print *,'dist_2 -- end', rank
+    print *,'dist-sm-arr_2 -- end', rank
 
     call Barrier(world)
 
@@ -255,7 +255,7 @@ contains
     integer, pointer :: ptr(:), ind(:), ncol(:)
     real, pointer :: arr(:)
     integer :: ic, i, idx
-    print *,'dist_3 -- start'
+    print *,'dist-sm-arr_3 -- start'
 
     if ( comm_rank(world) == 0 ) then
 
@@ -337,7 +337,7 @@ contains
     call delete(dsmA1)
     call delete(dsmA2)
 
-    print *,'dist_3 -- end', rank
+    print *,'dist-sm-arr_3 -- end', rank
 
     call Barrier(world)
 
@@ -347,7 +347,7 @@ contains
     integer, pointer :: ptr(:), ind(:), ncol(:)
     real, pointer :: arr(:)
     integer :: ic, i, idx
-    print *,'dist_4 -- start'
+    print *,'dist-sm-arr_4 -- start'
 
     if ( comm_rank(world) == 0 ) then
 
@@ -451,7 +451,7 @@ contains
     call delete(dsmA2)
     call delete(dsmA3)
 
-    print *,'dist_4 -- end', rank
+    print *,'dist-sm-arr_4 -- end', rank
 
     call Barrier(world)
 

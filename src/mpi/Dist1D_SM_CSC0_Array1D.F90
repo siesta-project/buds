@@ -154,10 +154,10 @@ end module
 !> @}
 
 
-! GROUP sp-csc0-array-BUD_DIM
+! GROUP dist1d-sm-csc0-array-BUD_DIM
 !> @}
 
-! GROUP sp-csc0-array
+! GROUP dist1d-sm-csc0-array
 !> @}
 
 

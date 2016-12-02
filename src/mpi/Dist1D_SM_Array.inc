@@ -38,18 +38,6 @@
 #endif
 
 
-  !> Retrieve pointer data in the sparse matrix
-  !!
-  !! The array-pointer will _always_ be contiguous.
-  !!
-  !! @note
-  !! Do not deallocate the array-pointer.
-  interface matrix_p
-    module procedure get_matrixp_
-  end interface
-  public :: matrix_p
-
-
   !> Retrieve the 1D distribution
   interface dist1d
     module procedure get_elem1_
@@ -74,18 +62,6 @@
   end interface
   public :: sparse_matrix_p
 
-  !> Query the index of the sparse matrix
-  interface sparse_index
-    module procedure sparse_index_
-  end interface
-  public :: sparse_index
-
-  !> Query the size of the matrix (dimension)
-  interface dimensions
-    module procedure dimensions_
-  end interface
-  public :: dimensions
-
   !> Retrieve the array @bud
   interface array
     module procedure get_elem3_
@@ -97,6 +73,29 @@
     module procedure get_elem3p_
   end interface
   public :: array_p
+
+  !> Retrieve pointer data in the sparse matrix
+  !!
+  !! The array-pointer will _always_ be contiguous.
+  !!
+  !! @note
+  !! Do not deallocate the array-pointer.
+  interface matrix_p
+    module procedure get_matrixp_
+  end interface
+  public :: matrix_p
+
+  !> Query the index of the sparse matrix
+  interface sparse_index
+    module procedure sparse_index_
+  end interface
+  public :: sparse_index
+
+  !> Query the size of the matrix (dimension)
+  interface dimensions
+    module procedure dimensions_
+  end interface
+  public :: dimensions
 
   !> Distribute data from one distribution to another
   !! distribution.
@@ -134,6 +133,19 @@
 
   end function get_matrixp_
 
+  !> @param[in] this @bud container
+  !! @return the number of dimensions of contained array
+  pure function dimensions_(this) result(d)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    integer :: d
+
+    if ( is_initd(this) ) then
+      d = BUD_DIM
+    else
+      d = -1
+    end if
+
+  end function dimensions_
 
   !> @param[in] this sparse matrix
   !! @return the index of the sparse index
@@ -152,20 +164,6 @@
     end if
 
   end function sparse_index_
-
-  !> @param[in] this @bud container
-  !! @return the number of dimensions of contained array
-  pure function dimensions_(this) result(d)
-    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer :: d
-
-    if ( is_initd(this) ) then
-      d = BUD_DIM
-    else
-      d = -1
-    end if
-
-  end function dimensions_
 
   ! Now we should construct the specific routines for redistribution
   ! of the matrices...
@@ -734,18 +732,18 @@
             oid1 = optr(oil) BUD_SM_PTR_A
             oid2 = optr(oil+1) BUD_SM_PTR_B
 
-#if BUD_DIM == 1
+# if BUD_DIM == 1
             call Recv(odat(oid1:oid2), MPI_ANY_SOURCE, ig, &
               parent, stat)
-#elif BUD_DIM == 2
+# elif BUD_DIM == 2
             call Recv(odat(:,oid1:oid2), MPI_ANY_SOURCE, ig, &
               parent, stat)
-#elif BUD_DIM == 3
+# elif BUD_DIM == 3
             call Recv(odat(:,:,oid1:oid2), MPI_ANY_SOURCE, ig, &
               parent, stat)
-#else
-# error "Only up till BUD_DIM == 3 has been implemented"
-#endif
+# else
+#  error "Only up till BUD_DIM == 3 has been implemented"
+# endif
             ! TODO check that Get_Count == oid2-oid1+1
             ! But here we do not know the data-type
 
@@ -820,13 +818,13 @@
              oid1 = optr(oil) BUD_SM_PTR_A
              oid2 = optr(oil+1) BUD_SM_PTR_B
 
-#if BUD_DIM == 2
+# if BUD_DIM == 2
              call Recv(odat(oid1:oid2,i2), MPI_ANY_SOURCE, ig, &
                parent, stat)
-#elif BUD_DIM == 3
+# elif BUD_DIM == 3
              call Recv(odat(oid1:oid2,i2,i3), MPI_ANY_SOURCE, ig, &
                parent, stat)
-#endif
+# endif
 
              ! TODO check that Get_Count == oid2-oid1+1
              ! But here we do not know the data-type
@@ -889,7 +887,7 @@
                odat(:,oid1+i,i3) = dat(:,i,i3)
              end do
 
-#ifdef BUD_MPI
+#  ifdef BUD_MPI
            else if ( recv_R == rank ) then
 
              oil = g2l(out_dist, ig)
@@ -909,18 +907,18 @@
 
              call ISSend(dat(:,id1:id2,i3), recv_R, ig, &
                parent, reqs(il))
-#else
+#  else
            else
              ! TODO something went wrong!
-#endif
+#  endif
            end if
 
          end do ! ig
 
-#ifdef BUD_MPI
+#  ifdef BUD_MPI
          if ( allocated(reqs) ) &
            call WaitAll(nl, reqs, stats, parent)
-#endif
+#  endif
 
        end do ! i3
 # endif

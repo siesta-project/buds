@@ -18,6 +18,13 @@ $(test_out_DIR)/dist_sm_array: $(test_COMMON_OBJECTS) $(test_out_DIR)/dist_sm_ar
 	@echo "#### TEST -- running: $@" >> run_tests.sh
 	@echo "mpirun -np $(NPROC) ./$@" >> run_tests.sh
 
+mpi_TESTS += dist_array
+t_mpi_OBJECTS += dist_array.o
+$(test_out_DIR)/dist_array: $(test_COMMON_OBJECTS) $(test_out_DIR)/dist_array.o
+	$(MPIFC) -o $@ $^ -l$(BUDS_LIB) $(FFLAGS) $(INCLUDES) $(LDFLAGS)
+	@echo "#### TEST -- running: $@" >> run_tests.sh
+	@echo "mpirun -np $(NPROC) ./$@" >> run_tests.sh
+
 
 t_mpi_OBJECTS := $(addprefix $(test_out_DIR)/,$(t_mpi_OBJECTS))
 mpi_TESTS := $(addprefix $(test_out_DIR)/,$(mpi_TESTS))

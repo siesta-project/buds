@@ -1178,7 +1178,6 @@ module BUD_MOD_NAME
   subroutine delete_(this)
     type(BUD_TYPE_NAME_), intent(inout) :: this
 #ifdef BUD_MPI
-    integer :: err
 
     ! Currently we do not allow external memory
     ! tracking.
