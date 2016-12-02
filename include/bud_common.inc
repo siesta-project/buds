@@ -176,6 +176,12 @@
   end interface
   public :: refs
 
+  !> Set the error to some value.
+  interface set_error
+    module procedure common_set_error_
+  end interface
+  public :: set_error
+  private :: common_set_error_
 
   !> Query the latest routine which may have produced an error.
   !!
@@ -403,6 +409,18 @@ contains
     end if
 
   end function common_error_
+
+  !> @param[inout] this reference counted @bud
+  !! @param[in] error set the error to this value
+  elemental subroutine common_set_error_(this, error)
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    integer, intent(in) :: error
+
+    if ( is_initd(this) ) then
+      this%D%error_ = error
+    end if
+
+  end subroutine common_set_error_
 
 
   !> @cond BUD_DEVELOPER
