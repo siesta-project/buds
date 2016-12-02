@@ -245,7 +245,7 @@
     type(BUD_ITEM_TYPE), intent(inout) :: item
 
     if ( is_initd(this) ) then
-      item = this%D%item
+      item%D = this%D%item%D
     else
       call delete(item)
     end if
@@ -258,7 +258,11 @@
     type(BUD_ITEM_TYPE), intent(inout) :: item
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
 
-    call get_data(this, item)
+    if ( is_initd(this) ) then
+      item = this%D%item
+    else
+      call delete(item)
+    end if
 
   end subroutine get_data_assign_
 
