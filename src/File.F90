@@ -97,6 +97,14 @@ module BUD_MOD_NAME
 
     !> @iSee is_open
     procedure, public :: is_open => is_open_
+    !> @iSee is_direct
+    procedure, public :: is_direct => is_direct_
+    !> @iSee is_sequential
+    procedure, public :: is_sequential => is_sequential_
+    !> @iSee is_formatted
+    procedure, public :: is_formatted => is_formatted_
+    !> @iSee is_unformatted
+    procedure, public :: is_unformatted => is_unformatted_
 
     !> @iSee exists
     procedure, public :: exists => exists_
