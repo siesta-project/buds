@@ -10,7 +10,7 @@ ARRAY_OBJECTS = \
 	bud_Array1D.o \
 	bud_Array2D.o \
 	bud_Array3D.o
-$(ARRAY_OBJECTS:.o=.f90): Array.inc
+$(ARRAY_OBJECTS:.o=.f90): Array.inc bud_File.o
 src_OBJECTS += $(ARRAY_OBJECTS)
 bud_Array1D.f90: Array1D.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@

@@ -188,6 +188,16 @@
   end interface
   private :: assign_value_
 
+  !> Write the array information to a file (already opened)
+  !!
+  !! This dumps the array information to an already opened file
+  !! in a standard compliant way.
+  !! The file can also be re-read using the `read` function
+  interface write
+    module procedure write_
+  end interface write
+  public :: write
+
   !> Print, to std-out, some basic information of the data-container
   !!
   !! Print out XML-like information regarding the data-container.
@@ -498,6 +508,297 @@
 
   end subroutine assign_value_
 
+  !> @param[inout] f `File` bud
+  !! @param[in] this the array bud
+  subroutine write_(f, this)
+    use BUD_CC2(BUD_MOD,_File)
+
+    BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+
+#ifdef BUD_TYPE_VAR_PREC
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC(:)
+#else
+    BUD_TYPE_VAR, pointer  BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC(:)
+#endif
+
+    logical :: formatted
+    integer :: iu
+
+#if BUD_DIM == 1
+    integer :: d1
+#elif BUD_DIM == 2
+    integer :: d1, d2, i2
+#elif BUD_DIM == 3
+    integer :: d1, d2, d3, i2, i3
+#elif BUD_DIM == 4
+    integer :: d1, d2, d3, d4, i2, i3, i4
+#elif BUD_DIM == 5
+    integer :: d1, d2, d3, d4, d5, i2, i3, i4, i5
+#endif
+
+    ! If file is not opened, return immediately
+    if ( .not. is_open(f) ) return
+
+    ! First figure out if the file is an unformatted file
+    formatted = is_formatted(f)
+    iu = unit(f)
+
+    ! Get size
+    d1 = size_(this, 1)
+#if BUD_DIM > 1
+    d2 = size_(this, 2)
+#endif
+#if BUD_DIM > 2
+    d3 = size_(this, 3)
+#endif
+#if BUD_DIM > 3
+    d4 = size_(this, 4)
+#endif
+#if BUD_DIM > 4
+    d5 = size_(this, 5)
+#endif
+
+    ! First we write the size of the array
+    if ( formatted ) then
+      write(iu, '(i16)') BUD_DIM
+#if BUD_DIM == 1 
+      write(iu, '(i16)') d1
+#elif BUD_DIM == 2
+      write(iu, '(i16,tr1,i16)') d1, d2
+#elif BUD_DIM == 3
+      write(iu, '(2(i16,tr1),i16)') d1, d2, d3
+#elif BUD_DIM == 4
+      write(iu, '(3(i16,tr1),i16)') d1, d2, d3, d4
+#elif BUD_DIM == 5
+      write(iu, '(4(i16,tr1),i16)') d1, d2, d3, d4, d5
+#endif
+    else
+      write(iu) BUD_DIM
+#if BUD_DIM == 1 
+      write(iu) d1
+#elif BUD_DIM == 2
+      write(iu) d1, d2
+#elif BUD_DIM == 3
+      write(iu) d1, d2, d3
+#elif BUD_DIM == 4
+      write(iu) d1, d2, d3, d4
+#elif BUD_DIM == 5
+      write(iu) d1, d2, d3, d4, d5
+#endif
+    end if
+    
+    ! Retrieve data pointer...
+    p => array_p(this)
+
+#if BUD_DIM > 4
+    do i5 = 1 , d5
+#endif
+#if BUD_DIM > 3
+    do i4 = 1 , d4
+#endif
+#if BUD_DIM > 2
+    do i3 = 1 , d3
+#endif
+#if BUD_DIM > 1
+    do i2 = 1 , d2
+#endif
+      if ( formatted ) then
+#if BUD_DIM == 1 
+        write(iu, '(e20.16)') p
+#elif BUD_DIM == 2
+        write(iu, '(e20.16)') p(:,i2)
+#elif BUD_DIM == 3
+        write(iu, '(e20.16)') p(:,i2,i3)
+#elif BUD_DIM == 4
+        write(iu, '(e20.16)') p(:,i2,i3,i4)
+#elif BUD_DIM == 5
+        write(iu, '(e20.16)') p(:,i2,i3,i4,i5)
+#endif
+      else
+#if BUD_DIM == 1 
+        write(iu) p
+#elif BUD_DIM == 2
+        write(iu) p(:,i2)
+#elif BUD_DIM == 3
+        write(iu) p(:,i2,i3)
+#elif BUD_DIM == 4
+        write(iu) p(:,i2,i3,i4)
+#elif BUD_DIM == 5
+        write(iu) p(:,i2,i3,i4,i5)
+#endif
+      end if
+#if BUD_DIM > 1
+    end do
+#endif
+#if BUD_DIM > 2
+    end do
+#endif
+#if BUD_DIM > 3
+    end do
+#endif
+#if BUD_DIM > 4
+    end do
+#endif
+
+  end subroutine write_
+
+  !> @param[inout] f `File` bud
+  !! @param[inout] this the array bud
+  subroutine read_(f, this)
+    use BUD_CC2(BUD_MOD,_File)
+    
+    BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+
+#ifdef BUD_TYPE_VAR_PREC
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC(:)
+#else
+    BUD_TYPE_VAR, pointer  BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC(:)
+#endif
+
+    logical :: formatted, same_size
+    integer :: iu, d
+
+#if BUD_DIM == 1
+    integer :: d1
+#elif BUD_DIM == 2
+    integer :: d1, d2, i2
+#elif BUD_DIM == 3
+    integer :: d1, d2, d3, i2, i3
+#elif BUD_DIM == 4
+    integer :: d1, d2, d3, d4, i2, i3, i4
+#elif BUD_DIM == 5
+    integer :: d1, d2, d3, d4, d5, i2, i3, i4, i5
+#endif
+
+    ! If file is not opened, return immediately
+    if ( .not. is_open(f) ) return
+
+    ! First figure out if the file is an unformatted file
+    formatted = is_formatted(f)
+    iu = unit(f)
+
+    ! First we need to read the array dimensions...
+    if ( formatted ) then
+      read(iu, '(i16)') d
+    else
+      read(iu) d
+    end if
+
+    if ( d /= BUD_DIM ) then
+      call delete(this)
+      return
+    end if
+    
+    if ( formatted ) then
+#if BUD_DIM == 1 
+      read(iu, '(i16)') d1
+#elif BUD_DIM == 2
+      read(iu, '(i16,tr1,i16)') d1, d2
+#elif BUD_DIM == 3
+      read(iu, '(2(i16,tr1),i16)') d1, d2, d3
+#elif BUD_DIM == 4
+      read(iu, '(3(i16,tr1),i16)') d1, d2, d3, d4
+#elif BUD_DIM == 5
+      read(iu, '(4(i16,tr1),i16)') d1, d2, d3, d4, d5
+#endif
+    else
+#if BUD_DIM == 1 
+      read(iu) d1
+#elif BUD_DIM == 2
+      read(iu) d1, d2
+#elif BUD_DIM == 3
+      read(iu) d1, d2, d3
+#elif BUD_DIM == 4
+      read(iu) d1, d2, d3, d4
+#elif BUD_DIM == 5
+      read(iu) d1, d2, d3, d4, d5
+#endif
+    end if
+
+    ! First, check for dimensions
+    same_size = size_(this, 1) == d1
+#if BUD_DIM > 1
+    same_size = same_size .and. size_(this, 2) == d2
+#endif
+#if BUD_DIM > 2
+    same_size = same_size .and. size_(this, 3) == d3
+#endif
+#if BUD_DIM > 3
+    same_size = same_size .and. size_(this, 4) == d4
+#endif
+#if BUD_DIM > 4
+    same_size = same_size .and. size_(this, 5) == d5
+#endif
+    if ( .not. same_size ) then
+#if BUD_DIM == 1
+      call new(this, d1)
+#elif BUD_DIM == 2
+      call new(this, d1, d2)
+#elif BUD_DIM == 3
+      call new(this, d1, d2, d3)
+#elif BUD_DIM == 4
+      call new(this, d1, d2, d3, d4)
+#elif BUD_DIM == 5
+      call new(this, d1, d2, d3, d4, d5)
+#endif
+    end if
+
+    ! Retrieve data pointer...
+    p => array_p(this)
+
+#if BUD_DIM > 4
+    do i5 = 1 , d5
+#endif
+#if BUD_DIM > 3
+    do i4 = 1 , d4
+#endif
+#if BUD_DIM > 2
+    do i3 = 1 , d3
+#endif
+#if BUD_DIM > 1
+    do i2 = 1 , d2
+#endif
+      if ( formatted ) then
+#if BUD_DIM == 1 
+        read(iu, '(e20.16)') p(:)
+#elif BUD_DIM == 2
+        read(iu, '(e20.16)') p(:,i2)
+#elif BUD_DIM == 3
+        read(iu, '(e20.16)') p(:,i2,i3)
+#elif BUD_DIM == 4
+        read(iu, '(e20.16)') p(:,i2,i3,i4)
+#elif BUD_DIM == 5
+        read(iu, '(e20.16)') p(:,i2,i3,i4,i5)
+#endif
+      else
+#if BUD_DIM == 1 
+        read(iu) p
+#elif BUD_DIM == 2
+        read(iu) p(:,i2)
+#elif BUD_DIM == 3
+        read(iu) p(:,i2,i3)
+#elif BUD_DIM == 4
+        read(iu) p(:,i2,i3,i4)
+#elif BUD_DIM == 5
+        read(iu) p(:,i2,i3,i4,i5)
+#endif
+      end if
+#if BUD_DIM > 1
+    end do
+#endif
+#if BUD_DIM > 2
+    end do
+#endif
+#if BUD_DIM > 3
+    end do
+#endif
+#if BUD_DIM > 4
+    end do
+#endif
+
+  end subroutine read_
 
   !> @param[in] this array @bud
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
