@@ -77,15 +77,25 @@
     !> @{
     ! Doxygen needed line
 
-    procedure, private :: new_dim_
-    procedure, private :: new_shape_
+    procedure, private :: new_dim_ii_
+    procedure, private :: new_dim_il_
+    procedure, private :: new_shape_ii_
+    procedure, private :: new_shape_il_
 
     !> @}
 
     !> @iSee BUD_NEW_TYPE
-    generic, public :: BUD_NEW_TYPE => new_dim_, new_shape_
-    !> @iSee BUD_NEW_TYPE
-    generic, public :: new => new_dim_, new_shape_
+    generic, public :: BUD_NEW_TYPE => &
+      new_dim_ii_, new_dim_il_, &
+      new_shape_ii_, new_shape_il_
+
+    !> @iSee new
+    generic, public :: new => &
+      new_dim_ii_, new_dim_il_, &
+      new_shape_ii_, new_shape_il_
+
+    !> @iSee associate
+    procedure, public :: associate => associate_
 
     !> @iSee #array_p
     procedure, public :: array_p => arrayp_
@@ -106,10 +116,13 @@
 
     !> Array stored in the @bud
 #ifdef BUD_TYPE_VAR_PREC
-    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), allocatable :: array BUD_DIM_SPEC(:)
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer :: array BUD_DIM_SPEC(:) => null()
 #else
-    BUD_TYPE_VAR, allocatable :: array BUD_DIM_SPEC(:)
+    BUD_TYPE_VAR, pointer :: array BUD_DIM_SPEC(:) => null()
 #endif
+
+    !> Whether this is a pointer to an outside array (`.false.`) or this is the container
+    logical :: container = .true.
 
     ! Consistent data in the reference counted object
 #   include "bud_common_type_.inc"
@@ -130,17 +143,34 @@
   !! If the array is created from dimensions, the initial
   !! value of the array may be arbitrary (compiler dependent).
   interface BUD_TYPE_NEW
-    module procedure new_dim_
-    module procedure new_shape_
+    module procedure new_dim_ii_, new_dim_il_
+    module procedure new_shape_ii_, new_shape_il_
   end interface
   public :: BUD_TYPE_NEW
 
   !> @iSee BUD_TYPE_NEW
   interface new
-    module procedure new_dim_
-    module procedure new_shape_
+    module procedure new_dim_ii_, new_dim_il_
+    module procedure new_shape_ii_, new_shape_il_
   end interface
   public :: new
+
+
+  !> Associate an external array to the internals of this method
+  !!
+  !! Instead of allocating a new array it may be advantageous to
+  !! use the pointer assignment to set the contained data to
+  !! something from outside.
+  !! This is handy when for instance creating sub-arrays
+  !!
+  !! \code{.f90}
+  !! ... :: array(2,4)
+  !! call associate(this, array(:,1))
+  !! \endcode
+  interface associate
+    module procedure associate_
+  end interface
+  public :: associate
 
 
   !> Retrieve pointer to array in the @bud
@@ -164,7 +194,7 @@
   !!
   !! This is equivalent to:
   !! \code{.f90}
-  !! a => arrayp(this)
+  !! a => array_p(this)
   !! ... = size(a [,dim=])
   !! \endcode
   interface size
@@ -229,8 +259,13 @@
 
     ! Currently we do not allow external memory
     ! tracking.
-    if ( .not. allocated(this%array) ) return
-    deallocate(this%array)
+    if ( .not. associated(this%array) ) return
+    if ( this%container ) then
+      deallocate(this%array)
+    end if
+    nullify(this%array)
+
+    this%container = .true.
 
   end subroutine delete_
 
@@ -242,7 +277,9 @@
   subroutine copy_(from, to)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
-    integer :: i, ashape( BUD_DIM )
+    integer :: i
+    integer(il_) :: ashape( BUD_DIM )
+
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer :: arr BUD_DIM_SPEC(:)
 #else
@@ -280,7 +317,7 @@
 #endif
 #endif
   !! @param[in] val @opt=@null initial value of all elements
-  subroutine new_dim_(this, &
+  subroutine new_dim_ii_(this, &
 #if BUD_DIM == 1
     d1, &
 #elif BUD_DIM == 2
@@ -295,15 +332,80 @@
     val)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 #if BUD_DIM == 1
-    integer, intent(in) :: d1
+    integer(ii_), intent(in) :: d1
 #elif BUD_DIM == 2
-    integer, intent(in) :: d1, d2
+    integer(ii_), intent(in) :: d1, d2
 #elif BUD_DIM == 3
-    integer, intent(in) :: d1, d2, d3
+    integer(ii_), intent(in) :: d1, d2, d3
 #elif BUD_DIM == 4
-    integer, intent(in) :: d1, d2, d3, d4
+    integer(ii_), intent(in) :: d1, d2, d3, d4
 #elif BUD_DIM == 5
-    integer, intent(in) :: d1, d2, d3, d4, d5
+    integer(ii_), intent(in) :: d1, d2, d3, d4, d5
+#endif
+#ifdef BUD_TYPE_VAR_PREC
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in), optional :: val
+#else
+    BUD_TYPE_VAR, intent(in), optional :: val
+#endif
+    integer(il_) :: ashape( BUD_DIM )
+
+    ashape(1) = d1
+#if BUD_DIM > 1
+    ashape(2) = d2
+#endif
+#if BUD_DIM > 2
+    ashape(3) = d3
+#endif
+#if BUD_DIM > 3
+    ashape(4) = d4
+#endif
+#if BUD_DIM > 4
+    ashape(5) = d5
+#endif
+
+    call new(this, ashape, val=val)
+
+  end subroutine new_dim_ii_
+
+    !> @param[inout] this array @bud
+  !! @param[in] d1 size of the internal reference counted array (dim=1)
+#if BUD_DIM > 1
+  !! @param[in] d2 size of the internal reference counted array (dim=2)
+#if BUD_DIM > 2
+  !! @param[in] d3 size of the internal reference counted array (dim=3)
+#if BUD_DIM > 3
+  !! @param[in] d4 size of the internal reference counted array (dim=4)
+#if BUD_DIM > 4
+  !! @param[in] d5 size of the internal reference counted array (dim=5)
+#endif
+#endif
+#endif
+#endif
+  !! @param[in] val @opt=@null initial value of all elements
+  subroutine new_dim_il_(this, &
+#if BUD_DIM == 1
+    d1, &
+#elif BUD_DIM == 2
+    d1, d2, &
+#elif BUD_DIM == 3
+    d1, d2, d3, &
+#elif BUD_DIM == 4
+    d1, d2, d3, d4, &
+#elif BUD_DIM == 5
+    d1, d2, d3, d4, d5, &
+#endif
+    val)
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+#if BUD_DIM == 1
+    integer(il_), intent(in) :: d1
+#elif BUD_DIM == 2
+    integer(il_), intent(in) :: d1, d2
+#elif BUD_DIM == 3
+    integer(il_), intent(in) :: d1, d2, d3
+#elif BUD_DIM == 4
+    integer(il_), intent(in) :: d1, d2, d3, d4
+#elif BUD_DIM == 5
+    integer(il_), intent(in) :: d1, d2, d3, d4, d5
 #endif
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in), optional :: val
@@ -329,23 +431,53 @@
     allocate(this%D%array(d1,d2,d3,d4,d5))
 #endif
 
+    this%D%container = .true.
+
     if ( present(val) ) this = val
 
-  end subroutine new_dim_
+  end subroutine new_dim_il_
 
   !> @param[inout] this array @bud
   !! @param[in] shape array with dimensions (padded with ones)
   !! @param[in] val @opt=@null initial value of all elements
-  subroutine new_shape_(this, shape, val)
+  subroutine new_shape_ii_(this, shape, val)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    integer, intent(in) :: shape(:)
+    integer(ii_), intent(in) :: shape(:)
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in), optional :: val
 #else
     BUD_TYPE_VAR, intent(in), optional :: val
 #endif
 
-    integer :: i, as( BUD_DIM )
+    integer :: i
+    integer(il_) :: as( BUD_DIM )
+
+    ! Make sure the container is initialized and ready for
+    ! data-creation.
+
+    as(:) = 1
+    do i = 1 , min( BUD_DIM , size(shape) )
+      as(i) = shape(i)
+    end do
+
+    call new(this, as, val=val)
+
+  end subroutine new_shape_ii_
+
+  !> @param[inout] this array @bud
+  !! @param[in] shape array with dimensions (padded with ones)
+  !! @param[in] val @opt=@null initial value of all elements
+  subroutine new_shape_il_(this, shape, val)
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    integer(il_), intent(in) :: shape(:)
+#ifdef BUD_TYPE_VAR_PREC
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in), optional :: val
+#else
+    BUD_TYPE_VAR, intent(in), optional :: val
+#endif
+
+    integer :: i
+    integer(il_) :: as( BUD_DIM )
 
     ! Make sure the container is initialized and ready for
     ! data-creation.
@@ -368,8 +500,25 @@
     call new(this, as(1), as(2), as(3), as(4), as(5), val=val)
 #endif
 
-  end subroutine new_shape_
+  end subroutine new_shape_il_
 
+  !> @param[inout] this array @bud
+  !! @param[in] array the pointed to array
+  subroutine associate_(this, array)
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+#ifdef BUD_TYPE_VAR_PREC
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in), target :: array BUD_DIM_SPEC(:)
+#else
+    BUD_TYPE_VAR, intent(in), target :: array BUD_DIM_SPEC(:)
+#endif
+
+    ! Make sure the container is initialized and ready for
+    ! data-creation.
+    call initialize(this)
+    this%D%array => array BUD_DIM_SPEC(:)
+    this%D%container = .false.
+
+  end subroutine associate_
 
   !> @param[in] this array @bud
   !! @return a pointer to the data (contiguous)
@@ -501,10 +650,9 @@
     BUD_TYPE_VAR, intent(in) :: v
 #endif
 
-    if ( is_initd(this) ) then
-      ! Required to not make any allocatable checks
-      this%D%array BUD_DIM_SPEC(:) = v
-    end if
+    if ( .not. is_initd(this) ) return
+
+    this%D%array BUD_DIM_SPEC(:) = v
 
   end subroutine assign_value_
 
@@ -562,7 +710,7 @@
     ! First we write the size of the array
     if ( formatted ) then
       write(iu, '(i16)') BUD_DIM
-#if BUD_DIM == 1 
+#if BUD_DIM == 1
       write(iu, '(i16)') d1
 #elif BUD_DIM == 2
       write(iu, '(i16,tr1,i16)') d1, d2
@@ -575,7 +723,7 @@
 #endif
     else
       write(iu) BUD_DIM
-#if BUD_DIM == 1 
+#if BUD_DIM == 1
       write(iu) d1
 #elif BUD_DIM == 2
       write(iu) d1, d2
@@ -587,7 +735,7 @@
       write(iu) d1, d2, d3, d4, d5
 #endif
     end if
-    
+
     ! Retrieve data pointer...
     p => array_p(this)
 
@@ -604,7 +752,7 @@
     do i2 = 1 , d2
 #endif
       if ( formatted ) then
-#if BUD_DIM == 1 
+#if BUD_DIM == 1
         write(iu, '(e20.16)') p
 #elif BUD_DIM == 2
         write(iu, '(e20.16)') p(:,i2)
@@ -616,7 +764,7 @@
         write(iu, '(e20.16)') p(:,i2,i3,i4,i5)
 #endif
       else
-#if BUD_DIM == 1 
+#if BUD_DIM == 1
         write(iu) p
 #elif BUD_DIM == 2
         write(iu) p(:,i2)
@@ -647,7 +795,7 @@
   !! @param[inout] this the array bud
   subroutine read_(f, this)
     use BUD_CC2(BUD_MOD,_File)
-    
+
     BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
@@ -690,9 +838,9 @@
       call delete(this)
       return
     end if
-    
+
     if ( formatted ) then
-#if BUD_DIM == 1 
+#if BUD_DIM == 1
       read(iu, '(i16)') d1
 #elif BUD_DIM == 2
       read(iu, '(i16,tr1,i16)') d1, d2
@@ -704,7 +852,7 @@
       read(iu, '(4(i16,tr1),i16)') d1, d2, d3, d4, d5
 #endif
     else
-#if BUD_DIM == 1 
+#if BUD_DIM == 1
       read(iu) d1
 #elif BUD_DIM == 2
       read(iu) d1, d2
@@ -761,7 +909,7 @@
     do i2 = 1 , d2
 #endif
       if ( formatted ) then
-#if BUD_DIM == 1 
+#if BUD_DIM == 1
         read(iu, '(e20.16)') p(:)
 #elif BUD_DIM == 2
         read(iu, '(e20.16)') p(:,i2)
@@ -773,7 +921,7 @@
         read(iu, '(e20.16)') p(:,i2,i3,i4,i5)
 #endif
       else
-#if BUD_DIM == 1 
+#if BUD_DIM == 1
         read(iu) p
 #elif BUD_DIM == 2
         read(iu) p(:,i2)
