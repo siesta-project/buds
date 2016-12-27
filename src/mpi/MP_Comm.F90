@@ -19,17 +19,7 @@
 !! @{
 module BUD_MOD_NAME
 
-#ifdef BUD_MPI
-  !> This module makes heavy usage of the
-  !! MPI variables
-# if defined(BUD_MPI_INCLUDE)
-  include BUD_MPI_INCLUDE
-# elif defined(BUD_MPI_MODULE)
-  use BUD_MPI_MODULE
-# else
-  use mpi
-# endif
-#endif
+#include "bud_mpi.inc"
 
   !> BUD_MOD_NAME documentation for the Message Passing interface.
   !1

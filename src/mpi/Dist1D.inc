@@ -1,18 +1,7 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
 
 #include "bud_utils.inc"
-
-#ifdef BUD_MPI
-  !> This module makes heavy usage of the
-  !! MPI variables
-# if defined(BUD_MPI_INCLUDE)
-  include BUD_MPI_INCLUDE
-# elif defined(BUD_MPI_MODULE)
-  use BUD_MPI_MODULE
-# else
-  use mpi
-# endif
-#endif
+#include "bud_mpi.inc"
 
   ! We require the use of the communicator
   use BUD_CC3(BUD_MOD,_,MP_Comm)

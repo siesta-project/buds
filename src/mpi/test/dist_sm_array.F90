@@ -1,7 +1,6 @@
 program dist
 
-  ! we use everything
-  use mpi
+#include "bud_mpi.inc"
 
   use bud_Dist_common
   use bud_MP_Comm
@@ -26,7 +25,9 @@ program dist
 
   integer :: err
 
+#ifdef BUD_MPI
   call MPI_Init(err)
+#endif
 
   ! This is a duplicate of the world communicator.
   call new(world, MPI_Comm_World)
@@ -53,7 +54,9 @@ program dist
 
   call print_world_self()
 
+#ifdef BUD_MPI
   call MPI_Finalize(err)
+#endif
 
 contains
 

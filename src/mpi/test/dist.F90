@@ -1,7 +1,6 @@
 program dist
 
-  ! we use everything
-  use mpi
+#include "bud_mpi.inc"
 
   use bud_iDist1D
 
@@ -19,7 +18,9 @@ program dist
 
   integer :: err
 
+#ifdef BUD_MPI
   call MPI_Init(err)
+#endif
 
   call bc_1
   call bc_2
@@ -31,8 +32,10 @@ program dist
   call bc2b_1
   call bc2b_2
 
+#ifdef BUD_MPI
   call MPI_Finalize(err)
-
+#endif
+  
 contains
 
   subroutine bc_1()
@@ -42,7 +45,9 @@ contains
     call delete(bc1)
     call print(bc1)
     print *,'bc_1 -- end'
+#ifdef BUD_MPI
     call MPI_Barrier(MPI_Comm_World, err)
+#endif
   end subroutine bc_1
 
   subroutine bc_2()
@@ -56,9 +61,10 @@ contains
           print '(2(a,i0))', 'Element: ',i,' processor: ',global2P(bc1,i)
        end do
     end if
+#ifdef BUD_MPI
     call MPI_Comm_Split(get_comm(bc1), &
          mod(get_P(bc1),3), 0, Comm, err)
-
+#endif
     call new(bc2, Comm, BS, N, DIST_BLOCK_CYCLIC)
     call MPI_Comm_Free(Comm, err)
     do i = 0 , 2
@@ -77,7 +83,9 @@ contains
     call delete(bc2)
     call delete(bc3)
     print *,'bc_2 -- end'
+#ifdef BUD_MPI
     call MPI_Barrier(MPI_Comm_World, err)
+#endif
   end subroutine bc_2
 
   subroutine bc_3()
@@ -94,10 +102,14 @@ contains
     do i = 1 , size_local(bc1)
        data1(i) = local2global(bc1, i)
     end do
+#ifdef BUD_MPI
     call MPI_Comm_Split(get_comm(bc1), &
          mod(get_P(bc1),3), 0, Comm, err)
     call new(bc2, Comm, BS, N, DIST_BLOCK_CYCLIC)
     call MPI_Comm_Free(Comm, err)
+#else
+    call new(bc2, Comm, BS, N, DIST_BLOCK_CYCLIC)
+#endif
 
     ! distribute data
     allocate(data2(size_local(bc2)))
@@ -160,11 +172,12 @@ contains
 
              else
 
+#ifdef BUD_MPI
                 !print'(a7,4(tr1,i2))','recv: ',i,pP,gl,get_P(bc1)
                 ! we have the data
                 call MPI_Recv(data2(rl), 1, MPI_Integer, &
                      pP, i, get_comm(bc1), Status, err)
-
+#endif
              end if
 
           else if ( pP == get_P(bc1) ) then
@@ -172,21 +185,27 @@ contains
 
              gl = global2local(bc1, i)
 
+#ifdef BUD_MPI
              !print'(a7,4(tr1,i2))','send: ',i,pP,gl,rS
              ! we have the data
              call MPI_Send(data1(gl), 1, MPI_Integer, &
                   rS, i, get_comm(bc1), err)
+#endif
           end if
 
           call flush(6)
+#ifdef BUD_MPI
           call MPI_Barrier(get_comm(bc1), err)
-
+#endif
+          
           if ( rP == get_P(bc2) ) then
              print '(3(a,i2))', 'Element: ',i,' processor: ',ranks(rP+1), ' data: ',data2(global2local(bc2,i))
           end if
 
           call flush(6)
+#ifdef BUD_MPI
           call MPI_Barrier(get_comm(bc1), err)
+#endif
 
        end do
 
@@ -197,7 +216,9 @@ contains
     call delete(bc3)
 
     print *,'bc_3 -- end'
+#ifdef BUD_MPI
     call MPI_Barrier(MPI_Comm_World, err)
+#endif
   end subroutine bc_3
 
   subroutine b_1()
@@ -207,7 +228,9 @@ contains
     call delete(b1)
     call print(b1)
     print *,'b_1 -- end'
+#ifdef BUD_MPI
     call MPI_Barrier(MPI_Comm_World, err)
+#endif
   end subroutine b_1
 
   subroutine b_2()
@@ -216,10 +239,15 @@ contains
     print *,'b_2 -- start'
     call new(b1, MPI_Comm_World, N, DIST_BLOCK_LAST)
     call print(b1)
+#ifdef BUD_MPI
     call MPI_Comm_Split(get_comm(b1), &
          mod(get_P(b1),3), 0, Comm, err)
     call new(b2, Comm, N, DIST_BLOCK_LAST)
     call MPI_Comm_Free(Comm, err)
+#else
+    call new(b2, Comm, N, DIST_BLOCK_LAST)
+#endif
+
     if ( mod(get_P(b1),2) == 0 ) then
        ! create a fake one
        call fake_sub(b1, b2)
@@ -236,7 +264,9 @@ contains
     call delete(b2)
     call delete(b3)
     print *,'b_2 -- end'
+#ifdef BUD_MPI
     call MPI_Barrier(MPI_Comm_World, err)
+#endif
   end subroutine b_2
 
 
@@ -256,11 +286,14 @@ contains
        data1(i) = local2global(bc1, i)
     end do
 
+#ifdef BUD_MPI
     call MPI_Comm_Split(get_comm(bc1), &
          mod(get_P(bc1),3), 0, Comm, err)
-
     call new(b1, Comm, N, DIST_BLOCK_LAST)
     call MPI_Comm_Free(comm,err)
+#else
+    call new(b1, Comm, N, DIST_BLOCK_LAST)
+#endif
     allocate(data2(size_local(b1)))
 
     ! Get the ranks
@@ -319,11 +352,12 @@ contains
 
              else
 
+#ifdef BUD_MPI
                 !print'(a7,4(tr1,i2))','recv: ',i,pP,gl,get_P(bc1)
                 ! we have the data
                 call MPI_Recv(data2(rl), 1, MPI_Integer, &
                      pP, i, get_comm(bc1), Status, err)
-
+#endif
              end if
 
           else if ( pP == get_P(bc1) ) then
@@ -331,23 +365,26 @@ contains
 
              gl = global2local(bc1, i)
 
+#ifdef BUD_MPI
              !print'(a7,4(tr1,i2))','send: ',i,pP,gl,rS
              ! we have the data
              call MPI_Send(data1(gl), 1, MPI_Integer, &
                   rS, i, get_comm(bc1), err)
-
+#endif
           end if
 
           call flush(6)
+#ifdef BUD_MPI
           call MPI_Barrier(get_comm(bc1), err)
-
+#endif
           if ( rP == get_P(b1) ) then
              print '(3(a,i2))', 'Element: ',i,' processor: ',ranks(rP+1), ' data: ',data2(global2local(b1,i))
           end if
 
           call flush(6)
+#ifdef BUD_MPI
           call MPI_Barrier(get_comm(bc1), err)
-
+#endif
        end do
 
     end do
@@ -358,7 +395,9 @@ contains
     call delete(b2)
 
     print *,'bc2b_1 -- end'
+#ifdef BUD_MPI
     call MPI_Barrier(MPI_Comm_World, err)
+#endif
   end subroutine bc2b_1
 
   subroutine bc2b_2()
@@ -378,11 +417,14 @@ contains
        data1(i) = local2global(bc1, i)
     end do
 
+#ifdef BUD_MPI
     call MPI_Comm_Split(get_comm(bc1), &
          mod(get_P(bc1),3), 0, Comm, err)
-
     call new(b1, Comm, N, DIST_BLOCK_LAST)
     call MPI_Comm_Free(comm,err)
+#else
+    call new(b1, Comm, N, DIST_BLOCK_LAST)
+#endif
 
     allocate(data2(size_local(b1)))
 
@@ -450,10 +492,12 @@ contains
 
              else
 
+#ifdef BUD_MPI
                 !print'(a7,4(tr1,i2))','recv: ',i,pP,gl,get_P(bc1)
                 ! we have the data
                 call MPI_Recv(data2(rl), 1, MPI_Integer, &
                      pP, i, get_comm(bc1), Status, err)
+#endif
 
              end if
 
@@ -462,22 +506,27 @@ contains
 
              gl = global2local(bc1, i)
 
+#ifdef BUD_MPI
              !print'(a7,4(tr1,i2))','send: ',i,pP,gl,rS
              ! we have the data
              call MPI_Send(data1(gl), 1, MPI_Integer, &
                   rS, i, get_comm(bc1), err)
-
+#endif
           end if
 
           call flush(6)
+#ifdef BUD_MPI
           call MPI_Barrier(get_comm(bc1), err)
+#endif
 
           if ( rP == get_P(b1) ) then
              print '(3(a,i2))', 'Element: ',i,' processor: ',ranks(rP+1), ' data: ',data2(global2local(b1,i))
           end if
 
           call flush(6)
+#ifdef BUD_MPI
           call MPI_Barrier(get_comm(bc1), err)
+#endif
 
        end do
 
@@ -491,7 +540,9 @@ contains
     call delete(b2)
 
     print *,'bc2b_2 -- end'
+#ifdef BUD_MPI
     call MPI_Barrier(MPI_Comm_World, err)
+#endif
   end subroutine bc2b_2
 
 end program dist
