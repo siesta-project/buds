@@ -83,7 +83,7 @@
   end interface
   public :: distribute
 
-#include "bud_coll.inc"
+#include "bud_collection.inc"
 
 
   !> @param[in] this sparse matrix

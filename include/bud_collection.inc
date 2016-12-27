@@ -608,29 +608,29 @@
   ! Create data-retrieval routines
 # define BUD_COLL_NUM 1
 # define BUD_COLL_CURRENT BUD_COLL_1
-# include "bud_coll_elem.inc"
+# include "bud_collection_element.inc"
 # define BUD_COLL_NUM 2
 # define BUD_COLL_CURRENT BUD_COLL_2
-# include "bud_coll_elem.inc"
+# include "bud_collection_element.inc"
 #ifdef BUD_COLL_3
 # define BUD_COLL_NUM 3
 # define BUD_COLL_CURRENT BUD_COLL_3
-# include "bud_coll_elem.inc"
+# include "bud_collection_element.inc"
 #endif
 #ifdef BUD_COLL_4
 # define BUD_COLL_NUM 4
 # define BUD_COLL_CURRENT BUD_COLL_4
-# include "bud_coll_elem.inc"
+# include "bud_collection_element.inc"
 #endif
 #ifdef BUD_COLL_5
 # define BUD_COLL_NUM 5
 # define BUD_COLL_CURRENT BUD_COLL_5
-# include "bud_coll_elem.inc"
+# include "bud_collection_element.inc"
 #endif
 #ifdef BUD_COLL_6
 # define BUD_COLL_NUM 6
 # define BUD_COLL_CURRENT BUD_COLL_6
-# include "bud_coll_elem.inc"
+# include "bud_collection_element.inc"
 #endif
 
 

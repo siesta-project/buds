@@ -62,7 +62,7 @@
   end interface
   public :: array_p
 
-#include "bud_coll.inc"
+#include "bud_collection.inc"
 
 
   !> @param[in] this sparse matrix

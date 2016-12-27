@@ -1,7 +1,7 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
 
   ! Before contains
-#include "bud_coll.inc"
+#include "bud_collection.inc"
   ! after contains
 
 #include "bud_cleanup.inc"
