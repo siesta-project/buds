@@ -21,7 +21,11 @@
 # endif
 # ifndef BUD_NO_COPY
   !> @iSee copy
-  procedure, public :: copy => common_copy_
+  procedure, public :: copy => copy_
+# endif
+# ifndef BUD_NO_PRINT
+  !> @iSee print
+  procedure, public :: print => print_
 # endif
 
 
@@ -47,18 +51,11 @@
   !> @iSee error
   procedure, public :: error => common_error_
 
-
-# ifndef BUD_NO_PRINT
-  !> @iSee print
-  procedure, public :: print => print_
-# endif
-
   !>>@}
 
 #ifdef BUD_INCLUDE_TYPE
 #   include BUD_INCLUDE_TYPE
 #endif
-
 
 #endif
 

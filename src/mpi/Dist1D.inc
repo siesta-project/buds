@@ -413,12 +413,6 @@
   end interface
   public :: error_MPI
 
-  !> Print information about the @bud
-  interface print
-    module procedure print_
-  end interface
-  public :: print
-
 
   ! Include common data routines
   ! Note that 'CONTAINS' is present in this include file.

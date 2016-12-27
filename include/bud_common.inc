@@ -113,6 +113,7 @@
   end interface
   public :: same
 
+
 #ifndef BUD_NO_DELETE
   !> Deletes the @bud by decreasing references to the underlying data
   !!
@@ -131,18 +132,6 @@
 #endif
 
 
-#ifndef BUD_NO_COPY
-  !> Copies the @bud by creating an entirely new object with the same data
-  !!
-  !! This will for all purposes be regarded as a new instance.
-  !!
-  interface copy
-    module procedure copy_
-  end interface
-  public :: copy
-  private :: common_copy_
-#endif
-
 #ifndef BUD_NO_NULLIFY
 
   !> Nullifies the current @bud
@@ -158,6 +147,33 @@
   end interface
   public :: nullify
   private :: common_nullify_
+#endif
+
+#ifndef BUD_NO_COPY
+  !> Copies the @bud by creating an entirely new object with the same data
+  !!
+  !! This will for all purposes be regarded as a new instance.
+  !!
+  interface copy
+    module procedure copy_
+  end interface
+  public :: copy
+  private :: common_copy_
+#endif
+
+#ifndef BUD_NO_PRINT
+  !> Print, to std-out, some basic information of the data-container
+  !!
+  !! Print out XML-like information regarding the data-container.
+  !!
+  !! @wanted
+  !! Retrieval function of the string that represents the data.
+  !! This will enable the parent program to show it in any way
+  !! it wants.
+  interface print
+    module procedure print_
+  end interface
+  public :: print
 #endif
 
   !> Query number of references to the @bud
@@ -338,7 +354,7 @@ contains
 
 
 #ifndef BUD_NO_NULLIFY
-  !> @param[inout] this nullify references from this @bud
+  !> @param[inout] this nullify references from this @bud (without stepping the counter)
   elemental subroutine common_nullify_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 

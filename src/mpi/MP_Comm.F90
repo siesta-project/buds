@@ -674,12 +674,6 @@ module BUD_MOD_NAME
   end interface
   public :: is_success_MPI
 
-  !> Print information about the @bud
-  interface print
-    module procedure print_
-  end interface
-  public :: print
-
 #ifdef BUD_MPI
 
   ! Define all interfaces

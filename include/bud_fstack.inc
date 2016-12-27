@@ -235,18 +235,6 @@
   public :: size_max
 
 
-  !> Print, to std-out, some basic information of the data-container
-  !!
-  !! Print out XML-like information regarding the data-container.
-  !!
-  !! @wanted
-  !! Retrieval function of the string that represents the data.
-  !! This will enable the parent program to show it in the way it wants.
-  interface print
-    module procedure print_
-  end interface
-  public :: print
-
   ! all default reference counted stuff
 # include "bud_common.inc"
 

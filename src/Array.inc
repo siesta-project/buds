@@ -228,18 +228,6 @@
   end interface write
   public :: write
 
-  !> Print, to std-out, some basic information of the data-container
-  !!
-  !! Print out XML-like information regarding the data-container.
-  !!
-  !! @wanted
-  !! Retrieval function of the string that represents the data.
-  !! This will enable the parent program to show it in the way it wants.
-  interface print
-    module procedure print_
-  end interface
-  public :: print
-
 
   ! Include common data routines
   ! Note that 'CONTAINS' is present in this include file.
