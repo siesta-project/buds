@@ -37,6 +37,8 @@ program dist
   call print_world_self()
   call dist_1()
   call print_world_self()
+  call dist_1a()
+  call print_world_self()
   call dist_2()
   call print_world_self()
   call dist_3()
@@ -119,6 +121,62 @@ contains
     call Barrier(world)
 
   end subroutine dist_1
+
+
+  subroutine dist_1a()
+    integer, pointer :: ptr(:), ind(:), ncol(:)
+    real, pointer :: arr(:)
+    integer :: ic, i, idx
+    print *,'dist-arr_1a -- start'
+
+    if ( comm_rank(world) == 0 ) then
+
+       ! Create the distribution
+       call new(d1, self, BS, N, &
+            DIST_BLOCK_CYCLIC_FIRST_SPLIT)
+
+       call new(arr1, (/N * 3/) )
+       arr => array_p(arr1)
+
+       ! Create the input distribution
+       call new(dA1, d1, arr1)
+
+       ! clean-up
+       call delete(d1)
+       call delete(arr1)
+
+    end if
+
+    ! Create the distribution
+    if ( rank == nrank - 1 ) then
+       call new(d1, self, BS, N, &
+            DIST_BLOCK_CYCLIC_FIRST_SPLIT)
+    end if
+
+    ! Create all the output distributions
+    call distribute(dA1, world, d1, dA2)
+    call delete(d1)
+    do i = 0 , nrank - 1
+       if ( i == rank ) &
+            call print(dA1)
+       call flush(6)
+       call Barrier(world)
+    end do
+    do i = 0 , nrank - 1
+       if ( i == rank ) &
+            call print(dA2)
+       call flush(6)
+       call Barrier(world)
+    end do
+
+    call delete(dA1)
+    call delete(dA2)
+
+    print *,'dist-arr_1a -- end', rank
+
+    call Barrier(world)
+
+  end subroutine dist_1a
 
 
   subroutine dist_2()

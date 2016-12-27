@@ -153,11 +153,6 @@
 
     if ( .not. is_communicator(parent) ) return
 
-    ! First figure out if this rank should not participate
-    ! Else it may leave immediately...
-    if ( (.not. initialized(this)) &
-      .and. (.not. initialized(out_dist)) ) return
-
     ! Get the total ranks in the main distribution.
     rank = comm_rank(parent)
     nranks = comm_size(parent)

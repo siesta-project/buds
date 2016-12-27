@@ -39,6 +39,8 @@ program dist
   call print_world_self()
   call dist_1()
   call print_world_self()
+  call dist_1a()
+  call print_world_self()
   call dist_2()
   call print_world_self()
   call dist_3()
@@ -157,6 +159,97 @@ contains
     call Barrier(world)
 
   end subroutine dist_1
+
+  subroutine dist_1a()
+    integer, pointer :: ptr(:), ind(:), ncol(:)
+    real, pointer :: arr(:)
+    integer :: ic, i, idx
+    print *,'dist-sm-arr_1a -- start'
+
+    if ( comm_rank(world) == 0 ) then
+
+       ! Create the distribution
+       call new(d1, self, BS, N, &
+            DIST_BLOCK_CYCLIC_FIRST_SPLIT)
+
+       ! Now create the sparse matrix
+       ! We will create a tri-diagonal sparse
+       ! matrix...
+       call new(sm1, N, N, N * 3)
+       call new(arr1, N * 3)
+       arr => array_p(arr1)
+
+       call attach(sm1, cptr=ptr, row=ind, ncol=ncol)
+
+       ! Create the tri-diagonal thing
+       ptr(1) = 0
+       do ic = 1 , N
+          ! Correct pointers...
+          ncol(ic) = 3
+          ptr(ic+1) = ptr(ic) + 3
+
+          idx = ptr(ic) + 1 ! we know it is CSC0
+          if ( ic - 1 < 1 ) then
+             ind(idx) = N
+          else
+             ind(idx) = ic - 1
+          end if
+          arr(idx) = -1
+
+          idx = idx + 1
+          ind(idx) = ic
+          arr(idx) = 0
+
+          idx = idx + 1
+          if ( ic + 1 > N ) then
+             ind(idx) = 1
+          else
+             ind(idx) = ic + 1
+          end if
+          arr(idx) = 1
+
+       end do
+
+       ! Create the input distribution
+       call new(dsmA1, d1, sm1, arr1)
+
+       ! clean-up
+       call delete(d1)
+       call delete(sm1)
+       call delete(arr1)
+
+    end if
+
+    ! Create the distribution
+    if  ( rank == nrank - 1 ) then
+       call new(d1, self, BS, N, &
+            DIST_BLOCK_CYCLIC_FIRST_SPLIT)
+    end if
+
+    ! Create all the output distributions
+    call distribute(dsmA1, world, d1, dsmA2)
+    call delete(d1)
+    do i = 0 , nrank - 1
+       if ( i == rank ) &
+            call print(dsmA1)
+       call flush(6)
+       call Barrier(world)
+    end do
+    do i = 0 , nrank - 1
+       if ( i == rank ) &
+            call print(dsmA2)
+       call flush(6)
+       call Barrier(world)
+    end do
+
+    call delete(dsmA1)
+    call delete(dsmA2)
+
+    print *,'dist-sm-arr_1a -- end', rank
+
+    call Barrier(world)
+
+  end subroutine dist_1a
 
 
   subroutine dist_2()
