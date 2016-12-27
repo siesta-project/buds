@@ -14,14 +14,14 @@ NPROC ?= 4
 mpi_TESTS += dist_sm_array
 t_mpi_OBJECTS += dist_sm_array.o
 $(test_out_DIR)/dist_sm_array: $(test_COMMON_OBJECTS) $(test_out_DIR)/dist_sm_array.o
-	$(MPIFC) -o $@ $^ -l$(BUDS_LIB) $(FFLAGS) $(INCLUDES) $(LDFLAGS)
+	$(FC) -o $@ $^ -l$(BUDS_LIB) $(FFLAGS) $(INCLUDES) $(LDFLAGS)
 	@echo "#### TEST -- running: $@" >> run_tests.sh
 	@echo "mpirun -np $(NPROC) ./$@" >> run_tests.sh
 
 mpi_TESTS += dist_array
 t_mpi_OBJECTS += dist_array.o
 $(test_out_DIR)/dist_array: $(test_COMMON_OBJECTS) $(test_out_DIR)/dist_array.o
-	$(MPIFC) -o $@ $^ -l$(BUDS_LIB) $(FFLAGS) $(INCLUDES) $(LDFLAGS)
+	$(FC) -o $@ $^ -l$(BUDS_LIB) $(FFLAGS) $(INCLUDES) $(LDFLAGS)
 	@echo "#### TEST -- running: $@" >> run_tests.sh
 	@echo "mpirun -np $(NPROC) ./$@" >> run_tests.sh
 
