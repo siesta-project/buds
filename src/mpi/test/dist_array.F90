@@ -26,6 +26,14 @@ program dist
 
 #ifdef BUD_MPI
   call MPI_Init(err)
+#else
+  integer, parameter :: MPI_Comm_World = 1
+  integer, parameter :: MPI_Comm_Self = 2
+#endif
+
+#ifndef BUD_MPI
+  ! Currently we HAVE to rely on MPI
+  return
 #endif
 
   ! This is a duplicate of the world communicator.
@@ -207,7 +215,9 @@ contains
 
     end if
 
+#ifdef BUD_MPI
     call Comm_Split(world, mod(rank, 2), rank, comm1)
+#endif
 
     ! Create the distribution
     call new(d1, comm1, BS, N, &
@@ -263,7 +273,9 @@ contains
 
     end if
 
+#ifdef BUD_MPI
     call Comm_Split(world, mod(rank, 3), rank, comm1)
+#endif
 
     ! Create the distribution
     call new(d1, comm1, BS, N, &
@@ -319,7 +331,9 @@ contains
 
     end if
 
+#ifdef BUD_MPI
     call Comm_Split(world, 0, rank, comm1)
+#endif
 
     ! Create the distribution
     call new(d1, comm1, N, DIST_BLOCK_LAST_ALL)

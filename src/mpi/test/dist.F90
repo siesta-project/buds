@@ -18,6 +18,12 @@ program dist
 
   integer :: err
 
+#ifndef BUD_MPI
+  ! Currently we HAVE to rely on MPI
+  return
+#endif
+
+
 #ifdef BUD_MPI
   call MPI_Init(err)
 #endif
@@ -35,7 +41,7 @@ program dist
 #ifdef BUD_MPI
   call MPI_Finalize(err)
 #endif
-  
+
 contains
 
   subroutine bc_1()
@@ -197,7 +203,7 @@ contains
 #ifdef BUD_MPI
           call MPI_Barrier(get_comm(bc1), err)
 #endif
-          
+
           if ( rP == get_P(bc2) ) then
              print '(3(a,i2))', 'Element: ',i,' processor: ',ranks(rP+1), ' data: ',data2(global2local(bc2,i))
           end if

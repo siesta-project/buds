@@ -11,6 +11,11 @@
 # define BUD_SM_INTEROP_C 0
 #endif
 
+#undef BUD_SM_MOD
+#undef BUD_SM_PTR
+#undef BUD_SM_PTR_A
+#undef BUD_SM_PTR_B
+
 #if BUD_SM_INTEROP_C == 0
 # define BUD_SM_MOD modp
   ! This is the initial pointer value for the
