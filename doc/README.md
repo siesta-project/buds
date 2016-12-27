@@ -135,8 +135,8 @@ end module bud_Grid
 ~~~~
 With the above code one can use a derived type called `Grid`
 which is reference counted and may be used as such.
-Any assignment of the above derived type will handle reference counters
-and will never duplicate any memory when passing between routines.
+Any assignment on the above derived type will handle reference counters
+and will not duplicate memory.
 Also, any deletion of the derived type will _only_ deallocate the memory
 in case the reference counter hits 0 (meaning, no other references).
 
