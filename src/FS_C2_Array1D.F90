@@ -31,7 +31,7 @@ module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,FS_C2_,sArray1D)
 # define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_FS_Coll_,Array)
 # define BUD_STACK_TYPE BUD_CC3(BUD_TYPE,C2_,sArray1D)
-#include "bud_fstack.inc"
+#include "bud_finitestack.inc"
 end module
 !> @}
 
@@ -44,7 +44,7 @@ module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,FS_C2_,iArray1D)
 # define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_FS_Coll_,Array)
 # define BUD_STACK_TYPE BUD_CC3(BUD_TYPE,C2_,iArray1D)
-#include "bud_fstack.inc"
+#include "bud_finitestack.inc"
 end module
 !> @}
 
@@ -57,7 +57,7 @@ module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,FS_C2_,lArray1D)
 # define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_FS_Coll_,Array)
 # define BUD_STACK_TYPE BUD_CC3(BUD_TYPE,C2_,lArray1D)
-#include "bud_fstack.inc"
+#include "bud_finitestack.inc"
 end module
 !> @}
 
@@ -70,7 +70,7 @@ module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,FS_C2_,rArray1D)
 # define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_FS_Coll_,Array)
 # define BUD_STACK_TYPE BUD_CC3(BUD_TYPE,C2_,rArray1D)
-#include "bud_fstack.inc"
+#include "bud_finitestack.inc"
 end module
 !> @}
 
@@ -83,7 +83,7 @@ module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,FS_C2_,dArray1D)
 # define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_FS_Coll_,Array)
 # define BUD_STACK_TYPE BUD_CC3(BUD_TYPE,C2_,dArray1D)
-#include "bud_fstack.inc"
+#include "bud_finitestack.inc"
 end module
 !> @}
 
@@ -96,7 +96,7 @@ module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,FS_C2_,cArray1D)
 # define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_FS_Coll_,Array)
 # define BUD_STACK_TYPE BUD_CC3(BUD_TYPE,C2_,cArray1D)
-#include "bud_fstack.inc"
+#include "bud_finitestack.inc"
 end module
 !> @}
 
@@ -109,7 +109,7 @@ module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,FS_C2_,zArray1D)
 # define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_FS_Coll_,Array)
 # define BUD_STACK_TYPE BUD_CC3(BUD_TYPE,C2_,zArray1D)
-#include "bud_fstack.inc"
+#include "bud_finitestack.inc"
 end module
 !> @}
 
