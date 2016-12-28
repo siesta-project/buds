@@ -1052,7 +1052,7 @@
 #ifdef BUD_IS_INTEGER
   !> @param[inout] this list @bud (sorted on exit)
   subroutine sort_(this)
-    use BUD_CC2(BUD_MOD,_utils), only: sort_heap
+    use BUD_CC2(BUD_MOD,_utils), only: sort_quick
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
     call sort_quick(this%D%n, this%D%lst)
