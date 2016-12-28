@@ -1055,7 +1055,7 @@
     use BUD_CC2(BUD_MOD,_utils), only: sort_heap
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
-    call sort_heap(this%D%n, this%D%lst)
+    call sort_quick(this%D%n, this%D%lst)
 
     this%D%sorted = .true.
 
