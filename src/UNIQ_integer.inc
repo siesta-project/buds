@@ -81,7 +81,7 @@ pure function BUD_CC2(nuniq_pvt_,BUD_PREC)(n, array, pvt) result(nuniq)
 end function
 
 
-! project-bud -- local file settings
+! project-buds -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings
 

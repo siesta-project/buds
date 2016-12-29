@@ -619,7 +619,7 @@ end subroutine
 #undef _MP_COMM_B_INOUT
 #undef _MP_COMM_VAR_PREC
 
-! project-bud -- local file settings
+! project-buds -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings
 

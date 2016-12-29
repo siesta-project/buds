@@ -13,32 +13,13 @@
   ! However, it does reduce name-space cluttering, immensely.
   private
 
-  ! Data precisions (PRIVATE)
-  ! Although these names may be "uncommon"
-  ! they are only internal variables and should only be used as such.
-  ! They represent the 3 allowed integer variables:
-  !  is == short (2-byte)
-  !  ii == int (4-byte)
-  !  il == long (8-byte)
-  ! and the real variables
-  !  rr == real (4-byte)
-  !  rd == double (8-byte)
-  !  re == long double, currently not supported
-
-  !> @cond BUD_DEVELOPER
-
-  integer, private, parameter :: rr_ = selected_real_kind(p=6) ! single (real*4)
-  integer, private, parameter :: rd_ = selected_real_kind(p=15) ! double (real*8)
-  !integer, private, parameter :: re_ = selected_real_kind(p=18)
-
-  integer, private, parameter :: is_ = selected_int_kind(4) ! short (integer*2)
-  integer, private, parameter :: ii_ = selected_int_kind(9) ! int (integer*4)
-  integer, private, parameter :: il_ = selected_int_kind(18) ! long (integer*8)
-
-  !> @endcond BUD_DEVELOPER
+  ! Ensure that the precision for the buds objects are prepended
+  ! with a _
+# define BUD_PRECISION_SUFFIX _
+# include "bud_precision.inc"
 
   !> Size of ID parameter for bud data-containers
-  integer, private, parameter :: BUD_ID_LEn = 36
+  integer, parameter, private :: BUD_ID_LEn = 36
 
 # ifdef BUD_MOD_NAME_STR
   !> Name of module
@@ -58,7 +39,7 @@
 #endif
 
 
-! project-bud -- local file settings
+! project-buds -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings
 

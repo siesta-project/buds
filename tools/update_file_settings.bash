@@ -15,7 +15,7 @@
 # Each file has the settings at the end of the file
 # The settings MUST be the last lines in each file.
 
-_LINE_END="refype -- local file settings"
+_LINE_END="buds -- local file settings"
 
 # Here are the fortran local variables
 declare -A fv
