@@ -9,7 +9,7 @@
   !! statement is used, else if `BUD_MPI_MODULE` is defined
   !! that module will be _used_ (it defaults to mpi).
 #ifdef BUD_MPI
-# ifdef(BUD_MPI_INCLUDE)
+# ifdef BUD_MPI_INCLUDE
    include BUD_MPI_INCLUDE
 # else
 #  ifndef BUD_MPI_MODULE
