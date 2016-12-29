@@ -247,9 +247,10 @@
 
     ! Currently we do not allow external memory
     ! tracking.
-    if ( .not. associated(this%array) ) return
-    if ( this%container ) then
-      deallocate(this%array)
+    if ( associated(this%array) ) then
+      if ( this%container ) then
+        deallocate(this%array)
+      end if
     end if
     nullify(this%array)
 

@@ -36,7 +36,7 @@ program dist
   ! Currently we HAVE to rely on MPI
   return
 #endif
-  
+
   ! This is a duplicate of the world communicator.
   call new(world, MPI_Comm_World)
   rank = comm_rank(world)
