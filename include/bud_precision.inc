@@ -2,9 +2,9 @@
 
   ! Just for the concatenation features
 #include "bud_utils.inc"
-  
+
 #ifndef BUD_PRECISION_SUFFIX
-# define BUD_PRECISION_SUFFIX 
+# define BUD_PRECISION_SUFFIX
 #endif
 
   ! Data precisions (PRIVATE)

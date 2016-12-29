@@ -1,5 +1,5 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
-  
+
   ! Get default commands
 #include "bud_utils.inc"
 
@@ -15,7 +15,7 @@ module BUD_CC2(BUD_MOD,_Transfer)
 #include "bud_common_declarations.inc"
 
 #define BUD_TRANSFER_FUNC(prefix,name) BUD_CC5(prefix,_,BUD_TYPE_VAR_P,name,_)
-  
+
   !> Transfer an associated array from `N`-D to `M`-D.
   !!
   !! The general calling scheme is:
@@ -146,11 +146,11 @@ module BUD_CC2(BUD_MOD,_Transfer)
 # include "TransferD_Copy_interface.inc"
 # define BUD_TYPE_VAR_P z
 # include "TransferD_Copy_interface.inc"
-  end interface 
+  end interface
   public :: dim_transfer
 
 contains
-  
+
 #define BUD_TYPE_VAR logical
 #define BUD_TYPE_VAR_P b
 #include "TransferD_Assoc1D.inc"

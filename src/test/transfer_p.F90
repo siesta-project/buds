@@ -29,6 +29,6 @@ contains
     call dim_transfer_p(100,b,1000,a(:,1,1))
     write(*,*) size(b), 100, b(100)
   end subroutine t_1
-  
+
 end program test_transfer_p
 
