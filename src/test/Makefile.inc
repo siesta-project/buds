@@ -41,6 +41,13 @@ $(test_out_DIR)/ll_array: $(test_COMMON_OBJECTS) $(test_out_DIR)/ll_array.o
 	@echo "#### TEST -- running: $@" >> run_tests.sh
 	@echo $@ >> run_tests.sh
 
+src_TESTS += transfer_p
+t_src_OBJECTS += transfer_p.o
+$(test_out_DIR)/transfer_p: $(test_COMMON_OBJECTS) $(test_out_DIR)/transfer_p.o
+	$(FC) -o $@ $^ -l$(BUDS_LIB) $(FFLAGS) $(INCLUDES) $(LDFLAGS)
+	@echo "#### TEST -- running: $@" >> run_tests.sh
+	@echo $@ >> run_tests.sh
+
 
 $(t_src_OBJECTS): $(test_COMMON_OBJECTS)
 t_src_OBJECTS := $(test_COMMON_OBJECTS) $(addprefix $(test_out_DIR)/,$(t_src_OBJECTS))

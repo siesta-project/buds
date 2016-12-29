@@ -1,10 +1,31 @@
 module test_utils
 
-# include "bud_common_declarations.inc"
-
   public :: tic, toc
 
 contains
+
+  subroutine start_test(name)
+    character(len=*), intent(in) :: name
+    character(len=64) :: fmt
+    integer :: full
+    integer :: n
+    full = 30 * 2 + 15
+    n = (full - len(name)) / 2 - 2
+    do while ( n * 2 + len(name) + 2 < full )
+      n = n + 1
+    end do
+    if ( n * 2 + len(name) + 2 /= full ) then
+      write(*,'(3a)') repeat('#',30),' STARTING TEST ',repeat('#',31)
+    else
+      write(*,'(3a)') repeat('#',30),' STARTING TEST ',repeat('#',30)
+    end if
+    write(*,'(2(a,tr1),a)') repeat('#',n),name,repeat('#',n)
+  end subroutine start_test
+
+  subroutine end_test(name)
+    character(len=*), intent(in) :: name
+    write(*,'(3a)') repeat('#',30),'  ENDING TEST  ',repeat('#',30)
+  end subroutine end_test
 
   function tic()
     real :: tic

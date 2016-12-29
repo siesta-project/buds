@@ -198,12 +198,19 @@ bud_File.f90: File.F90
 
 # For now everything depends on the utility program
 UTIL_OBJECTS = \
-	bud_Utils.o
+	bud_Utils.o \
+	bud_Transfer.o
 bud_Utils.f90: Utils.F90
-bud_Utils.f90: FIND_integer.inc SORT_integer.inc UNIQ_integer.inc
+Utils.F90: FIND_integer.inc SORT_integer.inc UNIQ_integer.inc
 $(src_OBJECTS): $(UTIL_OBJECTS)
 src_OBJECTS += $(UTIL_OBJECTS)
 bud_Utils.f90: Utils.F90
+	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
+Transfer.F90: TransferD_Assoc_interface.inc
+Transfer.F90: TransferD_Assoc1D.inc TransferD_Assoc2D.inc TransferD_Assoc3D.inc
+Transfer.F90: TransferD_Copy_interface.inc
+Transfer.F90: TransferD_Copy1D.inc TransferD_Copy2D.inc TransferD_Copy3D.inc
+bud_Transfer.f90: Transfer.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
 
 
