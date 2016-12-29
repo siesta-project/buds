@@ -4,12 +4,15 @@
 #include "bud_utils.inc"
 
 
-!> @defgroup transfer Routines for transfer between dimensions and data-types
+!> @defgroup transfer Transfer arrays between dimensions
 !! @ingroup bud-intrinsic
 !!
-!! This module enables transfering one common data-types
-!! from one dimension to another.
-!! In addition it enables the resizing of the dimensions.
+!! Enables transfering one data-type from one dimension to another
+!! dimension.
+!! As all the dimensions are explicitly defined the transfer functions
+!! also enables resizing.
+!!
+!! @{
 module BUD_CC2(BUD_MOD,_Transfer)
 
 #include "bud_common_declarations.inc"
@@ -224,6 +227,8 @@ contains
 #include "TransferD_Copy3D.inc"
 
 end module
+
+!> @}
 
 
 ! project-buds -- local file settings
