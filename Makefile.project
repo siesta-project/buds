@@ -57,9 +57,15 @@ install-version:
 	@echo "#define BUDS_VERSION_STR \"$(PROJECT_MAJOR).$(PROJECT_MINOR).$(PROJECT_MICRO)\"" >> $(VERSION_FILE)
 
 
-.PHONY:
+.PHONY: doc doc-fast doc-ffast
 doc:
 	doc/make_doc.sh
+
+doc-fast:
+	OPTIPNG=0 doc/make_doc.sh
+
+doc-ffast:
+	DOT=0 OPTIPNG=0 doc/make_doc.sh
 
 
 clean:
