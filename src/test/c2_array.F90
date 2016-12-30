@@ -18,11 +18,15 @@ program test_c2_array
   type(C2_iArray2D) :: ca2, cb2, cc2
   type(C2_iArray3D) :: ca3, cb3, cc3
 
+  call start_test('C2_ARRAY-1D')
   call t_1
-  write(*,*)
+  call end_test('C2_ARRAY-1D')
+  call start_test('C2_ARRAY-2D')
   call t_2
-  write(*,*)
+  call end_test('C2_ARRAY-2D')
+  call start_test('C2_ARRAY-3D')
   call t_3
+  call end_test('C2_ARRAY-3D')
 
 contains
 

@@ -18,8 +18,9 @@ program test_ll_array
   type(LL_iArray2D) :: la2, lb2, lc2
   type(LL_iArray3D) :: la3, lb3, lc3
 
+  call start_test('LL_ARRAY-1D')
   call t_1
-  write(*,*)
+  call end_test('LL_ARRAY-1D')
 
 contains
 

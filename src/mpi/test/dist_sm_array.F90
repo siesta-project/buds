@@ -1,6 +1,7 @@
 program dist
 
 #include "bud_mpi.inc"
+  use test_utils
 
   use bud_Dist_common
   use bud_MP_Comm
@@ -46,15 +47,25 @@ program dist
   call new(self, MPI_Comm_Self)
 
   call print_world_self()
+  call start_test('DIST_SM_ARRAY - World to Self (all)',rank==0)
   call dist_1()
+  call end_test('DIST_SM_ARRAY - World to Self (all)',rank==0)
   call print_world_self()
+  call start_test('DIST_SM_ARRAY - World to Self (1)',rank==0)
   call dist_1a()
+  call end_test('DIST_SM_ARRAY - World to Self (1)',rank==0)
   call print_world_self()
+  call start_test('DIST_SM_ARRAY - World to Split(2)',rank==0)
   call dist_2()
+  call end_test('DIST_SM_ARRAY - World to Split(2)',rank==0)
   call print_world_self()
+  call start_test('DIST_SM_ARRAY - World to Split(3)',rank==0)
   call dist_3()
+  call end_test('DIST_SM_ARRAY - World to Split(3)',rank==0)
   call print_world_self()
+  call start_test('DIST_SM_ARRAY - World to Split(N)',rank==0)
   call dist_4()
+  call end_test('DIST_SM_ARRAY - World to Split(N)',rank==0)
   call print_world_self()
 
   call delete(self)
@@ -86,7 +97,6 @@ contains
     integer, pointer :: ptr(:), ind(:), ncol(:)
     real, pointer :: arr(:)
     integer :: ic, i, idx
-    print *,'dist-sm-arr_1 -- start'
 
     if ( comm_rank(world) == 0 ) then
 
@@ -165,8 +175,6 @@ contains
     call delete(dsmA1)
     call delete(dsmA2)
 
-    print *,'dist-sm-arr_1 -- end', rank
-
     call Barrier(world)
 
   end subroutine dist_1
@@ -175,7 +183,6 @@ contains
     integer, pointer :: ptr(:), ind(:), ncol(:)
     real, pointer :: arr(:)
     integer :: ic, i, idx
-    print *,'dist-sm-arr_1a -- start'
 
     if ( comm_rank(world) == 0 ) then
 
@@ -256,8 +263,6 @@ contains
     call delete(dsmA1)
     call delete(dsmA2)
 
-    print *,'dist-sm-arr_1a -- end', rank
-
     call Barrier(world)
 
   end subroutine dist_1a
@@ -267,7 +272,6 @@ contains
     integer, pointer :: ptr(:), ind(:), ncol(:)
     real, pointer :: arr(:)
     integer :: ic, i, idx
-    print *,'dist-sm-arr_2 -- start'
 
     if ( comm_rank(world) == 0 ) then
 
@@ -351,8 +355,6 @@ contains
     call delete(dsmA1)
     call delete(dsmA2)
 
-    print *,'dist-sm-arr_2 -- end', rank
-
     call Barrier(world)
 
   end subroutine dist_2
@@ -361,7 +363,6 @@ contains
     integer, pointer :: ptr(:), ind(:), ncol(:)
     real, pointer :: arr(:)
     integer :: ic, i, idx
-    print *,'dist-sm-arr_3 -- start'
 
     if ( comm_rank(world) == 0 ) then
 
@@ -445,8 +446,6 @@ contains
     call delete(dsmA1)
     call delete(dsmA2)
 
-    print *,'dist-sm-arr_3 -- end', rank
-
     call Barrier(world)
 
   end subroutine dist_3
@@ -455,7 +454,6 @@ contains
     integer, pointer :: ptr(:), ind(:), ncol(:)
     real, pointer :: arr(:)
     integer :: ic, i, idx
-    print *,'dist-sm-arr_4 -- start'
 
     if ( comm_rank(world) == 0 ) then
 
@@ -560,8 +558,6 @@ contains
     call delete(dsmA1)
     call delete(dsmA2)
     call delete(dsmA3)
-
-    print *,'dist-sm-arr_4 -- end', rank
 
     call Barrier(world)
 

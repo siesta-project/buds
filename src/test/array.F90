@@ -8,11 +8,15 @@ program test_array
 
   implicit none
 
+  call start_test('ARRAY-1D')
   call t_1
-  write(*,*)
+  call end_test('ARRAY-1D')
+  call start_test('ARRAY-2D')
   call t_2
-  write(*,*)
+  call end_test('ARRAY-2D')
+  call start_test('ARRAY-3D')
   call t_3
+  call end_test('ARRAY-3D')
 
 contains
 

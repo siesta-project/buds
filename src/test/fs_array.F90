@@ -18,11 +18,15 @@ program test_fs_array
   type(FS_iArray2D) :: fa2, fb2, fc2
   type(FS_iArray3D) :: fa3, fb3, fc3
 
+  call start_test('FS_ARRAY-1D')
   call t_1
-  write(*,*)
+  call end_test('FS_ARRAY-1D')
+  call start_test('FS_ARRAY-2D')
   call t_2
-  write(*,*)
+  call end_test('FS_ARRAY-2D')
+  call start_test('FS_ARRAY-3D')
   call t_3
+  call end_test('FS_ARRAY-3D')
 
 contains
 

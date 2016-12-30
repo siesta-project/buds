@@ -4,11 +4,15 @@ module test_utils
 
 contains
 
-  subroutine start_test(name)
+  subroutine start_test(name, io)
     character(len=*), intent(in) :: name
+    logical, intent(in), optional :: io
     character(len=64) :: fmt
     integer :: full
     integer :: n
+    if ( present(io) ) then
+      if ( .not. io ) return
+    end if
     full = 30 * 2 + 15
     n = (full - len(name)) / 2 - 2
     do while ( n * 2 + len(name) + 2 < full )
@@ -22,8 +26,12 @@ contains
     write(*,'(2(a,tr1),a)') repeat('#',n),name,repeat('#',n)
   end subroutine start_test
 
-  subroutine end_test(name)
+  subroutine end_test(name, io)
     character(len=*), intent(in) :: name
+    logical, intent(in), optional :: io
+    if ( present(io) ) then
+      if ( .not. io ) return
+    end if
     write(*,'(3a)') repeat('#',30),'  ENDING TEST  ',repeat('#',30)
   end subroutine end_test
 
