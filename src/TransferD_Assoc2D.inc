@@ -49,7 +49,7 @@ end subroutine
 !! @param[in] i2 second dimension of in array
 !! @param[in] i3 third dimension of in array
 !! @param[in] in array to be associated
-recursive subroutine BUD_TRANSFER_FUNC(assoc,3Dto2D)(o1,o2,out,i1,i2,i3,in)
+subroutine BUD_TRANSFER_FUNC(assoc,3Dto2D)(o1,o2,out,i1,i2,i3,in)
   integer(ii_), intent(in) :: o1, o2, i1, i2, i3
 #ifdef BUD_TYPE_VAR_PREC
   BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer :: out (:,:)
@@ -74,7 +74,7 @@ end subroutine
 !! @param[in] i3 third dimension of in array
 !! @param[in] i4 fourth dimension of in array
 !! @param[in] in array to be associated
-recursive subroutine BUD_TRANSFER_FUNC(assoc,4Dto2D)(o1,o2,out,i1,i2,i3,i4,in)
+subroutine BUD_TRANSFER_FUNC(assoc,4Dto2D)(o1,o2,out,i1,i2,i3,i4,in)
   integer(ii_), intent(in) :: o1, o2, i1, i2, i3, i4
 #ifdef BUD_TYPE_VAR_PREC
   BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer :: out (:,:)
@@ -99,7 +99,7 @@ end subroutine
 !! @param[in] i4 fourth dimension of in array
 !! @param[in] i5 fifth dimension of in array
 !! @param[in] in array to be associated
-recursive subroutine BUD_TRANSFER_FUNC(assoc,5Dto2D)(o1,o2,out,i1,i2,i3,i4,i5,in)
+subroutine BUD_TRANSFER_FUNC(assoc,5Dto2D)(o1,o2,out,i1,i2,i3,i4,i5,in)
   integer(ii_), intent(in) :: o1, o2, i1, i2, i3, i4, i5
 #ifdef BUD_TYPE_VAR_PREC
   BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer :: out (:,:)

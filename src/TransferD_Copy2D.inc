@@ -3,7 +3,7 @@
 !! @param[out] out the resulting array
 !! @param[in] i1 first dimension of in array
 !! @param[in] in array to be copied
-subroutine BUD_TRANSFER_FUNC(copy,1Dto2D)(o1,o2,out,i1,in)
+recursive subroutine BUD_TRANSFER_FUNC(copy,1Dto2D)(o1,o2,out,i1,in)
   integer(ii_), intent(in) :: o1, o2, i1
 #ifdef BUD_TYPE_VAR_PREC
   BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(out) :: out(o1,o2)
@@ -21,7 +21,7 @@ end subroutine
 !! @param[in] i1 first dimension of in array
 !! @param[in] i2 second dimension of in array
 !! @param[in] in array to be copied
-subroutine BUD_TRANSFER_FUNC(copy,2Dto2D)(o1,o2,out,i1,i2,in)
+recursive subroutine BUD_TRANSFER_FUNC(copy,2Dto2D)(o1,o2,out,i1,i2,in)
   integer(ii_), intent(in) :: o1, o2, i1, i2
 #ifdef BUD_TYPE_VAR_PREC
   BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(out) :: out(o1,o2)

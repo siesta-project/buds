@@ -23,23 +23,23 @@ module BUD_CC2(BUD_MOD,_Transfer)
   !!
   !! The general calling scheme is:
   !! \code{.f90}
-  !!   call dim_transfer_p(dim-sizes<out>,out,dim-sizes<in>,in)
+  !!   call transfer_dim_p(dim-sizes<out>,out,dim-sizes<in>,in)
   !! \endcode
   !! For instance to transfer a 2D real array to a 3D array
   !! pointer one may use this call.
   !! \code{.f90}
   !!   real :: in(100,10)
   !!   real, pointer :: out(:,:,:)
-  !!   call dim_transfer_p(10,10,10,out,100,10,in)
+  !!   call transfer_dim_p(10,10,10,out,100,10,in)
   !! \endcode
   !! In the above code the `out` array has dimensions
   !! `(10,10,10)` while the input array has `(100,10)`.
-  !! As the `dim_transfer_p` function is interfaced
+  !! As the `transfer_dim_p` function is interfaced
   !! one could also realize the call by:
   !! \code{.f90}
   !!   real :: in(100,10)
   !!   real, pointer :: out(:,:,:)
-  !!   call dim_transfer_p(10,10,10,out,1000,in(:,1,1))
+  !!   call transfer_dim_p(10,10,10,out,1000,in(:,1,1))
   !! \endcode
   !! Remark that the last call only works because the
   !! memory is consecutive, if not, the association would
@@ -69,7 +69,7 @@ module BUD_CC2(BUD_MOD,_Transfer)
   !! @param out the resulting associated array
   !! @param[in] i<> dimension(s) of in array
   !! @param[in] in array to be associated
-  interface dim_transfer_p
+  interface transfer_dim_p
 # define BUD_TYPE_VAR_P b
 # include "TransferD_Assoc_interface.inc"
 # define BUD_TYPE_VAR_P s
@@ -87,29 +87,29 @@ module BUD_CC2(BUD_MOD,_Transfer)
 # define BUD_TYPE_VAR_P z
 # include "TransferD_Assoc_interface.inc"
   end interface
-  public :: dim_transfer_p
+  public :: transfer_dim_p
 
   !> Transfer by copy an array from `N`-D to `M`-D.
   !!
   !! The general calling scheme is:
   !! \code{.f90}
-  !!   call dim_transfer(dim-sizes<out>,out,dim-sizes<in>,in)
+  !!   call transfer_dim(dim-sizes<out>,out,dim-sizes<in>,in)
   !! \endcode
   !! For instance to transfer a 2D real array to a 3D array
   !! one may use this call.
   !! \code{.f90}
   !!   real :: in(100,10)
   !!   real :: out(10,10,10)
-  !!   call dim_transfer(10,10,10,out,100,10,in)
+  !!   call transfer_dim(10,10,10,out,100,10,in)
   !! \endcode
   !! In the above code the `out` array has dimensions
   !! `(10,10,10)` while the input array has `(100,10)`.
-  !! As the `dim_transfer` function is interfaced
+  !! As the `transfer_dim` function is interfaced
   !! one could also realize the call by:
   !! \code{.f90}
   !!   real :: in(100,10)
   !!   real :: out(10,10,10)
-  !!   call dim_transfer(10,10,10,out,1000,in(:,1,1))
+  !!   call transfer_dim(10,10,10,out,1000,in(:,1,1))
   !! \endcode
   !!
   !! @note If the total size of the output array is larger than
@@ -132,7 +132,7 @@ module BUD_CC2(BUD_MOD,_Transfer)
   !! @param out the resulting associated array
   !! @param[in] i<> dimension(s) of in array
   !! @param[in] in array to be associated
-  interface dim_transfer
+  interface transfer_dim
 # define BUD_TYPE_VAR_P b
 # include "TransferD_Copy_interface.inc"
 # define BUD_TYPE_VAR_P s
@@ -150,7 +150,7 @@ module BUD_CC2(BUD_MOD,_Transfer)
 # define BUD_TYPE_VAR_P z
 # include "TransferD_Copy_interface.inc"
   end interface
-  public :: dim_transfer
+  public :: transfer_dim
 
 contains
 

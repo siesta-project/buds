@@ -5,10 +5,9 @@ program test_transfer_p
 
   implicit none
 
-  call start_test('DIM_TRANSFER_P')
+  call start_test('TRANSFER_DIM_P')
   call t_1
-  write(*,*)
-  call end_test('DIM_TRANSFER_P')
+  call end_test('TRANSFER_DIM_P')
 
 contains
 
@@ -16,17 +15,17 @@ contains
     real :: a(10,10,10)
     real, pointer :: b(:) => null()
     a = 100
-    call dim_transfer_p(10,b,10,10,10,a)
+    call transfer_dim_p(10,b,10,10,10,a)
     write(*,*) size(b), 10, b(10)
-    call dim_transfer_p(10,b,10,100,a(:,:,1))
+    call transfer_dim_p(10,b,10,100,a(:,:,1))
     write(*,*) size(b), 10, b(10)
-    call dim_transfer_p(10,b,1000,a(:,1,1))
+    call transfer_dim_p(10,b,1000,a(:,1,1))
     write(*,*) size(b), 10, b(10)
-    call dim_transfer_p(100,b,10,10,10,a)
+    call transfer_dim_p(100,b,10,10,10,a)
     write(*,*) size(b), 100, b(100)
-    call dim_transfer_p(100,b,10,100,a(:,:,1))
+    call transfer_dim_p(100,b,10,100,a(:,:,1))
     write(*,*) size(b), 100, b(100)
-    call dim_transfer_p(100,b,1000,a(:,1,1))
+    call transfer_dim_p(100,b,1000,a(:,1,1))
     write(*,*) size(b), 100, b(100)
   end subroutine t_1
 
