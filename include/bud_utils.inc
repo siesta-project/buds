@@ -131,6 +131,15 @@
 
   !> @}
 
+  !> \def BUD_DIM_SPEC1(x)
+  !! expand to `(x,x)` dependent on the last digit
+#define BUD_DIM_SPEC1(x) (x)
+#define BUD_DIM_SPEC2(x) (x,x)
+#define BUD_DIM_SPEC3(x) (x,x,x)
+#define BUD_DIM_SPEC4(x) (x,x,x,x)
+#define BUD_DIM_SPEC5(x) (x,x,x,x,x)
+#define BUD_DIM_SPEC6(x) (x,x,x,x,x,x)
+
   !> @endcond BUD_DOC_INC
 
 #endif
