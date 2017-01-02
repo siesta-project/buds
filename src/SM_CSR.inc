@@ -304,7 +304,7 @@
   end interface
   public :: sort
 
-  
+
   ! Include the common elements of a sparsity method
   ! This includes "bud_common.inc"
 # include "SM_common.inc"

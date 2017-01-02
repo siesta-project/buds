@@ -1194,7 +1194,7 @@
 
       ! Ensure it is sorted...
       call sort(tmp)
-      
+
       l => list_p(A)
       n = size(A)
       i = 1
@@ -1214,41 +1214,41 @@
           call push(tmp, l2(j))
           j = j + 1
         end if
-        
+
       end do
 
       if ( i == n ) then
-        
+
         do while ( j < m )
           if ( l2(j) < l(n) ) then
             call push(tmp, l2(j))
             j = j + 1
           end if
         end do
-        
+
         if ( l2(j) > l(n) ) then
           call push(tmp, l(n))
         end if
-        
+
         call push(tmp, m-j+1, l2(j:m))
-        
+
       else if ( j == m ) then
-        
+
         do while ( i < n )
           if ( l(i) < l2(m) ) then
             call push(tmp, l(i))
             i = i + 1
           end if
         end do
-        
+
         if ( l(i) > l2(m) ) then
           call push(tmp, l2(m))
         end if
-        
+
         call push(tmp, n-i+1, l(i:n))
-        
+
       end if
-      
+
     else if ( sorted_A .and. .not. sorted_B ) then
 
       ! First populate A
@@ -1274,7 +1274,7 @@
           call push(tmp, l(i))
         end if
       end do
-      
+
     else if ( size(A) > size(B) ) then
 
       ! We will sort list B and then perform the list insertion
