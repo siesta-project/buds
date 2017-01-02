@@ -460,7 +460,7 @@
     integer(BUD_TYPE_VAR_PREC), intent(in) :: r
     integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: col(:)
 
-    col => this%D%col(this%D%rptr(r)BUD_SM_PTR_A:this%D%rptr(r)+this%D%nrow(ir)BUD_SM_PTR_B)
+    col => this%D%col(this%D%rptr(r)BUD_SM_PTR_A:this%D%rptr(r)+this%D%nrow(r)BUD_SM_PTR_B)
 
   end function column_rp_
 

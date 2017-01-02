@@ -485,6 +485,9 @@
   end interface
   public :: reverse
 
+  ! Define a few constants used throughout
+  integer(BUD_INT_PREC), parameter :: ONE = BUD_CC2(1_,BUD_INT_PREC)
+
 
 
   ! Include common data routines
@@ -1230,7 +1233,7 @@
           call push(tmp, l(n))
         end if
 
-        call push(tmp, m-j+1, l2(j:m))
+        call push(tmp, m-j+ONE, l2(j:m))
 
       else if ( j == m ) then
 
@@ -1245,7 +1248,7 @@
           call push(tmp, l2(m))
         end if
 
-        call push(tmp, n-i+1, l(i:n))
+        call push(tmp, n-i+ONE, l(i:n))
 
       end if
 
