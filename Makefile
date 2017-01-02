@@ -66,6 +66,20 @@ include $(TOP_DIR)/src/Makefile.inc
 include $(TOP_DIR)/src/mpi/Makefile.inc
 
 
+# We add all plugins that is defined in the
+# setup.make file (or on the command-line)
+ifdef PLUGINS
+ $(eval orig_TOP_DIR:=$(TOP_DIR))\
+ $(foreach plugin,$(PLUGINS),\
+ $(eval TOP_DIR:=$(TOP_DIR)/plugins/$(plugin)/)\
+ $(eval include $(TOP_DIR)/Makefile.plugin))
+ $(eval TOP_DIR:=$(orig_TOP_DIR))
+endif
+
+# Define that this is *not* a plugin
+IS_PLUGIN := 0
+
+
 # The linker is a fortran compiler
 LINK := $(FC)
 
