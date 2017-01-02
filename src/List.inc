@@ -831,6 +831,8 @@
     integer(BUD_INT_PREC) :: i
     logical :: sorted
 
+    if ( n <= 0 ) return
+
     call assert_init_size_add(this, n)
 
 #ifdef BUD_IS_INTEGER
@@ -1055,7 +1057,9 @@
     use BUD_CC2(BUD_MOD,_utils), only: sort_quick
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
-    call sort_quick(this%D%n, this%D%lst)
+    if ( this%D%n > 0 ) then
+      call sort_quick(this%D%n, this%D%lst)
+    end if
 
     this%D%sorted = .true.
 
@@ -1166,8 +1170,9 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: C
 
     type(BUD_TYPE_NAME) :: tmp, D
-    integer(BUD_INT_PREC) :: i, n
-    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: l(:)
+    logical :: sorted_A, sorted_B
+    integer(BUD_INT_PREC) :: i, j, n, m
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: l(:), l2(:)
 
     if ( size(A) == 0 ) then
       call copy(B, C)
@@ -1181,8 +1186,70 @@
     n = size(A) + size(B)
     call new_dim_(tmp, n)
 
+    sorted_A = is_sorted(A)
+    sorted_B = is_sorted(B)
+
     ! Prefer to not copy any of the sets...
-    if ( is_sorted(A) .and. .not. is_sorted(B) ) then
+    if ( sorted_A .and. sorted_B ) then
+
+      ! Ensure it is sorted...
+      call sort(tmp)
+      
+      l => list_p(A)
+      n = size(A)
+      i = 1
+      l2 => list_p(B)
+      m = size(B)
+      j = 1
+      do while ( i < n .and. j < m )
+
+        if ( l(i) == l2(j) ) then
+          call push(tmp, l(i))
+          i = i + 1
+          j = j + 1
+        else if ( l(i) < l2(j) ) then
+          call push(tmp, l(i))
+          i = i + 1
+        else if ( l2(j) < l(i) ) then
+          call push(tmp, l2(j))
+          j = j + 1
+        end if
+        
+      end do
+
+      if ( i == n ) then
+        
+        do while ( j < m )
+          if ( l2(j) < l(n) ) then
+            call push(tmp, l2(j))
+            j = j + 1
+          end if
+        end do
+        
+        if ( l2(j) > l(n) ) then
+          call push(tmp, l(n))
+        end if
+        
+        call push(tmp, m-j+1, l2(j:m))
+        
+      else if ( j == m ) then
+        
+        do while ( i < n )
+          if ( l(i) < l2(m) ) then
+            call push(tmp, l(i))
+            i = i + 1
+          end if
+        end do
+        
+        if ( l(i) > l2(m) ) then
+          call push(tmp, l2(m))
+        end if
+        
+        call push(tmp, n-i+1, l(i:n))
+        
+      end if
+      
+    else if ( sorted_A .and. .not. sorted_B ) then
 
       ! First populate A
       call push(tmp, A)
@@ -1195,7 +1262,7 @@
         end if
       end do
 
-    else if ( .not. is_sorted(A) .and. is_sorted(B) ) then
+    else if ( .not. sorted_A .and. sorted_B ) then
 
       ! First populate B
       call push(tmp, B)
@@ -1207,11 +1274,11 @@
           call push(tmp, l(i))
         end if
       end do
-
+      
     else if ( size(A) > size(B) ) then
 
       ! We will sort list B and then perform the list insertion
-      if ( is_sorted(B) ) then
+      if ( sorted_B ) then
         ! both are actually sorted, but B is smaller
         D = B
       else
@@ -1235,7 +1302,7 @@
     else
 
       ! We will sort list B and then perform the list insertion
-      if ( is_sorted(A) ) then
+      if ( sorted_A ) then
         ! both are actually sorted, but B is smaller
         D = A
       else
