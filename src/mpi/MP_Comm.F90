@@ -1267,7 +1267,9 @@ module BUD_MOD_NAME
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer(ii_), intent(in) :: Comm
     logical, intent(in), optional :: dup
+#ifdef BUD_MPI
     logical :: ldup
+#endif
 
     call initialize(this)
 

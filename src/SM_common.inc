@@ -42,6 +42,19 @@
   public :: elements
 
 
+  !> Query if the sparse matrix is sorted
+  interface is_sorted
+    module procedure is_sorted_
+  end interface
+  public :: is_sorted
+
+  !> Query if the sparse matrix is finalized
+  interface is_finalized
+    module procedure is_finalized_
+  end interface
+  public :: is_finalized
+
+
   !> Dimensions of the sparse matrix
   !!
   !! This routine will return 1 of 3 possible scenarios:
@@ -138,6 +151,24 @@
     end if
 
   end function size_
+
+
+  !> @param[in] this the sparse matrix
+  !! @return `.true.` if the sparse matrix is sorted
+  elemental function is_sorted_(this) result(sorted)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    logical :: sorted
+    sorted = this%D%sorted
+  end function is_sorted_
+
+  !> @param[in] this the sparse matrix
+  !! @return `.true.` if the sparse matrix is finalized
+  elemental function is_finalized_(this) result(finalized)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    logical :: finalized
+    finalized = this%D%finalized
+  end function is_finalized_
+
 
   !> @param[in] this sparse matrix
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed

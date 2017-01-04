@@ -103,6 +103,9 @@
     !> @iSee #nonzeros
     procedure, public :: nonzeros => nonzeros_
 
+    !> @iSee #elements
+    procedure, public :: elements => elements_
+
     !> @iSee #rows
     procedure, public :: rows => rows_
 
@@ -176,7 +179,7 @@
     logical :: sorted = .false.
 
     !> Whether the sparse matrix has been finalized, see #finalize
-    logical :: finalized = .true.
+    logical :: finalized = .false.
 
     !> Index of the equivalent column (size `nr+1`)
     integer(BUD_TYPE_VAR_PREC), allocatable :: cptr(:)
@@ -304,6 +307,22 @@
     module procedure sort_
   end interface
   public :: sort
+
+
+  !> Finalize the sparsity pattern by removing non-used elements
+  !!
+  !! After finalization the number of non-zero elements
+  !! and the total number of possible elements are the same.
+  !! I.e. this routine removes all non-used elements in the
+  !! sparse matrix.
+  !!
+  !! @note this routine re-creates the sparse matrix,
+  !! so any pointers to the internal data-structure
+  !! must be re-instantiated before use.
+  interface finalize
+    module procedure finalize_
+  end interface
+  public :: finalize
 
 
   ! Include the common elements of a sparsity method
@@ -578,8 +597,7 @@
   end function index_
 
 
-  !> @param[in] this sparse matrix to sort (in-place)
-  !! @param[out] err associated error message of the sparsity pattern
+  !> @param[inout] this sparse matrix to sort (in-place)
   !! @param[out] pvt @opt=@none if requested the pivoting array for the sorted sparsity pattern
   subroutine sort_(this, pvt)
     ! We use the quick-sort algorithm in this general finalization
@@ -615,7 +633,7 @@
         ! get pivoting array
         tvt => pvt(ptr+1:)
 
-        call sort_quick(nz, row(ptr+1:), tvt)
+        call sort_quick(nz, row(ptr+1:), tvt(:))
         do i = 1 , nz
           tvt(i) = ptr + tvt(i)
         end do
@@ -632,7 +650,7 @@
         row => row_p(this, ic)
         nz = size(row)
 
-        call sort_quick(nz, row)
+        call sort_quick(nz, row(:))
 
       end do
 
@@ -641,6 +659,67 @@
     this%D%sorted = .true.
 
   end subroutine sort_
+
+  !> @param[inout] this sparse matrix to finalize (in-place)
+  subroutine finalize_(this)
+    use BUD_CC3(BUD_MOD,_,BUD_LIST_NAME)
+
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+
+    ! Local variables
+    integer(BUD_TYPE_VAR_PREC) :: i, ic, nr, nc, nz
+    integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: cptr(:), row(:)
+
+    type(BUD_LIST_NAME) :: lptr, lrow
+    integer(BUD_TYPE_VAR_PREC) :: p
+    logical :: sorted
+
+    ! Initialize error
+    call set_error(this, 0)
+
+    ! Get sparse matrix array
+    call attach(this, nr=nr, nc=nc, nz=nz, row=row)
+
+    ! initialize lists
+    call new(lptr, nc)
+    call new(lrow, nz)
+
+    ! Initialize the pointer
+    p = BUD_SM_PTR
+    call push(lptr, p)
+
+    do ic = 1 , nc
+
+      row => row_p(this, ic)
+      nz = size(row)
+
+      ! Push the new pointer index
+      p = p + nz
+      call push(lptr, p)
+
+      ! Push the row-indices to the list
+      call push(lrow, nz, row)
+
+    end do
+
+    ! Determine whether we should sort it after-wards
+    ! I.e. maintain state of object
+    sorted = is_sorted(this)
+
+    p = size(lrow)
+    ! Get pointers
+    cptr => list_p(lptr)
+    row => list_p(lrow)
+    call new(this, nr, nc, p, cptr, row)
+    call delete(lptr)
+    call delete(lrow)
+
+    if ( sorted ) then
+      call sort(this)
+    end if
+    this%D%finalized = .true.
+
+  end subroutine finalize_
 
 
   !> @param[in] sp1 the first sparse matrix
@@ -962,7 +1041,7 @@
 
     ! Initialize the sparse lists
     do ic = 1 , nc
-      call new(lcol(ic), BUD_CC2(1_,BUD_TYPE_VAR_PREC))
+      call new(lcol(ic), ONE)
     end do
 
     ! List of out columns
