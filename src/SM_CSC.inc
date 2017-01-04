@@ -148,6 +148,9 @@
     !> @iSee #sort
     procedure, public :: sort => sort_
 
+    !> @iSee #finalize
+    procedure, public :: finalize => finalize_
+
     !> @iSee #attach
     procedure, public :: attach => attach_
 
