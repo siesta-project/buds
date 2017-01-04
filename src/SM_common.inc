@@ -35,11 +35,17 @@
   end interface
   public :: columns
 
+  !> Number of possible non-zero elements in the sparse matrix
+  interface elements
+    module procedure elements_
+  end interface
+  public :: elements
+
 
   !> Dimensions of the sparse matrix
   !!
   !! This routine will return 1 of 3 possible scenarios:
-  !!  1. `size(this)` will return `nonzeros(this)`
+  !!  1. `size(this)` will return number of allowed non-zero possible elements
   !!  2. `size(this, 1)` will return `rows(this)`
   !!  3. `size(this, 2)` will return `columns(this)`
   interface size
@@ -78,16 +84,24 @@
   !! @return number of non-zero elements in the pattern
   elemental function nonzeros_(this) result(nnzs)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer :: nnzs
+    integer(BUD_TYPE_VAR_PREC) :: nnzs
     nnzs = this%D%nz
   end function nonzeros_
+
+  !> @param[in] this the sparse matrix
+  !! @return number of allowed non-zero elements in the pattern
+  elemental function elements_(this) result(nt)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    integer(BUD_TYPE_VAR_PREC) :: nt
+    nt = this%D%nt
+  end function elements_
 
 
   !> @param[in] this the sparse matrix
   !! @return number of rows in the pattern
   elemental function rows_(this) result(rows)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer :: rows
+    integer(BUD_TYPE_VAR_PREC) :: rows
     rows = this%D%nr
   end function rows_
 
@@ -96,18 +110,18 @@
   !! @return number of columns in the pattern
   elemental function columns_(this) result(cols)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer :: cols
+    integer(BUD_TYPE_VAR_PREC) :: cols
     cols = this%D%nc
   end function columns_
 
 
   !> @param[in] this the sparse matrix
   !! @param[in] dim @opt=0 the dimension query
-  !! @return size of the sparse matrix dependent on value of `dim`: 0=nonzeros, 1=rows, 2=columns.
+  !! @return size of the sparse matrix dependent on value of `dim`: 0=non-zero elements, 1=rows, 2=columns.
   elemental function size_(this, dim) result(size)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer, intent(in), optional :: dim
-    integer :: size
+    integer(BUD_TYPE_VAR_PREC) :: size
 
     if ( present(dim) ) then
       if ( dim == 1 ) then

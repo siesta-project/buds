@@ -16,6 +16,9 @@
 
 #include "bud_common_declarations.inc"
 
+  ! These fields are used in the sparse matrix stuff.
+  integer(BUD_PREC), parameter :: ONE = BUD_CC2(1_,BUD_PREC)
+  integer(BUD_PREC), parameter :: ZERO = BUD_CC2(0_,BUD_PREC)
 
 !# define BUD_INCLUDE_TYPE "Dist1D_SM_Array_type.inc"
 # define BUD_INCLUDE_TYPE_ "Dist1D_SM_Array_type_.inc"

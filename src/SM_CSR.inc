@@ -154,20 +154,29 @@
 
   !> @cond BUD_DEVELOPER
 
+  ! These fields are used in the sparse matrix stuff.
+  integer(BUD_TYPE_VAR_PREC), parameter :: ONE = BUD_CC2(1_,BUD_TYPE_VAR_PREC)
+  integer(BUD_TYPE_VAR_PREC), parameter :: ZERO = BUD_CC2(0_,BUD_TYPE_VAR_PREC)
+
   !> @bud container for BUD_TYPE_NAME
   !!
   !! Contains the sparsity pattern for a CSR matrix.
   type BUD_TYPE_NAME_
 
     !> Number of rows in the matrix
-    integer(BUD_TYPE_VAR_PREC) :: nr = 0
+    integer(BUD_TYPE_VAR_PREC) :: nr = ZERO
     !> Number of columns in the matrix
-    integer(BUD_TYPE_VAR_PREC) :: nc = 0
+    integer(BUD_TYPE_VAR_PREC) :: nc = ZERO
     !> Number of non-zero elements in the sparse matrix
-    integer(BUD_TYPE_VAR_PREC) :: nz = 0
+    integer(BUD_TYPE_VAR_PREC) :: nz = ZERO
+    !> Total number of elements possible in the sparse matrix
+    integer(BUD_TYPE_VAR_PREC) :: nt = ZERO
 
     !> Whether the sparse matrix has been sorted, see #sort
     logical :: sorted = .false.
+
+    !> Whether the sparse matrix has been finalized, see #finalize
+    logical :: finalized = .true.
 
     !> Index of the equivalent row (size `nr+1`)
     integer(BUD_TYPE_VAR_PREC), allocatable :: rptr(:)
@@ -204,8 +213,6 @@
     module procedure new_copy_
   end interface
   public :: new
-
-
 
 
   !> Retrieve a pointer to the row offsets/pointers
@@ -324,7 +331,9 @@
     this%nr = 0
     this%nc = 0
     this%nz = 0
+    this%nt = 0
     this%sorted = .false.
+    this%finalized = .false.
 
     ! Currently we do not allow external memory
     ! tracking.
@@ -359,21 +368,44 @@
   !> @param[inout] this the sparse matrix
   !! @param[in] nr number of rows of the matrix
   !! @param[in] nc number of columns of the matrix
-  !! @param[in] nz number of non-zero elements the matrix
-  subroutine new_dim_(this, nr, nc, nz)
+  !! @param[in] nt @opt total number of possible non-zero elements
+  !! @param[in] npr @opt number of non-zero elements per row
+  subroutine new_dim_(this, nr, nc, nt, npr)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    integer(BUD_TYPE_VAR_PREC), intent(in) :: nr, nc, nz
+    integer(BUD_TYPE_VAR_PREC), intent(in) :: nr, nc
+    integer(BUD_TYPE_VAR_PREC), intent(in), optional :: nt, npr
+    integer(BUD_TYPE_VAR_PREC) :: r
 
     call initialize(this)
 
     this%D%nr = nr
     this%D%nc = nc
-    this%D%nz = nz
+    if ( present(nt) ) then
+      this%D%nt = nt
+    else if ( present(npr) ) then
+      this%D%nt = npr * nr
+    else
+      this%D%nt = nr * BUD_CC2(10_,BUD_TYPE_VAR_PREC)
+    end if
+    this%D%nz = 0
     this%D%sorted = .false.
+    this%D%finalized = .false.
 
     allocate(this%D%rptr(nr+1))
     allocate(this%D%nrow(nr))
-    allocate(this%D%col(nz))
+    allocate(this%D%col(this%D%nt))
+
+    ! Initialize sparse matrix
+    if ( present(npr) ) then
+      this%D%rptr(1) = BUD_SM_PTR
+      do r = 1 , nr
+        this%D%rptr(r) = this%D%rptr(r-ONE) + npr
+      end do
+      this%D%rptr(nr+1) = this%D%rptr(nr) + BUD_SM_PTR
+    end if
+    do r = 1 , nr
+      this%D%nrow(r) = ZERO
+    end do
 
   end subroutine new_dim_
 
@@ -393,7 +425,7 @@
     integer(BUD_TYPE_VAR_PREC), intent(in) :: rptr(nr), col(nz)
     integer(BUD_TYPE_VAR_PREC), intent(in), optional :: nrow(nr)
 
-    integer(BUD_TYPE_VAR_PREC) :: ir
+    integer(BUD_TYPE_VAR_PREC) :: r
 
     ! Copy over information
     ! It must be based on the starting index
@@ -404,10 +436,11 @@
 
     ! pre-allocate
     call new(this, nr, nc, nz)
+    this%D%nz = nz
 
     ! Copy pointers
-    do ir = 1 , nr
-      this%D%rptr(ir) = rptr(ir)
+    do r = 1 , nr
+      this%D%rptr(r) = rptr(r)
     end do
 
     ! create last pointer (to one plus number of elements)
@@ -416,17 +449,17 @@
     this%D%rptr(this%D%nr+1) = this%D%nz + BUD_SM_PTR
 
     if ( present(nrow) ) then
-      do ir = 1 , nr
-        this%D%nrow(ir) = nrow(ir)
+      do r = 1 , nr
+        this%D%nrow(r) = nrow(r)
       end do
     else
-      do ir = 1 , nr
-        this%D%nrow(ir) = this%D%rptr(ir+1) - this%D%rptr(ir)
+      do r = 1 , nr
+        this%D%nrow(r) = this%D%rptr(r+1) - this%D%rptr(r)
       end do
     end if
 
-    do ir = 1 , nz
-      this%D%col(ir) = col(ir)
+    do r = 1 , nz
+      this%D%col(r) = col(r)
     end do
 
   end subroutine new_copy_
@@ -479,14 +512,15 @@
   !! @param[out] nr @opt number of rows in SM
   !! @param[out] nc @opt number of columns in SM
   !! @param[out] nz @opt number of non-zero elements in SM
+  !! @param[out] nt @opt total number of possible non-zero elements in SM
   !! @param[out] rptr @opt row pointer (`rptr(2)BUD_SM_PTR_A` is starting index of `ir=2`)
   !! @param[out] nrow @opt number of non-zero elements per row
-  subroutine attach_(this, D, nr, nc, nz, rptr, col, nrow)
+  subroutine attach_(this, D, nr, nc, nz, nt, rptr, col, nrow)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     ! Having this forces the user to explicitly specify the
     ! wanted information.
     logical, intent(in), optional :: D
-    integer(BUD_TYPE_VAR_PREC), intent(out), optional :: nr, nc, nz
+    integer(BUD_TYPE_VAR_PREC), intent(out), optional :: nr, nc, nz, nt
     integer(BUD_TYPE_VAR_PREC), intent(out), pointer BUD_FORTRAN_CONTIGUOUS, optional :: rptr(:), col(:)
     integer(BUD_TYPE_VAR_PREC), intent(out), pointer BUD_FORTRAN_CONTIGUOUS, optional :: nrow(:)
 
@@ -494,13 +528,15 @@
       if ( present(nr) ) nr = this%D%nr
       if ( present(nc) ) nc = this%D%nc
       if ( present(nz) ) nz = this%D%nz
+      if ( present(nt) ) nt = this%D%nt
       if ( present(rptr) ) rptr => this%D%rptr
       if ( present(col) ) col => this%D%col
       if ( present(nrow) ) nrow => this%D%nrow
     else
-      if ( present(nr) ) nr = 0
-      if ( present(nc) ) nc = 0
-      if ( present(nz) ) nz = 0
+      if ( present(nr) ) nr = ZERO
+      if ( present(nc) ) nc = ZERO
+      if ( present(nz) ) nz = ZERO
+      if ( present(nt) ) nt = ZERO
       if ( present(rptr) ) nullify(rptr)
       if ( present(col) ) nullify(col)
       if ( present(nrow) ) nullify(nrow)
@@ -532,7 +568,7 @@
         if ( this%D%col(idx) == ic ) return
       end do
 
-      idx = -1
+      idx = - ONE
 
       return
 
@@ -540,7 +576,7 @@
 
     call find_bin(this%D%nrow(ir), &
       this%D%col(this%D%rptr(ir) BUD_SM_PTR_A:), ic, idx)
-    if ( idx > 0 ) idx = this%D%rptr(ir) BUD_SM_PTR_B + idx
+    if ( idx > ZERO ) idx = this%D%rptr(ir) BUD_SM_PTR_B + idx
 
   end function index_
 
@@ -549,13 +585,12 @@
   !> @param[in] this sparse matrix to sort (in-place)
   !! @param[out] err associated error message of the sparsity pattern
   !! @param[out] pvt @opt=@none if requested the pivoting array for the sorted sparsity pattern
-  subroutine sort_(this, err, pvt)
+  subroutine sort_(this, pvt)
     ! We use the quick-sort algorithm in this general finalization
     ! algorithm.
     use BUD_CC2(BUD_MOD, _utils), only: sort_quick
 
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    integer(BUD_TYPE_VAR_PREC), intent(out) :: err
     integer(BUD_TYPE_VAR_PREC), intent(out), target, optional :: pvt(:)
 
     ! Local variables
@@ -563,7 +598,7 @@
     integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: rptr(:), nrow(:), col(:), tvt(:)
 
     ! Initialize error
-    err = 0
+    call set_error(this, 0)
 
     ! Get sparse matrix array
     call attach(this, nr=nr, nz=nz, rptr=rptr, col=col, nrow=nrow)
@@ -571,8 +606,8 @@
     if ( present(pvt) ) then
 
       if ( size(pvt) < nz ) then
-        err = SM_INPUT + 3
-        pvt = -1
+        call set_error(this, SM_INPUT + 3)
+        pvt = -ONE
         return
       end if
 
@@ -919,7 +954,7 @@
 
     ! Initialize the sparse lists
     do ir = 1 , nr
-      call new(lrow(ir), BUD_CC2(1_,BUD_TYPE_VAR_PREC))
+      call new(lrow(ir), ONE)
     end do
 
     ! List of out rows

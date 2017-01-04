@@ -154,17 +154,23 @@
 
   !> @cond BUD_DEVELOPER
 
+  ! These fields are used in the sparse matrix stuff.
+  integer(BUD_TYPE_VAR_PREC), parameter :: ONE = BUD_CC2(1_,BUD_TYPE_VAR_PREC)
+  integer(BUD_TYPE_VAR_PREC), parameter :: ZERO = BUD_CC2(0_,BUD_TYPE_VAR_PREC)
+
   !> @bud container for BUD_TYPE_NAME
   !!
   !! Contains the sparsity pattern for a CSC pattern.
   type BUD_TYPE_NAME_
 
     !> Number of rows in the pattern
-    integer(BUD_TYPE_VAR_PREC) :: nr = 0
+    integer(BUD_TYPE_VAR_PREC) :: nr = ZERO
     !> Number of columns in the pattern
-    integer(BUD_TYPE_VAR_PREC) :: nc = 0
+    integer(BUD_TYPE_VAR_PREC) :: nc = ZERO
     !> Number of non-zero elements in the sparse matrix
-    integer(BUD_TYPE_VAR_PREC) :: nz = 0
+    integer(BUD_TYPE_VAR_PREC) :: nz = ZERO
+    !> Total number of elements possible in the sparse matrix
+    integer(BUD_TYPE_VAR_PREC) :: nt = ZERO
 
     !> Whether the sparse matrix has been sorted, see #sort
     logical :: sorted = .false.
@@ -207,7 +213,6 @@
     module procedure new_copy_
   end interface
   public :: new
-
 
 
   !> Retrieve a pointer to the column offsets/pointers
@@ -319,7 +324,9 @@
     this%nr = 0
     this%nc = 0
     this%nz = 0
+    this%nt = 0
     this%sorted = .false.
+    this%finalized = .false.
 
     ! Currently we do not allow external memory
     ! tracking.
@@ -355,21 +362,44 @@
   !> @param[inout] this the sparse matrix
   !! @param[in] nr number of rows of the pattern
   !! @param[in] nc number of columns of the pattern
-  !! @param[in] nz number of non-zero elements the pattern
-  subroutine new_dim_(this, nr, nc, nz)
+  !! @param[in] nt @opt number of possible non-zero elements
+  !! @param[in] npc @opt number of non-zero elements per column
+  subroutine new_dim_(this, nr, nc, nt, npc)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    integer(BUD_TYPE_VAR_PREC), intent(in) :: nr, nc, nz
+    integer(BUD_TYPE_VAR_PREC), intent(in) :: nr, nc
+    integer(BUD_TYPE_VAR_PREC), intent(in), optional :: nt, npc
+    integer(BUD_TYPE_VAR_PREC) :: c
 
     call initialize(this)
 
     this%D%nr = nr
     this%D%nc = nc
-    this%D%nz = nz
+    if ( present(nt) ) then
+      this%D%nt = nt
+    else if ( present(npc) ) then
+      this%D%nt = npc * nc
+    else
+      this%D%nt = nc * BUD_CC2(10_,BUD_TYPE_VAR_PREC)
+    end if
+    this%D%nz = 0
     this%D%sorted = .false.
+    this%D%finalized = .false.
 
     allocate(this%D%cptr(nc+1))
     allocate(this%D%ncol(nc))
-    allocate(this%D%row(nz))
+    allocate(this%D%row(this%D%nt))
+
+    ! Initialize sparse matrix
+    if ( present(npc) ) then
+      this%D%cptr(1) = BUD_SM_PTR
+      do c = 1 , nc
+        this%D%cptr(c) = this%D%cptr(c-ONE) + npc
+      end do
+      this%D%cptr(nc+ONE) = this%D%cptr(nc) + BUD_SM_PTR
+    end if
+    do c = 1 , nc
+      this%D%ncol(c) = ZERO
+    end do
 
   end subroutine new_dim_
 
@@ -400,6 +430,7 @@
 
     ! pre-allocate
     call new(this, nr, nc, nz)
+    this%D%nz = nz
 
     ! Copy pointers
     do ic = 1 , nc
@@ -475,15 +506,16 @@
   !! @param[out] nr @opt number of rows in SM
   !! @param[out] nc @opt number of columns in SM
   !! @param[out] nz @opt number of non-zero elements in SM
+  !! @param[out] nt @opt total number of possible non-zero elements in SM
   !! @param[out] cptr @opt column pointer (`cptr(2)BUD_SM_PTR_A` is starting index of `ic=2`)
   !! @param[out] row @opt row index
   !! @param[out] ncol @opt number of non-zero elements per column
-  subroutine attach_(this, D, nr, nc, nz, cptr, row, ncol)
+  subroutine attach_(this, D, nr, nc, nz, nt, cptr, row, ncol)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     ! Having this forces the user to explicitly specify the
     ! wanted information.
     logical, intent(in), optional :: D
-    integer(BUD_TYPE_VAR_PREC), intent(out), optional :: nr, nc, nz
+    integer(BUD_TYPE_VAR_PREC), intent(out), optional :: nr, nc, nz, nt
     integer(BUD_TYPE_VAR_PREC), intent(out), pointer BUD_FORTRAN_CONTIGUOUS, optional :: cptr(:), row(:)
     integer(BUD_TYPE_VAR_PREC), intent(out), pointer BUD_FORTRAN_CONTIGUOUS, optional :: ncol(:)
 
@@ -491,14 +523,17 @@
       if ( present(nr) ) nr = this%D%nr
       if ( present(nc) ) nc = this%D%nc
       if ( present(nz) ) nz = this%D%nz
+      if ( present(nt) ) nt = this%D%nt
       if ( present(cptr) ) cptr => this%D%cptr
       if ( present(row) ) row => this%D%row
       if ( present(ncol) ) ncol => this%D%ncol
 
     else
-      if ( present(nr) ) nr = 0
-      if ( present(nc) ) nc = 0
-      if ( present(nz) ) nz = 0
+      if ( present(nr) ) nr = ZERO
+      if ( present(nc) ) nc = ZERO
+      if ( present(nz) ) nz = ZERO
+      if ( present(nt) ) nt = ZERO
+
       if ( present(cptr) ) nullify(cptr)
       if ( present(row) ) nullify(row)
       if ( present(ncol) ) nullify(ncol)
@@ -559,7 +594,7 @@
     integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: cptr(:), ncol(:), row(:), tvt(:)
 
     ! Initialize error
-    this%D%error_ = 0
+    call set_error(this, 0)
 
     ! Get sparse matrix array
     call attach(this, nc=nc, nz=nz, cptr=cptr, row=row, ncol=ncol)
@@ -567,7 +602,7 @@
     if ( present(pvt) ) then
 
       if ( size(pvt) < nz ) then
-        this%D%error_ = SM_INPUT + 3
+        call set_error(this, SM_INPUT + 3)
         pvt = -1
         return
       end if

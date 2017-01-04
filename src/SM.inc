@@ -20,14 +20,14 @@
 # define BUD_SM_MOD modp
   ! This is the initial pointer value for the
   ! first pointer element
-# define BUD_SM_PTR 1
+# define BUD_SM_PTR ONE
   ! this is the addition to the pointer arrays
 # define BUD_SM_PTR_A
-# define BUD_SM_PTR_B -1
+# define BUD_SM_PTR_B -ONE
 #else
 # define BUD_SM_MOD mod
-# define BUD_SM_PTR 0
-# define BUD_SM_PTR_A +1
+# define BUD_SM_PTR ZERO
+# define BUD_SM_PTR_A +ONE
 # define BUD_SM_PTR_B
 #endif
 
@@ -39,8 +39,8 @@
 #  undef BUD_SM_PTR_A
 #  undef BUD_SM_PTR_B
 #  define BUD_SM_MOD modp
-#  define BUD_SM_PTR 0
-#  define BUD_SM_PTR_A +1
+#  define BUD_SM_PTR ZERO
+#  define BUD_SM_PTR_A +ONE
 #  define BUD_SM_PTR_B
 # endif
 #endif
@@ -51,8 +51,8 @@
 #  undef BUD_SM_PTR_A
 #  undef BUD_SM_PTR_B
 #  define BUD_SM_MOD modp
-#  define BUD_SM_PTR 0
-#  define BUD_SM_PTR_A +1
+#  define BUD_SM_PTR ZERO
+#  define BUD_SM_PTR_A +ONE
 #  define BUD_SM_PTR_B
 # endif
 #endif
@@ -63,8 +63,8 @@
 # define BUD_SM_IDX(a) (a)
 # define BUD_SM_IDXF(a) (a)
 #elif BUD_SM_INTEROP_C == 1
-# define BUD_SM_IDX(a) (a-1)
-# define BUD_SM_IDXF(a) (a+1)
+# define BUD_SM_IDX(a) (a-ONE)
+# define BUD_SM_IDXF(a) (a+ONE)
 #else
 # error "SM_INTEROP_C *MUST* be either 0 or 1"
 #endif
