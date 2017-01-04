@@ -277,7 +277,7 @@
   !!
   !! This pointer will only be a sub-set pointer of the
   !! total list array if `size(this) < max_size(this)`.
-  !! @iSee #max_listp for the full list pointer.
+  !! @iSee #max_list_p for the full list pointer.
   !!
   !! @note
   !! Do not deallocate the array-pointer.
@@ -304,7 +304,7 @@
   !!
   !! This is equivalent to:
   !! \code{.f90}
-  !! a => listp(this)
+  !! a => list_p(this)
   !! ... = size(a)
   !! \endcode
   interface size
@@ -1097,7 +1097,7 @@
     if ( is_sorted(A) .and. .not. is_sorted(B) ) then
 
       ! we search in A
-      l = list_p(B)
+      l => list_p(B)
       do i = 1 , size(B)
         if ( in_list(A, l(i)) ) then
           call push(tmp, l(i))
@@ -1107,7 +1107,7 @@
     else if ( .not. is_sorted(A) .and. is_sorted(B) ) then
 
       ! we search in B
-      l = list_p(A)
+      l => list_p(A)
       do i = 1 , size(A)
         if ( in_list(B, l(i)) ) then
           call push(tmp, l(i))
@@ -1127,7 +1127,7 @@
       end if
 
       ! we search in B
-      l = list_p(A)
+      l => list_p(A)
       do i = 1 , size(A)
         if ( in_list(D, l(i)) ) then
           call push(tmp, l(i))
@@ -1148,7 +1148,7 @@
       end if
 
       ! we search in A
-      l = list_p(B)
+      l => list_p(B)
       do i = 1 , size(B)
         if ( in_list(D, l(i)) ) then
           call push(tmp, l(i))
@@ -1258,7 +1258,7 @@
       call push(tmp, A)
 
       ! we search in A
-      l = list_p(B)
+      l => list_p(B)
       do i = 1 , size(B)
         if ( .not. in_list(A, l(i)) ) then
           call push(tmp, l(i))
@@ -1271,7 +1271,7 @@
       call push(tmp, B)
 
       ! we search in B
-      l = list_p(A)
+      l => list_p(A)
       do i = 1 , size(A)
         if ( .not. in_list(B, l(i)) ) then
           call push(tmp, l(i))
@@ -1293,7 +1293,7 @@
       call push(tmp, B)
 
       ! we search in B
-      l = list_p(A)
+      l => list_p(A)
       do i = 1 , size(A)
         if ( .not. in_list(D, l(i)) ) then
           call push(tmp, l(i))
@@ -1317,7 +1317,7 @@
       call push(tmp, A)
 
       ! we search in A
-      l = list_p(B)
+      l => list_p(B)
       do i = 1 , size(B)
         if ( .not. in_list(D, l(i)) ) then
           call push(tmp, l(i))
@@ -1367,7 +1367,7 @@
     ! This is easy...
 
     ! we search in A
-    l = list_p(B)
+    l => list_p(B)
     do i = 1 , size(B)
       if ( .not. in_list(D, l(i)) ) then
         call push(tmp, l(i))
