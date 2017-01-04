@@ -128,6 +128,10 @@
     generic, public :: row_p => rowp_, row_cp_
 
 
+    !> @iSee #add_nonzero
+    procedure, public :: add_nonzero => add_nonzero_
+
+
     !> @iSee #remove_row
     generic, public :: remove_row => remove_row_el_, &
       remove_row_list_
@@ -328,7 +332,31 @@
   public :: finalize
 
 
+  !> Adds a non-zero element to the sparse matrix
+  !!
+  !! Add a non-zero element to the sparse matrix.
+  !! In case there is not enough space the sparse matrix
+  !! will be re-allocated and copied to it-self.
+  !! Adding an element will thus not necessarily preserve
+  !! the allocated elements and any pointers to the
+  !! data contained needs to be updated.
+  !!
+  !! If the error is `0` there was no need to
+  !! extend the sparse matrix data.
+  !! If the error is `-1` the element has not been added
+  !! If the error is above `0` the sparse matrix
+  !! has been re-allocated and the element is contained.
+  !! The re-allocation ensures that all rows can
+  !! contain `maxval(nrow)+8` and can thus result in
+  !! a large memory increase.
+  interface add_nonzero
+    module procedure add_nonzero_
+  end interface
+  public :: add_nonzero
+
+
   ! Include the common elements of a sparsity method
+  ! This includes "bud_common.inc"
 # include "SM_common.inc"
 
 
@@ -723,6 +751,70 @@
     this%D%finalized = .true.
 
   end subroutine finalize_
+
+
+  !> @param[inout] this the sparse matrix to add an element to
+  !! @param[in] ir the row index of the element
+  !! @param[in] ic the column index of the element
+  recursive subroutine add_nonzero_(this, ir, ic)
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    integer(BUD_TYPE_VAR_PREC), intent(in) :: ir, ic
+
+    type(BUD_TYPE_NAME) :: nthis
+    integer(BUD_TYPE_VAR_PREC) :: i, c, ix, nr, nc, npc
+
+    integer(BUD_TYPE_VAR_PREC), pointer :: ptr(:), ncol(:), row(:)
+    integer(BUD_TYPE_VAR_PREC), pointer :: ptr_(:), ncol_(:), row_(:)
+    integer :: e
+
+    call attach(this, nr=nr, nc=nc, &
+      cptr=ptr, ncol=ncol, row=row)
+
+    ! check if there is place in the sparse matrix
+    ! for an entry without re-allocation
+    if ( ptr(ic+ONE) - ptr(ic) > ncol(ic) ) then
+
+      row(ptr(ic)+ncol(ic)BUD_SM_PTR_A) = ir
+      ncol(ic) = ncol(ic) + ONE
+      this%D%nz = this%D%nz + ONE
+
+      call set_error(this, 0)
+
+      return
+
+    end if
+
+    ! Re-allocate the sparse matrix and copy it
+    npc = maxval(ncol) + BUD_CC2(8_,BUD_TYPE_VAR_PREC)
+    call new(nthis, nr, nc, npc=npc)
+    call attach(nthis, cptr=ptr_, ncol=ncol_, row=row_)
+
+    ! Copy all elements correctly
+    ix = 1
+    do c = 1 , nc
+      ncol_(c) = ncol(c)
+
+      ix = ptr_(c) BUD_SM_PTR_A
+      ! copy this column
+      do i = ptr(c)BUD_SM_PTR_A , ptr(c) + ncol(c) BUD_SM_PTR_B
+        row_(ix) = row(i)
+        ix = ix + ONE
+      end do
+
+    end do
+
+    ! add the element to the new sparse pattern
+    call add_nonzero(nthis, ir, ic)
+    ! copy the sparse pattern to this one
+    this = nthis
+    ! clean-up
+    call delete(nthis)
+    ! specify the error message which then
+    ! is the new size per row
+    e = npc
+    call set_error(this, e)
+
+  end subroutine add_nonzero_
 
 
   !> @param[in] sp1 the first sparse matrix
