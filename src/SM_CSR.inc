@@ -660,7 +660,7 @@
         ! get pivoting array
         tvt => pvt(ptr+1:)
 
-        call sort_quick(nz, col(ptr+1:), tvt(:))
+        call sort_quick(nz, col(ptr+1:), tvt)
         do i = 1 , nz
           tvt(i) = ptr + tvt(i)
         end do
@@ -760,8 +760,8 @@
     type(BUD_TYPE_NAME) :: nthis
     integer(BUD_TYPE_VAR_PREC) :: i, r, ix, nr, nc, npr
 
-    integer(BUD_TYPE_VAR_PREC), pointer :: ptr(:), nrow(:), col(:)
-    integer(BUD_TYPE_VAR_PREC), pointer :: ptr_(:), nrow_(:), col_(:)
+    integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: ptr(:), nrow(:), col(:)
+    integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: ptr_(:), nrow_(:), col_(:)
     integer :: e
 
     call attach(this, nr=nr, nc=nc, &
@@ -771,9 +771,22 @@
     ! for an entry without re-allocation
     if ( ptr(ir+ONE) - ptr(ir) > nrow(ir) ) then
 
-      col(ptr(ir)+nrow(ir)BUD_SM_PTR_A) = ic
+      ix = ptr(ir)+nrow(ir)BUD_SM_PTR_A
+      if ( nrow(ir) == 0 ) then
+        i = 0
+      else
+        i = col(ix - ONE)
+      end if
+      col(ix) = ic
       nrow(ir) = nrow(ir) + ONE
       this%D%nz = this%D%nz + ONE
+
+      if ( this%D%sorted .and. ic < i ) then
+
+        ! denote it non-sorted
+        this%D%sorted = .false.
+        
+      end if
 
       call set_error(this, 0)
 

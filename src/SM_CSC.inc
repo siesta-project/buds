@@ -763,8 +763,8 @@
     type(BUD_TYPE_NAME) :: nthis
     integer(BUD_TYPE_VAR_PREC) :: i, c, ix, nr, nc, npc
 
-    integer(BUD_TYPE_VAR_PREC), pointer :: ptr(:), ncol(:), row(:)
-    integer(BUD_TYPE_VAR_PREC), pointer :: ptr_(:), ncol_(:), row_(:)
+    integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: ptr(:), ncol(:), row(:)
+    integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: ptr_(:), ncol_(:), row_(:)
     integer :: e
 
     call attach(this, nr=nr, nc=nc, &
@@ -774,9 +774,22 @@
     ! for an entry without re-allocation
     if ( ptr(ic+ONE) - ptr(ic) > ncol(ic) ) then
 
-      row(ptr(ic)+ncol(ic)BUD_SM_PTR_A) = ir
+      ix = ptr(ic)+ncol(ic)BUD_SM_PTR_A
+      if ( ncol(ic) == 0 ) then
+        i = 0
+      else
+        i = row(ix - ONE)
+      end if
+      row(ix) = ir
       ncol(ic) = ncol(ic) + ONE
       this%D%nz = this%D%nz + ONE
+
+      if ( this%D%sorted .and. ir < i ) then
+
+        ! denote it non-sorted
+        this%D%sorted = .false.
+        
+      end if
 
       call set_error(this, 0)
 
