@@ -562,10 +562,10 @@
 
 
   !> @param[inout] this list @bud
-  !! @param[in] list list to duplicate in `this` (dimensions _and_ values)
+  !! @param[in] list list to duplicate in `this` (dimensions _and_ values), *must* be contiguous
   subroutine new_copy_(this, list)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in) :: list(:)
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in) BUD_FORTRAN_CONTIGUOUS :: list(:)
 
     integer(BUD_INT_PREC) :: n
 

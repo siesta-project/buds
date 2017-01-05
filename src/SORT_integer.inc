@@ -446,15 +446,13 @@ pure subroutine BUD_CC2(sort_quick_idx_,BUD_PREC)(n, array, pvt)
     pvt(i) = i
   end do
 
-#define BUD_FIND_LOCAL BUD_CC2(internal_quick_,BUD_PREC)
-
   ! call actual algorithm
-  call BUD_FIND_LOCAL (n, array, n, pvt)
+  call internal_quick(n, array, n, pvt)
 
 !> @cond BUD_DEVELOPER
 contains
 
-  recursive pure subroutine BUD_FIND_LOCAL (n, array, m, pvt)
+  recursive pure subroutine internal_quick(n, array, m, pvt)
     integer(BUD_PREC), intent(in) :: n
     integer(BUD_PREC), intent(in) :: array(n)
     integer(BUD_PREC), intent(in) :: m
@@ -466,12 +464,11 @@ contains
 
     ! Retrieve the partition ID
     call partition(n, array, m, pvt, div)
-    call BUD_FIND_LOCAL (n, array(1), div-int(1,BUD_PREC), pvt(1))
-    call BUD_FIND_LOCAL (n, array(1), m-div, pvt(div))
+    call internal_quick(n, array(1), div-int(1,BUD_PREC), pvt(1))
+    call internal_quick(n, array(1), m-div, pvt(div))
 
   end subroutine
 
-#undef BUD_FIND_LOCAL
 
   ! Partition an array by swapping
   pure subroutine partition(n, array, m, pvt, mark)

@@ -316,6 +316,8 @@
     end subroutine create_ranks
 
     subroutine sub_dist(out_dist)
+      use BUD_CC2(BUD_MOD,_Transfer), only: transfer_dim
+
       BUD_CLASS(BUD_COLL_1), intent(inout) :: out_dist
 
       ! Define the objects that are the new containers
@@ -326,19 +328,22 @@
 
       ! The pointers to the input data
 #ifdef BUD_TYPE_VAR_PREC
-      BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer :: dat BUD_DIM_SPEC(:)
+      BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: dat BUD_DIM_SPEC(:)
 #else
-      BUD_TYPE_VAR, pointer :: dat BUD_DIM_SPEC(:)
+      BUD_TYPE_VAR, pointer BUD_FORTRAN_CONTIGUOUS :: dat BUD_DIM_SPEC(:)
 #endif
 #ifdef BUD_TYPE_VAR_PREC
-      BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer :: odat BUD_DIM_SPEC(:)
+      BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: odat BUD_DIM_SPEC(:)
 #else
-      BUD_TYPE_VAR, pointer :: odat BUD_DIM_SPEC(:)
+      BUD_TYPE_VAR, pointer BUD_FORTRAN_CONTIGUOUS :: odat BUD_DIM_SPEC(:)
 #endif
 
       ! The local counter integers (local and global)
       integer(BUD_PREC) :: il, ig, oil
       integer(BUD_PREC) :: out_nl
+
+      ! Number of elements copied
+      integer(BUD_PREC) :: ncopy
 
 #if BUD_DIM > 2
       integer(BUD_PREC) :: i3
@@ -412,6 +417,12 @@
         ! The easy stuff is when the distributed
         ! dimension is the same as
 
+#if BUD_DIM == 2
+        ncopy = size(odat, 1)
+#elif BUD_DIM == 3
+        ncopy = size(odat, 1) + size(odat, 2)
+#endif
+
         ! Loop on global indices
         do ig = 1 , ng
 
@@ -428,9 +439,11 @@
 #if BUD_DIM == 1
             odat(oil) = dat(il)
 #elif BUD_DIM == 2
-            odat(:,oil) = dat(:,il)
+            call transfer_dim(ncopy, odat(:,oil), &
+              ncopy, dat(:,il))
 #elif BUD_DIM == 3
-            odat(:,:,oil) = dat(:,:,il)
+            call transfer_dim(ncopy, 1, odat(:,:,oil), &
+              ncopy, 1, dat(:,:,il))
 #else
 # error "Only up till BUD_DIM == 3 has been implemented"
 #endif
@@ -560,6 +573,8 @@
 #if BUD_DIM > 1
       else if ( dist_idx == 2 ) then
 
+       ncopy = size(odat, 1)
+
 # if BUD_DIM == 3
        do i3 = 1 , ashape(3)
 
@@ -575,7 +590,8 @@
              il = g2l(dist, ig)
              oil = g2l(out_dist, ig)
 
-             odat(:,oil,i3) = dat(:,il,i3)
+             call transfer_dim(ncopy, odat(:,oil,i3), &
+               ncopy, dat(:,il,i3))
 
 #ifdef BUD_MPI
            else if ( recv_R == rank ) then

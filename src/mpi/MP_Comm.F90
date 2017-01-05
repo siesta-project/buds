@@ -1492,7 +1492,7 @@ module BUD_MOD_NAME
   ! Wait routines
   subroutine Wait_(req, status, this)
     integer, intent(inout) :: req
-#ifdef MPI
+#ifdef BUD_MPI
     integer, intent(inout) :: status(MPI_STATUS_SIZE)
 #else
     integer, intent(inout) :: status(:)
@@ -1506,7 +1506,7 @@ module BUD_MOD_NAME
   end subroutine Wait_
   subroutine Wait_err_(req, status, err)
     integer, intent(inout) :: req
-#ifdef MPI
+#ifdef BUD_MPI
     integer, intent(inout) :: status(MPI_STATUS_SIZE)
 #else
     integer, intent(inout) :: status(:)
@@ -1524,7 +1524,7 @@ module BUD_MOD_NAME
   subroutine WaitAll_(n, req, status, this)
     integer, intent(in) :: n
     integer, intent(inout) :: req(n)
-#ifdef MPI
+#ifdef BUD_MPI
     integer, intent(inout) :: status(MPI_STATUS_SIZE,n)
 #else
     integer, intent(inout) :: status(:,:)
@@ -1539,7 +1539,7 @@ module BUD_MOD_NAME
   subroutine WaitAll_err_(n, req, status, err)
     integer, intent(in) :: n
     integer, intent(inout) :: req(n)
-#ifdef MPI
+#ifdef BUD_MPI
     integer, intent(inout) :: status(MPI_STATUS_SIZE,n)
 #else
     integer, intent(inout) :: status(:,:)
@@ -1558,7 +1558,7 @@ module BUD_MOD_NAME
     integer, intent(in) :: n
     integer, intent(inout) :: req(n)
     integer, intent(out) :: index
-#ifdef MPI
+#ifdef BUD_MPI
     integer, intent(inout) :: status(MPI_STATUS_SIZE)
 #else
     integer, intent(inout) :: status(:)
@@ -1576,7 +1576,7 @@ module BUD_MOD_NAME
     integer, intent(in) :: n
     integer, intent(inout) :: req(n)
     integer, intent(out) :: index
-#ifdef MPI
+#ifdef BUD_MPI
     integer, intent(inout) :: status(MPI_STATUS_SIZE)
 #else
     integer, intent(inout) :: status(:)
@@ -1596,7 +1596,7 @@ module BUD_MOD_NAME
   subroutine Test_(req, flag, status, this)
     integer, intent(inout) :: req
     logical, intent(out) :: flag
-#ifdef MPI
+#ifdef BUD_MPI
     integer, intent(inout) :: status(MPI_STATUS_SIZE)
 #else
     integer, intent(inout) :: status(:)
@@ -1613,7 +1613,7 @@ module BUD_MOD_NAME
   subroutine Test_err_(req, flag, status, err)
     integer, intent(inout) :: req
     logical, intent(out) :: flag
-#ifdef MPI
+#ifdef BUD_MPI
     integer, intent(inout) :: status(MPI_STATUS_SIZE)
 #else
     integer, intent(inout) :: status(:)
@@ -1633,7 +1633,7 @@ module BUD_MOD_NAME
     integer, intent(in) :: n
     integer, intent(inout) :: req(n)
     logical, intent(out) :: flag
-#ifdef MPI
+#ifdef BUD_MPI
     integer, intent(inout) :: status(MPI_STATUS_SIZE,n)
 #else
     integer, intent(inout) :: status(:,:)
@@ -1651,7 +1651,7 @@ module BUD_MOD_NAME
     integer, intent(in) :: n
     integer, intent(inout) :: req(n)
     logical, intent(out) :: flag
-#ifdef MPI
+#ifdef BUD_MPI
     integer, intent(inout) :: status(MPI_STATUS_SIZE,n)
 #else
     integer, intent(inout) :: status(:,:)
@@ -1672,7 +1672,7 @@ module BUD_MOD_NAME
     integer, intent(inout) :: req(n)
     integer, intent(out) :: index
     logical, intent(out) :: flag
-#ifdef MPI
+#ifdef BUD_MPI
     integer, intent(inout) :: status(MPI_STATUS_SIZE)
 #else
     integer, intent(inout) :: status(:)
@@ -1692,7 +1692,7 @@ module BUD_MOD_NAME
     integer, intent(inout) :: req(n)
     integer, intent(out) :: index
     logical, intent(out) :: flag
-#ifdef MPI
+#ifdef BUD_MPI
     integer, intent(inout) :: status(MPI_STATUS_SIZE)
 #else
     integer, intent(inout) :: status(:)
@@ -1710,7 +1710,7 @@ module BUD_MOD_NAME
   end subroutine TestAny_err_
 
   subroutine Test_Cancelled_(status, flag, this)
-#ifdef MPI
+#ifdef BUD_MPI
     integer, intent(inout) :: status(MPI_STATUS_SIZE)
 #else
     integer, intent(inout) :: status(:)
@@ -1726,7 +1726,7 @@ module BUD_MOD_NAME
 
   end subroutine Test_Cancelled_
   subroutine Test_Cancelled_err_(status, flag, err)
-#ifdef MPI
+#ifdef BUD_MPI
     integer, intent(inout) :: status(MPI_STATUS_SIZE)
 #else
     integer, intent(inout) :: status(:)

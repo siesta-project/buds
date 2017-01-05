@@ -399,7 +399,7 @@
       BUD_CLASS(BUD_COLL_1), intent(inout) :: out_dist
       integer(BUD_PREC) :: nz
 
-      integer(BUD_PREC), pointer :: ptr(:), ind(:)
+      integer(BUD_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: ptr(:), ind(:)
 
       integer :: ir, recv_R
       integer(BUD_PREC) :: n, id1, id2
@@ -452,6 +452,8 @@
     end function reduce_size
 
     subroutine sub_dist(out_dist)
+      use BUD_CC2(BUD_MOD,_Transfer), only: transfer_dim
+
       BUD_CLASS(BUD_COLL_1), intent(inout) :: out_dist
 
       ! Define the objects that are the new containers
@@ -462,19 +464,19 @@
       logical :: run
 
       ! The pointers to the input data
-      integer(BUD_PREC), pointer :: ptr(:), ind(:)
+      integer(BUD_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: ptr(:), ind(:)
 #ifdef BUD_TYPE_VAR_PREC
-      BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer :: dat BUD_DIM_SPEC(:)
+      BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: dat BUD_DIM_SPEC(:)
 #else
-      BUD_TYPE_VAR, pointer :: dat BUD_DIM_SPEC(:)
+      BUD_TYPE_VAR, pointer BUD_FORTRAN_CONTIGUOUS :: dat BUD_DIM_SPEC(:)
 #endif
       ! The pointers to the output data
-      integer(BUD_PREC), pointer :: optr(:), oind(:), nptr(:)
+      integer(BUD_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: optr(:), oind(:), nptr(:)
 
 #ifdef BUD_TYPE_VAR_PREC
-      BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer :: odat BUD_DIM_SPEC(:)
+      BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: odat BUD_DIM_SPEC(:)
 #else
-      BUD_TYPE_VAR, pointer :: odat BUD_DIM_SPEC(:)
+      BUD_TYPE_VAR, pointer BUD_FORTRAN_CONTIGUOUS :: odat BUD_DIM_SPEC(:)
 #endif
 
       ! The local counter integers (local and global)
@@ -482,6 +484,9 @@
       ! index pointers
       integer(BUD_PREC) :: id1, id2, oid1, oid2
       integer(BUD_PREC) :: out_nl
+
+      ! Number of elements copied
+      integer(BUD_PREC) :: ncopy
 
 #if BUD_DIM > 2
       integer(BUD_PREC) :: i3
@@ -684,6 +689,12 @@
         ! The easy stuff is when the sparse
         ! dimension is the same as
 
+#if BUD_DIM == 2
+        ncopy = size(odat, 1)
+#elif BUD_DIM == 3
+        ncopy = size(odat, 1) + size(odat, 2)
+#endif
+
         ! Loop on global indices
         do ig = 1 , ng
 
@@ -705,9 +716,9 @@
 #if BUD_DIM == 1
               odat(oid1+i) = dat(i)
 #elif BUD_DIM == 2
-              odat(:,oid1+i) = dat(:,i)
+              call transfer_dim(ncopy, odat(:,oid1+i), ncopy, dat(:,i))
 #elif BUD_DIM == 3
-              odat(:,:,oid1+i) = dat(:,:,i)
+              call transfer_dim(ncopy, 1, odat(:,:,oid1+i), ncopy, 1, dat(:,:,i))
 #else
 # error "Only up till BUD_DIM == 3 has been implemented"
 #endif
@@ -852,6 +863,8 @@
 #if BUD_DIM > 1
       else if ( sm_idx == 2 ) then
 
+       ncopy = size(dat, 1)
+
 # if BUD_DIM == 3
        do i3 = 1 , ashape(3)
 
@@ -872,7 +885,8 @@
              oid1 = optr(oil) BUD_SM_PTR_A - id1
 
              do i = id1 , id2
-               odat(:,oid1+i,i3) = dat(:,i,i3)
+               call transfer_dim(ncopy, odat(:,oid1+i,i3), &
+                 ncopy, dat(:,i,i3))
              end do
 
 #  ifdef BUD_MPI

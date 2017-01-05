@@ -90,7 +90,10 @@
 
 #else
 
-# define BUD_FORTRAN_CONTIGUOUS
+# ifndef BUD_FORTRAN_CONTIGUOUS
+#  define BUD_FORTRAN_CONTIGUOUS
+# endif
+
 # define BUD_CLASS type
 
 #endif

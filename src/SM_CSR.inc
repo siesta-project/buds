@@ -785,7 +785,7 @@
 
         ! denote it non-sorted
         this%D%sorted = .false.
-        
+
       end if
 
       call set_error(this, 0)
