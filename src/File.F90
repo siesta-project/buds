@@ -11,9 +11,9 @@
 
 
 ! Define default variable for the file
-# define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,File)
-# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,File)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,File)
+#define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,File)
+#define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,File)
+#define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,File)
 
 #define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
 #define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
