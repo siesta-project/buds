@@ -103,6 +103,12 @@
     !> @iSee #size
     procedure, public :: size => size_
 
+    !> @iSee #write
+    procedure, public, pass(this) :: write => write_
+
+    !> @iSee #read
+    procedure, public, pass(this) :: read => read_
+
 #endif
   end type BUD_TYPE_NAME
 
@@ -227,6 +233,14 @@
     module procedure write_
   end interface write
   public :: write
+
+  !> Read array information from a file (already opened)
+  !!
+  !! Reads the array as `write` would have written it.
+  interface read
+    module procedure read_
+  end interface read
+  public :: read
 
 
   ! Include common data routines
@@ -676,6 +690,7 @@
 
     ! If file is not opened, return immediately
     if ( .not. is_open(f) ) return
+    if ( .not. is_initd(this) ) return
 
     ! First figure out if the file is an unformatted file
     formatted = is_formatted(f)

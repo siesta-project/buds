@@ -158,6 +158,12 @@
     !> @iSee #attach
     procedure, public :: attach => attach_
 
+    !> @iSee #write
+    procedure, public, pass(this) :: write => write_
+
+    !> @iSee #read
+    procedure, public, pass(this) :: read => read_
+
 #endif
   end type BUD_TYPE_NAME
 
@@ -353,6 +359,23 @@
     module procedure add_nonzero_
   end interface
   public :: add_nonzero
+
+
+  !> Write sparse matrix information to a file (already opened)
+  !!
+  !! The file can be re-read using the `read` function
+  interface write
+    module procedure write_
+  end interface write
+  public :: write
+
+  !> Read sparse matrix information from a file (already opened)
+  !!
+  !! Reads the information as `write` would have written it.
+  interface read
+    module procedure read_
+  end interface read
+  public :: read
 
 
   ! Include the common elements of a sparsity method
@@ -1225,6 +1248,127 @@
     deallocate(lcol)
 
   end subroutine translate_col_list_
+
+
+  !> @param[inout] f `File` bud
+  !! @param[in] this the sparse matrix bud
+  subroutine write_(f, this)
+    use BUD_CC2(BUD_MOD,_File)
+
+    BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+
+    integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: ptr(:), row(:), ncol(:)
+
+    logical :: formatted
+    integer :: iu
+
+    integer(BUD_TYPE_VAR_PREC) :: nz
+    integer(BUD_TYPE_VAR_PREC) :: ic
+    integer(BUD_TYPE_VAR_PREC) :: nr, nc
+
+    ! If file is not opened, return immediately
+    if ( .not. is_open(f) ) return
+    if ( .not. is_initd(this) ) return
+
+    ! First figure out if the file is an unformatted file
+    formatted = is_formatted(f)
+    iu = unit(f)
+
+    call attach(this, nr=nr, nc=nc, nz=nz, &
+      cptr=ptr, ncol=ncol)
+
+    ! First we write the size of the sparse matrix
+    if ( formatted ) then
+      write(iu, '(i16)') nr, nc, nz
+      write(iu, '(l16)') this%D%sorted
+    else
+      write(iu) nr, nc, nz
+      write(iu) this%D%sorted
+    end if
+
+    if ( formatted ) then
+      write(iu, '(i16)') ncol(:)
+    else
+      write(iu) ncol(:)
+    end if
+
+    ! Write the sparse rows
+    do ic = 1 , nc
+      row => row_p(this, ic)
+      if ( formatted ) then
+        write(iu, '(i16)') row(:)
+      else
+        write(iu) row(:)
+      end if
+    end do
+
+  end subroutine write_
+
+  !> @param[inout] f `File` bud
+  !! @param[inout] this the sparse matrix bud
+  subroutine read_(f, this)
+    use BUD_CC2(BUD_MOD,_File)
+
+    BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+
+    integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: ptr(:), row(:), ncol(:)
+
+    logical :: formatted, same_size
+    integer :: iu
+
+    logical :: sorted
+    integer(BUD_TYPE_VAR_PREC) :: nz, i
+    integer(BUD_TYPE_VAR_PREC) :: ic
+    integer(BUD_TYPE_VAR_PREC) :: nr, nc
+
+    ! If file is not opened, return immediately
+    if ( .not. is_open(f) ) return
+
+    ! First figure out if the file is an unformatted file
+    formatted = is_formatted(f)
+    iu = unit(f)
+
+    ! First we need to read the array dimensions...
+    if ( formatted ) then
+      read(iu, '(i16)') nr, nc, nz
+      read(iu, '(l16)') sorted
+    else
+      read(iu) nr, nc, nz
+      read(iu) sorted
+    end if
+
+    call new(this, nr, nc, nz)
+    call attach(this, cptr=ptr, ncol=ncol)
+
+    ! Read ncol
+    if ( formatted ) then
+      read(iu, '(i16)') ncol
+    else
+      read(iu) ncol
+    end if
+
+    ! Create the pointer array
+    ptr(1) = BUD_SM_PTR
+    do i = 2 , nc
+      ptr(i) = ptr(i-1) + ncol(i)
+    end do
+
+    ! Read the sparse rows
+    do ic = 1 , nc
+      row => row_p(this, ic)
+      if ( formatted ) then
+        read(iu, '(i16)') row
+      else
+        read(iu) row
+      end if
+    end do
+
+    this%D%sorted = sorted
+    this%D%finalized = .true.
+
+  end subroutine read_
 
 
 ! Local pre-processor variables that

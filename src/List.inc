@@ -150,6 +150,9 @@
     !> @iSee #reverse
     procedure, public :: reverse => reverse_
 
+    !> @iSee #reorder
+    procedure, public :: reorder => reorder_
+
     !> @iSee #extend
     procedure, public :: extend => extend_
 
@@ -188,6 +191,12 @@
     procedure, public :: is_sorted => is_sorted_
 # endif
 
+    !> @iSee #write
+    procedure, public, pass(this) :: write => write_
+
+    !> @iSee #read
+    procedure, public, pass(this) :: read => read_
+
 #endif
   end type BUD_TYPE_NAME
 
@@ -215,13 +224,11 @@
     !> List content stored in the @bud
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), allocatable :: lst(:)
 
-#ifdef BUD_IS_INTEGER
     !> Whether this list is a sorted list, or not
     !!
     !! A sorted list has certain efficient properties
     !! when querying certain elements.
     logical :: sorted = .false.
-#endif
 
     ! Consistent data in the reference counted object
 #   include "bud_common_type_.inc"
@@ -485,9 +492,34 @@
   end interface
   public :: reverse
 
+  !> Reorders a list
+  interface reorder
+    module procedure reorder_
+  end interface
+  public :: reorder
+
+
   ! Define a few constants used throughout
   integer(BUD_INT_PREC), parameter :: ONE = BUD_CC2(1_,BUD_INT_PREC)
 
+
+  !> Write the array information to a file (already opened)
+  !!
+  !! This dumps the array information to an already opened file
+  !! in a standard compliant way.
+  !! The file can also be re-read using the `read` function
+  interface write
+    module procedure write_
+  end interface write
+  public :: write
+
+  !> Read array information from a file (already opened)
+  !!
+  !! Reads the array as `write` would have written it.
+  interface read
+    module procedure read_
+  end interface read
+  public :: read
 
 
   ! Include common data routines
@@ -1433,6 +1465,48 @@
 
   end subroutine reverse_
 
+  !> @param[inout] this the list that will re-order
+  !! @param[in] n size of pivoting list (must be size of list)
+  !! @param[in] pivot pivoting table for the elements
+  subroutine reorder_(this, n, pivot)
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    integer(BUD_INT_PREC), intent(in) :: n
+    integer(BUD_INT_PREC), intent(in) :: pivot(n)
+
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), allocatable :: nlst(:)
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: olst(:)
+
+    integer(BUD_INT_PREC) :: i
+
+    if ( .not. is_initd(this) ) return
+
+    if ( n < size(this) ) then
+
+      call set_error(this, 1)
+
+      return
+
+    end if
+
+    ! Retrieve the list
+    olst => list_p(this)
+    allocate(nlst(n))
+
+    ! Now loop the pivoting stuff...
+    do i = 1 , n
+      nlst(i) = olst(pivot(i))
+    end do
+
+    ! copy the values
+    do i = 1 , n
+      olst(i) = nlst(i)
+    end do
+
+    deallocate(nlst)
+
+  end subroutine reorder_
+
+
 
 #ifndef BUD_IS_COMPLEX
   !> @param[inout] this list @bud
@@ -1533,6 +1607,111 @@
   end function is_sorted_
 #endif
 
+
+  !> @param[inout] f `File` bud
+  !! @param[in] this the list
+  subroutine write_(f, this)
+    use BUD_CC2(BUD_MOD,_File)
+
+    BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+
+#ifdef BUD_TYPE_VAR_PREC
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: p(:)
+#else
+    BUD_TYPE_VAR, pointer  BUD_FORTRAN_CONTIGUOUS :: p(:)
+#endif
+
+    logical :: formatted
+    integer :: iu
+
+    integer(BUD_INT_PREC) :: n
+
+    ! If file is not opened, return immediately
+    if ( .not. is_open(f) ) return
+    if ( .not. is_initd(this) ) return
+
+    ! First figure out if the file is an unformatted file
+    formatted = is_formatted(f)
+    iu = unit(f)
+
+    ! Get size
+    n = size(this)
+    p => list_p(this)
+
+    ! First we write the size of the list
+    ! and the state of the values (sorted/non-sorted)
+    if ( formatted ) then
+      write(iu, '(i16)') n
+      write(iu, '(l16)') this%D%sorted
+    else
+      write(iu) n
+      write(iu) this%D%sorted
+    end if
+
+    if ( formatted ) then
+#ifdef BUD_IS_INTEGER
+      write(iu, '(i16)') p
+#else
+      write(iu, '(e20.16)') p
+#endif
+    else
+      write(iu) p
+    end if
+
+  end subroutine write_
+
+  !> @param[inout] f `File` bud
+  !! @param[inout] this the array bud
+  subroutine read_(f, this)
+    use BUD_CC2(BUD_MOD,_File)
+
+    BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+
+#ifdef BUD_TYPE_VAR_PREC
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: p(:)
+#else
+    BUD_TYPE_VAR, pointer  BUD_FORTRAN_CONTIGUOUS :: p(:)
+#endif
+
+    logical :: formatted, same_size
+    integer :: iu
+
+    integer(BUD_INT_PREC) :: n
+    logical :: sorted
+
+    ! If file is not opened, return immediately
+    if ( .not. is_open(f) ) return
+
+    ! First figure out if the file is an unformatted file
+    formatted = is_formatted(f)
+    iu = unit(f)
+
+    ! First we need to read the array dimensions...
+    if ( formatted ) then
+      read(iu, '(i16)') n
+      read(iu, '(l16)') sorted
+    else
+      read(iu) n
+      read(iu) sorted
+    end if
+
+    call new(this, n)
+    this%D%sorted = sorted
+    p => list_max_p(this)
+
+    if ( formatted ) then
+#ifdef BUD_IS_INTEGER
+      read(iu, '(i16)') p
+#else
+      read(iu, '(e20.16)') p
+#endif
+    else
+      read(iu) p
+    end if
+
+  end subroutine read_
 
   !> @param[in] this list @bud
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
