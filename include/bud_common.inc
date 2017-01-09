@@ -176,6 +176,26 @@
   public :: print
 #endif
 
+#ifndef BUD_NO_IO
+
+  !> Read @bud information from a file (already opened)
+  !!
+  !! Reads the information as `write` would have written it.
+  interface read
+    module procedure read_
+  end interface
+  public :: read
+
+  !> Write the @bud information to a file (already opened)
+  !!
+  !! The file can also be re-read using the `read` function
+  interface write
+    module procedure write_
+  end interface
+  public :: write
+
+#endif
+
   !> Query number of references to the @bud
   !!
   !! Get number of times this @bud has been assigned

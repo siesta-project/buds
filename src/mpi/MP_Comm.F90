@@ -1146,6 +1146,8 @@ module BUD_MOD_NAME
   public :: Comm_Create
 #endif
 
+
+#define BUD_NO_IO
   ! Include common data routines
   ! Note that 'CONTAINS' is present in this include file.
 # include "bud_common.inc"

@@ -320,7 +320,7 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     type(BUD_STACK_TYPE), intent(in) :: item
 
-    integer :: el
+    integer :: el, i
 
     ! if this has not been initialised we immediately return
     ! We _could_ initialize it, but we do not know how
@@ -333,8 +333,10 @@
     if ( el == size_max(this) ) then
 
       ! cycle stack and push
-      this%D%T = cshift(this%D%T,+1)
-      call delete(this%D%T(el))
+      do i = 2 , el
+        this%D%T(i-1) = this%D%T(i)
+      end do
+      ! Assignment will also delete.
       this%D%T(el) = item
 
     else
@@ -390,7 +392,7 @@
     integer, intent(in), optional :: top, bot
 
     integer :: lnpop
-    integer :: el
+    integer :: el, i
 
     ! it is already empty...
     if ( .not. is_initd(this) ) return
@@ -441,7 +443,9 @@
         call delete(this%D%T(1))
         this%D%nel = this%D%nel - 1
         ! shift to attain the correct order
-        this%D%T = cshift(this%D%T,-1)
+        do i = 1 , this%D%nel
+          this%D%T(i) = this%D%T(i+1)
+        end do
 
         el = el - 1
         lnpop = lnpop - 1
@@ -578,6 +582,83 @@
     end if
   end function size_max_elem_
 
+#ifndef BUD_NO_IO
+
+  !> @param[in] f a file (bud_File)
+  !! @param[in] this collection @bud to be written
+  subroutine write_(f, this)
+    use BUD_CC2(BUD_MOD,_File)
+    BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+
+    logical :: formatted
+    integer :: iu
+    integer :: nel, nel_max, i
+
+    ! If file is not opened, return immediately
+    if ( .not. is_open(f) ) return
+    if ( .not. is_initd(this) ) return
+
+    formatted = is_formatted(f)
+    iu = unit(f)
+
+    ! Get information about this stack
+    nel = size(this)
+    nel_max = size_max(this)
+
+    if ( formatted ) then
+      write(iu, '(i16)') nel_max, nel
+    else
+      write(iu) nel_max, nel
+    end if
+
+    ! Now write each of them...
+    do i = 1 , nel
+      call write(f, this%D%T(i))
+    end do
+
+  end subroutine write_
+
+  !> @param[in] f a file (bud_File)
+  !! @param[in] this collection @bud to be readed
+  subroutine read_(f, this)
+    use BUD_CC2(BUD_MOD,_File)
+    BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+
+    ! To read each of them individually
+    type(BUD_STACK_TYPE) :: cp
+
+    logical :: formatted
+    integer :: iu
+    integer :: nel, nel_max, i
+
+    ! If file is not opened, return immediately
+    if ( .not. is_open(f) ) return
+
+    formatted = is_formatted(f)
+    iu = unit(f)
+
+    ! Get information about this stack
+    if ( formatted ) then
+      read(iu, '(i16)') nel_max, nel
+    else
+      read(iu) nel_max, nel
+    end if
+
+    ! Initialize this object
+    call new(this, nel_max)
+
+    ! Now write each of them...
+    do i = 1 , nel
+      call read(f, cp)
+      call push(this, cp)
+      call delete(cp)
+    end do
+
+  end subroutine read_
+
+#endif
 
   !> @param[in] this data type
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed

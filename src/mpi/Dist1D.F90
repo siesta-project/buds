@@ -41,7 +41,7 @@ module BUD_MOD_NAME
 end module
 !> @}
 
-!> @defgroup Distribution module for all different precision objects
+!> @defgroup Distribution module for all precision objects
 !! @ingroup dist-1d
 !! Module for making everything public
 !! @{

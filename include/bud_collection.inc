@@ -634,6 +634,70 @@
 #endif
 
 
+#ifndef BUD_NO_IO
+# ifndef BUD_IO_OVERLOAD
+
+  !> @param[in] f a file (bud_File)
+  !! @param[in] this collection @bud to be written
+  subroutine write_(f, this)
+    use BUD_CC2(BUD_MOD,_File)
+    BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+
+    ! If file is not opened, return immediately
+    if ( .not. is_open(f) ) return
+    if ( .not. is_initd(this) ) return
+
+    call write(f, this%D%e1)
+    call write(f, this%D%e2)
+#ifdef BUD_COLL_3
+    call write(f, this%D%e3)
+#endif
+#ifdef BUD_COLL_4
+    call write(f, this%D%e4)
+#endif
+#ifdef BUD_COLL_5
+    call write(f, this%D%e5)
+#endif
+#ifdef BUD_COLL_6
+    call write(f, this%D%e6)
+#endif
+
+  end subroutine write_
+
+  !> @param[in] f a file (bud_File)
+  !! @param[in] this collection @bud to be readed
+  subroutine read_(f, this)
+    use BUD_CC2(BUD_MOD,_File)
+    BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+
+    ! If file is not opened, return immediately
+    if ( .not. is_open(f) ) return
+
+    ! prepare for reading
+    call initialize(this)
+
+    call read(f, this%D%e1)
+    call read(f, this%D%e2)
+#ifdef BUD_COLL_3
+    call read(f, this%D%e3)
+#endif
+#ifdef BUD_COLL_4
+    call read(f, this%D%e4)
+#endif
+#ifdef BUD_COLL_5
+    call read(f, this%D%e5)
+#endif
+#ifdef BUD_COLL_6
+    call read(f, this%D%e6)
+#endif
+
+  end subroutine read_
+
+# endif
+#endif
+
   !> @param[in] this data type
   !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent @opt=1 possible indentation of printed statement

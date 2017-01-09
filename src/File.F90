@@ -307,6 +307,7 @@ module BUD_MOD_NAME
   end interface
   public :: delete_file
 
+# define BUD_NO_IO
   ! Include common data routines
   ! Note that 'CONTAINS' is present in this include file.
   ! the common_delete_ ensures a closed file

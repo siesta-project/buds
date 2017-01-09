@@ -37,6 +37,9 @@
 
 #define BUD_PREC ii_
 
+! There are no IO routines, yet
+#define BUD_NO_IO
+
 # define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,iDist1D_b1D)
 !> @defgroup BUD_MOD_NAME Logical
 !! `logical` data type

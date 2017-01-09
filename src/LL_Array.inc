@@ -1,5 +1,6 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
 
+#define BUD_NO_IO
   ! Before contains
 #include "bud_linkedlist.inc"
   ! after contains

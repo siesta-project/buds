@@ -224,24 +224,6 @@
   end interface
   private :: assign_value_
 
-  !> Write the array information to a file (already opened)
-  !!
-  !! This dumps the array information to an already opened file
-  !! in a standard compliant way.
-  !! The file can also be re-read using the `read` function
-  interface write
-    module procedure write_
-  end interface write
-  public :: write
-
-  !> Read array information from a file (already opened)
-  !!
-  !! Reads the array as `write` would have written it.
-  interface read
-    module procedure read_
-  end interface read
-  public :: read
-
 
   ! Include common data routines
   ! Note that 'CONTAINS' is present in this include file.

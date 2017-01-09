@@ -158,12 +158,6 @@
     !> @iSee #attach
     procedure, public :: attach => attach_
 
-    !> @iSee #write
-    procedure, public, pass(this) :: write => write_
-
-    !> @iSee #read
-    procedure, public, pass(this) :: read => read_
-
 #endif
   end type BUD_TYPE_NAME
 
@@ -358,23 +352,6 @@
     module procedure add_nonzero_
   end interface
   public :: add_nonzero
-
-
-  !> Write sparse matrix information to a file (already opened)
-  !!
-  !! The file can be re-read using the `read` function
-  interface write
-    module procedure write_
-  end interface write
-  public :: write
-
-  !> Read sparse matrix information from a file (already opened)
-  !!
-  !! Reads the information as `write` would have written it.
-  interface read
-    module procedure read_
-  end interface read
-  public :: read
 
 
   ! Include the common elements of a sparsity method

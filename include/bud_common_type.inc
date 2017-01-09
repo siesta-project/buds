@@ -51,6 +51,14 @@
   !> @iSee error
   procedure, public :: error => common_error_
 
+#ifndef BUD_NO_IO
+  !> @iSee #write
+  procedure, public, pass(this) :: write => write_
+
+  !> @iSee #read
+  procedure, public, pass(this) :: read => read_
+#endif
+
   !>>@}
 
 #ifdef BUD_INCLUDE_TYPE

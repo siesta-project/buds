@@ -191,12 +191,6 @@
     procedure, public :: is_sorted => is_sorted_
 # endif
 
-    !> @iSee #write
-    procedure, public, pass(this) :: write => write_
-
-    !> @iSee #read
-    procedure, public, pass(this) :: read => read_
-
 #endif
   end type BUD_TYPE_NAME
 
@@ -501,25 +495,6 @@
 
   ! Define a few constants used throughout
   integer(BUD_INT_PREC), parameter :: ONE = BUD_CC2(1_,BUD_INT_PREC)
-
-
-  !> Write the array information to a file (already opened)
-  !!
-  !! This dumps the array information to an already opened file
-  !! in a standard compliant way.
-  !! The file can also be re-read using the `read` function
-  interface write
-    module procedure write_
-  end interface write
-  public :: write
-
-  !> Read array information from a file (already opened)
-  !!
-  !! Reads the array as `write` would have written it.
-  interface read
-    module procedure read_
-  end interface read
-  public :: read
 
 
   ! Include common data routines
@@ -1675,7 +1650,7 @@
     BUD_TYPE_VAR, pointer  BUD_FORTRAN_CONTIGUOUS :: p(:)
 #endif
 
-    logical :: formatted, same_size
+    logical :: formatted
     integer :: iu
 
     integer(BUD_INT_PREC) :: n

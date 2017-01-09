@@ -159,18 +159,8 @@
     module procedure get_data_assign_
   end interface
 
-  !> Print, to std-out, some basic information of the data-container
-  !!
-  !! Print out XML-like information regarding the data-container.
-  !!
-  !! @wanted
-  !! Retrieval function of the string that represents the data.
-  !! This will enable the parent program to show it customized.
-  interface print
-    module procedure print_
-  end interface
-  public :: print
 
+#define BUD_NO_IO
   ! all default reference counted stuff
 # include "bud_common.inc"
 
