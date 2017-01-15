@@ -74,15 +74,22 @@
   !! @note
   !! Do not deallocate the array-pointer.
   interface matrix_p
-    module procedure get_matrixp_
+    module procedure get_matrix_p_
+    module procedure get_matrix_ip_
   end interface
   public :: matrix_p
 
-  !> Query the index of the sparse matrix
+  !> Query the index of the sparse matrix (distributed index)
   interface sparse_index
     module procedure sparse_index_
   end interface
   public :: sparse_index
+
+  !> Query the distributed index (sparse matrix index)
+  interface distributed_index
+    module procedure sparse_index_
+  end interface
+  public :: distributed_index
 
   !> Query the size of the matrix (dimension)
   interface dimensions
@@ -111,10 +118,9 @@
 
 #include "bud_collection.inc"
 
-
   !> @param[in] this sparse matrix
   !! @return a pointer to the data (contiguous)
-  function get_matrixp_(this) result(p)
+  function get_matrix_p_(this) result(p)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC(:)
@@ -124,7 +130,61 @@
 
     p => array_p(this%D%e3)
 
-  end function get_matrixp_
+  end function get_matrix_p_
+
+
+  !> @param[in] this sparse matrix
+  !! @return a pointer to the data (not necessarily contiguous)
+  function get_matrix_ip_(this, i) result(p)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    integer(BUD_PREC), intent(in) :: i
+#ifdef BUD_TYPE_VAR_PREC
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer :: p BUD_DIM_SPEC(:)
+#else
+    BUD_TYPE_VAR, pointer :: p BUD_DIM_SPEC(:)
+#endif
+    integer(BUD_PREC) :: i1, i2
+    integer :: sm_idx
+
+    p => array_p(this%D%e3)
+
+    ! get sparse indices
+#ifdef BUD_SM_CSR
+    i1 = this%D%e2%D%rptr(i)BUD_SM_PTR_A
+    i2 = this%D%e2%D%rptr(i)+this%D%e2%D%nrow(i)BUD_SM_PTR_B
+#endif
+#ifdef BUD_SM_CSC
+    i1 = this%D%e2%D%cptr(i)BUD_SM_PTR_A
+    i2 = this%D%e2%D%cptr(i)+this%D%e2%D%ncol(i)BUD_SM_PTR_B
+#endif
+
+    ! Get the sub-pointer
+#if BUD_DIM == 1
+    p => p(i1:i2)
+#elif BUD_DIM == 2
+    select case ( sm_idx )
+    case ( 1 )
+      ! non-contiguous
+      p => p(i1:i2,:)
+    case ( 2 )
+      ! contiguous
+      p => p(:,i1:i2)
+    end select
+#elif BUD_DIM == 3
+    select case ( sm_idx )
+    case ( 1 )
+      ! non-contiguous
+      p => p(i1:i2,:,:)
+    case ( 2 )
+      ! non-contiguous
+      p => p(:,i1:i2,:)
+    case ( 3 )
+      ! contiguous
+      p => p(:,:,i1:i2)
+    end select
+#endif
+
+  end function get_matrix_ip_
 
   !> @param[in] this @bud container
   !! @return the number of dimensions of contained array
@@ -464,14 +524,14 @@
       logical :: run
 
       ! The pointers to the input data
-      integer(BUD_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: ptr(:), ind(:)
+      integer(BUD_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: ptr(:), ind(:), nrc(:)
 #ifdef BUD_TYPE_VAR_PREC
       BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: dat BUD_DIM_SPEC(:)
 #else
       BUD_TYPE_VAR, pointer BUD_FORTRAN_CONTIGUOUS :: dat BUD_DIM_SPEC(:)
 #endif
       ! The pointers to the output data
-      integer(BUD_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: optr(:), oind(:), nptr(:)
+      integer(BUD_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: optr(:), oind(:), onrc(:)
 
 #ifdef BUD_TYPE_VAR_PREC
       BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: odat BUD_DIM_SPEC(:)
@@ -485,13 +545,15 @@
       integer(BUD_PREC) :: id1, id2, oid1, oid2
       integer(BUD_PREC) :: out_nl
 
+#if BUD_DIM > 1
       ! Number of elements copied
       integer(BUD_PREC) :: ncopy
+#endif
 
+      integer(BUD_PREC) :: i, i2
 #if BUD_DIM > 2
       integer(BUD_PREC) :: i3
 #endif
-      integer(BUD_PREC) :: i, i2
       ! Ranks on the recieving and sending end
       integer :: send_R, recv_R
 
@@ -511,14 +573,14 @@
       ! with the distribution
       nullify(ptr, ind)
 #ifdef BUD_SM_CSC
-      call attach(sm, nz=nz, cptr=ptr, row=ind)
+      call attach(sm, nz=nz, cptr=ptr, row=ind, ncol=nrc)
 #elif defined(BUD_SM_CSR)
-      call attach(sm, nz=nz, rptr=ptr, col=ind)
+      call attach(sm, nz=nz, rptr=ptr, col=ind, ncol=nrc)
 #endif
 
       if ( .not. run ) return
 
-      nullify(optr, oind, nptr)
+      nullify(optr, oind, onrc)
 
       out_comm = out_dist
 
@@ -546,12 +608,12 @@
 #ifdef BUD_SM_CSC
         call attach(out_sm, cptr=optr, row=oind)
 # if BUD_SM_CSC == 1
-        call attach(out_sm, ncol=nptr)
+        call attach(out_sm, ncol=onrc)
 # endif
 #elif defined(BUD_SM_CSR)
         call attach(out_sm, rptr=optr, col=oind)
 # if BUD_SM_CSR == 1
-        call attach(out_sm, nrow=nptr)
+        call attach(out_sm, nrow=onrc)
 # endif
 #endif
 
@@ -608,7 +670,7 @@
           ! Get the local indices in the incoming
           ! distribution
           id1 = ptr(il) BUD_SM_PTR_A
-          id2 = ptr(il+1) BUD_SM_PTR_B
+          id2 = id1 + nrc(il) BUD_SM_PTR_B
 
           ! Update the next pointer
           optr(oil+1) = optr(oil) + id2 - id1 + 1
@@ -629,7 +691,7 @@
 
           call Recv(oind(oid1:), MPI_ANY_SOURCE, ig, &
             parent, stat)
-          call MPI_Get_Count(stat, MPI_INTEGER, oid2, i)
+          call Get_Count(stat, MPI_INTEGER, oid2, parent)
           optr(oil+1) = optr(oil) + oid2
 
         else if ( send_R == in_rank ) then
@@ -640,7 +702,7 @@
           ! Get the local indices in the incoming
           ! distribution
           id1 = ptr(il) BUD_SM_PTR_A
-          id2 = ptr(il+1) BUD_SM_PTR_B
+          id2 = id1 + nrc(il) BUD_SM_PTR_B
 
           call ISSend(ind(id1:id2), recv_R, ig, parent, reqs(il))
 
@@ -663,21 +725,17 @@
       ! per sparse row/column for the special sparse
       ! matrices.
 #if defined(BUD_SM_CSC)
-# if BUD_SM_CSC == 1
       if ( is_communicator(out_comm) ) then
         do oil = 1 , out_nl
-          nptr(oil) = optr(oil+1) - optr(oil)
+          onrc(oil) = optr(oil+1) - optr(oil)
         end do
       end if
-# endif
 #elif defined(BUD_SM_CSR)
-# if BUD_SM_CSR == 1
       if ( is_communicator(out_comm) ) then
         do oil = 1 , out_nl
-          nptr(oil) = optr(oil+1) - optr(oil)
+          onrc(oil) = optr(oil+1) - optr(oil)
         end do
       end if
-# endif
 #endif
 
 
@@ -687,7 +745,7 @@
 
       if ( sm_idx == dims ) then
         ! The easy stuff is when the sparse
-        ! dimension is the same as
+        ! dimension is the same as the last dimension
 
 #if BUD_DIM == 2
         ncopy = size(odat, 1)
@@ -709,7 +767,7 @@
             oil = g2l(out_dist, ig)
 
             id1 = ptr(il) BUD_SM_PTR_A
-            id2 = ptr(il+1) BUD_SM_PTR_B
+            id2 = id1 + nrc(il) BUD_SM_PTR_B
             oid1 = optr(oil) BUD_SM_PTR_A - id1
 
             do i = id1 , id2
@@ -729,7 +787,7 @@
 
             oil = g2l(out_dist, ig)
             oid1 = optr(oil) BUD_SM_PTR_A
-            oid2 = optr(oil+1) BUD_SM_PTR_B
+            oid2 = oid1 + onrc(oil) BUD_SM_PTR_B
 
 # if BUD_DIM == 1
             call Recv(odat(oid1:oid2), MPI_ANY_SOURCE, ig, &
@@ -750,7 +808,7 @@
 
             il = g2l(dist, ig)
             id1 = ptr(il) BUD_SM_PTR_A
-            id2 = ptr(il+1) BUD_SM_PTR_B
+            id2 = id1 + nrc(il) BUD_SM_PTR_B
 
 #if BUD_DIM == 1
             call ISSend(dat(id1:id2), recv_R, ig, &
@@ -799,7 +857,7 @@
              oil = g2l(out_dist, ig)
 
              id1 = ptr(il) BUD_SM_PTR_A
-             id2 = ptr(il+1) BUD_SM_PTR_B
+             id2 = id1 + nrc(il) BUD_SM_PTR_B
              oid1 = optr(oil) BUD_SM_PTR_A - id1
 
              do i = id1 , id2
@@ -815,7 +873,7 @@
 
              oil = g2l(out_dist, ig)
              oid1 = optr(oil) BUD_SM_PTR_A
-             oid2 = optr(oil+1) BUD_SM_PTR_B
+             oid2 = oid1 + onrc(il) BUD_SM_PTR_B
 
 # if BUD_DIM == 2
              call Recv(odat(oid1:oid2,i2), MPI_ANY_SOURCE, ig, &
@@ -832,7 +890,7 @@
 
              il = g2l(dist, ig)
              id1 = ptr(il) BUD_SM_PTR_A
-             id2 = ptr(il+1) BUD_SM_PTR_B
+             id2 = id1 + nrc(il) BUD_SM_PTR_B
 
 #if BUD_DIM == 2
              call ISSend(dat(id1:id2,i2), recv_R, ig, &
@@ -881,7 +939,7 @@
              oil = g2l(out_dist, ig)
 
              id1 = ptr(il) BUD_SM_PTR_A
-             id2 = ptr(il+1) BUD_SM_PTR_B
+             id2 = id1 + nrc(il) BUD_SM_PTR_B
              oid1 = optr(oil) BUD_SM_PTR_A - id1
 
              do i = id1 , id2
@@ -894,7 +952,7 @@
 
              oil = g2l(out_dist, ig)
              oid1 = optr(oil) BUD_SM_PTR_A
-             oid2 = optr(oil+1) BUD_SM_PTR_B
+             oid2 = oid1 + onrc(il) BUD_SM_PTR_B
 
              call Recv(odat(:,oid1:oid2,i3), MPI_ANY_SOURCE, ig, &
                parent, stat)
@@ -905,7 +963,7 @@
 
              il = g2l(dist, ig)
              id1 = ptr(il) BUD_SM_PTR_A
-             id2 = ptr(il+1) BUD_SM_PTR_B
+             id2 = id1 + nrc(il) BUD_SM_PTR_B
 
              call ISSend(dat(:,id1:id2,i3), recv_R, ig, &
                parent, reqs(il))
@@ -939,6 +997,512 @@
     end subroutine sub_dist
 
   end subroutine distribute_
+
+  !> @param[inout] f `File` bud
+  !! @param[in] this the distributed sparse matrix @bud
+  subroutine write_(f, this)
+    use BUD_CC2(BUD_MOD,_File)
+#ifdef BUD_SM_CSR
+# if BUD_SM_CSR == 0
+    use BUD_CC2(BUD_MOD,_iDist1D_CSR)
+# else
+    use BUD_CC2(BUD_MOD,_iDist1D_CSR0)
+# endif
+#endif
+#ifdef BUD_SM_CSC
+# if BUD_SM_CSC == 0
+    use BUD_CC2(BUD_MOD,_iDist1D_CSC)
+# else
+    use BUD_CC2(BUD_MOD,_iDist1D_CSC0)
+# endif
+#endif
+
+    BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+
+    type( BUD_CC2(BUD_TYPE,MP_Comm) ) :: comm
+    type(BUD_COLL_1) :: dist
+    type(BUD_COLL_2) :: sm
+    type(BUD_COLL_3) :: arr
+
+    logical :: formatted, do_io
+    integer :: iu, io_rank
+
+    ! Indices
+    integer :: i, i2, i3, ir
+    integer(BUD_PREC) :: ig, il, gnr, gnc, gnl, gnrc, nr, nc, nz
+
+    integer(BUD_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: ptr(:), ind(:), nrc(:)
+#ifdef BUD_TYPE_VAR_PREC
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer :: dat BUD_DIM_SPEC(:)
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), allocatable :: rdat(:)
+#else
+    BUD_TYPE_VAR, pointer BUD_FORTRAN_CONTIGUOUS :: dat BUD_DIM_SPEC(:)
+    BUD_TYPE_VAR, allocatable :: rdat(:)
+#endif
+
+    integer :: sm_idx, dims
+    integer, allocatable :: ashape(:)
+#ifdef BUD_MPI
+    integer :: status(MPI_STATUS_SIZE)
+#endif
+
+#ifdef BUD_SM_CSR
+# if BUD_SM_CSR == 0
+    type( BUD_CC2(BUD_TYPE,iD1D_CSR) ) :: d1d
+# else
+    type( BUD_CC2(BUD_TYPE,iD1D_CSR0) ) :: d1d
+# endif
+#endif
+#ifdef BUD_SM_CSC
+# if BUD_SM_CSC == 0
+    type( BUD_CC2(BUD_TYPE,iD1D_CSC) ) :: d1d
+# else
+    type( BUD_CC2(BUD_TYPE,iD1D_CSC0) ) :: d1d
+# endif
+#endif
+
+    ! If file is not opened, return immediately
+    if ( .not. is_initd(this) ) return
+
+#ifndef BUD_MPI
+    sm = this
+    arr = this
+    call new(sm_arr, sm, arr)
+    call write(f, sm_arr)
+    call delete(sm_arr)
+    call delete(sm)
+    call delete(arr)
+    return
+#else
+
+    ! Get contained data.
+    dist = this
+    comm = dist
+    sm = this
+    arr = this
+
+    if ( is_open(f) ) then
+      io_rank = comm_rank(comm)
+    else
+      io_rank = -1
+    end if
+    call AllReduce_Max(io_rank, iu, comm)
+    io_rank = iu
+
+    ! Check if the file is open on one rank
+    if ( io_rank < 0 ) then
+      call delete(dist)
+      call delete(comm)
+      call delete(sm)
+      call delete(arr)
+      return
+    end if
+
+    ! This ensures that only one rank will do the writing
+    ! in case multiple ranks have the file open
+    ! only @bud knows what will happen in this case!!!
+    do_io = io_rank == comm_rank(comm)
+
+    if ( do_io ) then
+      ! First figure out if the file is an unformatted file
+      formatted = is_formatted(f)
+      iu = unit(f)
+    end if
+
+    call new(d1d)
+    d1d = dist
+    d1d = sm
+    call write(f, d1d)
+    call delete(d1d)
+
+    ! Retrieve the shape of the arrays
+    allocate(ashape(dims))
+    ashape = -1
+    do i = 1 , dims
+      ashape(i) = size(arr, i)
+    end do
+    call delete(arr)
+
+    ! Get the sparse-index
+    sm_idx = sparse_index(this)
+    ! figure out number of dimensions
+    dims = dimensions(this)
+    ! Denote the sparse index here
+    ashape(sm_idx) = -1
+
+    ! Now we should write the dimensionality of the data
+    if ( do_io ) then
+
+      if ( formatted ) then
+        write(iu, '(i16)') dims, sm_idx
+      else
+        write(iu) dims, sm_idx
+      end if
+
+      ! Now write all the other dimenions, if it is
+      ! anything but 1
+      if ( formatted ) then
+        write(iu, '(i16)') ashape
+      else
+        write(iu) ashape
+      end if
+
+    end if
+
+#ifdef BUD_SM_CSR
+    call attach(sm, nr=nr, nc=nc, nz=nz, &
+      rptr=ptr, nrow=nrc)
+    gnr = gnl
+    gnc = nc
+#else
+    call attach(sm, nr=nr, nc=nc, nz=nz, &
+      cptr=ptr, ncol=nrc)
+    gnr = nr
+    gnc = gnl
+#endif
+    gnrc = maxval(nrc)
+    call AllReduce_Max(gnrc, ig, comm)
+    gnrc = ig
+    if ( sm_idx > 1 ) then
+      ! Rescale the number of send elements
+      gnrc = gnrc * product(ashape(1:sm_idx-1))
+    end if
+    if ( do_io ) then
+      allocate(rdat(gnrc))
+    end if
+
+    ! Now there are a couple of cases
+    if ( sm_idx == dims ) then
+      ! The easy stuff is when the sparse
+      ! dimension is the same as the last dimension
+
+      ! Now write data
+      do ig = 1 , gnl
+
+        ! Get hosting rank and local element
+        ir = global2rank(dist, ig)
+        il = global2local(dist, ig)
+
+        if ( ir == io_rank ) then
+
+          dat => matrix_p(this, il)
+
+          ! Simply write it
+          if ( formatted ) then
+#ifdef BUD_IS_INTEGER
+            write(iu, '(i16)') dat
+#else
+            write(iu, '(e20.16)') dat
+#endif
+          else
+            write(iu) dat
+          end if
+
+        else if ( do_io ) then
+
+          ! recieve data
+          call Recv(rdat(1), gnrc, ir, ig, comm, status)
+          if ( formatted ) then
+#ifdef BUD_IS_INTEGER
+            write(iu, '(i16)') rdat
+#else
+            write(iu, '(e20.16)') rdat
+#endif
+          else
+            write(iu) rdat
+          end if
+
+        else
+
+          ! send data
+          dat => matrix_p(this, il)
+          call SSend(dat BUD_DIM_SPEC(1), gnrc, io_rank, ig, comm)
+
+        end if
+
+      end do
+
+    else if ( sm_idx == 1 ) then
+
+      ! The first index is the sparse element...
+#if BUD_DIM > 2
+      do i3 = 1 , ashape(3)
+#endif
+        do i2 = 1 , ashape(2)
+
+          ! Now write data
+          do ig = 1 , gnl
+
+            ! Get hosting rank and local element
+            ir = global2rank(dist, ig)
+            il = global2local(dist, ig)
+
+            if ( ir == io_rank ) then
+
+              dat => matrix_p(this, il)
+
+              ! Simply write it
+              if ( formatted ) then
+#ifdef BUD_IS_INTEGER
+#if BUD_DIM == 2
+                write(iu, '(i16)') dat(:, i2)
+#elif BUD_DIM == 3
+                write(iu, '(i16)') dat(:, i2, i3)
+#endif
+#else
+#if BUD_DIM == 2
+                write(iu, '(e20.16)') dat(:, i2)
+#elif BUD_DIM == 3
+                write(iu, '(e20.16)') dat(:, i2, i3)
+#endif
+#endif
+              else
+#if BUD_DIM == 2
+                write(iu) dat(:, i2)
+#elif BUD_DIM == 3
+                write(iu) dat(:, i2, i3)
+#endif
+              end if
+
+            else if ( do_io ) then
+
+              ! recieve data
+              call Recv(rdat(1), gnrc, ir, ig, comm, status)
+              if ( formatted ) then
+#ifdef BUD_IS_INTEGER
+                write(iu, '(i16)') rdat
+#else
+                write(iu, '(e20.16)') rdat
+#endif
+              else
+                write(iu) rdat
+              end if
+
+            else
+
+              ! send data
+              dat => matrix_p(this, il)
+#if BUD_DIM == 2
+              call SSend(dat(1,i2), gnrc, io_rank, ig, comm)
+#elif BUD_DIM == 3
+              call SSend(dat(1,i2,i3), gnrc, io_rank, ig, comm)
+#endif
+            end if
+
+          end do ! distributed (global) index
+
+        end do
+#if BUD_DIM > 2
+      end do
+#endif
+
+#if BUD_DIM > 1
+    else if ( sm_idx == 2 ) then
+
+# if BUD_DIM == 3
+      do i3 = 1 , ashape(3)
+
+        ! Now write data
+        do ig = 1 , gnl
+
+          ! Get hosting rank and local element
+          ir = global2rank(dist, ig)
+          il = global2local(dist, ig)
+
+          if ( ir == io_rank ) then
+
+            dat => matrix_p(this, il)
+
+            ! Simply write it
+            if ( formatted ) then
+#ifdef BUD_IS_INTEGER
+              write(iu, '(i16)') dat(:, :, i3)
+#else
+              write(iu, '(e20.16)') dat(:, :, i3)
+#endif
+            else
+              write(iu) dat(:, :, i3)
+            end if
+
+          else if ( do_io ) then
+
+            ! recieve data
+            call Recv(rdat(1), gnrc, ir, ig, comm, status)
+            if ( formatted ) then
+#ifdef BUD_IS_INTEGER
+              write(iu, '(i16)') rdat
+#else
+              write(iu, '(e20.16)') rdat
+#endif
+            else
+              write(iu) rdat
+            end if
+
+          else
+
+            ! send data
+            dat => matrix_p(this, il)
+            call SSend(dat(1,1,i3), gnrc, io_rank, ig, comm)
+
+          end if
+
+        end do ! distributed (global) index
+
+      end do
+# endif
+#endif
+    end if
+
+    deallocate(ashape)
+    if ( allocated(rdat) ) deallocate(rdat)
+
+    call delete(dist)
+    call delete(comm)
+    call delete(sm)
+
+#endif
+  end subroutine write_
+
+  !> @param[inout] f `File` bud
+  !! @param[in] this the distributed sparse matrix @bud
+  subroutine read_(f, dist, this)
+    use BUD_CC2(BUD_MOD,_File)
+#ifdef BUD_SM_CSR
+# if BUD_SM_CSR == 0
+    use BUD_CC2(BUD_MOD,_iDist1D_CSR)
+# else
+    use BUD_CC2(BUD_MOD,_iDist1D_CSR0)
+# endif
+#endif
+#ifdef BUD_SM_CSC
+# if BUD_SM_CSC == 0
+    use BUD_CC2(BUD_MOD,_iDist1D_CSC)
+# else
+    use BUD_CC2(BUD_MOD,_iDist1D_CSC0)
+# endif
+#endif
+
+    BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f
+    BUD_CLASS(BUD_COLL_1) :: dist
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+
+    type( BUD_CC2(BUD_TYPE,MP_Comm) ) :: comm
+    type(BUD_COLL_2) :: sm
+    type(BUD_COLL_3) :: arr
+
+    logical :: formatted, do_io
+    integer :: iu, io_rank
+
+    ! Indices
+    integer :: i, i2, i3, ir
+    integer(BUD_PREC) :: ig, il, gnr, gnc, gnl, gnrc, nr, nc, nz
+
+#ifdef BUD_SM_CSR
+# if BUD_SM_CSR == 0
+    type( BUD_CC2(BUD_TYPE,iD1D_CSR) ) :: d1d
+# else
+    type( BUD_CC2(BUD_TYPE,iD1D_CSR0) ) :: d1d
+# endif
+#endif
+#ifdef BUD_SM_CSC
+# if BUD_SM_CSC == 0
+    type( BUD_CC2(BUD_TYPE,iD1D_CSC) ) :: d1d
+# else
+    type( BUD_CC2(BUD_TYPE,iD1D_CSC0) ) :: d1d
+# endif
+#endif
+
+    integer :: sm_idx, dims
+    integer, allocatable :: ashape(:)
+#ifdef BUD_MPI
+    integer :: status(MPI_STATUS_SIZE)
+#endif
+
+        ! If file is not opened, return immediately
+    if ( .not. is_open(f) ) return
+
+#ifndef BUD_MPI
+    call read(f, sm_arr)
+    sm = sm_arr
+    arr = sm_arr
+    call delete(sm_arr)
+    call new(this, dist, sm, arr)
+    call delete(sm)
+    call delete(arr)
+    return
+#else
+
+    ! How should we deal with the distribution when reading?
+    ! Should we just create a random one and let the external use re-distribute
+    ! the data? Yeah, probably
+    ! Also, we need a communicator...
+    ! So this one needs an additional argument.
+    comm = dist
+
+    if ( is_open(f) ) then
+      io_rank = comm_rank(comm)
+    else
+      io_rank = -1
+    end if
+    call AllReduce_Max(io_rank, iu, comm)
+    io_rank = iu
+
+    ! Check if the file is open on one rank
+    if ( io_rank < 0 ) then
+      call delete(dist)
+      call delete(comm)
+      return
+    end if
+
+    ! Read the distribution and the sparse matrix
+    call read(f, dist, d1d)
+    sm = d1d
+    call delete(d1d)
+
+    ! Now we should read the sparse data
+    ! This ensures that only one rank will do the writing
+    ! in case multiple ranks have the file open
+    ! only @bud knows what will happen in this case!!!
+    do_io = io_rank == comm_rank(comm)
+
+    if ( do_io ) then
+      ! First figure out if the file is an unformatted file
+      formatted = is_formatted(f)
+      iu = unit(f)
+    end if
+
+    ! Now we should read the dimensionality of the data
+    if ( do_io ) then
+
+      if ( formatted ) then
+        read(iu, '(i16)') dims, sm_idx
+      else
+        read(iu) dims, sm_idx
+      end if
+
+      allocate(ashape(dims))
+
+      ! Now write all the other dimenions, if it is
+      ! anything but 1
+      if ( formatted ) then
+        read(iu, '(i16)') ashape
+      else
+        read(iu) ashape
+      end if
+
+    end if
+
+    call Bcast(dims, io_rank, comm)
+    call Bcast(sm_idx, io_rank, comm)
+    if ( .not. do_io ) then
+      allocate(ashape(dims))
+    end if
+    call Bcast(ashape, io_rank, comm)
+
+    ! Now we have the size of the arrays
+#endif
+  end subroutine read_
 
 
 #undef BUD_TYPE_NEW

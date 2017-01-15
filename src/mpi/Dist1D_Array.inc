@@ -342,8 +342,10 @@
       integer(BUD_PREC) :: il, ig, oil
       integer(BUD_PREC) :: out_nl
 
+#if BUD_DIM > 1
       ! Number of elements copied
       integer(BUD_PREC) :: ncopy
+#endif
 
 #if BUD_DIM > 2
       integer(BUD_PREC) :: i3
