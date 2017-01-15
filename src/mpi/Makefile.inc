@@ -21,6 +21,25 @@ mpi_OBJECTS += $(DIST_OBJECTS)
 bud_Dist1D.f90: Dist1D.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
 
+
+DIST_SM_OBJECTS = \
+	bud_Dist1D_CSR.o \
+	bud_Dist1D_CSR0.o \
+	bud_Dist1D_CSC.o \
+	bud_Dist1D_CSC0.o
+$(DIST_SM_OBJECTS): $(DIST_OBJECTS) $(SM_C) $(SM_R)
+$(DIST_SM_OBJECTS:.o=.f90): Dist1D_SM.inc
+mpi_OBJECTS += $(DIST_SM_OBJECTS)
+bud_Dist1D_CSR.f90: Dist1D_SM_CSR.F90
+	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
+bud_Dist1D_CSR0.f90: Dist1D_SM_CSR0.F90
+	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
+bud_Dist1D_CSC.f90: Dist1D_SM_CSC.F90
+	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
+bud_Dist1D_CSC0.f90: Dist1D_SM_CSC0.F90
+	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
+
+
 DIST_SM_ARR_C = \
 	bud_Dist1D_SM_CSC0_Array1D.o \
 	bud_Dist1D_SM_CSC0_Array2D.o \
