@@ -839,7 +839,9 @@
     integer(BUD_INT_PREC), intent(in) :: n
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in) :: list(n)
     integer(BUD_INT_PREC) :: i
+#ifdef BUD_IS_INTEGER
     logical :: sorted
+#endif
 
     if ( n <= 0 ) return
 

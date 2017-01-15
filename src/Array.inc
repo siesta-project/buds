@@ -103,12 +103,6 @@
     !> @iSee #size
     procedure, public :: size => size_
 
-    !> @iSee #write
-    procedure, public, pass(this) :: write => write_
-
-    !> @iSee #read
-    procedure, public, pass(this) :: read => read_
-
 #endif
   end type BUD_TYPE_NAME
 

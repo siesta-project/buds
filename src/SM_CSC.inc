@@ -446,6 +446,8 @@
         this%D%cptr(c) = this%D%cptr(c-ONE) + npc
       end do
       this%D%cptr(nc+ONE) = this%D%cptr(nc) + BUD_SM_PTR
+    else
+      this%D%cptr(1) = BUD_SM_PTR
     end if
     do c = 1 , nc
       this%D%ncol(c) = ZERO
@@ -698,7 +700,7 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
     ! Local variables
-    integer(BUD_TYPE_VAR_PREC) :: i, ic, nr, nc, nz
+    integer(BUD_TYPE_VAR_PREC) :: ic, nr, nc, nz
     integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: cptr(:), row(:)
 
     type(BUD_LIST_NAME) :: lptr, lrow
@@ -982,7 +984,6 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
 
     type(BUD_LIST_NAME) :: lrow
-    type(BUD_TYPE_NAME) :: tmp
     integer(BUD_TYPE_VAR_PREC) :: nr, nc, nz, ic, i, idx
     integer(BUD_TYPE_VAR_PREC), allocatable :: tcptr(:)
     integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: cptr(:), ncol(:), row(:)
@@ -1136,7 +1137,7 @@
 
     type(BUD_LIST_NAME), allocatable :: lcol(:)
     type(BUD_LIST_NAME) :: tmp
-    integer(BUD_TYPE_VAR_PREC) :: nr, nc, nnc, nz, c, ic, i, idx, del_nr
+    integer(BUD_TYPE_VAR_PREC) :: nr, nc, nnc, c, ic, i, idx
     integer(BUD_TYPE_VAR_PREC), allocatable :: cptr(:)
     integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: row(:), col(:)
     integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: oc(:)
@@ -1292,7 +1293,7 @@
 
     integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: ptr(:), row(:), ncol(:)
 
-    logical :: formatted, same_size
+    logical :: formatted
     integer :: iu
 
     logical :: sorted

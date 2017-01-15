@@ -30,7 +30,6 @@
   ! These flags control the input sequence
 #undef BUD_COMMON_DECLARATIONS_H
 
-
 ! project-buds -- local file settings
 !     Anything below this line may be overwritten by scripts
 !     Below are non-editable settings
