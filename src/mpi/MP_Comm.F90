@@ -2,7 +2,7 @@
 
 #include "bud_utils.inc"
 
-! Define default variable for the file
+! Define default variable for the communicator
 #define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,MP_Comm)
 #define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,MP_Comm)
 #define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,MP_Comm)
@@ -83,41 +83,75 @@ module BUD_MOD_NAME
 
 #define BUD_MP_COMM_NAME Send
 # include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME Send_N
+# include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME BSend
+# include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME BSend_N
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME RSend
 # include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME RSend_N
+# include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME SSend
+# include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME SSend_N
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME ISend
 # include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME ISend_N
+# include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME IBSend
+# include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME IBSend_N
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME IRSend
 # include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME IRSend_N
+# include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME ISSend
+# include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME ISSend_N
 # include "MP_Comm_routine_interface.inc"
 
 #define BUD_MP_COMM_NAME Send_Init
 # include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME Send_Init_N
+# include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME BSend_Init
+# include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME BSend_Init_N
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME RSend_Init
 # include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME RSend_Init_N
+# include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME SSend_Init
+# include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME SSend_Init_N
 # include "MP_Comm_routine_interface.inc"
 
 #define BUD_MP_COMM_NAME Recv
 # include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME Recv_N
+# include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME IRecv
+# include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME IRecv_N
 # include "MP_Comm_routine_interface.inc"
 
 #define BUD_MP_COMM_NAME Recv_Init
 # include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME Recv_Init_N
+# include "MP_Comm_routine_interface.inc"
 
 #define BUD_MP_COMM_NAME Bcast
 # include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME Bcast_N
+# include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME IBcast
+# include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME IBcast_N
 # include "MP_Comm_routine_interface.inc"
 
 #define BUD_MP_COMM_NAME Gather
@@ -137,7 +171,11 @@ module BUD_MOD_NAME
 
 #define BUD_MP_COMM_NAME Reduce
 # include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME Reduce_N
+# include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME IReduce
+# include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME IReduce_N
 # include "MP_Comm_routine_interface.inc"
 
 
@@ -200,7 +238,11 @@ module BUD_MOD_NAME
 
 #define BUD_MP_COMM_NAME AllReduce
 # include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME AllReduce_N
+# include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME IAllReduce
+# include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME IAllReduce_N
 # include "MP_Comm_routine_interface.inc"
 
 
@@ -494,6 +536,7 @@ module BUD_MOD_NAME
     procedure, public :: Barrier => Barrier_
     procedure, public :: IBarrier => IBarrier_
 
+    procedure, public :: Get_Count => Get_Count_
 
     procedure, public :: Wait => Wait_
     procedure, public :: WaitAll => WaitAll_
@@ -677,11 +720,15 @@ module BUD_MOD_NAME
   interface Send
 #define BUD_MP_COMM_NAME Send
 # include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME Send_N
+# include "MP_Comm_routine_interface.inc"
   end interface
   public :: Send
   !> Interface for `MPI_BSend`
   interface BSend
 #define BUD_MP_COMM_NAME BSend
+# include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME BSend_N
 # include "MP_Comm_routine_interface.inc"
   end interface
   public :: BSend
@@ -689,11 +736,15 @@ module BUD_MOD_NAME
   interface RSend
 #define BUD_MP_COMM_NAME RSend
 # include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME RSend_N
+# include "MP_Comm_routine_interface.inc"
   end interface
   public :: RSend
   !> Interface for `MPI_SSend`
   interface SSend
 #define BUD_MP_COMM_NAME SSend
+# include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME SSend_N
 # include "MP_Comm_routine_interface.inc"
   end interface
   public :: SSend
@@ -701,11 +752,15 @@ module BUD_MOD_NAME
   interface ISend
 #define BUD_MP_COMM_NAME ISend
 # include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME ISend_N
+# include "MP_Comm_routine_interface.inc"
   end interface
   public :: ISend
   !> Interface for `MPI_IBSend`
   interface IBSend
 #define BUD_MP_COMM_NAME IBSend
+# include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME IBSend_N
 # include "MP_Comm_routine_interface.inc"
   end interface
   public :: IBSend
@@ -713,11 +768,15 @@ module BUD_MOD_NAME
   interface IRSend
 #define BUD_MP_COMM_NAME IRSend
 # include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME IRSend_N
+# include "MP_Comm_routine_interface.inc"
   end interface
   public :: IRSend
   !> Interface for `MPI_ISSend`
   interface ISSend
 #define BUD_MP_COMM_NAME ISSend
+# include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME ISSend_N
 # include "MP_Comm_routine_interface.inc"
   end interface
   public :: ISSend
@@ -726,11 +785,15 @@ module BUD_MOD_NAME
   interface Send_Init
 #define BUD_MP_COMM_NAME Send_Init
 # include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME Send_Init_N
+# include "MP_Comm_routine_interface.inc"
   end interface
   public :: Send_Init
   !> Interface for `MPI_BSend_Init`
   interface BSend_Init
 #define BUD_MP_COMM_NAME BSend_Init
+# include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME BSend_Init_N
 # include "MP_Comm_routine_interface.inc"
   end interface
   public :: BSend_Init
@@ -738,11 +801,15 @@ module BUD_MOD_NAME
   interface RSend_Init
 #define BUD_MP_COMM_NAME RSend_Init
 # include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME RSend_Init_N
+# include "MP_Comm_routine_interface.inc"
   end interface
   public :: RSend_Init
   !> Interface for `MPI_SSend_Init`
   interface SSend_Init
 #define BUD_MP_COMM_NAME SSend_Init
+# include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME SSend_Init_N
 # include "MP_Comm_routine_interface.inc"
   end interface
   public :: SSend_Init
@@ -751,11 +818,15 @@ module BUD_MOD_NAME
   interface Recv
 #define BUD_MP_COMM_NAME Recv
 # include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME Recv_N
+# include "MP_Comm_routine_interface.inc"
   end interface
   public :: Recv
   !> Interface for `MPI_IRecv`
   interface IRecv
 #define BUD_MP_COMM_NAME IRecv
+# include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME IRecv_N
 # include "MP_Comm_routine_interface.inc"
   end interface
   public :: IRecv
@@ -764,6 +835,8 @@ module BUD_MOD_NAME
   interface Recv_Init
 #define BUD_MP_COMM_NAME Recv_Init
 # include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME Recv_Init_N
+# include "MP_Comm_routine_interface.inc"
   end interface
   public :: Recv_Init
 
@@ -771,11 +844,15 @@ module BUD_MOD_NAME
   interface Bcast
 #define BUD_MP_COMM_NAME Bcast
 # include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME Bcast_N
+# include "MP_Comm_routine_interface.inc"
   end interface
   public :: Bcast
   !> Interface for `MPI_IBcast`
   interface IBcast
 #define BUD_MP_COMM_NAME IBcast
+# include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME IBcast_N
 # include "MP_Comm_routine_interface.inc"
   end interface
   public :: IBcast
@@ -823,11 +900,15 @@ module BUD_MOD_NAME
   interface Reduce
 #define BUD_MP_COMM_NAME Reduce
 # include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME Reduce_N
+# include "MP_Comm_routine_interface.inc"
   end interface
   public :: Reduce
   !> Interface for `MPI_IReduce`
   interface IReduce
 #define BUD_MP_COMM_NAME IReduce
+# include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME IReduce_N
 # include "MP_Comm_routine_interface.inc"
   end interface
   public :: IReduce
@@ -948,11 +1029,15 @@ module BUD_MOD_NAME
   interface AllReduce
 #define BUD_MP_COMM_NAME AllReduce
 # include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME AllReduce_N
+# include "MP_Comm_routine_interface.inc"
   end interface
   public :: AllReduce
   !> Interface for `MPI_IAllReduce`
   interface IAllReduce
 #define BUD_MP_COMM_NAME IAllReduce
+# include "MP_Comm_routine_interface.inc"
+#define BUD_MP_COMM_NAME IAllReduce_N
 # include "MP_Comm_routine_interface.inc"
   end interface
   public :: IAllReduce
@@ -1080,6 +1165,12 @@ module BUD_MOD_NAME
     module procedure IBarrier_
   end interface
   public :: IBarrier
+
+  !> Interface for `MPI_Get_Count`
+  interface Get_Count
+    module procedure Get_Count_
+  end interface
+  public :: Get_Count
 
   !> Interface for `MPI_Wait`
   interface Wait
@@ -1489,6 +1580,24 @@ module BUD_MOD_NAME
 #endif
 
   end subroutine
+
+  subroutine Get_Count_(status, prec, count, this)
+#ifdef BUD_MPI
+    integer, intent(inout) :: status(MPI_STATUS_SIZE)
+#else
+    integer, intent(inout) :: status(:)
+#endif
+    integer, intent(in) :: prec
+    integer, intent(out) :: count
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+
+#ifdef BUD_MPI
+    call MPI_Get_Count(status, prec, count, this%D%error_)
+#else
+    count = 0
+#endif
+
+  end subroutine Get_Count_
 
 
   ! Wait routines

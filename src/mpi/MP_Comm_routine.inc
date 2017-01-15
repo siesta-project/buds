@@ -21,9 +21,19 @@ subroutine BUD_CC5(send_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,dest,tag,th
   integer, intent(in) :: dest, tag
   BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 #if BUD_DIM > 0
-  call MPI_Send(a BUD_DIM_SPEC(1) ,size(A),BUD_TYPE_VAR_MP,dest,tag,this%D%comm,this%D%error_)
+  call MPI_Send(a BUD_DIM_SPEC(1),size(A),BUD_TYPE_VAR_MP,dest,tag,this%D%comm,this%D%error_)
 #else
   call MPI_Send(a,1,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,this%D%error_)
+#endif
+end subroutine
+subroutine BUD_CC5(send_N_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,N,dest,tag,this)
+  _MP_COMM_A_INOUT
+  integer, intent(in) :: N, dest, tag
+  BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+#if BUD_DIM > 0
+  call MPI_Send(a BUD_DIM_SPEC(1),N,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,this%D%error_)
+#else
+  call MPI_Send(a,N,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,this%D%error_)
 #endif
 end subroutine
 subroutine BUD_CC5(bsend_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,dest,tag,this)
@@ -36,6 +46,16 @@ subroutine BUD_CC5(bsend_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,dest,tag,t
   call MPI_BSend(a,1,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,this%D%error_)
 #endif
 end subroutine
+subroutine BUD_CC5(bsend_N_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,N,dest,tag,this)
+  _MP_COMM_A_INOUT
+  integer, intent(in) :: N, dest, tag
+  BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+#if BUD_DIM > 0
+  call MPI_BSend(a BUD_DIM_SPEC(1),N,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,this%D%error_)
+#else
+  call MPI_BSend(a,N,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,this%D%error_)
+#endif
+end subroutine
 subroutine BUD_CC5(rsend_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,dest,tag,this)
   _MP_COMM_A_INOUT
   integer, intent(in) :: dest, tag
@@ -46,6 +66,16 @@ subroutine BUD_CC5(rsend_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,dest,tag,t
   call MPI_RSend(a,1,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,this%D%error_)
 #endif
 end subroutine
+subroutine BUD_CC5(rsend_N_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,N,dest,tag,this)
+  _MP_COMM_A_INOUT
+  integer, intent(in) :: N, dest, tag
+  BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+#if BUD_DIM > 0
+  call MPI_RSend(a BUD_DIM_SPEC(1) ,N,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,this%D%error_)
+#else
+  call MPI_RSend(a,N,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,this%D%error_)
+#endif
+end subroutine
 subroutine BUD_CC5(ssend_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,dest,tag,this)
   _MP_COMM_A_INOUT
   integer, intent(in) :: dest, tag
@@ -54,6 +84,16 @@ subroutine BUD_CC5(ssend_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,dest,tag,t
   call MPI_SSend(a BUD_DIM_SPEC(1),size(A),BUD_TYPE_VAR_MP,dest,tag,this%D%comm,this%D%error_)
 #else
   call MPI_SSend(a,1,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,this%D%error_)
+#endif
+end subroutine
+subroutine BUD_CC5(ssend_N_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,N,dest,tag,this)
+  _MP_COMM_A_INOUT
+  integer, intent(in) :: N, dest, tag
+  BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+#if BUD_DIM > 0
+  call MPI_SSend(a BUD_DIM_SPEC(1),N,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,this%D%error_)
+#else
+  call MPI_SSend(a,N,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,this%D%error_)
 #endif
 end subroutine
 subroutine BUD_CC5(isend_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,dest,tag,this,request)
@@ -67,6 +107,17 @@ subroutine BUD_CC5(isend_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,dest,tag,t
   call MPI_ISend(a,1,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
 #endif
 end subroutine
+subroutine BUD_CC5(isend_N_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,N,dest,tag,this,request)
+  _MP_COMM_A_INOUT
+  integer, intent(in) :: N, dest, tag
+  BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+  integer, intent(inout) :: request
+#if BUD_DIM > 0
+  call MPI_ISend(a BUD_DIM_SPEC(1),N,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
+#else
+  call MPI_ISend(a,N,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
+#endif
+end subroutine
 subroutine BUD_CC5(ibsend_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,dest,tag,this,request)
   _MP_COMM_A_INOUT
   integer, intent(in) :: dest, tag
@@ -76,6 +127,17 @@ subroutine BUD_CC5(ibsend_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,dest,tag,
   call MPI_IBSend(a BUD_DIM_SPEC(1),size(A),BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
 #else
   call MPI_IBSend(a,1,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
+#endif
+end subroutine
+subroutine BUD_CC5(ibsend_N_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,N,dest,tag,this,request)
+  _MP_COMM_A_INOUT
+  integer, intent(in) :: N, dest, tag
+  BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+  integer, intent(inout) :: request
+#if BUD_DIM > 0
+  call MPI_IBSend(a BUD_DIM_SPEC(1),N,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
+#else
+  call MPI_IBSend(a,N,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
 #endif
 end subroutine
 subroutine BUD_CC5(irsend_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,dest,tag,this,request)
@@ -89,6 +151,17 @@ subroutine BUD_CC5(irsend_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,dest,tag,
   call MPI_IRSend(a,1,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
 #endif
 end subroutine
+subroutine BUD_CC5(irsend_N_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,N,dest,tag,this,request)
+  _MP_COMM_A_INOUT
+  integer, intent(in) :: N, dest, tag
+  BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+  integer, intent(inout) :: request
+#if BUD_DIM > 0
+  call MPI_IRSend(a BUD_DIM_SPEC(1) ,N,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
+#else
+  call MPI_IRSend(a,N,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
+#endif
+end subroutine
 subroutine BUD_CC5(issend_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,dest,tag,this,request)
   _MP_COMM_A_INOUT
   integer, intent(in) :: dest, tag
@@ -98,6 +171,17 @@ subroutine BUD_CC5(issend_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,dest,tag,
   call MPI_ISSend(a BUD_DIM_SPEC(1),size(A),BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
 #else
   call MPI_ISSend(a,1,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
+#endif
+end subroutine
+subroutine BUD_CC5(issend_N_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,N,dest,tag,this,request)
+  _MP_COMM_A_INOUT
+  integer, intent(in) :: N, dest, tag
+  BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+  integer, intent(inout) :: request
+#if BUD_DIM > 0
+  call MPI_ISSend(a BUD_DIM_SPEC(1),N,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
+#else
+  call MPI_ISSend(a,N,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
 #endif
 end subroutine
 
@@ -113,6 +197,17 @@ subroutine BUD_CC5(send_init_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,dest,t
   call MPI_Send_Init(a,1,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
 #endif
 end subroutine
+subroutine BUD_CC5(send_init_N_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,N,dest,tag,this,request)
+  _MP_COMM_A_INOUT
+  integer, intent(in) :: N,dest, tag
+  BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+  integer, intent(inout) :: request
+#if BUD_DIM > 0
+  call MPI_Send_Init(a BUD_DIM_SPEC(1),N,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
+#else
+  call MPI_Send_Init(a,N,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
+#endif
+end subroutine
 subroutine BUD_CC5(bsend_init_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,dest,tag,this,request)
   _MP_COMM_A_INOUT
   integer, intent(in) :: dest, tag
@@ -122,6 +217,17 @@ subroutine BUD_CC5(bsend_init_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,dest,
   call MPI_BSend_Init(a BUD_DIM_SPEC(1),size(A),BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
 #else
   call MPI_BSend_Init(a,1,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
+#endif
+end subroutine
+subroutine BUD_CC5(bsend_init_N_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,N,dest,tag,this,request)
+  _MP_COMM_A_INOUT
+  integer, intent(in) :: N, dest, tag
+  BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+  integer, intent(inout) :: request
+#if BUD_DIM > 0
+  call MPI_BSend_Init(a BUD_DIM_SPEC(1),N,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
+#else
+  call MPI_BSend_Init(a,N,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
 #endif
 end subroutine
 subroutine BUD_CC5(rsend_init_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,dest,tag,this,request)
@@ -135,6 +241,17 @@ subroutine BUD_CC5(rsend_init_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,dest,
   call MPI_RSend_Init(a,1,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
 #endif
 end subroutine
+subroutine BUD_CC5(rsend_init_N_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,N,dest,tag,this,request)
+  _MP_COMM_A_INOUT
+  integer, intent(in) :: N, dest, tag
+  BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+  integer, intent(inout) :: request
+#if BUD_DIM > 0
+  call MPI_RSend_Init(a BUD_DIM_SPEC(1),N,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
+#else
+  call MPI_RSend_Init(a,N,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
+#endif
+end subroutine
 subroutine BUD_CC5(ssend_init_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,dest,tag,this,request)
   _MP_COMM_A_INOUT
   integer, intent(in) :: dest, tag
@@ -144,6 +261,17 @@ subroutine BUD_CC5(ssend_init_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,dest,
   call MPI_SSend_Init(a BUD_DIM_SPEC(1),size(A),BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
 #else
   call MPI_SSend_Init(a,1,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
+#endif
+end subroutine
+subroutine BUD_CC5(ssend_init_N_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,N,dest,tag,this,request)
+  _MP_COMM_A_INOUT
+  integer, intent(in) :: N, dest, tag
+  BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+  integer, intent(inout) :: request
+#if BUD_DIM > 0
+  call MPI_SSend_Init(a BUD_DIM_SPEC(1),N,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
+#else
+  call MPI_SSend_Init(a,N,BUD_TYPE_VAR_MP,dest,tag,this%D%comm,request,this%D%error_)
 #endif
 end subroutine
 
@@ -160,6 +288,18 @@ subroutine BUD_CC5(recv_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,source,tag,
   call MPI_Recv(a,1,BUD_TYPE_VAR_MP,source,tag,this%D%comm,status,this%D%error_)
 #endif
 end subroutine
+! Implement the Recv routines
+subroutine BUD_CC5(recv_N_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,N,source,tag,this,status)
+  _MP_COMM_A_INOUT
+  integer, intent(in) :: N, source, tag
+  BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+  integer, intent(inout) :: status(MPI_STATUS_SIZE)
+#if BUD_DIM > 0
+  call MPI_Recv(a BUD_DIM_SPEC(1),N,BUD_TYPE_VAR_MP,source,tag,this%D%comm,status,this%D%error_)
+#else
+  call MPI_Recv(a,N,BUD_TYPE_VAR_MP,source,tag,this%D%comm,status,this%D%error_)
+#endif
+end subroutine
 subroutine BUD_CC5(irecv_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,source,tag,this,request)
   _MP_COMM_A_INOUT
   integer, intent(in) :: source, tag
@@ -169,6 +309,17 @@ subroutine BUD_CC5(irecv_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,source,tag
   call MPI_IRecv(a BUD_DIM_SPEC(1),size(A),BUD_TYPE_VAR_MP,source,tag,this%D%comm,request,this%D%error_)
 #else
   call MPI_IRecv(a,1,BUD_TYPE_VAR_MP,source,tag,this%D%comm,request,this%D%error_)
+#endif
+end subroutine
+subroutine BUD_CC5(irecv_N_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,N,source,tag,this,request)
+  _MP_COMM_A_INOUT
+  integer, intent(in) :: N, source, tag
+  BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+  integer, intent(inout) :: request
+#if BUD_DIM > 0
+  call MPI_IRecv(a BUD_DIM_SPEC(1),N,BUD_TYPE_VAR_MP,source,tag,this%D%comm,request,this%D%error_)
+#else
+  call MPI_IRecv(a,N,BUD_TYPE_VAR_MP,source,tag,this%D%comm,request,this%D%error_)
 #endif
 end subroutine
 
@@ -184,6 +335,17 @@ subroutine BUD_CC5(recv_init_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,source
   call MPI_Recv_Init(a,1,BUD_TYPE_VAR_MP,source,tag,this%D%comm,request,this%D%error_)
 #endif
 end subroutine
+subroutine BUD_CC5(recv_init_N_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,N,source,tag,this,request)
+  _MP_COMM_A_INOUT
+  integer, intent(in) :: N, source, tag
+  BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+  integer, intent(inout) :: request
+#if BUD_DIM > 0
+  call MPI_Recv_Init(a BUD_DIM_SPEC(1),N,BUD_TYPE_VAR_MP,source,tag,this%D%comm,request,this%D%error_)
+#else
+  call MPI_Recv_Init(a,N,BUD_TYPE_VAR_MP,source,tag,this%D%comm,request,this%D%error_)
+#endif
+end subroutine
 
 ! Implement the Bcast routines
 subroutine BUD_CC5(bcast_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,root,this)
@@ -196,6 +358,16 @@ subroutine BUD_CC5(bcast_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,root,this)
   call MPI_Bcast(a,1,BUD_TYPE_VAR_MP,root,this%D%comm,this%D%error_)
 #endif
 end subroutine
+subroutine BUD_CC5(bcast_N_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,N,root,this)
+  _MP_COMM_A_INOUT
+  integer, intent(in) :: N, root
+  BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+#if BUD_DIM > 0
+  call MPI_Bcast(a BUD_DIM_SPEC(1),N,BUD_TYPE_VAR_MP,root,this%D%comm,this%D%error_)
+#else
+  call MPI_Bcast(a,N,BUD_TYPE_VAR_MP,root,this%D%comm,this%D%error_)
+#endif
+end subroutine
 subroutine BUD_CC5(ibcast_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,root,this,request)
   _MP_COMM_A_INOUT
   integer, intent(in) :: root
@@ -205,6 +377,17 @@ subroutine BUD_CC5(ibcast_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,root,this
   call MPI_IBcast(a BUD_DIM_SPEC(1),size(A),BUD_TYPE_VAR_MP,root,this%D%comm,request,this%D%error_)
 #else
   call MPI_IBcast(a,1,BUD_TYPE_VAR_MP,root,this%D%comm,request,this%D%error_)
+#endif
+end subroutine
+subroutine BUD_CC5(ibcast_N_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,N,root,this,request)
+  _MP_COMM_A_INOUT
+  integer, intent(in) :: N, root
+  BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+  integer, intent(inout) :: request
+#if BUD_DIM > 0
+  call MPI_IBcast(a BUD_DIM_SPEC(1),N,BUD_TYPE_VAR_MP,root,this%D%comm,request,this%D%error_)
+#else
+  call MPI_IBcast(a,N,BUD_TYPE_VAR_MP,root,this%D%comm,request,this%D%error_)
 #endif
 end subroutine
 
@@ -319,6 +502,18 @@ subroutine BUD_CC5(reduce_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,b,op,root
   call MPI_Reduce(a,b,1,BUD_TYPE_VAR_MP,op,root,this%D%comm,this%D%error_)
 #endif
 end subroutine
+! Implement the reduce routines (currently MPI_IN_PLACE does not work)
+subroutine BUD_CC5(reduce_N_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,b,N,op,root,this)
+  _MP_COMM_A_IN
+  _MP_COMM_B_INOUT
+  integer, intent(in) :: N, op, root
+  BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+#if BUD_DIM > 0
+  call MPI_Reduce(a BUD_DIM_SPEC(1),b BUD_DIM_SPEC(1),N,BUD_TYPE_VAR_MP,op,root,this%D%comm,this%D%error_)
+#else
+  call MPI_Reduce(a,b,N,BUD_TYPE_VAR_MP,op,root,this%D%comm,this%D%error_)
+#endif
+end subroutine
 ! Implement the ireduce routines (currently MPI_IN_PLACE does not work)
 subroutine BUD_CC5(ireduce_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,b,op,root,this,request)
   _MP_COMM_A_IN
@@ -330,6 +525,19 @@ subroutine BUD_CC5(ireduce_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,b,op,roo
   call MPI_IReduce(a BUD_DIM_SPEC(1),b BUD_DIM_SPEC(1),size(A),BUD_TYPE_VAR_MP,op,root,this%D%comm,request,this%D%error_)
 #else
   call MPI_IReduce(a,b,1,BUD_TYPE_VAR_MP,op,root,this%D%comm,request,this%D%error_)
+#endif
+end subroutine
+! Implement the ireduce routines (currently MPI_IN_PLACE does not work)
+subroutine BUD_CC5(ireduce_N_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,b,N,op,root,this,request)
+  _MP_COMM_A_IN
+  _MP_COMM_B_INOUT
+  integer, intent(in) :: N, op, root
+  BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+  integer, intent(inout) :: request
+#if BUD_DIM > 0
+  call MPI_IReduce(a BUD_DIM_SPEC(1),b BUD_DIM_SPEC(1),N,BUD_TYPE_VAR_MP,op,root,this%D%comm,request,this%D%error_)
+#else
+  call MPI_IReduce(a,b,N,BUD_TYPE_VAR_MP,op,root,this%D%comm,request,this%D%error_)
 #endif
 end subroutine
 
@@ -472,6 +680,18 @@ subroutine BUD_CC5(allreduce_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,b,op,t
   call MPI_AllReduce(a,b,1,BUD_TYPE_VAR_MP,op,this%D%comm,this%D%error_)
 #endif
 end subroutine
+subroutine BUD_CC5(allreduce_N_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,b,N,op,this)
+  _MP_COMM_A_IN
+  _MP_COMM_B_INOUT
+  integer, intent(in) :: N, op
+  BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+#if BUD_DIM > 0
+  ! we only reduce the size of the a matrix
+  call MPI_AllReduce(a BUD_DIM_SPEC(1),b BUD_DIM_SPEC(1),N,BUD_TYPE_VAR_MP,op,this%D%comm,this%D%error_)
+#else
+  call MPI_AllReduce(a,b,N,BUD_TYPE_VAR_MP,op,this%D%comm,this%D%error_)
+#endif
+end subroutine
 subroutine BUD_CC5(iallreduce_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,b,op,this,request)
   _MP_COMM_A_IN
   _MP_COMM_B_INOUT
@@ -483,6 +703,19 @@ subroutine BUD_CC5(iallreduce_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,b,op,
   call MPI_IAllReduce(a BUD_DIM_SPEC(1),b BUD_DIM_SPEC(1),size(A),BUD_TYPE_VAR_MP,op,this%D%comm,request,this%D%error_)
 #else
   call MPI_IAllReduce(a,b,1,BUD_TYPE_VAR_MP,op,this%D%comm,request,this%D%error_)
+#endif
+end subroutine
+subroutine BUD_CC5(iallreduce_N_,BUD_TYPE_VAR,_,BUD_DIM,_MP_COMM_VAR_PREC)(a,b,N,op,this,request)
+  _MP_COMM_A_IN
+  _MP_COMM_B_INOUT
+  integer, intent(in) :: N, op
+  BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+  integer, intent(inout) :: request
+#if BUD_DIM > 0
+  ! we only reduce the size of the a matrix
+  call MPI_IAllReduce(a BUD_DIM_SPEC(1),b BUD_DIM_SPEC(1),N,BUD_TYPE_VAR_MP,op,this%D%comm,request,this%D%error_)
+#else
+  call MPI_IAllReduce(a,b,N,BUD_TYPE_VAR_MP,op,this%D%comm,request,this%D%error_)
 #endif
 end subroutine
 
