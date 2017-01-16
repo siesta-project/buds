@@ -1236,7 +1236,7 @@
     BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
 
-    integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: ptr(:), row(:), ncol(:)
+    integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: row(:), ncol(:)
 
     logical :: formatted
     integer :: iu
@@ -1253,21 +1253,16 @@
     formatted = is_formatted(f)
     iu = unit(f)
 
-    call attach(this, nr=nr, nc=nc, nz=nz, &
-      cptr=ptr, ncol=ncol)
+    call attach(this, nr=nr, nc=nc, nz=nz, ncol=ncol)
 
     ! First we write the size of the sparse matrix
     if ( formatted ) then
       write(iu, '(i16)') nr, nc, nz
       write(iu, '(l16)') this%D%sorted
+      write(iu, '(i16)') ncol(:)
     else
       write(iu) nr, nc, nz
       write(iu) this%D%sorted
-    end if
-
-    if ( formatted ) then
-      write(iu, '(i16)') ncol(:)
-    else
       write(iu) ncol(:)
     end if
 
@@ -1329,8 +1324,8 @@
 
     ! Create the pointer array
     ptr(1) = BUD_SM_PTR
-    do i = 2 , nc
-      ptr(i) = ptr(i-1) + ncol(i)
+    do i = 2 , nc + 1
+      ptr(i) = ptr(i-1) + ncol(i-1)
     end do
 
     ! Read the sparse rows

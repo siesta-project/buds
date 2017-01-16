@@ -582,7 +582,9 @@
     end if
   end function size_max_elem_
 
+
 #ifndef BUD_NO_IO
+# ifndef BUD_IO_OVERLOAD
 
   !> @param[in] f a file (bud_File)
   !! @param[in] this collection @bud to be written
@@ -603,8 +605,8 @@
     iu = unit(f)
 
     ! Get information about this stack
-    nel = size(this)
     nel_max = size_max(this)
+    nel = size(this)
 
     if ( formatted ) then
       write(iu, '(i16)') nel_max, nel
@@ -658,6 +660,7 @@
 
   end subroutine read_
 
+# endif
 #endif
 
   !> @param[in] this data type

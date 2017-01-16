@@ -1687,6 +1687,8 @@
     else
       read(iu) p
     end if
+    ! Ensure elements are contained.
+    this%D%n = n
 
   end subroutine read_
 
