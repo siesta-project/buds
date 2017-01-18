@@ -3,6 +3,9 @@
 ! Get default commands
 #include "bud_utils.inc"
 
+! This bud is not able to read/write itself.
+#define BUD_NO_IO
+
 !> @addtogroup bud-intrinsic
 
 !> @defgroup dist-1d Parallel distribution (1D)

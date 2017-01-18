@@ -3,7 +3,19 @@
   ! Simple type for inclusion in the type scopes.
   ! This adds all OO routines
 
+  !> Error message
+  !!
+  !! Each operation may return an error. This error may be retrieved
+  !! through the error interface.
+  !!
+  !! Note that this is *not* contained in the TYPE_ which would
+  !! prohibit the query of errors on non-initialized types.
+  !! However, when a type cannot be created (due to erroneous
+  !! input) there should be a way to message the error message.
+  integer :: error = 0
+
 #if BUD_FORTRAN >= 2003
+  contains
 
   !> @name Intrinsic @bud procedures
   !! These procedures are common for nearly all

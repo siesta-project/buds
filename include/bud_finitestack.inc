@@ -58,9 +58,8 @@
 
     !> @endcond BUD_DEVELOPER
 
-#if BUD_FORTRAN >= 2003
-  contains
 #   include "bud_common_type.inc"
+#if BUD_FORTRAN >= 2003
 
     !> @iSee BUD_NEW_TYPE
     procedure, public :: BUD_NEW_TYPE => new_
@@ -240,23 +239,29 @@
 
   !> @cond BUD_DEVELOPER
 
-  subroutine delete_(D)
-    type(BUD_TYPE_NAME_), intent(inout) :: D
-    integer :: i
+  subroutine delete_(this)
+    type(BUD_TYPE_NAME), intent(inout) :: this
+    integer :: i, stat
 
-    if ( associated(D%T) ) then
+    stat = 0
+    if ( associated(this%D%T) ) then
 
       ! Deallocate array
-      do i = 1 , size(D%T)
-        call delete(D%T(i))
+      do i = 1 , size(this%D%T)
+        call delete(this%D%T(i))
+        if ( 0 /= error(this%D%T(i)) ) then
+          stat = error(this%D%T(i))
+        end if
       end do
-      deallocate(D%T)
-      nullify(D%T)
+      deallocate(this%D%T, stat=i)
+      if ( 0 /= i ) stat = i
+      nullify(this%D%T)
 
     end if
 
-    D%nel_max = 0
-    D%nel = 0
+    this%D%nel_max = 0
+    this%D%nel = 0
+    call set_error(this, stat)
 
   end subroutine delete_
 

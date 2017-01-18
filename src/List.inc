@@ -69,9 +69,8 @@
 
     !> @endcond BUD_DEVELOPER
 
-#if BUD_FORTRAN >= 2003
-  contains
 #   include "bud_common_type.inc"
+#if BUD_FORTRAN >= 2003
 
     !> @name Private procedures
     !> @{
@@ -511,17 +510,17 @@
   !! any data in the type.
   !! Should never be made public.
   subroutine delete_(this)
-    type(BUD_TYPE_NAME_), intent(inout) :: this
+    type(BUD_TYPE_NAME), intent(inout) :: this
 
     ! Currently we do not allow external memory
     ! tracking.
-    if ( .not. allocated(this%lst) ) return
-    deallocate(this%lst)
-    this%n = 0
-    this%max_n = 0
-    this%incr_n = 10
+    if ( .not. allocated(this%D%lst) ) return
+    deallocate(this%D%lst, stat=this%error)
+    this%D%n = 0
+    this%D%max_n = 0
+    this%D%incr_n = 10
 #ifdef BUD_IS_INTEGER
-    this%sorted = .false.
+    this%D%sorted = .false.
 #endif
 
   end subroutine delete_

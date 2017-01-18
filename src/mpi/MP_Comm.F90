@@ -2,6 +2,9 @@
 
 #include "bud_utils.inc"
 
+! This bud is not able to read/write itself.
+#define BUD_NO_IO
+
 ! Define default variable for the communicator
 #define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,MP_Comm)
 #define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,MP_Comm)
@@ -57,9 +60,8 @@ module BUD_MOD_NAME
     !> Stored pointer which contains the reference counting etc.
     type(BUD_TYPE_NAME_), pointer :: D => null()
 
-#if BUD_FORTRAN >= 2003
-  contains
 #   include "bud_common_type.inc"
+#if BUD_FORTRAN >= 2003
 
     !> @name Private procedures
     !> @{
@@ -1238,7 +1240,6 @@ module BUD_MOD_NAME
 #endif
 
 
-#define BUD_NO_IO
   ! Include common data routines
   ! Note that 'CONTAINS' is present in this include file.
 # include "bud_common.inc"
@@ -1253,25 +1254,26 @@ module BUD_MOD_NAME
   !! any data in the type.
   !! Should never be made public.
   subroutine delete_(this)
-    type(BUD_TYPE_NAME_), intent(inout) :: this
-#ifdef BUD_MPI
+    type(BUD_TYPE_NAME), intent(inout) :: this
 
+    this%error = 0
+#ifdef BUD_MPI
     ! Currently we do not allow external memory
     ! tracking.
-    if ( this%Comm /= MPI_Comm_Null ) then
+    if ( this%D%Comm /= MPI_Comm_Null ) then
       ! reset everything
       ! free the group and communicator...
-      call MPI_Group_Free(this%Grp, this%error_)
-      call MPI_Comm_Free(this%Comm, this%error_)
+      call MPI_Group_Free(this%D%Grp, this%error)
+      call MPI_Comm_Free(this%D%Comm, this%error)
     end if
 #endif
 
     ! Ensure they are nullified
-    this%Comm = MPI_Comm_Null
-    this%Grp = MPI_Group_Null
+    this%D%Comm = MPI_Comm_Null
+    this%D%Grp = MPI_Group_Null
 
-    this%P = 0
-    this%NP = 1
+    this%D%P = 0
+    this%D%NP = 1
 
   end subroutine delete_
 
@@ -1371,17 +1373,17 @@ module BUD_MOD_NAME
     ldup = .true.
     if ( present(dup) ) ldup = dup
     if ( ldup ) then
-      call MPI_Comm_dup(Comm, this%D%comm, this%D%error_)
+      call MPI_Comm_dup(Comm, this%D%comm, this%error)
     else
       this%D%comm = Comm
     end if
 
     ! Create the group
-    call MPI_Comm_group(this%D%comm, this%D%Grp, this%D%error_)
+    call MPI_Comm_group(this%D%comm, this%D%Grp, this%error)
 
     ! Figure out number of processors and the rank
-    call MPI_Comm_Rank( this%D%comm, this%D%P, this%D%error_)
-    call MPI_Comm_Size( this%D%comm, this%D%NP, this%D%error_)
+    call MPI_Comm_Rank( this%D%comm, this%D%P, this%error)
+    call MPI_Comm_Size( this%D%comm, this%D%NP, this%error)
 
 #else
     this%D%comm = Comm
@@ -1564,7 +1566,7 @@ module BUD_MOD_NAME
 #ifdef BUD_MPI
     if ( .not. is_initd(this) ) return
 
-    call MPI_Barrier(this%D%comm, this%D%error_)
+    call MPI_Barrier(this%D%comm, this%error)
 #endif
 
   end subroutine
@@ -1576,7 +1578,7 @@ module BUD_MOD_NAME
 #ifdef BUD_MPI
     if ( .not. is_initd(this) ) return
 
-    call MPI_IBarrier(this%D%comm, request, this%D%error_)
+    call MPI_IBarrier(this%D%comm, request, this%error)
 #endif
 
   end subroutine
@@ -1592,7 +1594,7 @@ module BUD_MOD_NAME
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
 #ifdef BUD_MPI
-    call MPI_Get_Count(status, prec, count, this%D%error_)
+    call MPI_Get_Count(status, prec, count, this%error)
 #else
     count = 0
 #endif
@@ -1611,7 +1613,7 @@ module BUD_MOD_NAME
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
 #ifdef BUD_MPI
-    call MPI_Wait(req, status, this%D%error_)
+    call MPI_Wait(req, status, this%error)
 #endif
 
   end subroutine Wait_
@@ -1643,7 +1645,7 @@ module BUD_MOD_NAME
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
 #ifdef BUD_MPI
-    call MPI_WaitAll(n, req, status, this%D%error_)
+    call MPI_WaitAll(n, req, status, this%error)
 #endif
 
   end subroutine WaitAll_
@@ -1677,7 +1679,7 @@ module BUD_MOD_NAME
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
 #ifdef BUD_MPI
-    call MPI_WaitAny(n, req, index, status, this%D%error_)
+    call MPI_WaitAny(n, req, index, status, this%error)
 #else
     index = 0
 #endif
@@ -1715,7 +1717,7 @@ module BUD_MOD_NAME
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
 #ifdef BUD_MPI
-    call MPI_Test(req, flag, status, this%D%error_)
+    call MPI_Test(req, flag, status, this%error)
 #else
     flag = .true.
 #endif
@@ -1752,7 +1754,7 @@ module BUD_MOD_NAME
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
 #ifdef BUD_MPI
-    call MPI_TestAll(n, req, flag, status, this%D%error_)
+    call MPI_TestAll(n, req, flag, status, this%error)
 #else
     flag = .true.
 #endif
@@ -1791,7 +1793,7 @@ module BUD_MOD_NAME
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
 #ifdef BUD_MPI
-    call MPI_TestAny(n, req, index, flag, status, this%D%error_)
+    call MPI_TestAny(n, req, index, flag, status, this%error)
 #else
     index = 0
     flag = .true.
@@ -1830,7 +1832,7 @@ module BUD_MOD_NAME
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
 #ifdef BUD_MPI
-    call MPI_Test_Cancelled(status, flag, this%D%error_)
+    call MPI_Test_Cancelled(status, flag, this%error)
 #else
     flag = .false.
 #endif
@@ -1892,7 +1894,7 @@ module BUD_MOD_NAME
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_) :: err
     if ( is_initd(this) ) then
-      err = this%D%error_
+      err = this%error
     else
       err = MPI_SUCCESS
     end if
@@ -1904,7 +1906,7 @@ module BUD_MOD_NAME
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     logical :: success
     if ( is_initd(this) ) then
-      success = this%D%error_ == MPI_SUCCESS
+      success = this%error == MPI_SUCCESS
     else
       success = .true.
     end if
@@ -2005,9 +2007,9 @@ module BUD_MOD_NAME
 
     ! Split the communicators
     call MPI_Comm_Split(this%D%comm, color, key, &
-      Com, this%D%error_)
+      Com, this%error)
 
-    if ( this%D%error_ == MPI_SUCCESS ) then
+    if ( this%error == MPI_SUCCESS ) then
       call new(split, Com, dup = .false.)
     end if
 
@@ -2033,9 +2035,9 @@ module BUD_MOD_NAME
 
     ! Split the communicators
     call MPI_Comm_Split_Type(this%D%comm, split_type, key, &
-      info, Com, this%D%error_)
+      info, Com, this%error)
 
-    if ( this%D%error_ == MPI_SUCCESS ) then
+    if ( this%error == MPI_SUCCESS ) then
       call new(split, Com, dup = .false.)
     end if
 
@@ -2052,8 +2054,8 @@ module BUD_MOD_NAME
 
     ! Split the communicators
     call MPI_Comm_Compare(comm1%D%comm, comm2%D%comm, result, &
-      comm1%D%error_)
-    comm2%D%error_ = comm1%D%error_
+      comm1%error)
+    comm2%error = comm1%error
 
   end subroutine Comm_Compare_
 
@@ -2066,7 +2068,7 @@ module BUD_MOD_NAME
     integer(ii_), intent(in) :: group
     integer(ii_) :: Com
 
-    call MPI_Comm_Create(parent%D%comm, group, Com, parent%D%error_)
+    call MPI_Comm_Create(parent%D%comm, group, Com, parent%error)
 
     if ( is_success_MPI(parent) ) then
       call new(child, Com, dup = .false.)
@@ -2099,12 +2101,13 @@ module BUD_MOD_NAME
     integer(ii_), intent(in) :: group, tag
     integer(ii_) :: Com
 
-    call MPI_Comm_Create_Group(parent%D%comm, group, tag, Com, parent%D%error_)
+    call MPI_Comm_Create_Group(parent%D%comm, group, tag, Com, parent%error)
 
     if ( is_success_MPI(parent) ) then
       call new(child, Com, dup = .false.)
     else
       call delete(child)
+      call set_error(child, 1)
     end if
 
   end subroutine Comm_Create_Group_

@@ -56,9 +56,8 @@
     !> Stored pointer which contains the reference counting etc.
     type(BUD_TYPE_NAME_), pointer :: D => null()
 
-#if BUD_FORTRAN >= 2003
-  contains
 #   include "bud_common_type.inc"
+#if BUD_FORTRAN >= 2003
 
     !> @name Private procedures
     !> @{
@@ -403,8 +402,6 @@
   public :: error_MPI
 
 
-#define BUD_NO_IO
-
   ! Include common data routines
   ! Note that 'CONTAINS' is present in this include file.
 # include "bud_common.inc"
@@ -419,19 +416,22 @@
   !! any data in the type.
   !! Should never be made public.
   subroutine delete_(this)
-    type(BUD_TYPE_NAME_), intent(inout) :: this
+    type(BUD_TYPE_NAME), intent(inout) :: this
 
-    call delete(this%comm)
+    call delete(this%D%comm)
 
-    this%dist = DIST_NONE
-    this%BS = -1
+    ! Reset error
+    call set_error(this, 0)
+
+    this%D%dist = DIST_NONE
+    this%D%BS = -1
 
     ! Non BLOCK_CYCLIC
-    this%ng = -1
-    if ( allocated(this%nl) ) then
-      deallocate(this%nl)
-      deallocate(this%l2g)
-      deallocate(this%g2R)
+    this%D%ng = -1
+    if ( allocated(this%D%nl) ) then
+      deallocate(this%D%nl)
+      deallocate(this%D%l2g)
+      deallocate(this%D%g2R)
     end if
 
   end subroutine delete_
@@ -454,7 +454,7 @@
     to%D%dist = from%D%dist
     to%D%ng = from%D%ng
     to%D%BS = from%D%BS
-    to%D%error_ = from%D%error_
+    call set_error(to, error(from))
 
     call alloc(from%D%nl, to%D%nl)
     call alloc(from%D%l2g, to%D%l2g)
@@ -741,7 +741,7 @@
     ! distribution
     n = size(num_local)
     if ( n /= comm_size(this) ) then
-      this%D%error_ = -1
+      call set_error(this, -1)
       return
     end if
     allocate(this%D%nl(0:n-1))
@@ -1237,7 +1237,7 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_) :: err
     if ( is_initd(this) ) then
-      err = this%D%error_
+      err = error(this)
       if ( err == MPI_SUCCESS ) then
         err = error_MPI(this%D%comm)
       end if

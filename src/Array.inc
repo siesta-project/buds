@@ -69,9 +69,8 @@
 
     !> @endcond BUD_DEVELOPER
 
-#if BUD_FORTRAN >= 2003
-  contains
 #   include "bud_common_type.inc"
+#if BUD_FORTRAN >= 2003
 
     !> @name Private procedures
     !> @{
@@ -233,18 +232,21 @@
   !! any data in the type.
   !! Should never be made public.
   subroutine delete_(this)
-    type(BUD_TYPE_NAME_), intent(inout) :: this
+    type(BUD_TYPE_NAME), intent(inout) :: this
+    integer :: stat
 
     ! Currently we do not allow external memory
     ! tracking.
-    if ( associated(this%array) ) then
-      if ( this%container ) then
-        deallocate(this%array)
+    stat = 0
+    if ( associated(this%D%array) ) then
+      if ( this%D%container ) then
+        deallocate(this%D%array, stat=stat)
       end if
     end if
-    nullify(this%array)
+    nullify(this%D%array)
 
-    this%container = .true.
+    this%D%container = .true.
+    call set_error(this, stat)
 
   end subroutine delete_
 
@@ -788,6 +790,12 @@
     logical :: formatted, same_size
     integer :: iu, d
 
+#ifdef BUD_IS_INTEGER
+    character(len=64), parameter :: fmt_ = '(i16)'
+#else
+    character(len=64), parameter :: fmt_ = '(e20.16)'
+#endif
+
 #if BUD_DIM == 1
     integer :: d1
 #elif BUD_DIM == 2
@@ -890,15 +898,15 @@
 #endif
       if ( formatted ) then
 #if BUD_DIM == 1
-        read(iu, '(e20.16)') p(:)
+        read(iu, fmt_) p(:)
 #elif BUD_DIM == 2
-        read(iu, '(e20.16)') p(:,i2)
+        read(iu, fmt_) p(:,i2)
 #elif BUD_DIM == 3
-        read(iu, '(e20.16)') p(:,i2,i3)
+        read(iu, fmt_) p(:,i2,i3)
 #elif BUD_DIM == 4
-        read(iu, '(e20.16)') p(:,i2,i3,i4)
+        read(iu, fmt_) p(:,i2,i3,i4)
 #elif BUD_DIM == 5
-        read(iu, '(e20.16)') p(:,i2,i3,i4,i5)
+        read(iu, fmt_) p(:,i2,i3,i4,i5)
 #endif
       else
 #if BUD_DIM == 1

@@ -73,7 +73,32 @@
   end interface
   public :: distribute
 
+  interface new
+    module procedure new_dist_index_
+  end interface new
+  ! New should already be public
+
 #include "bud_collection.inc"
+
+
+  !> @param[inout] this the collection of a distribution and Array
+  !! @param[in] dist the distribution
+  !! @param[in] arr the array
+  !! @param[in] dist_idx the distributed index in the array
+  subroutine new_dist_index_(this, dist, arr, dist_idx)
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_COLL_1), intent(inout) :: dist
+    BUD_CLASS(BUD_COLL_2), intent(inout) :: arr
+    integer, intent(in) :: dist_idx
+
+    call new(this, dist, arr)
+
+#if BUD_DIM > 1
+    ! Set the distributed index
+    this%D%dist_idx = dist_idx
+#endif
+
+  end subroutine new_dist_index_
 
 
   !> @param[in] this sparse matrix
@@ -642,6 +667,646 @@
 
   end subroutine distribute_
 
+
+  !> @param[inout] f `File` bud
+  !! @param[in] this the distributed array @bud
+  subroutine write_(f, this)
+    use BUD_CC2(BUD_MOD,_File)
+    use BUD_CC2(BUD_MOD,_Transfer), only: transfer_dim
+
+    BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+
+    type(BUD_COLL_1) :: dist
+    type(BUD_COLL_2) :: arr
+    type( BUD_CC2(BUD_TYPE,MP_Comm) ) :: comm
+
+    logical :: formatted, do_io
+    integer :: iu, io_rank, dat_rank, rank
+
+#ifdef BUD_IS_INTEGER
+    character(len=64), parameter :: fmt_ = '(i16)'
+#else
+    character(len=64), parameter :: fmt_ = '(e20.16)'
+#endif
+
+#ifdef BUD_TYPE_VAR_PREC
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: dat BUD_DIM_SPEC(:)
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), allocatable :: rdat(:)
+#else
+    BUD_TYPE_VAR, pointer BUD_FORTRAN_CONTIGUOUS :: dat BUD_DIM_SPEC(:)
+    BUD_TYPE_VAR, allocatable :: rdat(:)
+#endif
+
+    integer :: dist_idx, l, n, ndat
+#if BUD_DIM == 1
+    integer :: d1, i1
+#elif BUD_DIM == 2
+    integer :: d1, d2, i1, i2
+#elif BUD_DIM == 3
+    integer :: d1, d2, d3, i1, i2, i3
+#endif
+#ifdef BUD_MPI
+    integer :: status(MPI_STATUS_SIZE)
+#endif
+
+    ! If file is not opened, return immediately
+    if ( .not. is_initd(this) ) return
+
+#ifndef BUD_MPI
+    arr = this
+    call write(f, arr)
+    call delete(arr)
+    return
+#else
+
+    ! Get contained data.
+    dist = this
+    comm = dist
+    arr = this
+
+    rank = comm_rank(comm)
+    if ( is_open(f) ) then
+      io_rank = rank
+    else
+      io_rank = -1
+    end if
+    call AllReduce_Max(io_rank, iu, comm)
+    io_rank = iu
+
+    ! Check if the file is open on one rank
+    if ( io_rank < 0 ) then
+      call delete(dist)
+      call delete(comm)
+      call delete(arr)
+      return
+    end if
+
+    ! This ensures that only one rank will do the writing
+    ! in case multiple ranks have the file open
+    ! only @bud knows what will happen in this case!!!
+    do_io = io_rank == rank
+
+    if ( do_io ) then
+      ! First figure out if the file is an unformatted file
+      formatted = is_formatted(f)
+      iu = unit(f)
+    end if
+
+    ! Retrieve information from the array
+    ! Get size
+    d1 = size(arr, 1)
+# if BUD_DIM > 1
+    d2 = size(arr, 2)
+# endif
+# if BUD_DIM > 2
+    d3 = size(arr, 3)
+# endif
+    dat => array_p(arr)
+    call delete(arr)
+
+    ! Now figure out the maximum number of elements
+    ! that is retrieved
+    dist_idx = distributed_index(this)
+
+    if ( dist_idx == 1 ) then
+      ! We will collect all information from
+      ! all nodes
+      ndat = size_global(dist)
+    else
+      ndat = d1
+    end if
+
+    ! Correct the distributed data
+# if BUD_DIM > 1
+    select case ( dist_idx )
+    case ( 2 )
+      d2 = ndat
+# if BUD_DIM > 2
+    case ( 3 )
+      d3 = ndat
+# endif
+    end select
+# endif
+
+    ! if we are the io-node we should allocate
+    if ( do_io ) then
+      allocate(rdat(ndat))
+
+      if ( formatted ) then
+        write(iu, '(i16)') BUD_DIM
+# if BUD_DIM == 1
+        write(iu, '(i16)') d1
+# elif BUD_DIM == 2
+        write(iu, '(i16,tr1,i16)') d1, d2
+# elif BUD_DIM == 3
+        write(iu, '(2(i16,tr1),i16)') d1, d2, d3
+# elif BUD_DIM == 4
+        write(iu, '(3(i16,tr1),i16)') d1, d2, d3, d4
+# elif BUD_DIM == 5
+        write(iu, '(4(i16,tr1),i16)') d1, d2, d3, d4, d5
+# endif
+      else
+        write(iu) BUD_DIM
+# if BUD_DIM == 1
+        write(iu) d1
+# elif BUD_DIM == 2
+        write(iu) d1, d2
+# elif BUD_DIM == 3
+        write(iu) d1, d2, d3
+# elif BUD_DIM == 4
+        write(iu) d1, d2, d3, d4
+# elif BUD_DIM == 5
+        write(iu) d1, d2, d3, d4, d5
+# endif
+      end if
+
+    end if
+
+    if ( dist_idx == 1 ) then
+
+      ! the distribution index is the inner-most
+      ! data...
+      ! this makes a lot of communication due
+      ! to the outer loops.
+      ! If this is a problem one
+      ! can redistribute the data and then perform writing
+
+# if BUD_DIM > 2
+      do i3 = 1 , d3
+# endif
+# if BUD_DIM > 1
+      do i2 = 1 , d2
+# endif
+        ! Collect
+        i1 = 1
+        do while ( i1 <= d1 )
+
+          ! Figure out how much to grab
+          n = consecutive(dist, i1)
+
+          dat_rank = global2rank(dist, i1)
+
+          if ( do_io .and. rank == dat_rank ) then
+
+            l = global2local(dist, i1)
+
+            ! Copy from local data to the gathered data
+# if BUD_DIM > 2
+            call transfer_dim(n, rdat(i1:), n, dat(i1:,i2,i3))
+# elif BUD_DIM > 1
+            call transfer_dim(n, rdat(i1:), n, dat(l:,i2))
+# else
+            call transfer_dim(n, rdat(i1:), n, dat(l:))
+# endif
+
+          else if ( do_io ) then
+
+            call Recv(rdat(i1), n, dat_rank, i1, comm, status)
+
+          else if ( rank == dat_rank ) then
+
+            l = global2local(dist, i1)
+
+# if BUD_DIM > 2
+            call SSend(dat(l,i2,i3), n, io_rank, i1, comm)
+# elif BUD_DIM > 1
+            call SSend(dat(l,i2), n, io_rank, i1, comm)
+# else
+            call SSend(dat(l), n, io_rank, i1, comm)
+# endif
+
+          end if
+
+          i1 = i1 + n
+
+        end do
+
+        if ( do_io ) then
+          if ( formatted ) then
+            write(iu, fmt_) rdat(:)
+          else
+            write(iu) rdat(:)
+          end if
+        end if
+
+# if BUD_DIM > 1
+      end do
+# endif
+# if BUD_DIM > 2
+      end do
+# endif
+
+# if BUD_DIM > 1
+    else if ( dist_idx == 2 ) then
+
+      ! only one dimension to distribute
+# if BUD_DIM > 2
+      do i3 = 1 , d3
+# endif
+      do i2 = 1 , d2
+
+        dat_rank = global2local(dist,i2)
+
+        if ( do_io .and. rank == dat_rank ) then
+
+          l = global2local(dist, i2)
+
+# if BUD_DIM > 2
+          call transfer_dim(d1, rdat(1:), d1, dat(1:,l,i3))
+# else
+          call transfer_dim(d1, rdat(1:), d1, dat(l:,l))
+# endif
+
+        else if ( do_io ) then
+
+          call Recv(rdat(1), d1, dat_rank, i1, comm, status)
+
+        else if ( rank == dat_rank ) then
+
+          l = global2local(dist, i2)
+
+# if BUD_DIM > 2
+          call SSend(dat(1,l,i3), d1, io_rank, i1, comm)
+# else
+          call SSend(dat(l,l), d1, io_rank, i1, comm)
+# endif
+
+        end if
+
+        if ( do_io ) then
+          if ( formatted ) then
+            write(iu, fmt_) rdat(:)
+          else
+            write(iu) rdat(:)
+          end if
+        end if
+
+      end do
+# if BUD_DIM > 2
+      end do
+# endif
+
+# endif
+
+# if BUD_DIM > 2
+    else if ( dist_idx == 3 ) then
+
+      ! only one dimension to distribute
+      do i3 = 1 , d3
+      do i2 = 1 , d2
+
+        dat_rank = global2local(dist,i3)
+
+        if ( do_io .and. rank == dat_rank ) then
+
+          l = global2local(dist, i3)
+
+          call transfer_dim(d1, rdat(1:), d1, dat(1:,i2,l))
+
+        else if ( do_io ) then
+
+          call Recv(rdat(1), d1, dat_rank, i1, comm, status)
+
+        else if ( rank == dat_rank ) then
+
+          l = global2local(dist, i3)
+
+          call SSend(dat(1,i2,l), d1, io_rank, i1, comm)
+
+        end if
+
+        if ( do_io ) then
+          if ( formatted ) then
+            write(iu, fmt_) rdat(:)
+          else
+            write(iu) rdat(:)
+          end if
+        end if
+
+      end do
+      end do
+
+# endif
+
+    end if
+
+    ! Ensure all has been de-allocated
+    if ( do_io ) deallocate(rdat)
+
+    call delete(dist)
+    call delete(comm)
+#endif
+
+  end subroutine write_
+
+
+  !> @param[inout] f `File` bud
+  !! @param[inout] dist the the distribution of the data
+  !! @param[inout] this the distributed array @bud
+  !! @param[in] dist_idx @opt=BUD_DIM the distributed index
+  subroutine read_(f, dist, this, dist_idx)
+    use BUD_CC2(BUD_MOD,_File)
+    use BUD_CC2(BUD_MOD,_Transfer), only: transfer_dim
+
+    BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f
+    BUD_CLASS(BUD_COLL_1), intent(inout) :: dist
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    integer, intent(in), optional :: dist_idx
+
+    type(BUD_COLL_2) :: arr
+    type( BUD_CC2(BUD_TYPE,MP_Comm) ) :: comm
+
+    logical :: formatted, do_io
+    integer :: iu, io_rank, dat_rank, rank
+
+#ifdef BUD_IS_INTEGER
+    character(len=64), parameter :: fmt_ = '(i16)'
+#else
+    character(len=64), parameter :: fmt_ = '(e20.16)'
+#endif
+
+    integer(ii_) :: ashape(BUD_DIM)
+
+#ifdef BUD_TYPE_VAR_PREC
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: dat BUD_DIM_SPEC(:)
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), allocatable :: rdat(:)
+#else
+    BUD_TYPE_VAR, pointer BUD_FORTRAN_CONTIGUOUS :: dat BUD_DIM_SPEC(:)
+    BUD_TYPE_VAR, allocatable :: rdat(:)
+#endif
+
+    integer :: ldist_idx, l, n
+#if BUD_DIM == 1
+    integer :: d1, i1
+#elif BUD_DIM == 2
+    integer :: d1, d2, i1, i2
+#elif BUD_DIM == 3
+    integer :: d1, d2, d3, i1, i2, i3
+#endif
+#ifdef BUD_MPI
+    integer :: status(MPI_STATUS_SIZE)
+#endif
+
+    ! If file is not opened, return immediately
+    if ( .not. is_initd(this) ) return
+
+    ldist_idx = BUD_DIM
+    if ( present(dist_idx) ) ldist_idx = dist_idx
+
+#ifndef BUD_MPI
+    call read(f, arr)
+    call new(this, dist, arr, ldist_idx)
+    return
+#else
+
+    ! Get contained data.
+    comm = dist
+
+    rank = comm_rank(comm)
+    if ( is_open(f) ) then
+      io_rank = rank
+    else
+      io_rank = -1
+    end if
+    call AllReduce_Max(io_rank, iu, comm)
+    io_rank = iu
+
+    ! Check if the file is open on one rank
+    if ( io_rank < 0 ) then
+      call delete(comm)
+      call delete(this)
+      call set_error(this, -1)
+      return
+    end if
+
+    ! This ensures that only one rank will do the writing
+    ! in case multiple ranks have the file open
+    ! only @bud knows what will happen in this case!!!
+    do_io = io_rank == rank
+
+    if ( do_io ) then
+      ! First figure out if the file is an unformatted file
+      formatted = is_formatted(f)
+      iu = unit(f)
+
+      ! Read sizes
+      if ( formatted ) then
+        read(iu, '(i16)') l
+# if BUD_DIM == 1
+        read(iu, '(i16)') ashape
+        d1 = ashape(1)
+# elif BUD_DIM == 2
+        read(iu, '(i16,tr1,i16)') ashape
+        d1 = ashape(1)
+        d2 = ashape(2)
+# elif BUD_DIM == 3
+        read(iu, '(2(i16,tr1),i16)') ashape
+        d1 = ashape(1)
+        d2 = ashape(2)
+        d3 = ashape(3)
+# elif BUD_DIM == 4
+        read(iu, '(3(i16,tr1),i16)') ashape
+        d1 = ashape(1)
+        d2 = ashape(2)
+        d3 = ashape(3)
+        d4 = ashape(4)
+# elif BUD_DIM == 5
+        read(iu, '(4(i16,tr1),i16)') ashape
+        d1 = ashape(1)
+        d2 = ashape(2)
+        d3 = ashape(3)
+        d4 = ashape(4)
+        d5 = ashape(5)
+# endif
+      else
+        read(iu) l
+        read(iu) ashape
+        d1 = ashape(1)
+# if BUD_DIM > 1
+        d2 = ashape(2)
+# endif
+# if BUD_DIM > 2
+        d3 = ashape(3)
+# endif
+# if BUD_DIM > 3
+        d4 = ashape(4)
+# endif
+# if BUD_DIM > 4
+        d5 = ashape(5)
+# endif
+      end if
+
+    end if
+
+    ! Now figure out the maximum number of elements
+    ! that is retrieved
+    select case ( ldist_idx )
+    case ( 1 )
+      ashape(1) = size_local(dist)
+# if BUD_DIM > 1
+    case ( 2 )
+      ashape(2) = size_local(dist)
+# endif
+# if BUD_DIM > 2
+    case ( 3 )
+      ashape(3) = size_local(dist)
+# endif
+# if BUD_DIM > 3
+    case ( 4 )
+      ashape(4) = size_local(dist)
+# endif
+# if BUD_DIM > 5
+    case ( 5 )
+      ashape(5) = size_local(dist)
+# endif
+    end select
+
+    ! Initialize the array to be read
+    ! Note this is already allocated distributed
+    call new(arr, ashape)
+    dat => array_p(arr)
+    call new(this, dist, arr, ldist_idx)
+    call delete(arr)
+
+    ! if we are the io-node we should allocate
+    if ( do_io ) then
+      allocate(rdat(d1))
+    end if
+
+    ! Loop, read and distribute
+# if BUD_DIM > 2
+    do i3 = 1 , d3
+# endif
+# if BUD_DIM > 1
+    do i2 = 1 , d2
+# endif
+
+      if ( do_io ) then
+        if ( formatted ) then
+          read(iu, fmt_) rdat(:)
+        else
+          read(iu) rdat(:)
+        end if
+      end if
+
+      ! distribute data
+      select case ( ldist_idx )
+      case ( 1 )
+        ! worst-case...
+        ! We should loop and redistribute data
+
+        i1 = 1
+        do while ( i1 <= d1 )
+
+          ! Figure out how much to grab
+          n = consecutive(dist, i1)
+          dat_rank = global2rank(dist, i1)
+
+          if ( do_io .and. rank == dat_rank ) then
+
+            l = global2local(dist, i1)
+
+# if BUD_DIM > 2
+            call transfer_dim(n, dat(l:,i2,i3), n, rdat(i1:))
+# elif BUD_DIM > 1
+            call transfer_dim(n, dat(l:,i2), n, rdat(i1:))
+# else
+            call transfer_dim(n, dat(l:), n, rdat(i1:))
+# endif
+
+          else if ( do_io ) then
+
+            call SSend(rdat(i1), n, dat_rank, i1, comm)
+
+          else if ( rank == dat_rank ) then
+
+            l = global2local(dist, i1)
+
+# if BUD_DIM > 2
+            call Recv(dat(l,i2,i3), n, io_rank, i1, comm, status)
+# elif BUD_DIM > 1
+            call Recv(dat(l,i2), n, io_rank, i1, comm, status)
+# else
+            call Recv(dat(l), n, io_rank, i1, comm, status)
+# endif
+
+          end if
+
+          i1 = i1 + n
+
+        end do
+
+# if BUD_DIM > 1
+      case ( 2 )
+
+        dat_rank = global2rank(dist, i2)
+
+        if ( do_io .and. rank == dat_rank ) then
+
+          l = global2local(dist, i2)
+
+# if BUD_DIM > 2
+          call transfer_dim(d1, dat(1:,l,i3), d1, rdat(:))
+# else
+          call transfer_dim(d1, dat(1:,l), d1, rdat(:))
+# endif
+
+        else if ( do_io ) then
+
+          call SSend(rdat(1), d1, dat_rank, i2, comm)
+
+        else if ( rank == dat_rank ) then
+
+          l = global2local(dist, i2)
+
+# if BUD_DIM > 2
+          call Recv(dat(1,l,i3), d1, io_rank, i2, comm, status)
+# else
+          call Recv(dat(1,l), d1, io_rank, i2, comm, status)
+# endif
+
+        end if
+# endif
+
+# if BUD_DIM > 2
+      case ( 3 )
+
+        dat_rank = global2rank(dist, i3)
+
+        if ( do_io .and. rank == dat_rank ) then
+
+          l = global2local(dist, i3)
+
+          call transfer_dim(d1, dat(1:,i2,l), d1, rdat(:))
+
+        else if ( do_io ) then
+
+          call SSend(rdat(1), d1, dat_rank, i3, comm)
+
+        else if ( rank == dat_rank ) then
+
+          l = global2local(dist, i3)
+
+          call Recv(dat(1,i2,l), d1, io_rank, i3, comm, status)
+
+        end if
+
+
+# endif
+      end select
+
+# if BUD_DIM > 1
+    end do
+# endif
+# if BUD_DIM > 2
+    end do
+# endif
+
+    call delete(comm)
+#endif
+
+  end subroutine read_
 
 #undef BUD_TYPE_NEW
 

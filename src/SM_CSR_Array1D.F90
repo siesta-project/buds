@@ -42,6 +42,9 @@
 #endif
 !! @{
 
+! The integer precision
+# define BUD_INT_PREC ii_
+
 
 # define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,iCSR_b1D)
 !> @defgroup BUD_MOD_NAME Logical

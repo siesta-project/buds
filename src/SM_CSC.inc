@@ -67,9 +67,8 @@
 
     !> @endcond BUD_DEVELOPER
 
-#if BUD_FORTRAN >= 2003
-  contains
 #   include "bud_common_type.inc"
+#if BUD_FORTRAN >= 2003
 
     !> @name Private procedures
     !> @{
@@ -128,8 +127,8 @@
     generic, public :: row_p => rowp_, row_cp_
 
 
-    !> @iSee #add_nonzero
-    procedure, public :: add_nonzero => add_nonzero_
+    !> @iSee #add_element
+    procedure, public :: add_element => add_element_
 
 
     !> @iSee #remove_row
@@ -349,10 +348,10 @@
   !! The re-allocation ensures that all rows can
   !! contain `maxval(nrow)+8` and can thus result in
   !! a large memory increase.
-  interface add_nonzero
-    module procedure add_nonzero_
+  interface add_element
+    module procedure add_element_
   end interface
-  public :: add_nonzero
+  public :: add_element
 
 
   ! Include the common elements of a sparsity method
@@ -369,21 +368,28 @@
   !! any data in the type.
   !! Should never be made public.
   subroutine delete_(this)
-    type(BUD_TYPE_NAME_), intent(inout) :: this
+    type(BUD_TYPE_NAME), intent(inout) :: this
+    integer :: stat, istat
 
-    this%nr = 0
-    this%nc = 0
-    this%nz = 0
-    this%nt = 0
-    this%sorted = .false.
-    this%finalized = .false.
+    this%D%nr = 0
+    this%D%nc = 0
+    this%D%nz = 0
+    this%D%nt = 0
+    this%D%sorted = .false.
+    this%D%finalized = .false.
 
     ! Currently we do not allow external memory
     ! tracking.
-    if ( .not. allocated(this%row) ) return
-    deallocate(this%cptr)
-    deallocate(this%row)
-    deallocate(this%ncol)
+    if ( .not. allocated(this%D%row) ) return
+    stat = 0
+    deallocate(this%D%cptr, stat=istat)
+    if ( 0 /= istat ) stat = istat
+    deallocate(this%D%row, stat=stat)
+    if ( 0 /= istat ) stat = istat
+    deallocate(this%D%ncol, stat=stat)
+    if ( 0 /= istat ) stat = istat
+
+    call set_error(this, stat)
 
   end subroutine delete_
 
@@ -758,7 +764,7 @@
   !> @param[inout] this the sparse matrix to add an element to
   !! @param[in] ir the row index of the element
   !! @param[in] ic the column index of the element
-  recursive subroutine add_nonzero_(this, ir, ic)
+  recursive subroutine add_element_(this, ir, ic)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer(BUD_TYPE_VAR_PREC), intent(in) :: ir, ic
 
@@ -819,7 +825,7 @@
     end do
 
     ! add the element to the new sparse pattern
-    call add_nonzero(nthis, ir, ic)
+    call add_element(nthis, ir, ic)
     ! copy the sparse pattern to this one
     this = nthis
     ! clean-up
@@ -829,7 +835,7 @@
     e = npc
     call set_error(this, e)
 
-  end subroutine add_nonzero_
+  end subroutine add_element_
 
 
   !> @param[in] sp1 the first sparse matrix

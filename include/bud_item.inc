@@ -41,9 +41,8 @@
 
     !> @endcond BUD_DEVELOPER
 
-#if BUD_FORTRAN >= 2003
-  contains
 #   include "bud_common_type.inc"
+#if BUD_FORTRAN >= 2003
 
     !> @name Private procedures
     !> @{

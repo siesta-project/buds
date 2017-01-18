@@ -79,9 +79,8 @@
 
     !> @endcond BUD_DEVELOPER
 
-#if BUD_FORTRAN >= 2003
-  contains
 #   include "bud_common_type.inc"
+#if BUD_FORTRAN >= 2003
 
     !> @name Private procedures
     !> @{
@@ -356,24 +355,24 @@
 
   !> @cond BUD_DEVELOPER
 
-  subroutine delete_(D)
-    type(BUD_TYPE_NAME_), intent(inout) :: D
+  subroutine delete_(this)
+    type(BUD_TYPE_NAME), intent(inout) :: this
     type(BUD_LINKED_LIST_NAME), pointer :: head, tmp
 
     ! We first distinguish between an iterator
     ! and a proper linked list
-    if ( associated(D%head) .and. .not. &
-      associated(D%ll) ) then
+    if ( associated(this%D%head) .and. .not. &
+      associated(this%D%ll) ) then
       ! we have an iterator
-      nullify(D%head)
-      nullify(D%ll)
+      nullify(this%D%head)
+      nullify(this%D%ll)
 
       return
     end if
 
 
     ! First move
-    head => D%ll
+    head => this%D%ll
 
     ! If the linked list is not associated we
     ! need not do anything
@@ -381,13 +380,13 @@
 
 #ifdef BUD_LIST_DOUBLY
       do while ( associated(head%prev) )
-        if ( associated(head%prev, D%ll) ) exit
+        if ( associated(head%prev, this%D%ll) ) exit
         head => head%prev
       end do
       ! we have a circular list. Hence
       ! the head is the tip
-      if ( associated(head%prev, D%ll) ) then
-        head => D%ll
+      if ( associated(head%prev, this%D%ll) ) then
+        head => this%D%ll
       end if
 #endif
 
@@ -396,7 +395,7 @@
       tmp => head
       do while ( associated(head) )
         ! circular list
-        if ( associated(head%next, D%ll) ) exit
+        if ( associated(head%next, this%D%ll) ) exit
         head => head%next
         call delete(tmp%D)
         deallocate(tmp)
@@ -406,14 +405,14 @@
     end if
 
     ! deallocate head of list
-    if ( associated(D%ll) ) then
-      call delete(D%ll%D)
-      deallocate(D%ll)
+    if ( associated(this%D%ll) ) then
+      call delete(this%D%ll%D)
+      deallocate(this%D%ll)
     end if
 
     ! nullify
-    nullify(D%ll)
-    nullify(D%head)
+    nullify(this%D%ll)
+    nullify(this%D%head)
 
   end subroutine delete_
 

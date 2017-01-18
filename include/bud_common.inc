@@ -214,10 +214,15 @@
 
   !> Set the error to some value.
   interface set_error
-    module procedure common_set_error_
+    module procedure common_set_error_is_
+    module procedure common_set_error_ii_
+    module procedure common_set_error_il_
   end interface
   public :: set_error
-  private :: common_set_error_
+  private :: common_set_error_is_
+  private :: common_set_error_ii_
+  private :: common_set_error_il_
+
 
   !> Query the latest routine which may have produced an error.
   !!
@@ -272,7 +277,7 @@ contains
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
 
-    to%D%error_ = from%D%error_
+    call set_error(to, error(from))
 
   end subroutine common_copy_
 
@@ -301,7 +306,7 @@ contains
     this%D%refs_ = 1
 
     ! Set the initial error
-    this%D%error_ = 0
+    call set_error(this, 0)
 
     ! Tag the object (always)
     call common_tag_object_(this)
@@ -353,7 +358,7 @@ contains
       ! Use the routine provided for this specific
       ! type to clean up any internal structure
 
-      call delete_(this%D)
+      call delete_(this)
 
       ! Deallocate the currently referenced storage
       deallocate(this%D, stat=error)
@@ -439,7 +444,7 @@ contains
     integer :: error
 
     if ( is_initd(this) ) then
-      error = this%D%error_
+      error = this%error
     else
       error = 0
     end if
@@ -448,15 +453,25 @@ contains
 
   !> @param[inout] this reference counted @bud
   !! @param[in] error set the error to this value
-  elemental subroutine common_set_error_(this, error)
+  elemental subroutine common_set_error_is_(this, error)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    integer, intent(in) :: error
-
-    if ( is_initd(this) ) then
-      this%D%error_ = error
-    end if
-
-  end subroutine common_set_error_
+    integer(is_), intent(in) :: error
+    this%error = error
+  end subroutine common_set_error_is_
+  !> @param[inout] this reference counted @bud
+  !! @param[in] error set the error to this value
+  elemental subroutine common_set_error_ii_(this, error)
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    integer(ii_), intent(in) :: error
+    this%error = error
+  end subroutine common_set_error_ii_
+  !> @param[inout] this reference counted @bud
+  !! @param[in] error set the error to this value
+  elemental subroutine common_set_error_il_(this, error)
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    integer(il_), intent(in) :: error
+    this%error = error
+  end subroutine common_set_error_il_
 
 
   !> @cond BUD_DEVELOPER

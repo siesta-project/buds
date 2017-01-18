@@ -120,9 +120,8 @@
 
     !> @endcond BUD_DEVELOPER
 
-#if BUD_FORTRAN >= 2003
-  contains
 #   include "bud_common_type.inc"
+#if BUD_FORTRAN >= 2003
 
     !> @name Private procedures
     !> @{
@@ -477,22 +476,34 @@
 
   !> @cond BUD_DEVELOPER
 
-  subroutine delete_(D)
-    type(BUD_TYPE_NAME_), intent(inout) :: D
+  subroutine delete_(this)
+    type(BUD_TYPE_NAME), intent(inout) :: this
 
-    call delete(D%e1)
-    call delete(D%e2)
+    call delete(this%D%e1)
+    if ( 0 /= error(this%D%e1) ) &
+      call set_error(this, error(this%D%e1))
+    call delete(this%D%e2)
+    if ( 0 /= error(this%D%e2) ) &
+      call set_error(this, error(this%D%e2))
 #ifdef BUD_COLL_3
-    call delete(D%e3)
+    call delete(this%D%e3)
+    if ( 0 /= error(this%D%e3) ) &
+      call set_error(this, error(this%D%e3))
 #endif
 #ifdef BUD_COLL_4
-    call delete(D%e4)
+    call delete(this%D%e4)
+    if ( 0 /= error(this%D%e4) ) &
+      call set_error(this, error(this%D%e4))
 #endif
 #ifdef BUD_COLL_5
-    call delete(D%e5)
+    call delete(this%D%e5)
+    if ( 0 /= error(this%D%e5) ) &
+      call set_error(this, error(this%D%e5))
 #endif
 #ifdef BUD_COLL_6
-    call delete(D%e6)
+    call delete(this%D%e6)
+    if ( 0 /= error(this%D%e6) ) &
+      call set_error(this, error(this%D%e6))
 #endif
 
   end subroutine delete_
