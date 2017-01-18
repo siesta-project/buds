@@ -84,10 +84,14 @@ IS_PLUGIN := 0
 LINK := $(FC)
 
 # Libraries depend on the objects
+ifneq ($(LIBRARIES),)
 $(LIBRARIES): $(OBJECTS)
 
 # Create target
 lib: $(LIBRARIES)
+
+endif
+
 
 # Create target
 source: source-src source-mpi
