@@ -796,17 +796,7 @@
     character(len=64), parameter :: fmt_ = '(e20.16)'
 #endif
 
-#if BUD_DIM == 1
-    integer :: d1
-#elif BUD_DIM == 2
-    integer :: d1, d2, i2
-#elif BUD_DIM == 3
-    integer :: d1, d2, d3, i2, i3
-#elif BUD_DIM == 4
-    integer :: d1, d2, d3, d4, i2, i3, i4
-#elif BUD_DIM == 5
     integer :: d1, d2, d3, d4, d5, i2, i3, i4, i5
-#endif
 
     ! If file is not opened, return immediately
     if ( .not. is_open(f) ) return
@@ -822,35 +812,50 @@
       read(iu) d
     end if
 
-    if ( d /= BUD_DIM ) then
+    if ( d > BUD_DIM ) then
       call delete(this)
+      ! Signal wrong dimensions
+      call set_error(this, -d)
       return
     end if
 
+    ! Initialize all dimensions to 1
+    d1 = 1
+    d2 = 1
+    d3 = 1
+    d4 = 1
+    d5 = 1
+
     if ( formatted ) then
-#if BUD_DIM == 1
-      read(iu, '(i16)') d1
-#elif BUD_DIM == 2
-      read(iu, '(i16,tr1,i16)') d1, d2
-#elif BUD_DIM == 3
-      read(iu, '(2(i16,tr1),i16)') d1, d2, d3
-#elif BUD_DIM == 4
-      read(iu, '(3(i16,tr1),i16)') d1, d2, d3, d4
-#elif BUD_DIM == 5
-      read(iu, '(4(i16,tr1),i16)') d1, d2, d3, d4, d5
-#endif
+
+      select case ( d )
+      case ( 1 )
+        read(iu, '(i16)') d1
+      case ( 2 )
+        read(iu, '(i16,tr1,i16)') d1, d2
+      case ( 3 )
+        read(iu, '(2(i16,tr1),i16)') d1, d2, d3
+      case ( 4 )
+        read(iu, '(3(i16,tr1),i16)') d1, d2, d3, d4
+      case ( 5 )
+        read(iu, '(4(i16,tr1),i16)') d1, d2, d3, d4, d5
+      end select
+
     else
-#if BUD_DIM == 1
-      read(iu) d1
-#elif BUD_DIM == 2
-      read(iu) d1, d2
-#elif BUD_DIM == 3
-      read(iu) d1, d2, d3
-#elif BUD_DIM == 4
-      read(iu) d1, d2, d3, d4
-#elif BUD_DIM == 5
-      read(iu) d1, d2, d3, d4, d5
-#endif
+
+      select case ( d )
+      case ( 1 )
+        read(iu) d1
+      case ( 2 )
+        read(iu) d1, d2
+      case ( 3 )
+        read(iu) d1, d2, d3
+      case ( 4 )
+        read(iu) d1, d2, d3, d4
+      case ( 5 )
+        read(iu) d1, d2, d3, d4, d5
+      end select
+
     end if
 
     ! First, check for dimensions
@@ -868,6 +873,7 @@
     same_size = same_size .and. size_(this, 5) == d5
 #endif
     if ( .not. same_size ) then
+      ! Re-allocate
 #if BUD_DIM == 1
       call new(this, d1)
 #elif BUD_DIM == 2
