@@ -578,7 +578,7 @@
     if ( is_initd(this) ) then
 
       if ( present(dist) ) dist = this%D%dist
-      if ( present(P) ) P = rank(this%D%comm)
+      if ( present(P) ) P = comm_rank(this%D%comm)
       if ( present(NP) ) NP = comm_size(this%D%comm)
       if ( present(ng) ) ng = this%D%ng
       if ( present(BS) ) BS = this%D%BS
@@ -612,7 +612,7 @@
   !! @param[in] Comm the communicator that we will dublicate and attach
   subroutine new_(this, Comm)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    BUD_CLASS(BUD_TYPE_MP_COMM), intent(inout) :: Comm
+    BUD_CLASS(BUD_TYPE_MP_COMM), intent(in) :: Comm
 
     call initialize(this)
 
@@ -1086,15 +1086,15 @@
     select case ( this%D%dist )
     case ( DIST_BLOCK_CYCLIC_FIRST_SPLIT )
 
-      P = mod( (ig-1) / this%D%BS , NP)
+      P = mod( (ig-1) / this%D%BS , int(NP, BUD_PREC))
 
     case ( DIST_BLOCK_LAST_ALL )
 
-      P = min( (ig-1) / this%D%BS, NP-1)
+      P = min( (ig-1) / this%D%BS, int(NP-1, BUD_PREC))
 
     case ( DIST_CYCLIC_FIRST )
 
-      P = mod(ig-1,NP)
+      P = mod(ig-1, int(NP, BUD_PREC))
 
     case ( DIST_USER )
 
