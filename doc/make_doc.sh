@@ -13,7 +13,7 @@
 DOT=${DOT:-1}
 #   whether graphviz should be used...
 OPTIPNG=${OPTIPNG:-1}
-DOC=${DOC:doxygen}
+DOC=${DOC:-doxygen}
 
 # Retrieve the git-source top-directory
 _main_dir=`git rev-parse --show-toplevel`
@@ -104,7 +104,7 @@ pushd $_SRC
     echo "OO = 1"
     echo "include \$(TOP_DIR)/Makefile"
 } > Makefile
-make source
+make source --trace
 # Ensure the *.inc files are also present
 cp $_main_dir/include/*.inc .
 popd
@@ -112,7 +112,7 @@ popd
 # Now we can create the documentation
 # This will create the documentation folder
 case $DOC in
-    
+
     doxygen|Doxygen)
 	{
 	    cat doc/Doxyfile
@@ -130,6 +130,12 @@ case $DOC in
     
     ford|FORD)
 	ford doc/ford.md
+	;;
+
+    *)
+	echo "Error in DOC=$DOC variable, must be either:"
+	echo " doxygen, ford"
+	exit 1
 	;;
     
 esac

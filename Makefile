@@ -7,7 +7,7 @@ VPATH ?= $(shell pwd)
 default: lib
 
 # the all target
-.PHONY: all
+.PHONY: all static shared
 all: static shared
 
 
@@ -88,12 +88,14 @@ ifneq ($(LIBRARIES),)
 $(LIBRARIES): $(OBJECTS)
 
 # Create target
+.PHONY: lib
 lib: $(LIBRARIES)
 
 endif
 
 
 # Create target
+.PHONY: source
 source: source-src source-mpi
 
 # Include the makefile in the test source directories:

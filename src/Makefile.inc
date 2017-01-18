@@ -10,7 +10,8 @@ ARRAY_OBJECTS = \
 	bud_Array1D.o \
 	bud_Array2D.o \
 	bud_Array3D.o
-$(ARRAY_OBJECTS:.o=.f90): Array.inc bud_File.o
+$(ARRAY_OBJECTS:.o=.f90): Array.inc
+$(ARRAY_OBJECTS): bud_File.o
 src_OBJECTS += $(ARRAY_OBJECTS)
 bud_Array1D.f90: Array1D.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
@@ -70,7 +71,7 @@ SM_R = \
 	bud_SM_CSR0.o \
 	bud_SM_CSR_C.o
 $(SM_R:.o=.f90): SM_common.inc SM_CSR.inc
-$(SM_R): SM_common.inc SM_CSR.inc bud_List.o bud_File.o
+$(SM_R): bud_List.o bud_File.o
 src_OBJECTS += $(SM_R)
 bud_SM_CSR.f90: SM_CSR.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
@@ -84,7 +85,7 @@ SM_C = \
 	bud_SM_CSC0.o \
 	bud_SM_CSC_C.o
 $(SM_C:.o=.f90): SM_common.inc SM_CSC.inc
-$(SM_C): SM_common.inc SM_CSC.inc bud_List.o bud_File.o
+$(SM_C): bud_List.o bud_File.o
 src_OBJECTS += $(SM_C)
 bud_SM_CSC.f90: SM_CSC.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
@@ -184,6 +185,7 @@ bud_SM_CSC_C_Array3D.f90: SM_CSC_C_Array1D.F90
 LIST_OBJECTS = \
 	bud_List.o
 $(LIST_OBJECTS:.o=.f90): List.inc
+$(LIST_OBJECTS): bud_File.o
 src_OBJECTS += $(LIST_OBJECTS)
 bud_List.f90: List.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
@@ -291,7 +293,6 @@ $(src_FPP_SOURCES): INCLUDES += -I$(src_DIR)
 
 
 source-src: $(src_SOURCES)
-
 
 clean-src:
 	-rm -f $(src_FPP_SOURCES)
