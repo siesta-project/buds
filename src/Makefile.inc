@@ -148,7 +148,7 @@ SM_ARR_C = \
 	bud_SM_CSC_C_Array2D.o \
 	bud_SM_CSC_C_Array3D.o
 $(SM_ARR_C): SM_Array.inc SM_Array_type_.inc $(SM_C) $(ARRAY_OBJECTS)
-#src_OBJECTS += $(SM_ARR_C)
+src_OBJECTS += $(SM_ARR_C)
 bud_SM_CSC_Array1D.f90: SM_CSC_Array1D.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
 bud_SM_CSC_Array2D.f90: _TMP_FILE=SM_CSC_Array2D.F90

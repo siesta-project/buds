@@ -52,11 +52,11 @@ bud_Dist1D_SM_CSC0_Array1D.f90: Dist1D_SM_CSC0_Array1D.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
 bud_Dist1D_SM_CSC0_Array2D.f90: _TMP_FILE=Dist1D_SM_CSC0_Array2D.F90
 bud_Dist1D_SM_CSC0_Array2D.f90: Dist1D_SM_CSC0_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/\([^t]\)1D/\12D/g' $(mpi_DIR)/Dist1D_SM_CSC0_Array1D.F90 > $(_TMP_FILE)
+	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/\([^Dt]\)1D/\12D/g' $(mpi_DIR)/Dist1D_SM_CSC0_Array1D.F90 > $(_TMP_FILE)
 	$(src_FPP)
 bud_Dist1D_SM_CSC0_Array3D.f90: _TMP_FILE=Dist1D_SM_CSC0_Array3D.F90
 bud_Dist1D_SM_CSC0_Array3D.f90: Dist1D_SM_CSC0_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/\([^t]\)1D/\13D/g' $(mpi_DIR)/Dist1D_SM_CSC0_Array1D.F90 > $(_TMP_FILE)
+	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/\([^Dt]\)1D/\13D/g' $(mpi_DIR)/Dist1D_SM_CSC0_Array1D.F90 > $(_TMP_FILE)
 	$(src_FPP)
 
 

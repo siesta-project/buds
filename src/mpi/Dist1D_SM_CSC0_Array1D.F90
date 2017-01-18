@@ -44,6 +44,9 @@
 
 #define BUD_PREC ii_
 
+# define BUD_MOD_1_2 BUD_CC2(BUD_MOD,_iDist1D_CSC0)
+# define BUD_TYPE_1_2 BUD_CC2(BUD_TYPE,iD1D_CSC0)
+
 ! Define the sparse matrix stuff
 #define BUD_SM_CSC 1
 #include "SM.inc"
@@ -68,6 +71,8 @@ module BUD_MOD_NAME
 # define BUD_COLL_1 BUD_CC2(BUD_TYPE,iDist1D)
 # define BUD_COLL_2 BUD_CC2(BUD_TYPE,iSM_CSC0)
 # define BUD_COLL_3 BUD_CC2(BUD_TYPE,bArray1D)
+# define BUD_MOD_2_3 BUD_CC2(BUD_MOD,_iCSC0_b1D)
+# define BUD_TYPE_2_3 BUD_CC2(BUD_TYPE,iCSC0_b1D)
 #include "Dist1D_SM_Array.inc"
 end module
 !> @}
@@ -89,6 +94,8 @@ module BUD_MOD_NAME
 # define BUD_COLL_1 BUD_CC2(BUD_TYPE,iDist1D)
 # define BUD_COLL_2 BUD_CC2(BUD_TYPE,iSM_CSC0)
 # define BUD_COLL_3 BUD_CC2(BUD_TYPE,rArray1D)
+# define BUD_MOD_2_3 BUD_CC2(BUD_MOD,_iCSC0_r1D)
+# define BUD_TYPE_2_3 BUD_CC2(BUD_TYPE,iCSC0_r1D)
 #include "Dist1D_SM_Array.inc"
 end module
 !> @}
@@ -110,6 +117,8 @@ module BUD_MOD_NAME
 # define BUD_COLL_1 BUD_CC2(BUD_TYPE,iDist1D)
 # define BUD_COLL_2 BUD_CC2(BUD_TYPE,iSM_CSC0)
 # define BUD_COLL_3 BUD_CC2(BUD_TYPE,dArray1D)
+# define BUD_MOD_2_3 BUD_CC2(BUD_MOD,_iCSC0_d1D)
+# define BUD_TYPE_2_3 BUD_CC2(BUD_TYPE,iCSC0_d1D)
 #include "Dist1D_SM_Array.inc"
 end module
 !> @}
@@ -131,6 +140,8 @@ module BUD_MOD_NAME
 # define BUD_COLL_1 BUD_CC2(BUD_TYPE,iDist1D)
 # define BUD_COLL_2 BUD_CC2(BUD_TYPE,iSM_CSC0)
 # define BUD_COLL_3 BUD_CC2(BUD_TYPE,cArray1D)
+# define BUD_MOD_2_3 BUD_CC2(BUD_MOD,_iCSC0_c1D)
+# define BUD_TYPE_2_3 BUD_CC2(BUD_TYPE,iCSC0_c1D)
 #include "Dist1D_SM_Array.inc"
 end module
 !> @}
@@ -152,6 +163,8 @@ module BUD_MOD_NAME
 # define BUD_COLL_1 BUD_CC2(BUD_TYPE,iDist1D)
 # define BUD_COLL_2 BUD_CC2(BUD_TYPE,iSM_CSC0)
 # define BUD_COLL_3 BUD_CC2(BUD_TYPE,zArray1D)
+# define BUD_MOD_2_3 BUD_CC2(BUD_MOD,_iCSC0_z1D)
+# define BUD_TYPE_2_3 BUD_CC2(BUD_TYPE,iCSC0_z1D)
 #include "Dist1D_SM_Array.inc"
 end module
 !> @}

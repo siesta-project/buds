@@ -1003,19 +1003,9 @@
   !! @param[in] this the distributed sparse matrix @bud
   subroutine write_(f, this)
     use BUD_CC2(BUD_MOD,_File)
-#ifdef BUD_SM_CSR
-# if BUD_SM_CSR == 0
-    use BUD_CC2(BUD_MOD,_iDist1D_CSR)
-# else
-    use BUD_CC2(BUD_MOD,_iDist1D_CSR0)
-# endif
-#endif
-#ifdef BUD_SM_CSC
-# if BUD_SM_CSC == 0
-    use BUD_CC2(BUD_MOD,_iDist1D_CSC)
-# else
-    use BUD_CC2(BUD_MOD,_iDist1D_CSC0)
-# endif
+    use BUD_MOD_1_2
+#ifndef BUD_MPI
+    use BUD_MOD_2_3
 #endif
 
     BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f
@@ -1048,19 +1038,9 @@
     integer :: status(MPI_STATUS_SIZE)
 #endif
 
-#ifdef BUD_SM_CSR
-# if BUD_SM_CSR == 0
-    type( BUD_CC2(BUD_TYPE,iD1D_CSR) ) :: d1d
-# else
-    type( BUD_CC2(BUD_TYPE,iD1D_CSR0) ) :: d1d
-# endif
-#endif
-#ifdef BUD_SM_CSC
-# if BUD_SM_CSC == 0
-    type( BUD_CC2(BUD_TYPE,iD1D_CSC) ) :: d1d
-# else
-    type( BUD_CC2(BUD_TYPE,iD1D_CSC0) ) :: d1d
-# endif
+    type(BUD_TYPE_1_2) :: d1d
+#ifndef BUD_MPI
+    type(BUD_TYPE_2_3) :: sm_arr
 #endif
 
     ! If file is not opened, return immediately
@@ -1369,19 +1349,9 @@
   !! @param[in] this the distributed sparse matrix @bud
   subroutine read_(f, dist, this)
     use BUD_CC2(BUD_MOD,_File)
-#ifdef BUD_SM_CSR
-# if BUD_SM_CSR == 0
-    use BUD_CC2(BUD_MOD,_iDist1D_CSR)
-# else
-    use BUD_CC2(BUD_MOD,_iDist1D_CSR0)
-# endif
-#endif
-#ifdef BUD_SM_CSC
-# if BUD_SM_CSC == 0
-    use BUD_CC2(BUD_MOD,_iDist1D_CSC)
-# else
-    use BUD_CC2(BUD_MOD,_iDist1D_CSC0)
-# endif
+    use BUD_MOD_1_2
+#ifndef BUD_MPI
+    use BUD_MOD_2_3
 #endif
 
     BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f
@@ -1399,19 +1369,9 @@
     integer :: i, i2, i3, ir
     integer(BUD_PREC) :: ig, il, gnr, gnc, gnl, gnrc, nr, nc, nz
 
-#ifdef BUD_SM_CSR
-# if BUD_SM_CSR == 0
-    type( BUD_CC2(BUD_TYPE,iD1D_CSR) ) :: d1d
-# else
-    type( BUD_CC2(BUD_TYPE,iD1D_CSR0) ) :: d1d
-# endif
-#endif
-#ifdef BUD_SM_CSC
-# if BUD_SM_CSC == 0
-    type( BUD_CC2(BUD_TYPE,iD1D_CSC) ) :: d1d
-# else
-    type( BUD_CC2(BUD_TYPE,iD1D_CSC0) ) :: d1d
-# endif
+    type(BUD_TYPE_1_2) :: d1d
+#ifndef BUD_MPI
+    type(BUD_TYPE_2_3) :: sm_arr
 #endif
 
     integer :: sm_idx, dims
