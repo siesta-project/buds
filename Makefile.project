@@ -68,6 +68,10 @@ doc-ffast:
 	DOT=0 OPTIPNG=0 doc/make_doc.sh
 
 
+doc-ford-ffast:
+	DOC=ford DOT=0 OPTIPNG=0 doc/make_doc.sh
+
+
 clean:
 	-rm -f libbuds.a libbuds.so
 

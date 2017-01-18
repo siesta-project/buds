@@ -13,7 +13,7 @@
 DOT=${DOT:-1}
 #   whether graphviz should be used...
 OPTIPNG=${OPTIPNG:-1}
-
+DOC=${DOC:doxygen}
 
 # Retrieve the git-source top-directory
 _main_dir=`git rev-parse --show-toplevel`
@@ -111,24 +111,33 @@ popd
 
 # Now we can create the documentation
 # This will create the documentation folder
-{
-    cat doc/Doxyfile
-    # Insert correct documentation version
-    echo "PROJECT_NUMBER = $doc_version"
-    echo "$have_dot"
-} | doxygen -
+case $DOC in
+    
+    doxygen|Doxygen)
+	{
+	    cat doc/Doxyfile
+	    # Insert correct documentation version
+	    echo "PROJECT_NUMBER = $doc_version"
+	    echo "$have_dot"
+	} | doxygen -
 
+	# Insert the version string in the version
+	sed -i -e "s/BUDS_VERSION/$doc_version/g" html/index.html
+	# This reflects the DOWNLOAD.md file
+	sed -i -e "s/BUDS_VERSION/$tar_version/g" html/download.html
 
+	;;
+    
+    ford|FORD)
+	ford doc/ford.md
+	;;
+    
+esac
 
 ###################
 # Post-processing #
 ###################
 pushd $_DOC
-
-# Insert the version string in the version
-sed -i -e "s/BUDS_VERSION/$doc_version/g" html/index.html
-# This reflects the DOWNLOAD.md file
-sed -i -e "s/BUDS_VERSION/$tar_version/g" html/download.html
 
 # if we have optipng we optimize the PNG's
 # to reduce webpage size.
