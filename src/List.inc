@@ -511,11 +511,13 @@
   !! Should never be made public.
   subroutine delete_(this)
     type(BUD_TYPE_NAME), intent(inout) :: this
+    integer :: stat
 
     ! Currently we do not allow external memory
     ! tracking.
     if ( .not. allocated(this%D%lst) ) return
-    deallocate(this%D%lst, stat=this%error)
+    deallocate(this%D%lst, stat=stat)
+    call set_error(this, stat)
     this%D%n = 0
     this%D%max_n = 0
     this%D%incr_n = 10

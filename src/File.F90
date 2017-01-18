@@ -474,10 +474,12 @@ module BUD_MOD_NAME
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
     logical :: exist
+    integer :: stat
 
     if ( is_initd(this) ) then
       inquire( file = this%D%file, exist = exist, &
-        iostat = this%error)
+        iostat = stat)
+      call set_error(this, stat)
     else
       exist = .false.
     end if
@@ -491,11 +493,13 @@ module BUD_MOD_NAME
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
     character(len=10) :: dir
+    integer :: stat
     logical :: direct
 
     if ( is_open(this) ) then
       inquire( this%D%unit, direct = dir, &
-        iostat = this%error)
+        iostat = stat)
+      call set_error(this, stat)
 
       direct = (dir == 'YES') .or. &
         (dir == 'yes')
@@ -516,12 +520,13 @@ module BUD_MOD_NAME
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
     character(len=10) :: seq
+    integer :: stat
     logical :: sequential
 
     if ( is_open(this) ) then
       inquire( this%D%unit, sequential = seq, &
-        iostat = this%error)
-
+        iostat = stat)
+      call set_error(this, stat)
       sequential = (seq == 'YES') .or. &
         (seq == 'yes')
 
@@ -541,11 +546,13 @@ module BUD_MOD_NAME
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
     character(len=10) :: form
+    integer :: stat
     logical :: formatted
 
     if ( is_open(this) ) then
       inquire( this%D%unit, formatted = form, &
-        iostat = this%error)
+        iostat = stat)
+      call set_error(this, stat)
 
       formatted = (form == 'YES') .or. &
         (form == 'yes')
@@ -566,11 +573,13 @@ module BUD_MOD_NAME
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
     character(len=10) :: unform
+    integer :: stat
     logical :: unformatted
 
     if ( is_open(this) ) then
       inquire( this%D%unit, unformatted = unform, &
-        iostat = this%error)
+        iostat = stat)
+      call set_error(this, stat)
 
       unformatted = (unform == 'YES') .or. &
         (unform == 'yes')
@@ -613,6 +622,7 @@ module BUD_MOD_NAME
     character(len=*), intent(in), optional :: D, form, access, action, status
 
     character(len=32) :: lform, laccess, laction, lstatus
+    integer :: stat
 
     if ( .not. is_initd(this) ) return
 
@@ -635,13 +645,15 @@ module BUD_MOD_NAME
     open( this%D%unit, file=trim(this%D%file), &
       form = lform, access = laccess, action = laction, &
       status = lstatus, &
-      iostat = this%error )
+      iostat = stat )
+    call set_error(this, stat)
 
   end subroutine open_
 
   !> @param[inout] this file @bud
   subroutine close_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    integer :: stat
 
     if ( .not. is_open(this) ) then
       call stat_reset_(this)
@@ -649,7 +661,8 @@ module BUD_MOD_NAME
     end if
 
     ! Close file-unit
-    close( this%D%unit, iostat = this%error )
+    close( this%D%unit, iostat = stat )
+    call set_error(this, stat)
 
     this%D%unit = -1
 
@@ -658,10 +671,12 @@ module BUD_MOD_NAME
   !> @param[inout] this file @bud
   subroutine rewind_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    integer :: stat
 
     if ( .not. is_open(this) ) return
 
-    rewind( this%D%unit, iostat = this%error )
+    rewind( this%D%unit, iostat = stat )
+    call set_error(this, stat)
 
   end subroutine rewind_
 
@@ -670,6 +685,7 @@ module BUD_MOD_NAME
   subroutine backspace_(this, n)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer, intent(in), optional :: n
+    integer :: stat
     integer :: i
 
     if ( .not. is_open(this) ) then
@@ -682,15 +698,17 @@ module BUD_MOD_NAME
       do i = 1, n
 
         backspace( this%D%unit, &
-          iostat = this%error )
+          iostat = stat )
+        call set_error(this, stat)
 
-        if ( this%error /= 0 ) return
+        if ( error(this) /= 0 ) return
       end do
 
     else
 
       backspace( this%D%unit, &
-        iostat = this%error )
+        iostat = stat )
+      call set_error(this, stat)
 
     end if
 
@@ -700,6 +718,7 @@ module BUD_MOD_NAME
   subroutine delete_file_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer :: unit
+    integer :: stat
 
     ! immediately return if the object
     ! has not been created.
@@ -708,7 +727,8 @@ module BUD_MOD_NAME
     if ( is_open(this) ) then
 
       close( this%D%unit, STATUS = 'DELETE', &
-        iostat = this%error )
+        iostat = stat )
+      call set_error(this, stat)
 
       ! reset status as not opened
       this%D%unit = -1
@@ -719,7 +739,8 @@ module BUD_MOD_NAME
       ! it does not matter how it is opened
       open( unit, file = this%D%file )
       close( unit, STATUS = 'DELETE', &
-        iostat = this%error )
+        iostat = stat )
+      call set_error(this, stat)
 
     end if
 
