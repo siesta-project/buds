@@ -10,44 +10,10 @@
   ! Include the common utilities
 # include "bud_utils.inc"
 
-  !> @cond BUD_DOC_INC
-
-  !> @defgroup bud-common Global functions for @buds
-  !!
-  !! @brief
-  !! Common routines and interfaces that are required for
-  !! handling and maintaing a @bud.
-  !!
-  !! @details
-  !! The common routines are the initialization routines,
-  !! deletion, checking for initialization, checking for
-  !! equivalence between two @buds, number of references for
-  !! the @bud.
-  !!
-  !! For extensions of basic routines you _must_ make a wrapper interface
-  !! to allow other routine names to have the same name for different
-  !! interfaces.
-  !! I.e. you may not make _any_ routine/function public. Only interfaces.
-  !!
-  !! The routines defined in this file may not be defined in any
-  !! of the reference counted type-modules. Doing so will create
-  !! name-clashes.
-  !!
-  !! @{
-
-  !> @endcond BUD_DOC_INC
-
-
   public :: BUD_TYPE_NAME
   private :: BUD_TYPE_NAME_
 
-  !> @name Intrinsic @bud routines
-  !! These routines are common for nearly all @buds.
-  !>@{
-  ! needed comment
-
-
-  !> Assignment of @bud to another @bud
+  !> Assignment of bud to another bud
   !!
   !! `lhs` is deleted before assignment.
   !!
@@ -74,9 +40,9 @@
   public :: initialize
   private :: common_initialize_
 
-  !> Query whether @bud is associated with any data
+  !> Query whether bud is associated with any data
   !!
-  !! Returns `.true.` if the @bud is already containing data.\n
+  !! Returns `.true.` if the bud is already containing data.\n
   !! Typically the `new` routine will call `initialize`.
   interface is_initialized
     module procedure common_is_initialized_
@@ -84,21 +50,21 @@
   public :: is_initialized
   private :: common_is_initialized_
 
-  !> @iSee is_initialized
+  !> See [[is_initialized]]
   interface initialized
     module procedure common_is_initialized_
   end interface
   public :: initialized
 
-  !> @iSee is_initialized
+  !> See [[is_initialized]]
   interface is_initd
     module procedure common_is_initialized_
   end interface
   public :: is_initd
 
-  !> Check whether two @buds point to the same data (function)
+  !> Check whether two buds point to the same data (function)
   !!
-  !! Returns `.true.` if the two passed @buds are the same
+  !! Returns `.true.` if the two passed buds are the same
   !! data.
   interface is_same
     module procedure common_is_same_
@@ -107,7 +73,7 @@
   private :: common_is_same_
 
 
-  !> @iSee is_same
+  !> See [[is_same]]
   interface same
     module procedure common_is_same_
   end interface
@@ -115,15 +81,15 @@
 
 
 #ifndef BUD_NO_DELETE
-  !> Deletes the @bud by decreasing references to the underlying data
+  !> Deletes the bud by decreasing references to the underlying data
   !!
   !! Number of references will be decremented and the data associated
   !! with this object will be nullified.
   !!
   !! If the number of references of the associated data is 0
   !! after decremention, the associated data will be
-  !! deleted. Else this @bud will return an un-associated @bud
-  !! and any other @buds that point to the same data will retain the data.
+  !! deleted. Else this bud will return an un-associated bud
+  !! and any other buds that point to the same data will retain the data.
   interface delete
     module procedure common_delete_
   end interface
@@ -134,10 +100,10 @@
 
 #ifndef BUD_NO_NULLIFY
 
-  !> Nullifies the current @bud
+  !> Nullifies the current bud
   !!
   !! This will not decrement the reference counter but
-  !! enables to _clear_ the data in the @bud.
+  !! enables to _clear_ the data in the bud.
   !!
   !! @note
   !! This routine should be used with _extreme_ care and very
@@ -150,7 +116,7 @@
 #endif
 
 #ifndef BUD_NO_COPY
-  !> Copies the @bud by creating an entirely new object with the same data
+  !> Copies the bud by creating an entirely new object with the same data
   !!
   !! This will for all purposes be regarded as a new instance.
   !!
@@ -178,7 +144,7 @@
 
 #ifndef BUD_NO_IO
 
-  !> Read @bud information from a file (already opened)
+  !> Read bud information from a file (already opened)
   !!
   !! Reads the information as `write` would have written it.
   interface read
@@ -186,7 +152,7 @@
   end interface
   public :: read
 
-  !> Write the @bud information to a file (already opened)
+  !> Write the bud information to a file (already opened)
   !!
   !! The file can also be re-read using the `read` function
   interface write
@@ -196,9 +162,9 @@
 
 #endif
 
-  !> Query number of references to the @bud
+  !> Query number of references to the bud
   !!
-  !! Get number of times this @bud has been assigned
+  !! Get number of times this bud has been assigned
   !! in the reference counted object.
   interface references
     module procedure common_references_
@@ -206,7 +172,7 @@
   public :: references
   private :: common_references_
 
-  !> @iSee references
+  !> See [[references]]
   interface refs
     module procedure common_references_
   end interface
@@ -236,35 +202,8 @@
   public :: error
   private :: common_error_
 
-  !>>@}
-
-  !> @cond ALWAYS_SKIP
-
-#if defined(BUD_ERROR)
-  ! Stand-alone routine which must be provided
-  interface
-    subroutine BUD_ERROR(str)
-      character(len=*), intent(in), optional :: str
-    end subroutine
-  end interface
-#else
-# ifndef _BUD_ERROR_H
-!#   warning "BUD_ERROR not defined! Expect sudden crashes without warnings!"
-#   define _BUD_ERROR_H
-# endif
-#endif
-
-
 contains
 
-
-  ! contains in non-modules freak doxygen out...
-  !> @endcond ALWAYS_SKIP
-
-  !> @name Intrinsic @bud routines
-  !! Generic routines for all @buds
-  !>@{
-  ! needed comment to separate the next interface
 
   !> Copies the common data types in the buds
   !!
@@ -282,8 +221,6 @@ contains
   end subroutine common_copy_
 
 
-
-  !> @param[inout] this @bud that is initialized
   subroutine common_initialize_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
@@ -296,9 +233,7 @@ contains
     allocate(this%D, stat=error)
 
     if ( 0 /= error ) then
-#if defined(BUD_ERROR)
-      call BUD_ERROR("Error allocating data structure")
-#endif
+      call set_error(this, error)
       return
     end if
 
@@ -313,8 +248,6 @@ contains
 
   end subroutine common_initialize_
 
-  !> @param[in] this check if this @bud is initialized
-  !! @return `.true.` if it is associated, else `.false.`
   pure function common_is_initialized_(this) result(init)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
 
@@ -324,9 +257,6 @@ contains
 
   end function common_is_initialized_
 
-  !> @param[in] lhs first @bud
-  !! @param[in] rhs second @bud
-  !! @return `.true.` if `lhs` and `rhs` point to the same data
   elemental function common_is_same_(lhs, rhs) result(same)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: lhs, rhs
     logical :: same
@@ -342,13 +272,15 @@ contains
 
 #ifndef BUD_NO_DELETE
 
-  !> @param[inout] this returned @bud is un-initialized with no data associated
   subroutine common_delete_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
     integer :: error
 
     if (.not. is_initd(this) ) return
+
+    ! Ensure the error is 0
+    call set_error(this, 0)
 
     this%D%refs_ = this%D%refs_ - 1
 
@@ -363,9 +295,7 @@ contains
       ! Deallocate the currently referenced storage
       deallocate(this%D, stat=error)
       if ( 0 /= error ) then
-#if defined(BUD_ERROR)
-        call BUD_ERROR("Error in deallocation")
-#endif
+        call set_error(this, error)
       end if
 
     end if
@@ -379,19 +309,18 @@ contains
 
 
 #ifndef BUD_NO_NULLIFY
-  !> @param[inout] this nullify references from this @bud (without stepping the counter)
   elemental subroutine common_nullify_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
     if (.not. is_initd(this) ) return
 
+    ! Initialize error
+    call set_error(this, 0)
     nullify(this%D)
 
   end subroutine common_nullify_
 #endif
 
-  !> @param[inout] lhs contains `rhs` after exit
-  !! @param[in] rhs copy the containing element @bud
   subroutine common_assign_(lhs, rhs)
 
     ! No copying of data is involved, simply an increment of the
@@ -417,11 +346,11 @@ contains
     lhs%D => rhs%D
     lhs%D%refs_ = rhs%D%refs_ + 1
 
+    call set_error(this, 0)
+
   end subroutine common_assign_
 
 
-  !> @param[in] this reference counted @bud
-  !! @return number of times `this` has been referenced
   elemental function common_references_(this) result(refs)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
 
@@ -436,8 +365,6 @@ contains
   end function common_references_
 
 
-  !> @param[in] this reference counted @bud
-  !! @return current error from last call
   elemental function common_error_(this) result(error)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
 
@@ -451,30 +378,22 @@ contains
 
   end function common_error_
 
-  !> @param[inout] this reference counted @bud
-  !! @param[in] error set the error to this value
   elemental subroutine common_set_error_is_(this, error)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer(is_), intent(in) :: error
     this%error = error
   end subroutine common_set_error_is_
-  !> @param[inout] this reference counted @bud
-  !! @param[in] error set the error to this value
   elemental subroutine common_set_error_ii_(this, error)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer(ii_), intent(in) :: error
     this%error = error
   end subroutine common_set_error_ii_
-  !> @param[inout] this reference counted @bud
-  !! @param[in] error set the error to this value
   elemental subroutine common_set_error_il_(this, error)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer(il_), intent(in) :: error
     this%error = error
   end subroutine common_set_error_il_
 
-
-  !> @cond BUD_DEVELOPER
 
   ! The remaining procedures are currently
   ! not used by public buds
@@ -493,16 +412,6 @@ contains
     ! currently we do not tag the types
 
   end subroutine common_tag_object_
-
-  !> @endcond BUD_DEVELOPER
-
-  !> @cond BUD_DOC_INC
-
-  !> @}
-
-  !> @endcond BUD_DOC_INC
-
-  !>>@}
 
 
 ! project-buds -- local file settings

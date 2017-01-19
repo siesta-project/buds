@@ -19,8 +19,6 @@
   !  rd == double (8-byte)
   !  re == long double, currently not supported
 
-  !> @cond BUD_DEVELOPER
-
   integer, parameter :: BUD_CC2(rr,BUD_PRECISION_SUFFIX) = selected_real_kind(p=6) ! single (real*4)
   integer, parameter :: BUD_CC2(rd,BUD_PRECISION_SUFFIX) = selected_real_kind(p=15) ! double (real*8)
   !integer, private, parameter :: BUD_CC2(re,BUD_PRECISION_SUFFIX) = selected_real_kind(p=18)
@@ -30,8 +28,6 @@
   integer, parameter :: BUD_CC2(il,BUD_PRECISION_SUFFIX) = selected_int_kind(18) ! long (integer*8)
 
 #undef BUD_PRECISION_SUFFIX
-
-  !> @endcond BUD_DEVELOPER
 
 
 ! project-buds -- local file settings

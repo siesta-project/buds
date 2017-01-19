@@ -12,38 +12,27 @@
 #include "bud_utils.inc"
 
 #define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
-#ifndef BUD_TYPE_NAME_
-#  define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
-#endif
-#ifndef BUD_TYPE_NAME_STR
-#  define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
-#endif
 
 #include "bud_common_declarations.inc"
 
-  !> @cond BUD_DOC_INC
+  ! The finite stack implementation is an extension of the regular
+  ! reference counted objects.
+  !
+  ! A stack is a "push-pop" sequence of buds.
+  ! A `push` of a new bud is inserted at the top, if the stack is
+  ! full the oldest entry is deleted and removed from the stack.
+  !
+  ! A `pop` of a bud removes the top entry of the stack and possibly
+  ! returns the bud.
+  !
+  ! @note
+  ! A type need not have _all_ these routines available if so desired.
+  ! This is internally controlled and is mentioned for the relevant types.
 
-  !> @defgroup bud-fstack Finite stack of arbitrary @bud
-  !!
-  !! The finite stack implementation is an extension of the regular
-  !! reference counted objects.
-  !!
-  !! A stack is a "push-pop" sequence of @buds.
-  !! A `push` of a new @bud is inserted at the top, if the stack is
-  !! full the oldest entry is deleted and removed from the stack.
-  !!
-  !! A `pop` of a @bud removes the top entry of the stack and possibly
-  !! returns the @bud.
-  !!
-  !! @note
-  !! A type need not have _all_ these routines available if so desired.
-  !! This is internally controlled and is mentioned for the relevant types.
-
-  !> @endcond BUD_DOC_INC
 
   !> Finite stack with cyclic ability
   !!
-  !! Container for a finite stack of a single @bud (BUD_STACK_TYPE).
+  !! Container for a finite stack of a single bud (BUD_STACK_TYPE).
   !!
   !! This data container holds 3 variables,
   !!  1. track maximum number of elements allowed in the finite stack
@@ -51,50 +40,42 @@
   !!  3. An array of the stack of variables stored.
   type BUD_TYPE_NAME
 
-    !> @cond BUD_DEVELOPER
-
     !> Stored pointer which contains the reference counting etc.
     type(BUD_TYPE_NAME_), pointer :: D => null()
-
-    !> @endcond BUD_DEVELOPER
 
 #   include "bud_common_type.inc"
 #if BUD_FORTRAN >= 2003
 
-    !> @iSee BUD_NEW_TYPE
-    procedure, public :: BUD_NEW_TYPE => new_
-    !> @iSee BUD_NEW_TYPE
+    !> See [[new]]
     procedure, public :: new => new_
 
-    !> @iSee #push
+    !> See [[push]]
     procedure, public :: push => push_
-    !> @iSee #pop
+    !> See [[pop]]
     procedure, public :: pop => pop_
-    !> @iSee #retain
+    !> See [[retain]]
     procedure, public :: retain => retain_
 
-    !> @iSee #element
+    !> See [[element]]
     procedure, public :: element => get_elem_
-    !> @iSee #element
+    !> See [[element]]
     procedure, public :: get => get_elem_
 
-    !> @iSee #element_p
+    !> See [[element_p]]
     procedure, public :: element_p => get_elemp_
-    !> @iSee #element_p
+    !> See [[element_p]]
     procedure, public :: get_p => get_elemp_
 
-    !> @iSee #size
+    !> See [[size]]
     procedure, public :: size => size_elem_
-    !> @iSee #size_max
+    !> See [[size_max]]
     procedure, public :: size_max => size_max_elem_
 
 #endif
   end type BUD_TYPE_NAME
 
 
-  !> @cond BUD_DEVELOPER
-
-  !> @bud container for BUD_TYPE_NAME
+  !> bud container for BUD_TYPE_NAME
   type BUD_TYPE_NAME_
 
     !> Maximum number of elements that can be stored in this stack.
@@ -103,6 +84,7 @@
     !! There is little to no memory overhead of having an excessively
     !! large `max` as all elements which have not been assigned are
     !! allocations of data-pointers.
+    !! @endnote
     !!
     !! Hence creating extreme stacks may still be memory efficient.
     integer :: nel_max
@@ -118,12 +100,11 @@
 
   end type BUD_TYPE_NAME_
 
-  !> @endcond BUD_DEVELOPER
-
 
   ! special counter for deleting all elements
   ! of a stack using:
   !   call pop(<this>, BUD_FSTACK_ALL)
+  
   !> Special parameter for popping all elements.
   !!
   !! Allows one to pop/delete all elements in the stack.
@@ -133,21 +114,16 @@
   !!  call delete(this)
   !!  call new(this, n)
   !! \endcode
-  integer, public, parameter :: BUD_FSTACK_ALL = 0
+  !! This should be moved to a separate module (for name clash reasons)
+  !!integer, public, parameter :: BUD_FSTACK_ALL = 0
 
 
   !> Internal initialization of finite stack holding BUD_STACK_TYPE
   !!
   !! If called on a previously allocated data scope this
-  !! will clear the reference (@isee delete).
+  !! will clear the reference (see [[delete]]).
   !! Subsequently the type container will be allocated
   !! and the reference counted data will be 1.
-  interface BUD_TYPE_NEW
-    module procedure new_
-  end interface
-  public :: BUD_TYPE_NEW
-
-  !> @iSee BUD_TYPE_NEW
   interface new
     module procedure new_
   end interface
@@ -160,6 +136,7 @@
   !!
   !! @note
   !! One cannot push elements in the middle of the stack.
+  !! @endnote
   interface push
     module procedure push_
   end interface
@@ -170,13 +147,14 @@
   !! The top item is returned in `item` and the stack
   !! is decremented thus removing the returned item from the stack.
   !!
-  !! An optional index may be given, see #pop_delete_.
+  !! An optional index may be given, see [[pop_delete_]].
   !!
   !! If the top element has not been initialized the returned item will
   !! be un-initialized.
   !!
   !! @note
   !! The returned item will thus not have its counted references changed.
+  !! @endnote
   interface pop
     module procedure pop_
     module procedure pop_delete_
@@ -193,7 +171,7 @@
   !! number of stored elements, nothing will happen.
   !!
   !! @note
-  !! Defaults to `top=fnelem(this)-1`
+  !! Defaults to `top=size(this)-1`
   interface retain
     module procedure retain_
   end interface
@@ -211,7 +189,7 @@
   !> Retrieve pointer to specific element in the stack
   !!
   !! Retrieving a pointer does not change the reference status
-  !! of the @bud.
+  !! of the bud.
   !!
   !! If the requested element is beyond the number of
   !! stored elements `elem` will be null.
@@ -474,6 +452,13 @@
 
     if ( .not. is_initd(this) ) return
 
+    if ( .not. present(top) .and. &
+      .not. present(bot) ) then
+      ! everything is retained, no specifications
+      call set_error(this, 1)
+      return
+    end if
+
     ! number of elements
     el = size(this)
 
@@ -488,7 +473,7 @@
 
       call pop(this, bot=lnpop)
 
-    else
+    else if ( 
 
       ! retain 'n' items from the bottom
       lnpop = el - bot
@@ -592,7 +577,7 @@
 # ifndef BUD_IO_OVERLOAD
 
   !> @param[in] f a file (bud_File)
-  !! @param[in] this collection @bud to be written
+  !! @param[in] this collection bud to be written
   subroutine write_(f, this)
     use BUD_CC2(BUD_MOD,_File)
     BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f
@@ -627,7 +612,7 @@
   end subroutine write_
 
   !> @param[in] f a file (bud_File)
-  !! @param[in] this collection @bud to be readed
+  !! @param[in] this collection bud to be readed
   subroutine read_(f, this)
     use BUD_CC2(BUD_MOD,_File)
     BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f
@@ -656,7 +641,7 @@
     ! Initialize this object
     call new(this, nel_max)
 
-    ! Now write each of them...
+    ! Now read each of them...
     do i = 1 , nel
       call read(f, cp)
       call push(this, cp)

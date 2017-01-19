@@ -13,68 +13,48 @@
 #include "bud_utils.inc"
 
 #define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
-#ifndef BUD_TYPE_NAME_
-#  define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
-#endif
-#ifndef BUD_TYPE_NAME_STR
-#  define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
-#endif
 
 #include "bud_common_declarations.inc"
 
 
-  !> Item wrapper for a @bud
+  !> Item wrapper for a bud
   !!
-  !! This wrapper type contains another @bud. It may
+  !! This wrapper type contains another bud. It may
   !! be used as a container for sub-partitioning.
   !!
   !! Generally you need (should) not use this Item type
   !! unless you have a specific use case.
-  !! The direct data storage of a @bud is more efficient
+  !! The direct data storage of a bud is more efficient
   !! and requires fewer additional wrapper functions.
   type BUD_TYPE_NAME
-
-    !> @cond BUD_DEVELOPER
 
     !> Stored pointer which contains the reference counting etc.
     type(BUD_TYPE_NAME_), pointer :: D => null()
 
-    !> @endcond BUD_DEVELOPER
-
 #   include "bud_common_type.inc"
 #if BUD_FORTRAN >= 2003
-
-    !> @name Private procedures
-    !> @{
-    ! Doxygen needed line
 
     procedure, private :: new_
     procedure, private :: new_data_
 
-    !> @}
-
-    !> @iSee BUD_NEW_TYPE
-    generic, public :: BUD_NEW_TYPE => new_, new_data_
-    !> @iSee BUD_NEW_TYPE
+    !> See [[new]]
     generic, public :: new => new_, new_data_
 
-    !> @iSee set_data
+    !> See [[set_data]]
     procedure, public :: set => set_data_
-    !> @iSee set_data
+    !> See [[set_data]]
     procedure, public :: set_data => set_data_
 
-    !> @iSee get_data
+    !> See [[get_data]]
     procedure, public :: get => get_data_
-    !> @iSee get_data
+    !> See [[get_data]]
     procedure, public :: get_data => get_data_
 
 #endif
   end type BUD_TYPE_NAME
 
 
-  !> @cond BUD_DEVELOPER
-
-  !> Data container for the @bud.
+  !> Data container for the bud.
   !!
   !! Data is stored in this type which is
   !! pointed to by the parent type.
@@ -89,10 +69,8 @@
 
   end type BUD_TYPE_NAME_
 
-  !> @endcond BUD_DEVELOPER
 
-
-  !> Create a new @bud prepared for containing a BUD_ITEM_TYPE
+  !> Create a new bud prepared for containing a BUD_ITEM_TYPE
   !!
   !! Initialize the object and prepare it for use.
   !!
@@ -102,13 +80,6 @@
   !! which either initializes the object with
   !! an empty contained BUD_ITEM_TYPE or with a reference to the passed
   !! type.
-  interface BUD_TYPE_NEW
-    module procedure new_
-    module procedure new_data_
-  end interface
-  public :: BUD_TYPE_NEW
-
-  !> @iSee BUD_TYPE_NEW
   interface new
     module procedure new_
     module procedure new_data_
@@ -116,35 +87,35 @@
   public :: new
 
 
-  !> Store BUD_ITEM_TYPE in the @bud
+  !> Store BUD_ITEM_TYPE in the bud
   !!
-  !! Stores passed BUD_ITEM_TYPE in the @bud.
+  !! Stores passed BUD_ITEM_TYPE in the bud.
   !!
   !! The currently stored BUD_ITEM_TYPE will be deleted
   !! before assigning the passed BUD_ITEM_TYPE.
   !!
   !! If the passed item is not initialized, so will the
-  !! contained @bud.
+  !! contained bud.
   interface set_data
     module procedure set_data_
   end interface
   public :: set_data
-  !> @iSee set_data
+  !> See [[set_data]]
   interface set
     module procedure set_data_
   end interface
   public :: set
 
 
-  !> Retrieve a reference counted BUD_ITEM_TYPE from @bud
+  !> Retrieve a reference counted BUD_ITEM_TYPE from bud
   !!
-  !! Returns the contained @bud by using a reference counter
+  !! Returns the contained bud by using a reference counter
   !! pointing to the currently contained BUD_ITEM_TYPE.
   interface get_data
     module procedure get_data_
   end interface
   public :: get_data
-  !> @iSee get_data
+  !> See [[get_data]]
   interface get
     module procedure get_data_
   end interface
@@ -165,14 +136,14 @@
 
   !> @cond BUD_DEVELOPER
 
-  subroutine delete_(D)
-    type(BUD_TYPE_NAME_), intent(inout) :: D
+  subroutine delete_(this)
+    type(BUD_TYPE_NAME), intent(inout) :: this
 
-    call delete(D%item)
+    call delete(this%D%item)
+    
+    call set_error(this, error(this%D%item))
 
   end subroutine delete_
-
-  !> @endcond BUD_DEVELOPER
 
 
   !> @param[in] from the origin of data
@@ -213,7 +184,7 @@
   end subroutine new_data_
 
 
-  !> @param[inout] this @bud to contain a reference to `item`
+  !> @param[inout] this bud to contain a reference to `item`
   !! @param[in] item BUD_ITEM_TYPE to store in `this`
   subroutine set_data_(this, item)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
@@ -227,8 +198,8 @@
 
   end subroutine set_data_
 
-  !> @param[in] this item containing @bud
-  !! @param[inout] item item to store @bud-data in
+  !> @param[in] this item containing bud
+  !! @param[inout] item item to store bud-data in
   subroutine get_data_(this, item)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     type(BUD_ITEM_TYPE), intent(inout) :: item
@@ -241,8 +212,8 @@
 
   end subroutine get_data_
 
-  !> @param[inout] item item to store @bud-data in
-  !! @param[in] this item containing @bud
+  !> @param[inout] item item to store bud-data in
+  !! @param[in] this item containing bud
   subroutine get_data_assign_(item, this)
     type(BUD_ITEM_TYPE), intent(inout) :: item
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this

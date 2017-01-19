@@ -2,7 +2,7 @@
 
 #include "bud_utils.inc"
 
-!> @param[in] this @bud container
+!> @param[in] this bud container
 !! @param[inout] item contains data collection upon exit (or null)
 subroutine BUD_CC3(get_elem,BUD_COLL_NUM,_)(this, item)
   BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
@@ -43,7 +43,7 @@ end subroutine
 #endif
 
 
-!> @param[inout] this @bud container
+!> @param[inout] this bud container
 !! @param[in] item store this in the collection
 subroutine BUD_CC3(set_elem,BUD_COLL_NUM,_)(this, item)
   BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this

@@ -3,75 +3,69 @@
   ! Simple type for inclusion in the type scopes.
   ! This adds all OO routines
 
-  !> Error message
+  !> Error status
   !!
   !! Each operation may return an error. This error may be retrieved
   !! through the error interface.
   !!
+  !! @note
   !! Note that this is *not* contained in the TYPE_ which would
   !! prohibit the query of errors on non-initialized types.
   !! However, when a type cannot be created (due to erroneous
   !! input) there should be a way to message the error message.
+  !! @endnote
   integer :: error = 0
 
 #if BUD_FORTRAN >= 2003
   contains
 
-  !> @name Intrinsic @bud procedures
-  !! These procedures are common for nearly all
-  !! @buds.
-  !>@{
-  ! needed comment to separate the next interface
-
 # ifndef BUD_NO_DELETE
-  !> @iSee delete
+  !> See [[delete]]
   procedure, public :: delete => common_delete_
 # endif
 # ifndef BUD_NO_NULLIFY
-  !> @iSee nullify
+  !> See [[nullify]]
   procedure, public :: nullify => common_nullify_
 # endif
 # ifndef BUD_NO_COPY
-  !> @iSee copy
+  !> See [[copy]]
   procedure, public :: copy => copy_
 # endif
 # ifndef BUD_NO_PRINT
-  !> @iSee print
+  !> See [[print]]
   procedure, public :: print => print_
 # endif
 
 
-  !> @iSee initialize
+  !> See [[initialize]]
   procedure, public :: initialize => common_initialize_
 
-  !> @iSee is_initialized
+  !> See [[is_initialized]]
   procedure, public :: is_initialized => common_is_initialized_
-  !> @iSee is_initialized
+  !> See [[is_initialized]]
   procedure, public :: is_initd => common_is_initialized_
-  !> @iSee is_initialized
+  !> See [[is_initialized]]
   procedure, public :: initialized => common_is_initialized_
-  !> @iSee is_same
+  !> See [[is_same]]
   procedure, public :: is_same => common_is_same_
-  !> @iSee is_same
+  !> See [[is_same]]
   procedure, public :: same => common_is_same_
 
-  !> @iSee references
+  !> See [[references]]
   procedure, public :: references => common_references_
-  !> @iSee references
+  !> See [[references]]
   procedure, public :: refs => common_references_
 
-  !> @iSee error
+  !> See [[error]]
   procedure, public :: error => common_error_
 
 #ifndef BUD_NO_IO
-  !> @iSee #write
+  !> See [[write]]
   procedure, public, pass(this) :: write => write_
 
-  !> @iSee #read
+  !> See [[read]]
   procedure, public, pass(this) :: read => read_
 #endif
-
-  !>>@}
 
 #ifdef BUD_INCLUDE_TYPE
 #   include BUD_INCLUDE_TYPE

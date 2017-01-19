@@ -5,13 +5,13 @@
   !  - BUD_TYPE_NAME, name of the resulting type
   !  - BUD_TYPE_NAME_, name of the internal data
   !  - BUD_TYPE_NEW, additional name of the `new` command
-  !  - BUD_COLL_1, name of the first @bud
-  !  - BUD_COLL_2, name of the second @bud
-  !  - BUD_COLL_3, name of the third @bud (need not be used)
-  !  - BUD_COLL_4, name of the fourth @bud (need not be used)
-  !  - BUD_COLL_5, name of the fifth @bud (need not be used)
-  !  - BUD_COLL_6, name of the sixth @bud (need not be used)
-  !  - BUD_COLL_SAME, 0 if all contained @buds are individual, else 1.
+  !  - BUD_COLL_1, name of the first bud
+  !  - BUD_COLL_2, name of the second bud
+  !  - BUD_COLL_3, name of the third bud (need not be used)
+  !  - BUD_COLL_4, name of the fourth bud (need not be used)
+  !  - BUD_COLL_5, name of the fifth bud (need not be used)
+  !  - BUD_COLL_6, name of the sixth bud (need not be used)
+  !  - BUD_COLL_SAME, 0 if all contained buds are individual, else 1.
 
 #ifndef BUD_COLL_3
 # undef BUD_COLL_4
@@ -29,52 +29,41 @@
   ! Include the common utilities
 #include "bud_utils.inc"
 
-#define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
-#ifndef BUD_TYPE_NAME_
-#  define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
-#endif
-#ifndef BUD_TYPE_NAME_STR
-#  define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
-#endif
-
 #include "bud_common_declarations.inc"
 
-  !> @cond BUD_DOC_INC
-
   ! We use "collection" as "set" may be confusing as nothing is _set_.
-  !> @defgroup bud-coll Collection @bud of several @buds
-  !!
-  !! A collection holds a certain number of @buds in a strict order.
-  !! Hence the elements contained are predefined in the data type and
-  !! any access to the stored elements may be accessed by retrieving the
-  !! data and subsequently operating on that data-type.\n
-  !! The collection data-type may be used to easily group together
-  !! associated data from different @buds.
-  !!
-  !! The stored elements may be accessed either via routine calls:
-  !! ~~~{.f90}
-  !! call element1(this, A)
-  !! ~~~
-  !! which will be equivalent to deleting `A` and assigning the
-  !! stored element.
-  !! One can also access the data via a pointer:
-  !! ~~~{.f90}
-  !! A => element1_p(this)
-  !! ~~~
-  !! which does not increase the reference counter for the stored
-  !! element. Hence no deletion should be performed.
-  !!
-  !! @dev_note
-  !! For extensions of basic routines you _must_ make a wrapper interface
-  !! to allow other routine names to have the same name for different
-  !! interfaces.
-  !!
-  !! One __cannot__ store non-@bud types in this collection.
-  !!
-  !! Currently this collection only allows up to 5 @buds contained.
-  !! This can easily be extended.
+  ! @defgroup bud-coll Collection bud of several buds
+  !
+  ! A collection holds a certain number of buds in a strict order.
+  ! Hence the elements contained are predefined in the data type and
+  ! any access to the stored elements may be accessed by retrieving the
+  ! data and subsequently operating on that data-type.\n
+  ! The collection data-type may be used to easily group together
+  ! associated data from different buds.
+  !
+  ! The stored elements may be accessed either via routine calls:
+  ! ~~~{.f90}
+  ! call element1(this, A)
+  ! ~~~
+  ! which will be equivalent to deleting `A` and assigning the
+  ! stored element.
+  ! One can also access the data via a pointer:
+  ! ~~~{.f90}
+  ! A => element1_p(this)
+  ! ~~~
+  ! which does not increase the reference counter for the stored
+  ! element. Hence no deletion should be performed.
+  !
+  ! @dev_note
+  ! For extensions of basic routines you _must_ make a wrapper interface
+  ! to allow other routine names to have the same name for different
+  ! interfaces.
+  !
+  ! One __cannot__ store non-bud types in this collection.
+  !
+  ! Currently this collection only allows up to 5 buds contained.
+  ! This can easily be extended.
 
-  !> @endcond BUD_DOC_INC
 
   ! There are no pre-processor string
   ! comparisons CPP
@@ -105,112 +94,103 @@
 #if BUD_COLL_SAME == 0
   !! None of the contained elements are the same.
   !! This means that retrieval and storing new elements
-  !! becomes easier as the `=` operator is overrided with
-  !! interfaces.
+  !! becomes easier as the `=` operator is overridden with
+  !! interfaces, enabling:
+  !! \code{.f90}
+  !!  type(BUD_TYPE_NAME) :: this
+  !!  type(BUD_COLL_1) :: first
+  !!  first = this
+  !! \endcode
 #endif
   !!
   !! The collection does not require to have all elements
   !! initialized.
   type BUD_TYPE_NAME
 
-    !> @cond BUD_DEVELOPER
-
     !> Stored pointer which contains the reference counting etc.
     type(BUD_TYPE_NAME_), pointer :: D => null()
-
-    !> @endcond BUD_DEVELOPER
 
 #   include "bud_common_type.inc"
 #if BUD_FORTRAN >= 2003
 
-    !> @name Private procedures
-    !> @{
-    ! Doxygen needed line
-
     procedure, private :: new_ => new_
     procedure, private :: new_data_ => new_data_
 
-    !> @}
-
-    !> @iSee BUD_NEW_TYPE
-    generic, public :: BUD_NEW_TYPE => new_, new_data_
-    !> @iSee BUD_NEW_TYPE
+    !> See [[new]]
     generic, public :: new => new_, new_data_
 
-    !> @iSee #element1
+    !> See [[element1]]
     procedure, public :: element1 => get_elem1_
-    !> @iSee #element1_p
+    !> See [[element1_p]]
     procedure, public :: element1_p => get_elem1p_
-    !> @iSee #set_element1
+    !> See [[set_element1]]
     procedure, public :: set_element1 => set_elem1_
 
-    !> @iSee #element2
+    !> See [[element2]]
     procedure, public :: element2 => get_elem2_
-    !> @iSee #element2_p
+    !> See [[element2_p]]
     procedure, public :: element2_p => get_elem2p_
-    !> @iSee #set_element2
+    !> See [[set_element2]]
     procedure, public :: set_element2 => set_elem2_
 #ifdef BUD_COLL_3
-    !> @iSee #element3
+    !> See [[element3]]
     procedure, public :: element3 => get_elem3_
-    !> @iSee #element3_p
+    !> See [[element3_p]]
     procedure, public :: element3_p => get_elem3p_
-    !> @iSee #set_element3
+    !> See [[set_element3]]
     procedure, public :: set_element3 => set_elem3_
 #endif
 #ifdef BUD_COLL_4
-    !> @iSee #element4
+    !> See [[element4]]
     procedure, public :: element4 => get_elem4_
-    !> @iSee #element4_p
+    !> See [[element4_p]]
     procedure, public :: element4_p => get_elem4p_
-    !> @iSee #set_element4
+    !> See [[set_element4]]
     procedure, public :: set_element4 => set_elem4_
 #endif
 #ifdef BUD_COLL_5
-    !> @iSee #element5
+    !> See [[element5]]
     procedure, public :: element5 => get_elem5_
-    !> @iSee #element5_p
+    !> See [[element5_p]]
     procedure, public :: element5_p => get_elem5p_
-    !> @iSee #set_element5
+    !> See [[set_element5]]
     procedure, public :: set_element5 => set_elem5_
 #endif
 #ifdef BUD_COLL_6
-    !> @iSee #element6
+    !> See [[element6]]
     procedure, public :: element6 => get_elem6_
-    !> @iSee #element6_p
+    !> See [[element6_p]]
     procedure, public :: element6_p => get_elem6p_
-    !> @iSee #set_element6
+    !> See [[set_element6]]
     procedure, public :: set_element6 => set_elem6_
 #endif
 
 #endif
-  end type BUD_TYPE_NAME
+  end type
 
-
-  !> @cond BUD_DEVELOPER
 
   !> Internal data container for BUD_TYPE_NAME
   !!
   !! @details
-  !! Container for the data in the @bud.
+  !! Container for the data in the bud.
   !!
   !! The container handles a collection of up to 6 elements.
   !! Each element is stored via numeric sequences
   !! Hence the first item is `e1`, second is `e2` etc.
   !!
 #ifndef BUD_COLL_3
-  !! This @bud is a collection of 2 elements:
+  !! This bud is a collection of 2 elements:
 #endif
 #ifndef BUD_COLL_4
-  !! This @bud is a collection of 3 elements:
+  !! This bud is a collection of 3 elements:
 #endif
 #ifndef BUD_COLL_5
-  !! This @bud is a collection of 4 elements:
+  !! This bud is a collection of 4 elements:
 #endif
 #ifndef BUD_COLL_6
-  !! This @bud is a collection of 5 elements:
+  !! This bud is a collection of 5 elements:
 #else
-  !! This @bud is a collection of 6 elements:
+  !! This bud is a collection of 6 elements:
 #endif
   !! 1. BUD_COLL_1
   !! 2. BUD_COLL_2
@@ -259,24 +239,16 @@
 
   !> Initialize collection
   !!
-  !! Initializes the @bud either with
+  !! Initializes the bud either with
   !! no data or with every data in the collection.
   !!
   !! This will call `delete` before re-initializing the
   !! data.
-  interface BUD_TYPE_NEW
-    module procedure new_
-    module procedure new_data_
-  end interface
-  public :: BUD_TYPE_NEW
-
-  !> @iSee BUD_TYPE_NEW
   interface new
     module procedure new_
     module procedure new_data_
   end interface
   public :: new
-
 
 
 #if BUD_COLL_SAME == 0
@@ -347,13 +319,13 @@
 
 #endif
 
-  !> Retrieve the first @bud of the collection
+  !> Retrieve the first bud of the collection
   !!
   !! Query the data contained in the BUD_TYPE_NAME
   !! and return the data in `item`.
   !!
   !! If `this` is not initialized, then `item` will be deleted
-  !! and an un-initialized @bud will be returned.
+  !! and an un-initialized bud will be returned.
   !!
   !! Change the suffix number `1` to `2`, ... to get the
   !! corresponding element in the collection.
@@ -362,7 +334,7 @@
   end interface
   public :: element1
 
-  !> Set the first @bud in the collection
+  !> Set the first bud in the collection
   !!
   !! Set the data in the element to the passed item.
   !!
@@ -541,20 +513,20 @@
 
   end subroutine copy_
 
-  !> @param[inout] this new initialized @bud
-  !! @param[in] A first element in the @bud
-  !! @param[in] B second element in the @bud
+  !> @param[inout] this new initialized bud
+  !! @param[in] A first element in the bud
+  !! @param[in] B second element in the bud
 #ifdef BUD_COLL_3
-  !! @param[in] C third element in the @bud
+  !! @param[in] C third element in the bud
 #endif
 #ifdef BUD_COLL_4
-  !! @param[in] D fourth element in the @bud
+  !! @param[in] D fourth element in the bud
 #endif
 #ifdef BUD_COLL_5
-  !! @param[in] E fifth element in the @bud
+  !! @param[in] E fifth element in the bud
 #endif
 #ifdef BUD_COLL_6
-  !! @param[in] F sixth element in the @bud
+  !! @param[in] F sixth element in the bud
 #endif
   subroutine new_data_(this, a, b &
 #ifdef BUD_COLL_3
@@ -607,7 +579,7 @@
   end subroutine new_data_
 
 
-  !> @param[inout] this initialize @bud with no data
+  !> @param[inout] this initialize bud with no data
   subroutine new_(this)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
@@ -649,7 +621,7 @@
 # ifndef BUD_IO_OVERLOAD
 
   !> @param[in] f a file (bud_File)
-  !! @param[in] this collection @bud to be written
+  !! @param[in] this collection bud to be written
   subroutine write_(f, this)
     use BUD_CC2(BUD_MOD,_File)
     BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f
@@ -677,7 +649,7 @@
   end subroutine write_
 
   !> @param[in] f a file (bud_File)
-  !! @param[in] this collection @bud to be readed
+  !! @param[in] this collection bud to be readed
   subroutine read_(f, this)
     use BUD_CC2(BUD_MOD,_File)
     BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f

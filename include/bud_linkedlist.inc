@@ -13,14 +13,6 @@
   ! Include the common utilities
 #include "bud_utils.inc"
 
-#define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
-#ifndef BUD_TYPE_NAME_
-#  define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
-#endif
-#ifndef BUD_TYPE_NAME_STR
-#  define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
-#endif
-
 #include "bud_common_declarations.inc"
 
   ! We default the linked list to be a doubly
@@ -38,22 +30,18 @@
 # error "Currently only doubly linked lists are implemented"
 #endif
 
-  !> @cond BUD_DOC_INC
-
-  !> @defgroup buds-llist Linked list with reference counting
-  !!
-  !! @details
-  !! The linked list implementation is an extension of the regular
-  !! reference counted objects.
-  !!
-  !! A linked list is a list of entries tied together in a sequence.
-  !! It has unlimited size and access is O(n).
-  !!
-  !! @note
-  !! A type need not have _all_ these routines available if so desired.
-  !! This is internally controlled and is mentioned for the relevant types.
-
-  !> @endcond BUD_DOC_INC
+  ! @defgroup buds-llist Linked list with reference counting
+  !
+  ! @details
+  ! The linked list implementation is an extension of the regular
+  ! reference counted objects.
+  !
+  ! A linked list is a list of entries tied together in a sequence.
+  ! It has unlimited size and access is O(n).
+  !
+  ! @note
+  ! A type need not have _all_ these routines available if so desired.
+  ! This is internally controlled and is mentioned for the relevant types.
 
   !> Linked list with each node containing BUD_LIST_TYPE
   !!
@@ -72,19 +60,12 @@
   !! populated and they can as such be used as "empty" nodes.
   type BUD_TYPE_NAME
 
-    !> @cond BUD_DEVELOPER
-
     !> Stored pointer which contains the reference counting etc.
     type(BUD_TYPE_NAME_), pointer :: D => null()
-
-    !> @endcond BUD_DEVELOPER
 
 #   include "bud_common_type.inc"
 #if BUD_FORTRAN >= 2003
 
-    !> @name Private procedures
-    !> @{
-    ! Doxygen needed line
 
     procedure, private :: new_
     procedure, private :: new_data_
@@ -98,51 +79,45 @@
     procedure, private :: itt_step_
     procedure, private :: itt_step_i_
 
-    !>>@}
-
-    !> @iSee BUD_NEW_TYPE
-    generic, public :: BUD_NEW_TYPE => new_, new_data_
-    !> @iSee BUD_NEW_TYPE
+    !> See [[new]]
     generic, public :: new => new_, new_data_
 
-    !> @iSee #nodes
+    !> See [[nodes]]
     procedure, public :: nodes => size_llist_
-    !> @iSee #nodes
+    !> See [[nodes]]
     procedure, public :: size => size_llist_
 
-    !> @iSee #set_data
+    !> See [[set_data]]
     generic, public :: set_data => set_data_, set_data_idx_
-    !> @iSee #set_data
+    !> See [[set_data]]
     generic, public :: set => set_data_, set_data_idx_
 
     procedure, public :: get_node_data => get_node_data_idx_
-    !> @iSee #get_data
+    !> See [[get_data]]
     procedure, public :: get_data => get_node_data_idx_
-    !> @iSee #get_data
+    !> See [[get_data]]
     procedure, public :: get => get_node_data_idx_
 
-    !> @iSee #add_node
+    !> See [[add_node]]
     generic, public :: add_node => add_node_, add_node_data_
 
-    !> @iSee #remove_node
+    !> See [[remove_node]]
     procedure, public :: remove_node => remove_node_
-    !> @iSee #remove_node_data
+    !> See [[remove_node_data]]
     procedure, public :: remove_node_data => remove_node_data_
 
-    !> @iSee #set_head
+    !> See [[set_head]]
     procedure, public :: set_head => set_head_idx_
 
-    !> @iSee #copy
+    !> See [[copy]]
     procedure, public :: copy_list => copy_
 
-    !> @iSee #itt_step
+    !> See [[itt_step]]
     generic, public :: itt_step => itt_step_, itt_step_i_
 
 #endif
   end type BUD_TYPE_NAME
 
-
-  !> @cond BUD_DOC_INC
 
   !> Linked list container for BUD_TYPE_NAME
   !!
@@ -187,7 +162,6 @@
   end type
   private :: BUD_LINKED_LIST_NAME
 
-  !> @endcond BUD_DOC_INC
 
   !> Create a new linked list with 1 node.
   !!
@@ -196,13 +170,6 @@
   !!
   !! One may later use #set_head to change the
   !! head of the linked list.
-  interface BUD_TYPE_NEW
-    module procedure new_
-    module procedure new_data_
-  end interface
-  public :: BUD_TYPE_NEW
-
-  !> @iSee BUD_TYPE_NEW
   interface new
     module procedure new_
     module procedure new_data_
@@ -228,7 +195,7 @@
   end interface
   public :: nodes
 
-  !> @iSee nodes
+  !> See [[nodes]]
   interface size
     module procedure size_llist_
   end interface
@@ -287,7 +254,7 @@
   end interface
   public :: get_data
 
-  !> @iSee get_data
+  !> See [[get_data]]
   interface get_node
     module procedure get_node_data_idx_
   end interface
@@ -352,8 +319,6 @@
   ! all default reference counted stuff
 # include "bud_common.inc"
 
-
-  !> @cond BUD_DEVELOPER
 
   subroutine delete_(this)
     type(BUD_TYPE_NAME), intent(inout) :: this
@@ -442,7 +407,6 @@
 
   end subroutine new_data_
 
-  !> @cond BUD_DEVELOPER
 
   subroutine get_ll_headp(this, head)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
@@ -554,8 +518,6 @@
     nullify(tmp)
 
   end subroutine append_node
-
-  !> @endcond BUD_DEVELOPER
 
 
   !> @param[inout] this linked list that is queried
