@@ -3,6 +3,26 @@
 ! Get default commands
 #include "bud_utils.inc"
 
+!> @defgroup array Array
+!! @ingroup bud-intrinsic
+!!
+!! Intrinsic fortran array data-type.
+!!
+!! The contained array may be of various data types.
+!! Each data type may be deciphered through this list of
+!! prefixes:
+!!   - `logical` (`b`)
+!!   - `integer(selected_int_kind(4))` (`s`), short
+!!   - `integer(selected_int_kind(9))` (`i`), int
+!!   - `integer(selected_int_kind(18))` (`l`), long
+!!   - `real(selected_real_kind(6))` (`r), float
+!!   - `real(selected_real_kind(15))` (`d`), double
+!!   - `complex(selected_real_kind(6))` (`c`), float complex
+!!   - `complex(selected_real_kind(15))` (`z`), double complex
+!!
+!! It does not contain anything but the intrinsic array.
+!!
+
 
 ! Define the number of dimensions in this Array
 #define BUD_DIM 1

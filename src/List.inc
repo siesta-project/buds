@@ -2,27 +2,6 @@
 
 #include "bud_utils.inc"
 
-  !> @defgroup list List with set-like operations
-  !! @ingroup bud-intrinsic
-  !!
-  !! A list implementation with set-like operations.
-  !!
-  !! The list is the equivalent of the #Array1D structure
-  !! however with a large set of intrinsic functionality
-  !! not available for the #Array1D @bud.
-  !!
-  !! The `List` enables:
-  !!  1. Sorting
-  !!  2. Set operations; union, intersection, complement
-  !!  3. Reverse elements
-  !!  4. Automatic re-allocation when more elements are needed.
-  !!  5. Binary search-algorithms if sorted.
-  !!
-  !!
-  !! The list also implements index functions which are extremely fast
-  !! if the list is sorted. In such cases the list may be used as pivoting
-  !! array.
-
   ! The following pre-processor variables are currently used when
   ! included:
   !  - BUD_MOD_NAME of the module
