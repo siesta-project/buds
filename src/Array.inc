@@ -12,18 +12,7 @@
   !  - BUD_TYPE_VAR, the variable type contained in the array
   !  - BUD_TYPE_VAR_PREC, the precision specifier for the array
 
-
 #define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
-#define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
-#define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
-
-  !> BUD_MOD_NAME documentation
-  !!
-  !! @details
-  !! The detailed implementation of the BUD_TYPE_NAME type.
-  !!
-  !! @note
-  !! This documentation is duplicated in all types with different precision.
 
   ! This *MUST* be the first statement
   ! Common parameters and variables used
@@ -42,58 +31,43 @@
   !! array.
   type BUD_TYPE_NAME
 
-    !> @cond BUD_DEVELOPER
-
     !> Stored pointer which contains the reference counting etc.
     type(BUD_TYPE_NAME_), pointer :: D => null()
 
-    !> @endcond BUD_DEVELOPER
 
 #   include "bud_common_type.inc"
 #if BUD_FORTRAN >= 2003
-
-    !> @name Private procedures
-    !> @{
-    ! Doxygen needed line
 
     procedure, private :: new_dim_ii_
     procedure, private :: new_dim_il_
     procedure, private :: new_shape_ii_
     procedure, private :: new_shape_il_
 
-    !> @}
-
-    !> @iSee BUD_NEW_TYPE
-    generic, public :: BUD_NEW_TYPE => &
-      new_dim_ii_, new_dim_il_, &
-      new_shape_ii_, new_shape_il_
-
-    !> @iSee new
+    !> See [[new]]
     generic, public :: new => &
       new_dim_ii_, new_dim_il_, &
       new_shape_ii_, new_shape_il_
 
-    !> @iSee associate
+    !> See [[associate]]
     procedure, public :: associate => associate_
 
-    !> @iSee #array_p
-    procedure, public :: array_p => arrayp_
+    !> See [[array_p]]
+    procedure, public :: array_p => array_p_
 
-    !> @iSee #size
+    !> See [[size]]
     procedure, public :: size => size_
 
 #endif
   end type BUD_TYPE_NAME
 
-  !> @cond BUD_DEVELOPER
-
-  !> @bud container for BUD_TYPE_NAME
+  
+  !> bud container for BUD_TYPE_NAME
   !!
   !! Contains an array of BUD_DIM dimensions.
   !!
   type BUD_TYPE_NAME_
 
-    !> Array stored in the @bud
+    !> Array stored in the bud
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer :: array BUD_DIM_SPEC(:) => null()
 #else
@@ -108,8 +82,6 @@
 
   end type BUD_TYPE_NAME_
 
-  !> @endcond BUD_DEVELOPER
-
   !> Create a new array object either by size or by copy
   !!
   !! Initialization routine for allocating an array.
@@ -121,13 +93,6 @@
   !! @note
   !! If the array is created from dimensions, the initial
   !! value of the array may be arbitrary (compiler dependent).
-  interface BUD_TYPE_NEW
-    module procedure new_dim_ii_, new_dim_il_
-    module procedure new_shape_ii_, new_shape_il_
-  end interface
-  public :: BUD_TYPE_NEW
-
-  !> @iSee BUD_TYPE_NEW
   interface new
     module procedure new_dim_ii_, new_dim_il_
     module procedure new_shape_ii_, new_shape_il_
@@ -152,14 +117,14 @@
   public :: associate
 
 
-  !> Retrieve pointer to array in the @bud
+  !> Retrieve pointer to array in the bud
   !!
   !! The array-pointer will _always_ be contiguous.
   !!
   !! @note
   !! The internal array is `allocatable` so you may not deallocate the array-pointer.
   interface array_p
-    module procedure arrayp_
+    module procedure array_p_
   end interface
   public :: array_p
 
@@ -170,6 +135,7 @@
   !!
   !! @note
   !! There is no checking of the dimension queried.
+  !! @endnote
   !!
   !! This is equivalent to:
   !! \code{.f90}
@@ -203,16 +169,18 @@
 # include "bud_common.inc"
 
 
-  !> @cond BUD_DEVELOPER
-
   !> Internal routine for cleaning up the data container.
   !!
-  !! @dev_note
+  !! @note
   !! This routine is only used internally to clean-up
   !! any data in the type.
   !! Should never be made public.
+  !! @endnote
   subroutine delete_(this)
+
+    !> This bud which is to be deleted
     type(BUD_TYPE_NAME), intent(inout) :: this
+    
     integer :: stat
 
     ! Currently we do not allow external memory
@@ -230,14 +198,13 @@
 
   end subroutine delete_
 
-  !> @endcond BUD_DEVELOPER
 
-
-  !> @param[in] from the origin of data
-  !! @param[inout] to the destination of the data
   subroutine copy_(from, to)
+    !> Contains the bud which is to be copied into `to`
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
+    !> Upon exit, this is the copy of `from` by copying the data-content
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
+    
     integer :: i
     integer(il_) :: ashape( BUD_DIM )
 
@@ -263,21 +230,6 @@
   end subroutine copy_
 
 
-  !> @param[inout] this array @bud
-  !! @param[in] d1 size of the internal reference counted array (dim=1)
-#if BUD_DIM > 1
-  !! @param[in] d2 size of the internal reference counted array (dim=2)
-#if BUD_DIM > 2
-  !! @param[in] d3 size of the internal reference counted array (dim=3)
-#if BUD_DIM > 3
-  !! @param[in] d4 size of the internal reference counted array (dim=4)
-#if BUD_DIM > 4
-  !! @param[in] d5 size of the internal reference counted array (dim=5)
-#endif
-#endif
-#endif
-#endif
-  !! @param[in] val @opt=@null initial value of all elements
   subroutine new_dim_ii_(this, &
 #if BUD_DIM == 1
     d1, &
@@ -291,18 +243,33 @@
     d1, d2, d3, d4, d5, &
 #endif
     val)
+    !> Creation of a new Array-bud with given dimensions.
+    !!
+    !! This bud will always be deallocated.
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-#if BUD_DIM == 1
+    
+    !> The size of the first dimension.
     integer(ii_), intent(in) :: d1
-#elif BUD_DIM == 2
-    integer(ii_), intent(in) :: d1, d2
-#elif BUD_DIM == 3
-    integer(ii_), intent(in) :: d1, d2, d3
-#elif BUD_DIM == 4
-    integer(ii_), intent(in) :: d1, d2, d3, d4
-#elif BUD_DIM == 5
-    integer(ii_), intent(in) :: d1, d2, d3, d4, d5
+#if BUD_DIM > 1
+    !> The size of the second dimension.
+    integer(ii_), intent(in) :: d2
 #endif
+#if BUD_DIM > 2
+    !> The size of the third dimension.
+    integer(ii_), intent(in) :: d3
+#endif
+#if BUD_DIM > 3
+    !> The size of the fourth dimension.
+    integer(ii_), intent(in) :: d4
+#endif
+#if BUD_DIM > 4
+    !> The size of the fifth dimension.
+    integer(ii_), intent(in) :: d5
+#endif
+
+    !> Specify the default value of the allocated array.
+    !!
+    !! By default there will be no initialization.
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in), optional :: val
 #else
@@ -328,21 +295,6 @@
 
   end subroutine new_dim_ii_
 
-    !> @param[inout] this array @bud
-  !! @param[in] d1 size of the internal reference counted array (dim=1)
-#if BUD_DIM > 1
-  !! @param[in] d2 size of the internal reference counted array (dim=2)
-#if BUD_DIM > 2
-  !! @param[in] d3 size of the internal reference counted array (dim=3)
-#if BUD_DIM > 3
-  !! @param[in] d4 size of the internal reference counted array (dim=4)
-#if BUD_DIM > 4
-  !! @param[in] d5 size of the internal reference counted array (dim=5)
-#endif
-#endif
-#endif
-#endif
-  !! @param[in] val @opt=@null initial value of all elements
   subroutine new_dim_il_(this, &
 #if BUD_DIM == 1
     d1, &
@@ -356,18 +308,33 @@
     d1, d2, d3, d4, d5, &
 #endif
     val)
+    !> Creation of a new Array-bud with given dimensions.
+    !!
+    !! This bud will always be deallocated.
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-#if BUD_DIM == 1
+    
+    !> The size of the first dimension.
     integer(il_), intent(in) :: d1
-#elif BUD_DIM == 2
-    integer(il_), intent(in) :: d1, d2
-#elif BUD_DIM == 3
-    integer(il_), intent(in) :: d1, d2, d3
-#elif BUD_DIM == 4
-    integer(il_), intent(in) :: d1, d2, d3, d4
-#elif BUD_DIM == 5
-    integer(il_), intent(in) :: d1, d2, d3, d4, d5
+#if BUD_DIM > 1
+    !> The size of the second dimension.
+    integer(il_), intent(in) :: d2
 #endif
+#if BUD_DIM > 2
+    !> The size of the third dimension.
+    integer(il_), intent(in) :: d3
+#endif
+#if BUD_DIM > 3
+    !> The size of the fourth dimension.
+    integer(il_), intent(in) :: d4
+#endif
+#if BUD_DIM > 4
+    !> The size of the fifth dimension.
+    integer(il_), intent(in) :: d5
+#endif
+
+    !> Specify the default value of the allocated array.
+    !!
+    !! By default there will be no initialization.
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in), optional :: val
 #else
@@ -398,12 +365,18 @@
 
   end subroutine new_dim_il_
 
-  !> @param[inout] this array @bud
-  !! @param[in] shape array with dimensions (padded with ones)
-  !! @param[in] val @opt=@null initial value of all elements
   subroutine new_shape_ii_(this, shape, val)
+    !> Creation of a new Array-bud with given dimensions.
+    !!
+    !! This bud will always be deallocated.
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+
+    !> An array specifying the shape of the array
     integer(ii_), intent(in) :: shape(:)
+
+    !> Specify the default value of the allocated array.
+    !!
+    !! By default there will be no initialization.
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in), optional :: val
 #else
@@ -425,12 +398,18 @@
 
   end subroutine new_shape_ii_
 
-  !> @param[inout] this array @bud
-  !! @param[in] shape array with dimensions (padded with ones)
-  !! @param[in] val @opt=@null initial value of all elements
   subroutine new_shape_il_(this, shape, val)
+    !> Creation of a new Array-bud with given dimensions.
+    !!
+    !! This bud will always be deallocated.
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+
+    !> An array specifying the shape of the array
     integer(il_), intent(in) :: shape(:)
+
+    !> Specify the default value of the allocated array.
+    !!
+    !! By default there will be no initialization.
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in), optional :: val
 #else
@@ -463,10 +442,18 @@
 
   end subroutine new_shape_il_
 
-  !> @param[inout] this array @bud
-  !! @param[in] array the pointed to array
   subroutine associate_(this, array)
+    !> Creation of a new Array-bud by association
+    !!
+    !! Instead of forcing the allocation of the array, one may
+    !! use an external array as container for the array.
+    !! If this is performed it is up to the programmer to
+    !! assert that the external array gets deleted _after_
+    !! this bud has been deleted.
+    !! Else this bud will point to non-allocated memory.
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+
+    !> The external array which is to be associated with this array bud
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in), target :: array BUD_DIM_SPEC(:)
 #else
@@ -481,14 +468,17 @@
 
   end subroutine associate_
 
-  !> @param[in] this array @bud
-  !! @return a pointer to the data (contiguous)
-  function arrayp_(this) result(p)
+  function array_p_(this) result(p)
+    !> The array bud where we should retrieve a data pointer from
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    !> The data-pointer that points to this array bud.
+    !!
+    !! If `this` has not been initialized the resulting pointer
+    !! will be a `null()` pointer.
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC(:)
 #else
-    BUD_TYPE_VAR, pointer  BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC(:)
+    BUD_TYPE_VAR, pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC(:)
 #endif
 
     if ( is_initd(this) ) then
@@ -497,24 +487,9 @@
       nullify(p)
     end if
 
-  end function arrayp_
+  end function array_p_
 
 
-  !> @param[in] this the containing @bud
-  !! @param[in] i1 index in the array
-#if BUD_DIM > 1
-  !! @param[in] i2 index in the array
-#if BUD_DIM > 2
-  !! @param[in] i3 index in the array
-#if BUD_DIM > 3
-  !! @param[in] i4 index in the array
-#if BUD_DIM > 4
-  !! @param[in] i5 index in the array
-#endif
-#endif
-#endif
-#endif
-  !! @return the value in the specific indexed location of the array
   pure function get_array_idx_(this, &
 #if BUD_DIM == 1
     i1 &
@@ -561,9 +536,6 @@
   end function get_array_idx_
 
 
-  !> @param[in] this @bud container
-  !! @param[in] dim @opt=@null along the specified dimension
-  !! @return the size of the contained array
   pure function size_(this, dim) result(d)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer, intent(in), optional :: dim
@@ -585,8 +557,6 @@
 
   end function size_
 
-  !> @param[in] this @bud container
-  !! @return the number of dimensions of contained array
   pure function dimensions_(this) result(d)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer :: d
@@ -600,9 +570,6 @@
   end function dimensions_
 
 
-  !> @param[in] this array @bud
-  !! @param[in] v all elements of the contained array will be
-  !!              equal to `v` after the call
   subroutine assign_value_(this, v)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 #ifdef BUD_TYPE_VAR_PREC
@@ -617,8 +584,6 @@
 
   end subroutine assign_value_
 
-  !> @param[inout] f `File` bud
-  !! @param[in] this the array bud
   subroutine write_(f, this)
     use BUD_CC2(BUD_MOD,_File)
 
@@ -753,8 +718,6 @@
 
   end subroutine write_
 
-  !> @param[inout] f `File` bud
-  !! @param[inout] this the array bud
   subroutine read_(f, this)
     use BUD_CC2(BUD_MOD,_File)
 
@@ -922,9 +885,6 @@
 
   end subroutine read_
 
-  !> @param[in] this array @bud
-  !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
-  !! @param[in] indent @opt=1 possible indentation of printed statement
   subroutine print_(this, info, indent)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     character(len=*), intent(in), optional :: info
