@@ -346,8 +346,6 @@ contains
     lhs%D => rhs%D
     lhs%D%refs_ = rhs%D%refs_ + 1
 
-    call set_error(this, 0)
-
   end subroutine common_assign_
 
 

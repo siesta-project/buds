@@ -391,7 +391,7 @@
       if ( present(top) ) lnpop = top
 
       ! BUD_FSTACK_ALL == 0, we delete all
-      if ( lnpop == BUD_FSTACK_ALL ) lnpop = el
+      if ( lnpop == 0 ) lnpop = el
 
       ! we should not pop anything
       if ( lnpop < 0 ) return
@@ -473,7 +473,7 @@
 
       call pop(this, bot=lnpop)
 
-    else if ( 
+    else
 
       ! retain 'n' items from the bottom
       lnpop = el - bot
