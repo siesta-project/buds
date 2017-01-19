@@ -665,7 +665,7 @@ module BUD_MOD_NAME
   end interface
   public :: comm_size
 
-  !> @iSee #comm_size
+  !> @iSee comm_size
   interface size
     module procedure NP_
   end interface
