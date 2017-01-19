@@ -13,11 +13,12 @@
 DOT=${DOT:-1}
 #   whether graphviz should be used...
 OPTIPNG=${OPTIPNG:-1}
-DOC=${DOC:-doxygen}
 
 # Retrieve the git-source top-directory
 _main_dir=`git rev-parse --show-toplevel`
 
+
+# Specify the documentation and source directories
 _DOC=$_main_dir/buds-final-doc
 _SRC=$_main_dir/buds-final-src
 
@@ -82,19 +83,19 @@ mkdir -p doc/images
 
 # Check whether we should use dot
 if $(have_exe dot) && [ $DOT -eq 1 ] ; then
-    have_dot="HAVE_DOT = YES"
+    use_graph="true"
 
     # Make sure we create all custom graphs for
     # dependency graphs
     dot -Tpng include/buds_include.dot > doc/images/buds_include.png
     
 else
-    have_dot="HAVE_DOT = NO"
+    use_graph="false"
 fi
 
 
 # First we need to ensure the sources are ok.
-mkdir $_SRC
+mkdir -p $_SRC
 pushd $_SRC
 {
     echo "TOP_DIR = $_main_dir"
@@ -104,41 +105,22 @@ pushd $_SRC
     echo "OO = 1"
     echo "include \$(TOP_DIR)/Makefile"
 } > Makefile
-make source --trace
+make source
+
 # Ensure the *.inc files are also present
 cp $_main_dir/include/*.inc .
+
 popd
 
 # Now we can create the documentation
 # This will create the documentation folder
-case $DOC in
+sed -e "s/%%VERSION%%/$doc_version/g;
+s/%%GRAPH%%/$use_graph/g" doc/FORD.md > doc/FORD_V.md
+ford doc/FORD_V.md && rm doc/FORD_V.md
 
-    doxygen|Doxygen)
-	{
-	    cat doc/Doxyfile
-	    # Insert correct documentation version
-	    echo "PROJECT_NUMBER = $doc_version"
-	    echo "$have_dot"
-	} | doxygen -
+# Insert the version string in the documentation
+sed -i -e "s/BUDS_VERSION/$tar_version/g" $_DOC/page/10-download.html
 
-	# Insert the version string in the version
-	sed -i -e "s/BUDS_VERSION/$doc_version/g" html/index.html
-	# This reflects the DOWNLOAD.md file
-	sed -i -e "s/BUDS_VERSION/$tar_version/g" html/download.html
-
-	;;
-    
-    ford|FORD)
-	ford doc/ford.md
-	;;
-
-    *)
-	echo "Error in DOC=$DOC variable, must be either:"
-	echo " doxygen, ford"
-	exit 1
-	;;
-    
-esac
 
 ###################
 # Post-processing #
