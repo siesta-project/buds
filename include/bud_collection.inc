@@ -681,8 +681,8 @@
 #endif
 
   !> @param[in] this data type
-  !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
-  !! @param[in] indent @opt=1 possible indentation of printed statement
+  !! @param[in] info opt=BUD_TYPE_NAME_STR additional information printed
+  !! @param[in] indent opt=1 possible indentation of printed statement
   subroutine print_(this, info, indent)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     character(len=*), intent(in), optional :: info

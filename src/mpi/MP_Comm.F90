@@ -582,7 +582,9 @@ module BUD_MOD_NAME
 
   !> Query communicator of the distribution
   !!
-  !! @note Do not free this communicator.
+  !! @note
+  !! Do not free this communicator.
+  !! @endnote
   interface communicator
     module procedure comm_
   end interface
@@ -590,7 +592,9 @@ module BUD_MOD_NAME
 
   !> Query group of the distribution
   !!
-  !! @note Do not free this group.
+  !! @note
+  !! Do not free this group.
+  !! @endnote
   interface group
     module procedure group_
   end interface
@@ -1189,11 +1193,6 @@ module BUD_MOD_NAME
 
 
   !> Internal routine for cleaning up the data container.
-  !!
-  !! @dev_note
-  !! This routine is only used internally to clean-up
-  !! any data in the type.
-  !! Should never be made public.
   subroutine delete_(this)
     type(BUD_TYPE_NAME), intent(inout) :: this
 
@@ -1282,7 +1281,7 @@ module BUD_MOD_NAME
   !!
   !! @param[inout] this the bud distribution container
   !! @param[in] Comm the communicator that we will dublicate and attach
-  !! @param[in] dup @opt=.true. whether the input communicator is dublicated.
+  !! @param[in] dup opt=.true. whether the input communicator is dublicated.
   subroutine new_(this, Comm, dup)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer(ii_), intent(in) :: Comm
@@ -1840,8 +1839,8 @@ module BUD_MOD_NAME
   !!
   !! @param[inout] parent the receiving communicator
   !! @param[inout] child the communicator we wish to query
-  !! @param[out] root @opt=-1 the rank of the root in the `child` communicator
-  !! @param[out] size @opt=0 the size of the `child` communicator
+  !! @param[out] root opt=-1 the rank of the root in the `child` communicator
+  !! @param[out] size opt=0 the size of the `child` communicator
   subroutine child_Bcast_(parent, child, D, root, size)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: parent, child
     integer, intent(in), optional :: D ! should neven be used
@@ -2059,8 +2058,8 @@ module BUD_MOD_NAME
   !! This will enable the parent program to show it in the way it wants.
   !!
   !! @param[in] this data type
-  !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
-  !! @param[in] indent @opt=1 possible indentation of printed statement
+  !! @param[in] info opt=BUD_TYPE_NAME_STR additional information printed
+  !! @param[in] indent opt=1 possible indentation of printed statement
   subroutine print_(this, info, indent)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     character(len=*), intent(in), optional :: info

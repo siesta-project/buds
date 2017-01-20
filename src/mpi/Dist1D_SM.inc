@@ -16,7 +16,7 @@
 
 
   !> @param[inout] f `File` bud
-  !! @param[in] this the distributed sparse matrix @bud
+  !! @param[in] this the distributed sparse matrix bud
   subroutine write_(f, this)
     use BUD_CC2(BUD_MOD,_File)
 
@@ -73,7 +73,7 @@
 
     ! This ensures that only one rank will do the writing
     ! in case multiple ranks have the file open
-    ! only @bud knows what will happen in this case!!!
+    ! only bud knows what will happen in this case!!!
     do_io = io_rank == comm_rank(comm)
 
     if ( do_io ) then
@@ -226,7 +226,7 @@
   end subroutine write_
 
   !> @param[inout] f `File` bud
-  !! @param[in] this the distributed sparse matrix @bud
+  !! @param[in] this the distributed sparse matrix bud
   subroutine read_(f, dist, this)
     use BUD_CC2(BUD_MOD,_File)
 
@@ -286,7 +286,7 @@
 
     ! This ensures that only one rank will do the writing
     ! in case multiple ranks have the file open
-    ! only @bud knows what will happen in this case!!!
+    ! only bud knows what will happen in this case!!!
     do_io = io_rank == comm_rank(comm)
 
     if ( do_io ) then

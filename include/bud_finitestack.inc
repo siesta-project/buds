@@ -364,10 +364,10 @@
 
 
   !> @param[inout] this stack that gets removed an item
-  !! @param[in] top @opt=1 number of popped elements from top.
+  !! @param[in] top opt=1 number of popped elements from top.
   !!                If BUD_FSTACK_ALL is supplied it will
   !!                clear all elements.
-  !! @param[in] bot @opt=@null has precedence if `top` not supplied.
+  !! @param[in] bot opt=null has precedence if `top` not supplied.
   !!                Pops `bot` elements from the bottom of the stack.
   subroutine pop_delete_(this, top, bot)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
@@ -439,8 +439,8 @@
 
 
   !> @param[inout] this stack to operate on
-  !! @param[in] top @opt=1 number of elements kept from the top
-  !! @param[in] bot @opt=@null number of elements kept from the bottom,
+  !! @param[in] top opt=1 number of elements kept from the top
+  !! @param[in] bot opt=null number of elements kept from the bottom,
   !!                only used if `top` is not supplied.
   subroutine retain_(this, top, bot)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
@@ -489,7 +489,7 @@
 
   !> @param[in] this stack to retrieve element from
   !! @param[inout] elem returned item stored in element `iel`
-  !! @param[in] iel @opt=`size(this)` index of element to return. May be negative to offset from the top
+  !! @param[in] iel opt=`size(this)` index of element to return. May be negative to offset from the top
   subroutine get_elem_(this, elem, iel)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     type(BUD_STACK_TYPE), intent(inout) :: elem
@@ -517,7 +517,7 @@
   end subroutine get_elem_
 
   !> @param[in] this stack to retrieve pointer element from
-  !! @param[in] iel @opt=`size(this)` index of element to return. May be negative to offset from top.
+  !! @param[in] iel opt=`size(this)` index of element to return. May be negative to offset from top.
   !! @result pointer to the element `iel`
   function get_elemp_(this, iel) result(p)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
@@ -653,8 +653,8 @@
 #endif
 
   !> @param[in] this data type
-  !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
-  !! @param[in] indent @opt=1 possible indentation of printed statement
+  !! @param[in] info opt=BUD_TYPE_NAME_STR additional information printed
+  !! @param[in] indent opt=1 possible indentation of printed statement
   subroutine print_(this, info, indent)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     character(len=*), intent(in), optional :: info

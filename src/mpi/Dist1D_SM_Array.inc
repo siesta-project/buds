@@ -3,7 +3,7 @@
   !> @defgroup dist1d-sm-array Distributed (1D), sparse matrix with data
   !! @ingroup bud-intrinsic
   !!
-  !! @bud containing a distribution, a sparse matrix pattern _and_ the
+  !! bud containing a distribution, a sparse matrix pattern _and_ the
   !! associated data corresponding to the sparse matrix elements.
   !!
   !! From this object the full matrix may be constructed or interacted
@@ -55,13 +55,13 @@
   end interface
   public :: sparse_matrix_p
 
-  !> Retrieve the array @bud
+  !> Retrieve the array bud
   interface array
     module procedure get_elem3_
   end interface
   public :: array
 
-  !> Retrieve a pointer to the array @bud
+  !> Retrieve a pointer to the array bud
   interface array_p
     module procedure get_elem3p_
   end interface
@@ -186,7 +186,7 @@
 
   end function get_matrix_ip_
 
-  !> @param[in] this @bud container
+  !> @param[in] this bud container
   !! @return the number of dimensions of contained array
   pure function dimensions_(this) result(d)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
@@ -1000,7 +1000,7 @@
 
 
   !> @param[inout] f `File` bud
-  !! @param[in] this the distributed sparse matrix @bud
+  !! @param[in] this the distributed sparse matrix bud
   !! @param[in] only_array whether only the distributed array should be stored
   subroutine write_(f, this, only_array)
     use BUD_CC2(BUD_MOD,_File)
@@ -1088,7 +1088,7 @@
 
     ! This ensures that only one rank will do the writing
     ! in case multiple ranks have the file open
-    ! only @bud knows what will happen in this case!!!
+    ! only bud knows what will happen in this case!!!
     do_io = io_rank == comm_rank(comm)
 
     if ( do_io ) then
@@ -1356,7 +1356,7 @@
   end subroutine write_
 
   !> @param[inout] f `File` bud
-  !! @param[in] this the distributed sparse matrix @bud
+  !! @param[in] this the distributed sparse matrix bud
   subroutine read_(f, dist, this)
     use BUD_CC2(BUD_MOD,_File)
     use BUD_MOD_1_2
@@ -1434,7 +1434,7 @@
     ! Now we should read the sparse data
     ! This ensures that only one rank will do the writing
     ! in case multiple ranks have the file open
-    ! only @bud knows what will happen in this case!!!
+    ! only bud knows what will happen in this case!!!
     do_io = io_rank == comm_rank(comm)
 
     if ( do_io ) then

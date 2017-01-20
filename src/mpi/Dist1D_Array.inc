@@ -1004,7 +1004,7 @@
   !> @param[inout] f `File` bud
   !! @param[inout] dist the the distribution of the data
   !! @param[inout] this the distributed array @bud
-  !! @param[in] dist_idx @opt=BUD_DIM the distributed index
+  !! @param[in] dist_idx opt=BUD_DIM the distributed index
   subroutine read_(f, dist, this, dist_idx)
     use BUD_CC2(BUD_MOD,_File)
     use BUD_CC2(BUD_MOD,_Transfer), only: transfer_dim

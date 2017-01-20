@@ -549,7 +549,7 @@
   !> @param[inout] this array @bud
   !! @param[in] a first value of the range
   !! @param[in] b last value of the range
-  !! @param[in] step @opt=1 the step of the sequence
+  !! @param[in] step opt=1 the step of the sequence
   subroutine new_range_(this, a, b, step)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in) :: a, b
@@ -914,7 +914,7 @@
 
   !> @param[in] this @bud container
   !! @param[in] max_n maximum number of allowed elements that should be available in the list
-  !! @param[in] n @opt number of elements that needs to be available in its current state
+  !! @param[in] n opt number of elements that needs to be available in its current state
   subroutine extend_(this, max_n, n)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer(BUD_INT_PREC), optional :: max_n, n
@@ -1008,7 +1008,7 @@
 
 
   !> @param[inout] this clear the elements without shrinking the allocated list
-  !! @param[in] n @opt=0 the retained elements in the list
+  !! @param[in] n opt=0 the retained elements in the list
   subroutine clear_(this, n)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer(BUD_INT_PREC), intent(in), optional :: n
@@ -1654,8 +1654,8 @@
   end subroutine read_
 
   !> @param[in] this list @bud
-  !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
-  !! @param[in] indent @opt=1 possible indentation of printed statement
+  !! @param[in] info opt=BUD_TYPE_NAME_STR additional information printed
+  !! @param[in] indent opt=1 possible indentation of printed statement
   subroutine print_(this, info, indent)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     character(len=*), intent(in), optional :: info

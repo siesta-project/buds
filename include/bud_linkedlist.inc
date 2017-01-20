@@ -451,7 +451,7 @@
   !!
   !! @param[in] this @bud to retrieve node from
   !! @param[inout] node returned @bud in node `index`
-  !! @param[in] index @opt=`0` index of element to return. May be negative to offset from the head
+  !! @param[in] index opt=`0` index of element to return. May be negative to offset from the head
   subroutine get_ll_idxp(this, node, index)
     BUD_CLASS(BUD_TYPE_NAME), intent(in), target :: this
     type(BUD_LINKED_LIST_NAME), pointer :: node
@@ -635,7 +635,7 @@
 
   !> @param[in] this retrieve data from this linked list with associated head
   !! @param[inout] D the data stored at the element in the linked list
-  !! @param[in] index @opt=`1` index of element to return. May be negative to offset from the head for doubly linked lists
+  !! @param[in] index opt=`1` index of element to return. May be negative to offset from the head for doubly linked lists
   subroutine get_node_data_idx_(this, D, index)
     BUD_CLASS(BUD_TYPE_NAME), intent(in), target :: this
     type(BUD_LIST_TYPE), intent(inout) :: D
@@ -972,8 +972,8 @@
 #endif
 
   !> @param[in] this linked list
-  !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
-  !! @param[in] indent @opt=1 possible indentation of printed statement
+  !! @param[in] info opt=BUD_TYPE_NAME_STR additional information printed
+  !! @param[in] indent opt=1 possible indentation of printed statement
   subroutine print_(this, info, indent)
     BUD_CLASS(BUD_TYPE_NAME), intent(in), target :: this
     character(len=*), intent(in), optional :: info

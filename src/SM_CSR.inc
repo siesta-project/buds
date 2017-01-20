@@ -151,7 +151,7 @@
   integer(BUD_TYPE_VAR_PREC), parameter :: ONE = BUD_CC2(1_,BUD_TYPE_VAR_PREC)
   integer(BUD_TYPE_VAR_PREC), parameter :: ZERO = BUD_CC2(0_,BUD_TYPE_VAR_PREC)
 
-  !> @bud container for BUD_TYPE_NAME
+  !> bud container for BUD_TYPE_NAME
   !!
   !! Contains the sparsity pattern for a CSR matrix.
   type BUD_TYPE_NAME_
@@ -342,11 +342,6 @@
 
 
   !> Internal routine for cleaning up the data container.
-  !!
-  !! @dev_note
-  !! This routine is only used internally to clean-up
-  !! any data in the type.
-  !! Should never be made public.
   subroutine delete_(this)
     type(BUD_TYPE_NAME), intent(inout) :: this
     integer :: stat, istat
@@ -394,8 +389,8 @@
   !> @param[inout] this the sparse matrix
   !! @param[in] nr number of rows of the matrix
   !! @param[in] nc number of columns of the matrix
-  !! @param[in] nt @opt total number of possible non-zero elements
-  !! @param[in] npr @opt number of non-zero elements per row (defaults to 10 if `nt` is not specified)
+  !! @param[in] nt opt total number of possible non-zero elements
+  !! @param[in] npr opt number of non-zero elements per row (defaults to 10 if `nt` is not specified)
   subroutine new_dim_(this, nr, nc, nt, npr)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer(BUD_TYPE_VAR_PREC), intent(in) :: nr, nc
@@ -444,7 +439,7 @@
   !! @param[in] nz number of non-zero elements of the matrix
   !! @param[in] rptr row pointers (at least size `nr`)
   !! @param[in] col column indices for the sparse elements
-  !! @param[in] nrow @opt number of column elements per row
+  !! @param[in] nrow opt number of column elements per row
   subroutine new_copy_(this, nr, nc, nz, rptr, col, nrow)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     ! sizes
@@ -536,13 +531,13 @@
   end function nrowp_
 
 
-  !> @param[in] this sparse matrix @bud
-  !! @param[out] nr @opt number of rows in SM
-  !! @param[out] nc @opt number of columns in SM
-  !! @param[out] nz @opt number of non-zero elements in SM
-  !! @param[out] nt @opt total number of possible non-zero elements in SM
-  !! @param[out] rptr @opt row pointer (`rptr(2)BUD_SM_PTR_A` is starting index of `ir=2`)
-  !! @param[out] nrow @opt number of non-zero elements per row
+  !> @param[in] this sparse matrix bud
+  !! @param[out] nr opt number of rows in SM
+  !! @param[out] nc opt number of columns in SM
+  !! @param[out] nz opt number of non-zero elements in SM
+  !! @param[out] nt opt total number of possible non-zero elements in SM
+  !! @param[out] rptr opt row pointer (`rptr(2)BUD_SM_PTR_A` is starting index of `ir=2`)
+  !! @param[out] nrow opt number of non-zero elements per row
   subroutine attach_(this, D, nr, nc, nz, nt, rptr, col, nrow)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     ! Having this forces the user to explicitly specify the
@@ -611,7 +606,7 @@
 
 
   !> @param[inout] this sparse matrix to sort (in-place)
-  !! @param[out] pvt @opt=@none if requested the pivoting array for the sorted sparsity pattern
+  !! @param[out] pvt opt=@none if requested the pivoting array for the sorted sparsity pattern
   subroutine sort_(this, pvt)
     ! We use the quick-sort algorithm in this general finalization
     ! algorithm.

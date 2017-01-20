@@ -16,10 +16,7 @@
 #include "bud_common_declarations.inc"
 
 
-  !> Item wrapper for a bud
-  !!
-  !! This wrapper type contains another bud. It may
-  !! be used as a container for sub-partitioning.
+  !> Item wrapper which contains a bud
   !!
   !! Generally you need (should) not use this Item type
   !! unless you have a specific use case.
@@ -227,8 +224,8 @@
 
 
   !> @param[in] this data type
-  !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
-  !! @param[in] indent @opt=1 possible indentation of printed statement
+  !! @param[in] info opt=BUD_TYPE_NAME_STR additional information printed
+  !! @param[in] indent opt=1 possible indentation of printed statement
   subroutine print_(this, info, indent)
     BUD_CLASS(BUD_TYPE_NAME), intent(in), target :: this
     character(len=*), intent(in), optional :: info

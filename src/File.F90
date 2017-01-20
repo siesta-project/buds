@@ -597,10 +597,10 @@ module BUD_MOD_NAME
 
   !> @param[inout] this file @bud
   !! @param[in] D (dummy argument which should _NEVER_ be used, forces explicit interface usage)
-  !! @param[in] form @opt='FORMATTED' format of opened file
-  !! @param[in] access @opt='SEQUENTIAL' file access pattern
-  !! @param[in] action @opt='READWRITE' file R/W access
-  !! @param[in] status @opt='OLD' file-existance
+  !! @param[in] form opt='FORMATTED' format of opened file
+  !! @param[in] access opt='SEQUENTIAL' file access pattern
+  !! @param[in] action opt='READWRITE' file R/W access
+  !! @param[in] status opt='OLD' file-existance
   subroutine open_(this, D, form, access, action, status)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     character(len=*), intent(in), optional :: D, form, access, action, status
@@ -665,7 +665,7 @@ module BUD_MOD_NAME
   end subroutine rewind_
 
   !> @param[inout] this file @bud
-  !! @param[in] n @opt=1 number of times to backspace
+  !! @param[in] n opt=1 number of times to backspace
   subroutine backspace_(this, n)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer, intent(in), optional :: n
@@ -732,8 +732,8 @@ module BUD_MOD_NAME
 
 
   !> @param[in] this data type
-  !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
-  !! @param[in] indent @opt=1 possible indentation of printed statement
+  !! @param[in] info opt=BUD_TYPE_NAME_STR additional information printed
+  !! @param[in] indent opt=1 possible indentation of printed statement
   subroutine print_(this, info, indent)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     character(len=*), intent(in), optional :: info

@@ -129,7 +129,7 @@
 
 
   !> @param[in] this the sparse matrix
-  !! @param[in] dim @opt=0 the dimension query
+  !! @param[in] dim opt=0 the dimension query
   !! @return size of the sparse matrix dependent on value of `dim`: 0=non-zero elements, 1=rows, 2=columns.
   elemental function size_(this, dim) result(size)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
@@ -171,8 +171,8 @@
 
 
   !> @param[in] this sparse matrix
-  !! @param[in] info @opt=BUD_TYPE_NAME_STR additional information printed
-  !! @param[in] indent @opt=1 possible indentation of printed statement
+  !! @param[in] info opt=BUD_TYPE_NAME_STR additional information printed
+  !! @param[in] indent opt=1 possible indentation of printed statement
   subroutine print_(this, info, indent)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     character(len=*), intent(in), optional :: info
