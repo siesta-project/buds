@@ -51,7 +51,6 @@ end module
 !! @{
 module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,sList)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,List)
 # define BUD_TYPE_VAR integer
 # define BUD_INT_PREC is_
 # define BUD_TYPE_VAR_PREC is_
@@ -67,7 +66,6 @@ end module
 !! @{
 module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iList)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,List)
 # define BUD_TYPE_VAR integer
 # define BUD_INT_PREC ii_
 # define BUD_TYPE_VAR_PREC ii_
@@ -83,7 +81,6 @@ end module
 !! @{
 module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,lList)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,List)
 # define BUD_TYPE_VAR integer
 # define BUD_INT_PREC il_
 # define BUD_TYPE_VAR_PREC il_
@@ -104,7 +101,6 @@ end module
 !! @{
 module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,rList)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,List)
 # define BUD_TYPE_VAR real
 # define BUD_TYPE_VAR_PREC rr_
 #include "List.inc"
@@ -118,7 +114,6 @@ end module
 !! @{
 module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,dList)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,List)
 # define BUD_TYPE_VAR real
 # define BUD_TYPE_VAR_PREC rd_
 #include "List.inc"
@@ -134,7 +129,6 @@ end module
 !! @{
 module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,cList)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,List)
 # define BUD_TYPE_VAR complex
 # define BUD_TYPE_VAR_PREC rr_
 #include "List.inc"
@@ -148,7 +142,6 @@ end module
 !! @{
 module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,zList)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,List)
 # define BUD_TYPE_VAR complex
 # define BUD_TYPE_VAR_PREC rd_
 #include "List.inc"

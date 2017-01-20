@@ -5,7 +5,6 @@
 !  - BUD_TYPE_NAME name of the public type
 !  - BUD_TYPE_NAME_ name of the internal data pointer
 !  - BUD_TYPE_NAME_STR the routine name in "string" format (for IO)
-!  - BUD_TYPE_NEW the routine name for creating a new type
 
 #include "bud_utils.inc"
 

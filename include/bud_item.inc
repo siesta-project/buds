@@ -5,7 +5,6 @@
   !  - BUD_TYPE_NAME of the type
   !  - BUD_TYPE_NAME_, internal data pointer of the type
   !  - BUD_TYPE_NAME_STR, the routine name in "string" format (for IO)
-  !  - BUD_TYPE_NEW, the routine name for creating a new type
   !  - BUD_ITEM_TYPE, the @bud contained in the single item
 
 
@@ -267,7 +266,6 @@
 #undef BUD_TYPE_NAME
 #undef BUD_TYPE_NAME_
 #undef BUD_TYPE_NAME_STR
-#undef BUD_TYPE_NEW
 #undef BUD_ITEM_TYPE
 
 

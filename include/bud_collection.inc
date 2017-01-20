@@ -4,7 +4,6 @@
   ! included:
   !  - BUD_TYPE_NAME, name of the resulting type
   !  - BUD_TYPE_NAME_, name of the internal data
-  !  - BUD_TYPE_NEW, additional name of the `new` command
   !  - BUD_COLL_1, name of the first bud
   !  - BUD_COLL_2, name of the second bud
   !  - BUD_COLL_3, name of the third bud (need not be used)

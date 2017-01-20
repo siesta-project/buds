@@ -5,7 +5,6 @@
   !  - BUD_TYPE_NAME of the type
   !  - BUD_TYPE_NAME_, internal data pointer of the type
   !  - BUD_TYPE_NAME_STR, the routine name in "string" format (for IO)
-  !  - BUD_TYPE_NEW, the routine name for creating a new type
   !  - BUD_LIST_TYPE, the variable type contained in the linked list
   !  - BUD_LIST_DOUBLY, if /= 0 the linked list is doubly connected
   !  - BUD_LINKED_LIST_NAME, the name of the self-contained linked list (not required to be set)
@@ -1022,7 +1021,6 @@
 #undef BUD_TYPE_NAME
 #undef BUD_TYPE_NAME_
 #undef BUD_TYPE_NAME_STR
-#undef BUD_TYPE_NEW
 #undef BUD_LIST_TYPE
 #undef BUD_LINKED_LIST_NAME
 #undef BUD_LIST_DOUBLY
