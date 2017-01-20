@@ -140,7 +140,7 @@
     type(BUD_TYPE_NAME), intent(inout) :: this
 
     call delete(this%D%item)
-    
+
     call set_error(this, error(this%D%item))
 
   end subroutine delete_

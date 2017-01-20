@@ -1,5 +1,5 @@
 #define __BUD_MP_COMM_NAME BUD_CC2(BUD_MP_COMM_NAME,_)
-  !> @iSee BUD_MP_COMM_NAME
+  !> See [[BUD_MP_COMM_NAME]]
   generic, public :: BUD_MP_COMM_NAME => &
 #ifdef BUD_IS_INTEGER
     BUD_CC5(__BUD_MP_COMM_NAME,integer,_,0,ii_), BUD_CC5(__BUD_MP_COMM_NAME,integer,_,1,ii_), &

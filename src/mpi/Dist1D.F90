@@ -21,7 +21,6 @@
 !! @{
 module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iDist1D)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,Dist)
 # define BUD_TYPE_VAR integer
 # define BUD_PREC ii_
 # define BUD_MPI_PREC MPI_Integer
@@ -35,7 +34,6 @@ end module
 !! @{
 module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,lDist1D)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,Dist)
 # define BUD_TYPE_VAR integer
 # define BUD_PREC il_
   ! @todo Assert that a long communicator with MPI works!!

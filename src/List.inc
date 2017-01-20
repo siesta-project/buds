@@ -13,18 +13,6 @@
   !  - BUD_TYPE_VAR_PREC, the precision specifier for the array
 
 
-#define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
-#define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
-#define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
-
-  !> BUD_MOD_NAME documentation
-  !!
-  !! @details
-  !! The detailed implementation of the BUD_TYPE_NAME type.
-  !!
-  !! @note
-  !! This documentation is duplicated in all types with different precision.
-
   ! First we need to use the parameters
   use BUD_CC3(BUD_MOD,_,List_common)
 
@@ -41,19 +29,13 @@
   !! List dimensions is heavy on performance.
   type BUD_TYPE_NAME
 
-    !> @cond BUD_DEVELOPER
 
     !> Stored pointer which contains the reference counting etc.
     type(BUD_TYPE_NAME_), pointer :: D => null()
 
-    !> @endcond BUD_DEVELOPER
 
 #   include "bud_common_type.inc"
 #if BUD_FORTRAN >= 2003
-
-    !> @name Private procedures
-    !> @{
-    ! Doxygen needed line
 
     procedure, private :: new_dim_
     procedure, private :: new_copy_
@@ -72,107 +54,101 @@
     procedure, private :: new_index_list_list_
 # endif
 
-    !> @}
-
-    !> @iSee BUD_NEW_TYPE
-    generic, public :: BUD_NEW_TYPE => new_dim_, new_copy_, &
-      new_copy_n_, new_range_
-    !> @iSee BUD_NEW_TYPE
+    !> See [[new]]
     generic, public :: new => new_dim_, new_copy_, &
       new_copy_n_, new_range_
 
 # ifdef BUD_IS_INTEGER
-    !> @iSee new_index_list
+    !> See [[new_index_list]]
     generic, public :: new_index_list => new_index_list_list_, &
       new_index_list_range_
 # endif
 
-    !> @iSee #size
+    !> See [[size]]
     procedure, public :: size => size_
-    !> @iSee #size_p
+    !> See [[size_p]]
     procedure, public :: size_p => sizep_
 
-    !> @iSee #size_max
+    !> See [[size_max]]
     procedure, public :: size_max => max_size_
-    !> @iSee #size_max_p
+    !> See [[size_max_p]]
     procedure, public :: size_max_p => max_sizep_
 
-    !> @iSee #list_p
+    !> See [[list_p]]
     procedure, public :: list_p => listp_
-    !> @iSee #list_max_p
+    !> See [[list_max_p]]
     procedure, public :: list_max_p => max_listp_
 
-    !> @iSee #push
+    !> See [[push]]
     generic, public :: push => push_value_, push_array_, push_list_
 
-    !> @iSee #pop
+    !> See [[pop]]
     procedure, public :: pop => pop_value_
 
 # ifdef BUD_IS_INTEGER
-    !> @iSee #sort
+    !> See [[sort]]
     procedure, public :: sort => sort_
 
     ! Set operations
-    !> @iSee #union
+    !> See [[union]]
     procedure, public :: union => union_
-    !> @iSee #complement
+    !> See [[complement]]
     procedure, public :: complement => complement_
-    !> @iSee #intersect
+    !> See [[intersect]]
     procedure, public :: intersect => intersect_
 
 
-    !> @iSee #unique
+    !> See [[unique]]
     procedure, public :: unique => unique_
 # endif
 
-    !> @iSee #reverse
+    !> See [[reverse]]
     procedure, public :: reverse => reverse_
 
-    !> @iSee #reorder
+    !> See [[reorder]]
     procedure, public :: reorder => reorder_
 
-    !> @iSee #extend
+    !> See [[extend]]
     procedure, public :: extend => extend_
 
-    !> @iSee #shrink
+    !> See [[shrink]]
     generic, public :: shrink => shrink_, shrink_n_
 
-    !> @iSee #clear
+    !> See [[clear]]
     procedure, public :: clear => clear_
 
-    !> @iSee #merge
+    !> See [[merge]]
     procedure, public :: merge => merge_
 
-    !> @iSee #set_incr_n
-    procedure, public :: set_incr_n => set_incr_n
+    !> See [[set_increment]]
+    procedure, public :: set_increment => set_increment_
 
-    !> @iSee #get_incr_n
-    procedure, public :: get_incr_n => get_incr_n
+    !> See [[increment]]
+    procedure, public :: increment => increment_
 
 # ifdef BUD_IS_INTEGER
-    !> @iSee #index
+    !> See [[index]]
     procedure, public :: index => index_
 # endif
 
 # ifndef BUD_IS_COMPLEX
-    !> @iSee #minval
+    !> See [[minval]]
     procedure, public :: minval => minval_
-    !> @iSee #maxval
+    !> See [[maxval]]
     procedure, public :: maxval => maxval_
 # endif
 
 # ifdef BUD_IS_INTEGER
-    !> @iSee #in_list
+    !> See [[in_list]]
     procedure, public :: in_list => in_list_
 
-    !> @iSee #is_sorted
+    !> See [[is_sorted]]
     procedure, public :: is_sorted => is_sorted_
 # endif
 
 #endif
   end type BUD_TYPE_NAME
 
-  !> @cond BUD_DEVELOPER
 
   !> @bud container for BUD_TYPE_NAME
   !!
@@ -207,7 +183,6 @@
 
   end type BUD_TYPE_NAME_
 
-  !> @endcond BUD_DEVELOPER
 
   !> Create a new BUD_TYPE_NAME.
   !!
@@ -220,15 +195,6 @@
   !! @note
   !! If the array is created from dimensions, the initial
   !! value of the array is arbitrary.
-  interface BUD_TYPE_NEW
-    module procedure new_dim_
-    module procedure new_copy_
-    module procedure new_copy_n_
-    module procedure new_range_
-  end interface
-  public :: BUD_TYPE_NEW
-
-  !> @iSee BUD_TYPE_NEW
   interface new
     module procedure new_dim_
     module procedure new_copy_
@@ -256,7 +222,7 @@
   !!
   !! This pointer will only be a sub-set pointer of the
   !! total list array if `size(this) < max_size(this)`.
-  !! @iSee #max_list_p for the full list pointer.
+  !! See [[max_list_p for the full list pointer.]]
   !!
   !! @note
   !! Do not deallocate the array-pointer.
@@ -380,6 +346,15 @@
   public :: merge
 
 
+  !> Clear the list of entries by resetting the internal counter
+  !!
+  !! There is no deallocation actions performed.
+  !! The current [[size_max]] is retained.
+  interface clear
+    module procedure clear_
+  end interface
+  public :: clear
+
 #ifdef BUD_IS_INTEGER
   !> Sorts the entries in the list
   !!
@@ -470,6 +445,17 @@
   end interface
   public :: reorder
 
+  !> Set the increment count
+  interface set_increment
+    module procedure set_increment_
+  end interface
+  public :: set_increment
+
+  !> Get the increment count
+  interface increment
+    module procedure increment_
+  end interface
+  public :: increment
 
   ! Define a few constants used throughout
   integer(BUD_INT_PREC), parameter :: ONE = BUD_CC2(1_,BUD_INT_PREC)
@@ -480,7 +466,6 @@
 # include "bud_common.inc"
 
 
-  !> @cond BUD_DEVELOPER
 
   !> Internal routine for cleaning up the data container.
   !!
@@ -506,7 +491,6 @@
 
   end subroutine delete_
 
-  !> @endcond BUD_DEVELOPER
 
 
   !> @param[in] from the origin of data
@@ -732,7 +716,7 @@
 
   !> @param[inout] this list
   !! @param[in] incr_n the default number of values that should be
-  subroutine set_incr_n(this, incr_n)
+  subroutine set_increment_(this, incr_n)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer(BUD_INT_PREC), intent(in) :: incr_n
 
@@ -740,11 +724,11 @@
 
     this%D%incr_n = incr_n
 
-  end subroutine set_incr_n
+  end subroutine set_increment_
 
   !> @param[in] this list
   !! @param[out] incr_n the default number of values that should be
-  subroutine get_incr_n(this, incr_n)
+  subroutine increment_(this, incr_n)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_INT_PREC), intent(out) :: incr_n
 
@@ -753,10 +737,9 @@
 
     incr_n = this%D%incr_n
 
-  end subroutine get_incr_n
+  end subroutine increment_
 
 
-  !> @cond BUD_DEVELOPER
 
   !> Initialize `bud` if not initialized with size `n`, else extend by `n`
   !!
@@ -786,7 +769,6 @@
 
   end subroutine assert_init_size_add
 
-  !> @endcond BUD_DEVELOPER
 
 
   !> @param[inout] this list @bud

@@ -12,8 +12,6 @@
   !  - BUD_TYPE_VAR, the variable type contained in the array
   !  - BUD_TYPE_VAR_PREC, the precision specifier for the array
 
-#define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
-
   ! This *MUST* be the first statement
   ! Common parameters and variables used
 # include "bud_common_declarations.inc"
@@ -60,7 +58,7 @@
 #endif
   end type BUD_TYPE_NAME
 
-  
+
   !> bud container for BUD_TYPE_NAME
   !!
   !! Contains an array of BUD_DIM dimensions.
@@ -180,7 +178,7 @@
 
     !> This bud which is to be deleted
     type(BUD_TYPE_NAME), intent(inout) :: this
-    
+
     integer :: stat
 
     ! Currently we do not allow external memory
@@ -204,7 +202,7 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
     !> Upon exit, this is the copy of `from` by copying the data-content
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
-    
+
     integer :: i
     integer(il_) :: ashape( BUD_DIM )
 
@@ -247,7 +245,7 @@
     !!
     !! This bud will always be deallocated.
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    
+
     !> The size of the first dimension.
     integer(ii_), intent(in) :: d1
 #if BUD_DIM > 1
@@ -312,7 +310,7 @@
     !!
     !! This bud will always be deallocated.
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    
+
     !> The size of the first dimension.
     integer(il_), intent(in) :: d1
 #if BUD_DIM > 1

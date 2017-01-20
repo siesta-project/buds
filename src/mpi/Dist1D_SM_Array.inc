@@ -1001,7 +1001,8 @@
 
   !> @param[inout] f `File` bud
   !! @param[in] this the distributed sparse matrix @bud
-  subroutine write_(f, this)
+  !! @param[in] only_array whether only the distributed array should be stored
+  subroutine write_(f, this, only_array)
     use BUD_CC2(BUD_MOD,_File)
     use BUD_MOD_1_2
 #ifndef BUD_MPI
@@ -1010,13 +1011,14 @@
 
     BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    logical, intent(in), optional :: only_array
 
     type( BUD_CC2(BUD_TYPE,MP_Comm) ) :: comm
     type(BUD_COLL_1) :: dist
     type(BUD_COLL_2) :: sm
     type(BUD_COLL_3) :: arr
 
-    logical :: formatted, do_io
+    logical :: formatted, do_io, lonly_array
     integer :: iu, io_rank
 
     ! Indices
@@ -1046,11 +1048,15 @@
     ! If file is not opened, return immediately
     if ( .not. is_initd(this) ) return
 
+    lonly_array = .false.
+    if ( present(only_array) ) &
+      lonly_array = only_array
+
 #ifndef BUD_MPI
     sm = this
     arr = this
     call new(sm_arr, sm, arr)
-    call write(f, sm_arr)
+    call write(f, sm_arr, only_array=only_array)
     call delete(sm_arr)
     call delete(sm)
     call delete(arr)
@@ -1091,11 +1097,15 @@
       iu = unit(f)
     end if
 
-    call new(d1d)
-    d1d = dist
-    d1d = sm
-    call write(f, d1d)
-    call delete(d1d)
+    if ( lonly_array ) then
+      ! We should only store the data associated
+      ! with the sparse matrix
+      call new(d1d)
+      d1d = dist
+      d1d = sm
+      call write(f, d1d)
+      call delete(d1d)
+    end if
 
     ! Retrieve the shape of the arrays
     allocate(ashape(dims))
@@ -1466,7 +1476,6 @@
   end subroutine read_
 
 
-#undef BUD_TYPE_NEW
 #undef BUD_MOD_2_3
 #undef BUD_TYPE_2_3
 

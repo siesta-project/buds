@@ -8,64 +8,28 @@
 ! Define default variable for the communicator
 #define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,MP_Comm)
 #define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,MP_Comm)
-#define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,MP_Comm)
 
 #define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
 #define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
 #define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
 
-!> @defgroup mp Message Passing object
-!! @ingroup bud-intrinsic
-!!
-!! Perform MPI communications using a simpler interface
-!!
-!! @{
 module BUD_MOD_NAME
 
 #include "bud_mpi.inc"
-
-  !> BUD_MOD_NAME documentation for the Message Passing interface.
-  !1
-  !! This @bud implements generic MPI commands in a stringent
-  !! communicator.
-  !!
-  !! The type contains information such as:
-  !!  - rank
-  !!  - comm-size
-  !!  - communicator
-  !!  - group
-  !!
-  !! It does not contain information about any top-level @bud it may
-  !! be created from.
-  !!
-  !! @dev_note
-  !! The following pre-processor variables are currently used when
-  !! included:
-  !!  - _BUD_MOD_NAME of the module
-  !!  - _BUD_TYPE_NAME of the type
-  !!  - _BUD_TYPE_NAME_, internal data pointer of the type
-  !!  - _BUD_TYPE_NAME_STR, the routine name in "string" format (for IO)
-  !!  - _BUD_TYPE_NEW, the routine name for creating a new type
-  !!  - _BUD_TYPE_VAR, the variable type contained in the array
-  !! If you add any new dependencies be sure to undefine the variable
-  !! at the bottom of this file.
 
   ! This *MUST* be the first statement
   ! Common parameters and variables used
 # include "bud_common_declarations.inc"
 
 
-  !> @bud variable for a message passing object
+  !> A bud for wrapping the MPI library
   type BUD_TYPE_NAME
+
     !> Stored pointer which contains the reference counting etc.
     type(BUD_TYPE_NAME_), pointer :: D => null()
 
 #   include "bud_common_type.inc"
 #if BUD_FORTRAN >= 2003
-
-    !> @name Private procedures
-    !> @{
-    ! Doxygen needed line
 
     procedure, private :: new_
     procedure, private :: new_remote_
@@ -325,39 +289,37 @@ module BUD_MOD_NAME
     procedure, private :: Comm_create_, comm_create_commgrp_
     procedure, private :: Comm_create_group_, comm_create_group_commgrp_
 
-    !>>@}
-
-    !> @iSee new
+    !> See [[new]]
     procedure, public :: new => new_
 
-    !> @iSee new_remote
+    !> See [[new_remote]]
 #ifdef BUD_MPI
     generic, public :: new_remote => new_remote_, new_remote_child_
 #else
     generic, public :: new_remote => new_remote_
 #endif
 
-    !> @iSee #communicator
+    !> See [[communicator]]
     procedure, public :: communicator => comm_
 
-    !> @iSee #group
+    !> See [[group]]
     procedure, public :: group => group_
 
-    !> @iSee #comm_rank
+    !> See [[comm_rank]]
     procedure, public :: comm_rank => P_
-    !> @iSee #comm_size
+    !> See [[comm_size]]
     procedure, public :: comm_size => NP_
 
-    !> @iSee #is_communicator
+    !> See [[is_communicator]]
     procedure, public :: is_communicator => is_comm_
 
-    !> @iSee #is_group
+    !> See [[is_group]]
     procedure, public :: is_group => is_group_
 
-    !> @iSee #error_mpi
+    !> See [[error_mpi]]
     procedure, public :: error_mpi => get_MPIerr_
 
-    !> @iSee #is_success_mpi
+    !> See [[is_success_mpi]]
     procedure, public :: is_success_mpi => is_MPIsuccess_
 
 #ifdef BUD_MPI
@@ -565,7 +527,7 @@ module BUD_MOD_NAME
   integer(ii_), parameter :: MPI_Group_Null = -huge(1)
 #endif
 
-  !> @bud container for message passing information.
+  !> bud container for message passing information.
   type BUD_TYPE_NAME_
 
     !> The associated communicator
@@ -595,14 +557,6 @@ module BUD_MOD_NAME
   end interface
   public :: new
 
-  !> Create a new message passing object.
-  !!
-  !! @iSee new
-  interface BUD_TYPE_NEW
-    module procedure new_
-  end interface
-  public :: BUD_TYPE_NEW
-
 
   !> Create a new (remote) message passing object.
   !!
@@ -625,17 +579,6 @@ module BUD_MOD_NAME
   end interface
   public :: new_remote
 
-  !> Creating a remote communicator
-  !!
-  !! @iSee new_remote
-  interface BUD_CC2(BUD_TYPE_NEW,_remote)
-    module procedure new_remote_
-#ifdef BUD_MPI
-    module procedure new_remote_child_
-#endif
-  end interface
-  public :: BUD_CC2(BUD_TYPE_NEW,_remote)
-
 
   !> Query communicator of the distribution
   !!
@@ -655,19 +598,19 @@ module BUD_MOD_NAME
 
   !> Query ID for current processor in distribution
   interface comm_rank
-    module procedure P_
+    module procedure rank_
   end interface
   public :: comm_rank
 
   !> Query number of processors in distribution
   interface comm_size
-    module procedure NP_
+    module procedure size_
   end interface
   public :: comm_size
 
-  !> @iSee comm_size
+  !> See [[comm_size]]
   interface size
-    module procedure NP_
+    module procedure size_
   end interface
   public :: size
 
@@ -1245,8 +1188,6 @@ module BUD_MOD_NAME
 # include "bud_common.inc"
 
 
-  !> @cond BUD_DEVELOPER
-
   !> Internal routine for cleaning up the data container.
   !!
   !! @dev_note
@@ -1277,8 +1218,6 @@ module BUD_MOD_NAME
 
   end subroutine delete_
 
-
-  !> @endcond BUD_DEVELOPER
 
 
   !> @param[in] from the original `bud` which is copied to `to`
@@ -1318,7 +1257,7 @@ module BUD_MOD_NAME
   end function group_
 
   !> Query the current processor ID in the communicator
-  elemental function P_(this) result(P)
+  elemental function rank_(this) result(P)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_) :: P
     if ( is_initd(this) ) then
@@ -1326,17 +1265,10 @@ module BUD_MOD_NAME
     else
       P = -1
     end if
-  end function P_
-
-  !> Query pointer to the current processor ID in the communicator
-  function Pp_(this) result(Pp)
-    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer(ii_), pointer :: Pp
-    Pp => this%D%P
-  end function Pp_
+  end function rank_
 
   !> Query the number of processors in the communicator
-  elemental function NP_(this) result(NP)
+  elemental function size_(this) result(NP)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_) :: NP
     if ( is_initd(this) ) then
@@ -1344,18 +1276,11 @@ module BUD_MOD_NAME
     else
       NP = 0
     end if
-  end function NP_
-
-  !> Query pointer to the number of processors in the communicator
-  function NPp_(this) result(NPp)
-    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer(ii_), pointer :: NPp
-    NPp => this%D%NP
-  end function NPp_
+  end function size_
 
   !> Basic routine for initializing a new communicator
   !!
-  !! @param[inout] this the @bud distribution container
+  !! @param[inout] this the bud distribution container
   !! @param[in] Comm the communicator that we will dublicate and attach
   !! @param[in] dup @opt=.true. whether the input communicator is dublicated.
   subroutine new_(this, Comm, dup)
@@ -1394,7 +1319,7 @@ module BUD_MOD_NAME
 
   end subroutine new_
 
-  !! @param[inout] this the @bud distribution container
+  !! @param[inout] this the bud distribution container
   !! @param[in] rank the rank of this processor
   !! @param[in] size the size of the communicator
   subroutine new_remote_(this, rank, size)
@@ -1451,7 +1376,6 @@ module BUD_MOD_NAME
 
 
 #ifdef BUD_MPI
-  !> @cond BUD_DEVELOPER
   ! Add all interfaces
 # define BUD_TYPE_VAR integer
 # define BUD_IS_INTEGER
@@ -1856,8 +1780,6 @@ module BUD_MOD_NAME
 
   end subroutine Test_Cancelled_Err_
 
-  !> @endcond BUD_DEVELOPER
-
 
   !> Query whether a communicator is not MPI_COMM_NULL
   !!
@@ -2178,7 +2100,6 @@ module BUD_MOD_NAME
   end subroutine print_
 
 end module
-!> @}
 
 
   ! Local pre-processor variables that
@@ -2187,7 +2108,6 @@ end module
 #undef BUD_TYPE_NAME
 #undef BUD_TYPE_NAME_
 #undef BUD_TYPE_NAME_STR
-#undef BUD_TYPE_NEW
 #undef BUD_TYPE_VAR
 #undef BUD_PREC
 

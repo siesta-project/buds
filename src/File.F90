@@ -13,11 +13,10 @@
 ! Define default variable for the file
 #define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,File)
 #define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,File)
-#define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,File)
 
 #define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
-#define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
-#define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
+
+#define BUD_NO_IO
 
 !> @defgroup file File
 !! @ingroup bud-intrinsic
@@ -64,61 +63,58 @@ module BUD_MOD_NAME
 #   include "bud_common_type.inc"
 #if BUD_FORTRAN >= 2003
 
-    !> @iSee BUD_CC3(BUD_NEW,_,File)
-    procedure, public :: BUD_CC3(BUD_NEW,_,File) => new_
-    !> @iSee BUD_CC3(BUD_NEW,_,File)
+    !> See [[new]]
     procedure, public :: new => new_
 
-    !> @iSee open
+    !> See [[open]]
     procedure, public :: open => open_
 
-    !> @iSee close
+    !> See [[close]]
     procedure, public :: close => close_
 
-    !> @iSee rewind
+    !> See [[rewind]]
     procedure, public :: rewind => rewind_
 
-    !> @iSee backspace
+    !> See [[backspace]]
     procedure, public :: backspace => backspace_
 
-    !> @iSee filename
+    !> See [[filename]]
     procedure, public :: file => filename_
-    !> @iSee filename
+    !> See [[filename]]
     procedure, public :: name => filename_
-    !> @iSee filename
+    !> See [[filename]]
     procedure, public :: filename => filename_
 
-    !> @iSee get_unit
+    !> See [[get_unit]]
     procedure, public :: unit => get_unit_
 
-    !> @iSee unopened_unit
+    !> See [[unopened_unit]]
     procedure, public, nopass :: unopened_unit => unopened_unit_
 
-    !> @iSee is_open
+    !> See [[is_open]]
     procedure, public :: is_open => is_open_
-    !> @iSee is_direct
+    !> See [[is_direct]]
     procedure, public :: is_direct => is_direct_
-    !> @iSee is_sequential
+    !> See [[is_sequential]]
     procedure, public :: is_sequential => is_sequential_
-    !> @iSee is_formatted
+    !> See [[is_formatted]]
     procedure, public :: is_formatted => is_formatted_
-    !> @iSee is_unformatted
+    !> See [[is_unformatted]]
     procedure, public :: is_unformatted => is_unformatted_
 
-    !> @iSee exists
+    !> See [[exists]]
     procedure, public :: exists => exists_
 
-    !> @iSee delete_file
+    !> See [[delete_file]]
     procedure, public :: delete_file => delete_file_
 
-    !> @iSee get_stat
+    !> See [[get_stat]]
     procedure, public :: stat => get_stat_
 
 #endif
   end type BUD_TYPE_NAME
 
 
-  !> @cond BUD_DEVELOPER
 
   !> @bud container for BUD_TYPE_NAME
   !!
@@ -137,8 +133,6 @@ module BUD_MOD_NAME
 
   end type BUD_TYPE_NAME_
 
-  !> @endcond BUD_DEVELOPER
-
 
 
   !> Create a new file @bud
@@ -148,12 +142,6 @@ module BUD_MOD_NAME
   !!
   !! @note
   !! This will _not_ open the file.
-  interface BUD_CC3(BUD_NEW,_,File)
-    module procedure new_
-  end interface
-  public :: BUD_CC3(BUD_NEW,_,File)
-
-  !> @iSee BUD_CC3(BUD_NEW,_,File)
   interface new
     module procedure new_
   end interface
@@ -233,7 +221,7 @@ module BUD_MOD_NAME
   end interface
   public :: get_unit
 
-  !> @iSee get_unit
+  !> See [[get_unit]]
   interface unit
     module procedure get_unit_
   end interface
@@ -306,7 +294,6 @@ module BUD_MOD_NAME
   end interface
   public :: delete_file
 
-# define BUD_NO_IO
   ! Include common data routines
   ! Note that 'CONTAINS' is present in this include file.
   ! the common_delete_ ensures a closed file
@@ -314,7 +301,6 @@ module BUD_MOD_NAME
 # include "bud_common.inc"
 
 
-  !> @cond BUD_DEVELOPER
 
   !> Internal routine for cleaning up the data container.
   !!
@@ -351,7 +337,6 @@ module BUD_MOD_NAME
     call set_error(this, 0)
   end subroutine stat_reset_
 
-  !> @endcond BUD_DEVELOPER
 
 
   !> @param[in] from origin of data

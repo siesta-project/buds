@@ -104,7 +104,7 @@
   ! special counter for deleting all elements
   ! of a stack using:
   !   call pop(<this>, BUD_FSTACK_ALL)
-  
+
   !> Special parameter for popping all elements.
   !!
   !! Allows one to pop/delete all elements in the stack.
@@ -147,7 +147,7 @@
   !! The top item is returned in `item` and the stack
   !! is decremented thus removing the returned item from the stack.
   !!
-  !! An optional index may be given, see [[pop_delete_]].
+  !! An optional index may be given.
   !!
   !! If the top element has not been initialized the returned item will
   !! be un-initialized.

@@ -38,7 +38,7 @@
 #if BUD_DIM > 1
 !!
 !! This sparse matrix may contain additional information per sparse element
-!! via an additional dimension of the contained array (@iSee @ref array-BUD_DIM).
+!! via an additional dimension of the contained array (See [[@ref array-BUD_DIM).]]
 #endif
 !! @{
 

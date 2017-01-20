@@ -670,7 +670,7 @@
 
   !> @param[inout] f `File` bud
   !! @param[in] this the distributed array @bud
-  subroutine write_(f, this)
+  subroutine write_(f, this, only_array)
     use BUD_CC2(BUD_MOD,_File)
     use BUD_CC2(BUD_MOD,_Transfer), only: transfer_dim
 
@@ -1308,7 +1308,6 @@
 
   end subroutine read_
 
-#undef BUD_TYPE_NEW
 
   ! Associated with the Array
 #undef BUD_TYPE_VAR

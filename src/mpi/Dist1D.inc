@@ -8,10 +8,6 @@
 
   use BUD_CC3(BUD_MOD,_,Dist_common)
 
-#define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
-#define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
-#define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
-
   !> BUD_MOD_NAME documentation for various distribution types.
   !!
   !! This @bud implements a selected portion of different
@@ -37,7 +33,6 @@
   !!  - _BUD_TYPE_NAME of the type
   !!  - _BUD_TYPE_NAME_, internal data pointer of the type
   !!  - _BUD_TYPE_NAME_STR, the routine name in "string" format (for IO)
-  !!  - _BUD_TYPE_NEW, the routine name for creating a new type
   !!  - _BUD_TYPE_VAR, the variable type contained in the array
   !!  - _BUD_PREC, the precision specifier for the array
   !! If you add any new dependencies be sure to undefine the variable
@@ -59,80 +54,71 @@
 #   include "bud_common_type.inc"
 #if BUD_FORTRAN >= 2003
 
-    !> @name Private procedures
-    !> @{
-    ! Doxygen needed line
-
     procedure, private :: new_, new_block_cyclic_, new_block_or_cyclic_, &
     new_user_
 
-    !>>@}
-
-    !> @iSee new
+    !> See [[new]]
     generic, public :: new => new_, new_block_cyclic_, new_block_or_cyclic_, &
       new_user_
 
-    !> @iSee new_remote
+    !> See [[new_remote]]
     procedure, public :: new_remote => globalize_
 
-    !> @iSee #dist_type
+    !> See [[dist_type]]
     procedure, public :: dist_type => dist_type_
 
-    !> @iSee #communicator
+    !> See [[communicator]]
     procedure, public :: communicator => comm_
 
-    !> @iSee #group
-    procedure, public :: group => group_
-
-    !> @iSee #comm_rank
+    !> See [[comm_rank]]
     procedure, public :: comm_rank => P_
-    !> @iSee #comm_size
+    !> See [[comm_size]]
     procedure, public :: comm_size => NP_
 
-    !> @iSee #is_dist
+    !> See [[is_dist]]
     procedure, public :: is_dist => is_dist_
 
-    !> @iSee #is_comm
+    !> See [[is_comm]]
     procedure, public :: is_comm => is_comm_
 
-    !> @iSee #size_local
+    !> See [[size_local]]
     procedure, public :: size_local => size_local_
-    !> @iSee #size_global
+    !> See [[size_global]]
     procedure, public :: size_global => size_global_
-    !> @iSee #size_global
+    !> See [[size_global]]
     procedure, public :: size => size_global_
 
-    !> @iSee #consecutive
+    !> See [[consecutive]]
     procedure, public :: consecutive => consecutive_
-    !> @iSee #consecutive_max
+    !> See [[consecutive_max]]
     procedure, public :: consecutive_max => consecutive_max_
-    !> @iSee #consecutive_blocks
+    !> See [[consecutive_blocks]]
     procedure, public :: consecutive_blocks => consecutive_blocks_
 
 
-    !> @iSee #size_block
+    !> See [[size_block]]
     procedure, public :: size_block => blocksize_
-    !> @iSee #blocksize
+    !> See [[blocksize]]
     procedure, public :: blocksize => blocksize_
 
-    !> @iSee #local2global
+    !> See [[local2global]]
     procedure, public :: local2global => local_to_global_
-    !> @iSee #local2global
+    !> See [[local2global]]
     procedure, public :: l2g => local_to_global_
-    !> @iSee #global2local
+    !> See [[global2local]]
     procedure, public :: global2local => global_to_local_
-    !> @iSee #global2local
+    !> See [[global2local]]
     procedure, public :: g2l => global_to_local_
 
-    !> @iSee #global2rank
+    !> See [[global2rank]]
     procedure, public :: global2rank => global_to_rank_
-    !> @iSee #global2rank
+    !> See [[global2rank]]
     procedure, public :: g2rank => global_to_rank_
 
-    !> @iSee #attach
+    !> See [[attach]]
     procedure, public :: attach => attach_
 
-    !> @iSee #error_mpi
+    !> See [[error_mpi]]
     procedure, public :: error_mpi => get_MPIerr_
 
 #endif
@@ -216,15 +202,6 @@
   end type BUD_TYPE_NAME_
 
   !> Create a new distribution object.
-  interface BUD_TYPE_NEW
-    module procedure new_
-    module procedure new_block_cyclic_
-    module procedure new_block_or_cyclic_
-    module procedure new_user_
-  end interface
-  public :: BUD_TYPE_NEW
-
-  !> Create a new object
   interface new
     module procedure new_
     module procedure new_block_cyclic_
@@ -321,7 +298,7 @@
   end interface
   public :: size_global
 
-  !> @iSee size_global
+  !> See [[size_global]]
   interface size
     module procedure size_global_
   end interface
@@ -361,7 +338,7 @@
   end interface
   public :: local2global
 
-  !> @iSee local2global
+  !> See [[local2global]]
   interface l2g
     module procedure local_to_global_
   end interface
@@ -373,7 +350,7 @@
   end interface
   public :: global2local
 
-  !> @iSee global2local
+  !> See [[global2local]]
   interface g2l
     module procedure global_to_local_
   end interface
@@ -385,7 +362,7 @@
   end interface
   public :: global2rank
 
-  !> @iSee global2rank
+  !> See [[global2rank]]
   interface g2rank
     module procedure global_to_rank_
   end interface
@@ -406,8 +383,6 @@
   ! Note that 'CONTAINS' is present in this include file.
 # include "bud_common.inc"
 
-
-  !> @cond BUD_DEVELOPER
 
   !> Internal routine for cleaning up the data container.
   !!
@@ -436,8 +411,6 @@
 
   end subroutine delete_
 
-
-  !> @endcond BUD_DEVELOPER
 
 
   !> @param[in] from the original `bud` which is copied to `to`
@@ -1321,7 +1294,6 @@
 #undef BUD_TYPE_NAME
 #undef BUD_TYPE_NAME_
 #undef BUD_TYPE_NAME_STR
-#undef BUD_TYPE_NEW
 #undef BUD_TYPE_VAR
 #undef BUD_PREC
 

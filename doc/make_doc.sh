@@ -105,10 +105,16 @@ pushd $_SRC
     echo "OO = 1"
     echo "include \$(TOP_DIR)/Makefile"
 } > Makefile
-make source
+
+make -j4 source
 
 # Ensure the *.inc files are also present
 cp $_main_dir/include/*.inc .
+
+# Clean-up source comments (not documentation)
+sed -s -i -e '/^[ ]*! /d' *.f90 *.inc
+
+rm bud_[^M]*
 
 popd
 
@@ -116,7 +122,7 @@ popd
 # This will create the documentation folder
 sed -e "s/%%VERSION%%/$doc_version/g;
 s/%%GRAPH%%/$use_graph/g" doc/FORD.md > doc/FORD_V.md
-ford doc/FORD_V.md && rm doc/FORD_V.md
+ford --debug doc/FORD_V.md && rm doc/FORD_V.md
 
 # Insert the version string in the documentation
 sed -i -e "s/BUDS_VERSION/$tar_version/g" $_DOC/page/10-download.html

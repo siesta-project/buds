@@ -47,10 +47,6 @@
 
 #include "bud_utils.inc"
 
-#define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
-#define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
-#define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
-
   use BUD_CC3(BUD_MOD,_,SM_common)
 
   ! This *MUST* be the first statement
@@ -60,19 +56,13 @@
   !> Sparse matrix type in the CSR format
   type BUD_TYPE_NAME
 
-    !> @cond BUD_DEVELOPER
 
     !> Stored pointer which contains the reference counting etc.
     type(BUD_TYPE_NAME_), pointer :: D => null()
 
-    !> @endcond BUD_DEVELOPER
 
 #   include "bud_common_type.inc"
 #if BUD_FORTRAN >= 2003
-
-    !> @name Private procedures
-    !> @{
-    ! Doxygen needed line
 
     procedure, private :: new_dim_
     procedure, private :: new_copy_
@@ -92,76 +82,71 @@
     procedure, private :: translate_col_el_
     procedure, private :: translate_col_list_
 
-    !> @}
-
-    !> @iSee BUD_TYPE_NEW
-    generic, public :: BUD_TYPE_NEW => new_dim_, new_copy_
-    !> @iSee BUD_TYPE_NEW
+    !> See [[new]]
     generic, public :: new => new_dim_, new_copy_
 
-    !> @iSee #nonzeros
+    !> See [[nonzeros]]
     procedure, public :: nonzeros => nonzeros_
 
-    !> @iSee #elements
+    !> See [[elements]]
     procedure, public :: elements => elements_
 
-    !> @iSee #rows
+    !> See [[rows]]
     procedure, public :: rows => rows_
 
-    !> @iSee #columns
+    !> See [[columns]]
     procedure, public :: columns => columns_
 
-    !> @iSee #size
+    !> See [[size]]
     procedure, public :: size => size_
 
-    !> @iSee #index
+    !> See [[index]]
     procedure, public :: index => index_
 
-    !> @iSee #offset_p
+    !> See [[offset_p]]
     procedure, public :: offset_p => offsetp_
 
-    !> @iSee #nrow_p
+    !> See [[nrow_p]]
     procedure, public :: nrow_p => nrowp_
 
-    !> @iSee #column_p
+    !> See [[column_p]]
     generic, public :: column_p => columnp_, column_rp_
 
 
-    !> @iSee #add_element
+    !> See [[add_element]]
     procedure, public :: add_element => add_element_
 
 
-    !> @iSee #remove_row
+    !> See [[remove_row]]
     generic, public :: remove_row => remove_row_el_, &
       remove_row_list_
 
-    !> @iSee #remove_column
+    !> See [[remove_column]]
     generic, public :: remove_column => remove_col_el_, &
       remove_col_list_
 
-    !> @iSee #translate_row
+    !> See [[translate_row]]
     generic, public :: translate_row => translate_row_el_, &
       translate_row_list_
 
-    !> @iSee #translate_column
+    !> See [[translate_column]]
     generic, public :: translate_column => translate_col_el_, &
       translate_col_list_
 
 
-    !> @iSee #sort
+    !> See [[sort]]
     procedure, public :: sort => sort_
 
-    !> @iSee #finalize
+    !> See [[finalize]]
     procedure, public :: finalize => finalize_
 
-    !> @iSee #attach
+    !> See [[attach]]
     procedure, public :: attach => attach_
 
 #endif
   end type BUD_TYPE_NAME
 
 
-  !> @cond BUD_DEVELOPER
 
   ! These fields are used in the sparse matrix stuff.
   integer(BUD_TYPE_VAR_PREC), parameter :: ONE = BUD_CC2(1_,BUD_TYPE_VAR_PREC)
@@ -202,7 +187,6 @@
 
   end type BUD_TYPE_NAME_
 
-  !> @endcond BUD_DEVELOPER
 
 
   !> Create a new sparse matrix
@@ -210,13 +194,6 @@
   !! You may either create an empty sparse matrix with
   !! a fixed size, or create a sparse matrix from
   !! existing data.
-  interface BUD_TYPE_NEW
-    module procedure new_dim_
-    module procedure new_copy_
-  end interface
-  public :: BUD_TYPE_NEW
-
-  !> @iSee BUD_TYPE_NEW
   interface new
     module procedure new_dim_
     module procedure new_copy_
@@ -257,6 +234,12 @@
     module procedure nrowp_
   end interface
   public :: nrow_p
+
+  !> Retrieve the sparse index of a matrix element
+  interface index
+    module procedure index_
+  end interface
+  public :: index
 
 
   !> Remove rows from the sparse matrix
@@ -358,7 +341,6 @@
 # include "SM_common.inc"
 
 
-  !> @cond BUD_DEVELOPER
 
   !> Internal routine for cleaning up the data container.
   !!
@@ -390,7 +372,6 @@
 
   end subroutine delete_
 
-  !> @endcond BUD_DEVELOPER
 
 
   !> @param[in] from the original `bud` which is copied to `to`
