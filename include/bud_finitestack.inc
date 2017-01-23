@@ -113,7 +113,7 @@
 
   ! special counter for deleting all elements
   ! of a stack using:
-  !   call pop(<this>, BUD_FSTACK_ALL)
+  !   call pop(<this>, 0)
   !> Special parameter for popping all elements.
   !!
   !! Allows one to pop/delete all elements in the stack.
@@ -370,7 +370,7 @@
 
   !> @param[inout] this stack that gets removed an item
   !! @param[in] top @opt=1 number of popped elements from top.
-  !!                If BUD_FSTACK_ALL is supplied it will
+  !!                If 0 is supplied it will
   !!                clear all elements.
   !! @param[in] bot @opt=@null has precedence if `top` not supplied.
   !!                Pops `bot` elements from the bottom of the stack.
@@ -400,8 +400,8 @@
 
       if ( present(top) ) lnpop = top
 
-      ! BUD_FSTACK_ALL == 0, we delete all
-      if ( lnpop == BUD_FSTACK_ALL ) lnpop = el
+      ! If 0 is passed, we delete all
+      if ( lnpop == 0 ) lnpop = el
 
       ! we should not pop anything
       if ( lnpop < 0 ) return

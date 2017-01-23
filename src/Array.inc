@@ -780,7 +780,8 @@
     ! Initialize all dimensions to 1
     tshape = 1
     do i = 1 , BUD_DIM
-      tshape(i) = size(
+      tshape(i) = size(this, i)
+    end do
     rshape = 1
     d1 = 1
     d2 = 1

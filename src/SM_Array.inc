@@ -10,9 +10,15 @@
   !! with.
   !!
 
+  ! Ensure we have the sparse matrix
+#include "SM.inc"
+
 !# define BUD_INCLUDE_TYPE "SM_Array_type.inc"
 # define BUD_INCLUDE_TYPE_ "SM_Array_type_.inc"
 
+  ! These fields are used in the sparse matrix stuff.
+  integer(BUD_INT_PREC), parameter :: ONE = BUD_CC2(1_,BUD_INT_PREC)
+  integer(BUD_INT_PREC), parameter :: ZERO = BUD_CC2(0_,BUD_INT_PREC)
 
   !> Retrieve pointer data in the sparse matrix
   !!
@@ -22,8 +28,10 @@
   !! Do not deallocate the array-pointer.
   interface matrix_p
     module procedure matrix_p_
+#if BUD_DIM == 1
     module procedure matrix_ip_
     module procedure matrix_lp_
+#endif
   end interface
   public :: matrix_p
 
@@ -105,6 +113,7 @@
 
   end function matrix_p_
 
+#if BUD_DIM == 1
   !> @param[in] this sparse matrix
 #ifdef BUD_SM_CSC
   !! @param[in] i sparse row index
@@ -122,7 +131,11 @@
     integer(ii_), intent(in) :: i
 
     p => array_p(this%D%e2)
-    p => p(this%D%e2%D%rptr(i)BUD_SM_PTR_A:this%D%e2%D%rptr(i)+this%D%e2%D%nrow(i)BUD_SM_PTR_B)
+#ifdef BUD_SM_CSR
+    p => p(this%D%e1%D%rptr(i)BUD_SM_PTR_A:this%D%e1%D%rptr(i)+this%D%e1%D%nrow(i)BUD_SM_PTR_B)
+#else
+    p => p(this%D%e1%D%cptr(i)BUD_SM_PTR_A:this%D%e1%D%cptr(i)+this%D%e1%D%ncol(i)BUD_SM_PTR_B)
+#endif
 
   end function matrix_ip_
 
@@ -143,9 +156,14 @@
     integer(il_), intent(in) :: i
 
     p => array_p(this%D%e2)
-    p => p(this%D%e2%D%rptr(i)BUD_SM_PTR_A:this%D%e2%D%rptr(i)+this%D%e2%D%nrow(i)BUD_SM_PTR_B)
+#ifdef BUD_SM_CSR
+    p => p(this%D%e1%D%rptr(i)BUD_SM_PTR_A:this%D%e1%D%rptr(i)+this%D%e1%D%nrow(i)BUD_SM_PTR_B)
+#else
+    p => p(this%D%e1%D%cptr(i)BUD_SM_PTR_A:this%D%e1%D%cptr(i)+this%D%e1%D%ncol(i)BUD_SM_PTR_B)
+#endif
 
   end function matrix_lp_
+#endif
 
 
   !> @param[in] this sparse matrix
