@@ -54,7 +54,6 @@
 module BUD_MOD_NAME
 # define BUD_LIST_NAME BUD_CC2(BUD_TYPE,iList)
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iSM_CSR_C)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,SM_CSR_C)
 # define BUD_TYPE_VAR integer
 # define BUD_TYPE_VAR_PREC ii_
 # define BUD_SM_CSR 0
@@ -70,7 +69,6 @@ end module
 module BUD_MOD_NAME
 # define BUD_LIST_NAME BUD_CC2(BUD_TYPE,lList)
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,lSM_CSR_C)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,SM_CSR_C)
 # define BUD_TYPE_VAR integer
 # define BUD_TYPE_VAR_PREC il_
 # define BUD_SM_CSR 0
@@ -88,7 +86,7 @@ module BUD_MOD_NAME
 end module
 !> @}
 
-! GROUP sp-csr-c
+! GROUP sm-csr-c
 !> @}
 
 

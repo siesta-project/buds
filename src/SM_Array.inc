@@ -21,7 +21,9 @@
   !! @note
   !! Do not deallocate the array-pointer.
   interface matrix_p
-    module procedure get_matrixp_
+    module procedure matrix_p_
+    module procedure matrix_ip_
+    module procedure matrix_lp_
   end interface
   public :: matrix_p
 
@@ -91,7 +93,7 @@
 
   !> @param[in] this sparse matrix
   !! @return a pointer to the data (contiguous)
-  function get_matrixp_(this) result(p)
+  function matrix_p_(this) result(p)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC(:)
@@ -101,7 +103,39 @@
 
     p => array_p(this%D%e2)
 
-  end function get_matrixp_
+  end function matrix_p_
+
+  !> @param[in] this sparse matrix
+  !! @return a pointer to the data (contiguous)
+  function matrix_ip_(this, i) result(p)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+#ifdef BUD_TYPE_VAR_PREC
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC(:)
+#else
+    BUD_TYPE_VAR, pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC(:)
+#endif
+    integer(ii_), intent(in) :: i
+
+    p => array_p(this%D%e2)
+    p => p(this%D%e2%D%rptr(i)BUD_SM_PTR_A:this%D%e2%D%rptr(i)+this%D%e2%D%nrow(i)BUD_SM_PTR_B)
+
+  end function matrix_ip_
+
+  !> @param[in] this sparse matrix
+  !! @return a pointer to the data (contiguous)
+  function matrix_lp_(this, i) result(p)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+#ifdef BUD_TYPE_VAR_PREC
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC(:)
+#else
+    BUD_TYPE_VAR, pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC(:)
+#endif
+    integer(il_), intent(in) :: i
+
+    p => array_p(this%D%e2)
+    p => p(this%D%e2%D%rptr(i)BUD_SM_PTR_A:this%D%e2%D%rptr(i)+this%D%e2%D%nrow(i)BUD_SM_PTR_B)
+
+  end function matrix_lp_
 
 
   !> @param[in] this sparse matrix
@@ -146,6 +180,7 @@
     BUD_TYPE_VAR, intent(in) :: val
 #endif
 
+    type(BUD_COLL_1) :: sm
     type(BUD_TYPE_NAME) :: nthis
     integer(BUD_INT_PREC) :: i, c, ix, nr, nc, npc
 
@@ -158,8 +193,18 @@
     integer(BUD_INT_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: ptr_(:), ncol_(:), row_(:)
     integer :: e
 
+    if ( .not. is_initd(this) ) return
 
-    call attach(this, nr=nr, nc=nc, &
+    sm = this
+#ifdef BUD_SM_CSC
+    call attach(sm, nr=nr, nc=nc, &
+      cptr=ptr, ncol=ncol, row=row)
+#else
+    call attach(sm, nr=nr, nc=nc, &
+      rptr=ptr, nrow=ncol, col=col)
+#endif
+
+    call attach(sm, nr=nr, nc=nc, &
       cptr=ptr, ncol=ncol, row=row)
 
     ! check if there is place in the sparse matrix
@@ -190,7 +235,7 @@
     end if
 
     ! Re-allocate the sparse matrix and copy it
-    npc = maxval(ncol) + BUD_CC2(8_,BUD_TYPE_VAR_PREC)
+    npc = maxval(ncol) + BUD_CC2(8_,BUD_INT_PREC)
     call new(nthis, nr, nc, npc=npc)
     call attach(nthis, cptr=ptr_, ncol=ncol_, row=row_)
 

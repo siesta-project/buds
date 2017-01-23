@@ -48,7 +48,6 @@
 module BUD_MOD_NAME
 # define BUD_LIST_NAME BUD_CC2(BUD_TYPE,iList)
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iSM_CSC0)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,SM_CSC0)
 # define BUD_TYPE_VAR integer
 # define BUD_TYPE_VAR_PREC ii_
 # define BUD_SM_CSC 1
@@ -63,7 +62,6 @@ end module
 module BUD_MOD_NAME
 # define BUD_LIST_NAME BUD_CC2(BUD_TYPE,lList)
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,lSM_CSC0)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,SM_CSC0)
 # define BUD_TYPE_VAR integer
 # define BUD_TYPE_VAR_PREC il_
 # define BUD_SM_CSC 1
@@ -81,7 +79,7 @@ module BUD_MOD_NAME
 end module
 !> @}
 
-! GROUP sp-csc0
+! GROUP sm-csc0
 !> @}
 
 

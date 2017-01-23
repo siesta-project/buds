@@ -54,7 +54,6 @@ module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,bArray1D)
 #include "bud_common_declarations.inc"
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iCSC_b1D)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,CSC_1D)
 # define BUD_TYPE_VAR logical
 #undef BUD_TYPE_VAR_PREC
 # define BUD_COLL_1 BUD_CC2(BUD_TYPE,iSM_CSC)
@@ -74,7 +73,6 @@ module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,rArray1D)
 #include "bud_common_declarations.inc"
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iCSC_r1D)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,CSC_1D)
 # define BUD_TYPE_VAR real
 # define BUD_TYPE_VAR_PREC rr_
 # define BUD_COLL_1 BUD_CC2(BUD_TYPE,iSM_CSC)
@@ -94,7 +92,6 @@ module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,dArray1D)
 #include "bud_common_declarations.inc"
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iCSC_d1D)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,CSC_1D)
 # define BUD_TYPE_VAR real
 # define BUD_TYPE_VAR_PREC rd_
 # define BUD_COLL_1 BUD_CC2(BUD_TYPE,iSM_CSC)
@@ -115,7 +112,6 @@ module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,cArray1D)
 #include "bud_common_declarations.inc"
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iCSC_c1D)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,CSC_1D)
 # define BUD_TYPE_VAR complex
 # define BUD_TYPE_VAR_PREC rr_
 # define BUD_COLL_1 BUD_CC2(BUD_TYPE,iSM_CSC)
@@ -135,7 +131,6 @@ module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,zArray1D)
 #include "bud_common_declarations.inc"
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iCSC_z1D)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,CSC_1D)
 # define BUD_TYPE_VAR complex
 # define BUD_TYPE_VAR_PREC rd_
 # define BUD_COLL_1 BUD_CC2(BUD_TYPE,iSM_CSC)
@@ -158,10 +153,10 @@ end module
 !> @}
 
 
-! GROUP sp-csc-array-BUD_DIM
+! GROUP sm-csc-array-BUD_DIM
 !> @}
 
-! GROUP sp-csc-array
+! GROUP sm-csc-array
 !> @}
 
 
