@@ -13,10 +13,6 @@
   !  - BUD_TYPE_VAR_PREC, the precision specifier for the array
 
 
-#define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
-#define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
-#define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
-
   !> BUD_MOD_NAME documentation
   !!
   !! @details
@@ -63,11 +59,6 @@
 
     !> @}
 
-    !> @iSee BUD_NEW_TYPE
-    generic, public :: BUD_NEW_TYPE => &
-      new_dim_ii_, new_dim_il_, &
-      new_shape_ii_, new_shape_il_
-
     !> @iSee new
     generic, public :: new => &
       new_dim_ii_, new_dim_il_, &
@@ -77,7 +68,7 @@
     procedure, public :: associate => associate_
 
     !> @iSee #array_p
-    procedure, public :: array_p => arrayp_
+    procedure, public :: array_p => array_p_
 
     !> @iSee #size
     procedure, public :: size => size_
@@ -121,13 +112,6 @@
   !! @note
   !! If the array is created from dimensions, the initial
   !! value of the array may be arbitrary (compiler dependent).
-  interface BUD_TYPE_NEW
-    module procedure new_dim_ii_, new_dim_il_
-    module procedure new_shape_ii_, new_shape_il_
-  end interface
-  public :: BUD_TYPE_NEW
-
-  !> @iSee BUD_TYPE_NEW
   interface new
     module procedure new_dim_ii_, new_dim_il_
     module procedure new_shape_ii_, new_shape_il_
@@ -159,7 +143,7 @@
   !! @note
   !! The internal array is `allocatable` so you may not deallocate the array-pointer.
   interface array_p
-    module procedure arrayp_
+    module procedure array_p_
   end interface
   public :: array_p
 
@@ -483,7 +467,7 @@
 
   !> @param[in] this array @bud
   !! @return a pointer to the data (contiguous)
-  function arrayp_(this) result(p)
+  function array_p_(this) result(p)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC(:)
@@ -497,7 +481,7 @@
       nullify(p)
     end if
 
-  end function arrayp_
+  end function array_p_
 
 
   !> @param[in] this the containing @bud
@@ -776,6 +760,7 @@
     character(len=64), parameter :: fmt_ = '(e20.16)'
 #endif
 
+    integer :: tshape(5), rshape(5), i
     integer :: d1, d2, d3, d4, d5, i2, i3, i4, i5
 
     ! If file is not opened, return immediately
@@ -792,14 +777,11 @@
       read(iu) d
     end if
 
-    if ( d > BUD_DIM ) then
-      call delete(this)
-      ! Signal wrong dimensions
-      call set_error(this, -d)
-      return
-    end if
-
     ! Initialize all dimensions to 1
+    tshape = 1
+    do i = 1 , BUD_DIM
+      tshape(i) = size(
+    rshape = 1
     d1 = 1
     d2 = 1
     d3 = 1
@@ -810,61 +792,56 @@
 
       select case ( d )
       case ( 1 )
-        read(iu, '(i16)') d1
+        read(iu, '(i16)') rshape(1)
       case ( 2 )
-        read(iu, '(i16,tr1,i16)') d1, d2
+        read(iu, '(i16,tr1,i16)') rshape(1:2)
       case ( 3 )
-        read(iu, '(2(i16,tr1),i16)') d1, d2, d3
+        read(iu, '(2(i16,tr1),i16)') rshape(1:3)
       case ( 4 )
-        read(iu, '(3(i16,tr1),i16)') d1, d2, d3, d4
+        read(iu, '(3(i16,tr1),i16)') rshape(1:4)
       case ( 5 )
-        read(iu, '(4(i16,tr1),i16)') d1, d2, d3, d4, d5
+        read(iu, '(4(i16,tr1),i16)') rshape(1:5)
       end select
 
     else
 
       select case ( d )
       case ( 1 )
-        read(iu) d1
+        read(iu) rshape(1)
       case ( 2 )
-        read(iu) d1, d2
+        read(iu) rshape(1:2)
       case ( 3 )
-        read(iu) d1, d2, d3
+        read(iu) rshape(1:3)
       case ( 4 )
-        read(iu) d1, d2, d3, d4
+        read(iu) rshape(1:4)
       case ( 5 )
-        read(iu) d1, d2, d3, d4, d5
+        read(iu) rshape(1:5)
       end select
 
     end if
 
-    ! First, check for dimensions
-    same_size = size_(this, 1) == d1
-#if BUD_DIM > 1
-    same_size = same_size .and. size_(this, 2) == d2
-#endif
-#if BUD_DIM > 2
-    same_size = same_size .and. size_(this, 3) == d3
-#endif
-#if BUD_DIM > 3
-    same_size = same_size .and. size_(this, 4) == d4
-#endif
-#if BUD_DIM > 4
-    same_size = same_size .and. size_(this, 5) == d5
-#endif
+    same_size = .true.
+    do i = 1 , BUD_DIM
+      tshape(i) = size(this, i)
+      same_size = same_size .and. &
+        tshape(i) == rshape(i)
+    end do
+        
+    if ( d > BUD_DIM ) then
+      do i = BUD_DIM + 1 , d
+        if ( rshape(i) > 1 ) then
+          ! We do not allow reading a larger array
+          call delete(this)
+          ! Signal wrong dimensions
+          call set_error(this, -d)
+          return
+        end if
+      end do
+    end if
+
     if ( .not. same_size ) then
       ! Re-allocate
-#if BUD_DIM == 1
-      call new(this, d1)
-#elif BUD_DIM == 2
-      call new(this, d1, d2)
-#elif BUD_DIM == 3
-      call new(this, d1, d2, d3)
-#elif BUD_DIM == 4
-      call new(this, d1, d2, d3, d4)
-#elif BUD_DIM == 5
-      call new(this, d1, d2, d3, d4, d5)
-#endif
+      call new(this, rshape(1:BUD_DIM))
     end if
 
     ! Retrieve data pointer...
