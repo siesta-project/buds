@@ -8,7 +8,6 @@
   !  - BUD_TYPE_NAME of the type
   !  - BUD_TYPE_NAME_, internal data pointer of the type
   !  - BUD_TYPE_NAME_STR, the routine name in "string" format (for IO)
-  !  - BUD_TYPE_NEW, the routine name for creating a new type
   !  - BUD_TYPE_VAR, the variable type contained in the array
   !  - BUD_TYPE_VAR_PREC, the precision specifier for the array
 
@@ -1702,7 +1701,6 @@
 
   ! Local pre-processor variables that
   ! undefine the variables that are not needed anymore.
-#undef BUD_TYPE_NEW
 #undef BUD_TYPE_VAR
 #undef BUD_TYPE_VAR_PREC
 

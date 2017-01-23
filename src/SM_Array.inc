@@ -296,8 +296,6 @@
 #endif
 
 
-#undef BUD_TYPE_NEW
-
   ! Associated with the Array
 #undef BUD_TYPE_VAR
 #undef BUD_TYPE_VAR_PREC

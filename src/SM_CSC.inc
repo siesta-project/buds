@@ -6,7 +6,6 @@
   !  - BUD_TYPE_NAME name of the public type
   !  - BUD_TYPE_NAME_ name of the internal data pointer
   !  - BUD_TYPE_NAME_STR the routine name in "string" format (for IO)
-  !  - BUD_TYPE_NEW the routine name for creating a new type
   !
   ! Additionally the CSC pattern format may be
   ! controlled via these flags:
@@ -1343,7 +1342,6 @@
 #undef BUD_TYPE_NAME
 #undef BUD_TYPE_NAME_
 #undef BUD_TYPE_NAME_STR
-#undef BUD_TYPE_NEW
 #undef BUD_TYPE_VAR
 #undef BUD_TYPE_VAR_PREC
 

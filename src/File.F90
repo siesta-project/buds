@@ -5,7 +5,6 @@
 !  - BUD_TYPE_NAME name of the public type
 !  - BUD_TYPE_NAME_ name of the internal data pointer
 !  - BUD_TYPE_NAME_STR the routine name in "string" format (for IO)
-!  - BUD_TYPE_NEW the routine name for creating a new type
 
 #include "bud_utils.inc"
 
@@ -13,11 +12,6 @@
 ! Define default variable for the file
 #define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,File)
 #define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,File)
-#define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,File)
-
-#define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
-#define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
-#define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
 
 !> @defgroup file File
 !! @ingroup bud-intrinsic
@@ -64,9 +58,7 @@ module BUD_MOD_NAME
 #   include "bud_common_type.inc"
 #if BUD_FORTRAN >= 2003
 
-    !> @iSee BUD_CC3(BUD_NEW,_,File)
-    procedure, public :: BUD_CC3(BUD_NEW,_,File) => new_
-    !> @iSee BUD_CC3(BUD_NEW,_,File)
+    !> @iSee #new
     procedure, public :: new => new_
 
     !> @iSee open
@@ -148,12 +140,6 @@ module BUD_MOD_NAME
   !!
   !! @note
   !! This will _not_ open the file.
-  interface BUD_CC3(BUD_NEW,_,File)
-    module procedure new_
-  end interface
-  public :: BUD_CC3(BUD_NEW,_,File)
-
-  !> @iSee BUD_CC3(BUD_NEW,_,File)
   interface new
     module procedure new_
   end interface
