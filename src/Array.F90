@@ -1,3 +1,8 @@
+
+! Get default commands
+#include "bud_utils.inc"
+
+
 !> @defgroup Array module for all different precision and dimension objects
 !! Module for making everything public
 !! @{

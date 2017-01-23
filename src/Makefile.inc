@@ -24,7 +24,7 @@ bud_Array3D.f90: _TMP_FILE=Array3D.F90
 bud_Array3D.f90: Array1D.F90
 	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/Array1D/Array3D/g' $(src_DIR)/Array1D.F90 > $(_TMP_FILE)
 	$(src_FPP)
-bud_Array.f90: Array.F90
+bud_Array.f90: Array.F90 bud_Array1D.o bud_Array2D.o bud_Array3D.o
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
 
 

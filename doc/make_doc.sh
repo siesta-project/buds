@@ -122,9 +122,9 @@ case $DOC in
 	} | doxygen -
 
 	# Insert the version string in the version
-	sed -i -e "s/BUDS_VERSION/$doc_version/g" html/index.html
+	sed -i -e "s/BUDS_VERSION/$doc_version/g" $_DOC/html/index.html
 	# This reflects the DOWNLOAD.md file
-	sed -i -e "s/BUDS_VERSION/$tar_version/g" html/download.html
+	sed -i -e "s/BUDS_VERSION/$tar_version/g" $_DOC/html/download.html
 
 	;;
     
