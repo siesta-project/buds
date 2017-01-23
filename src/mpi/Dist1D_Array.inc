@@ -676,6 +676,7 @@
 
     BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+    logical, intent(in), optional :: only_array
 
     type(BUD_COLL_1) :: dist
     type(BUD_COLL_2) :: arr

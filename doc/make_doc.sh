@@ -114,7 +114,7 @@ cp $_main_dir/include/*.inc .
 # Clean-up source comments (not documentation)
 sed -s -i -e '/^[ ]*! /d' *.f90 *.inc
 
-rm bud_[^M]*
+#rm bud_[^M]*
 
 popd
 

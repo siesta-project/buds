@@ -9,10 +9,6 @@
 #define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,MP_Comm)
 #define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,MP_Comm)
 
-#define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
-#define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
-#define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
-
 module BUD_MOD_NAME
 
 #include "bud_mpi.inc"
@@ -283,7 +279,7 @@ module BUD_MOD_NAME
 
 #undef BUD_DEFINE_PROCEDURE
 
-    procedure, private :: Comm_split_
+    procedure, private, :: Comm_split_
     procedure, private :: comm_split_type_
 
     procedure, private :: Comm_create_, comm_create_commgrp_
@@ -296,7 +292,7 @@ module BUD_MOD_NAME
 #ifdef BUD_MPI
     generic, public :: new_remote => new_remote_, new_remote_child_
 #else
-    generic, public :: new_remote => new_remote_
+    procedure, public :: new_remote => new_remote_
 #endif
 
     !> See [[communicator]]
@@ -306,9 +302,9 @@ module BUD_MOD_NAME
     procedure, public :: group => group_
 
     !> See [[comm_rank]]
-    procedure, public :: comm_rank => P_
+    procedure, public :: comm_rank => rank_
     !> See [[comm_size]]
-    procedure, public :: comm_size => NP_
+    procedure, public :: comm_size => size_
 
     !> See [[is_communicator]]
     procedure, public :: is_communicator => is_comm_
@@ -497,24 +493,24 @@ module BUD_MOD_NAME
 
 #endif
 
-    procedure, public :: Barrier => Barrier_
-    procedure, public :: IBarrier => IBarrier_
+    procedure, public, pass(this) :: Barrier => Barrier_
+    procedure, public, pass(this) :: IBarrier => IBarrier_
 
-    procedure, public :: Get_Count => Get_Count_
+    procedure, public, pass(this) :: Get_Count => Get_Count_
 
-    procedure, public :: Wait => Wait_
-    procedure, public :: WaitAll => WaitAll_
-    procedure, public :: WaitAny => WaitAny_
-    procedure, public :: Test => Test_
-    procedure, public :: TestAll => TestAll_
-    procedure, public :: TestAny => TestAny_
-    procedure, public :: Test_Cancelled => Test_Cancelled_
+    procedure, public, pass(this) :: Wait => Wait_
+    procedure, public, pass(this) :: WaitAll => WaitAll_
+    procedure, public, pass(this) :: WaitAny => WaitAny_
+    procedure, public, pass(this) :: Test => Test_
+    procedure, public, pass(this) :: TestAll => TestAll_
+    procedure, public, pass(this) :: TestAny => TestAny_
+    procedure, public, pass(this) :: Test_Cancelled => Test_Cancelled_
 
 # ifdef BUD_MPI
-    generic, public :: Comm_split => comm_split_, comm_split_type_
-    procedure, public :: Comm_Compare => comm_compare_
+    generic, public, pass(this) :: Comm_split => comm_split_, comm_split_type_
+    procedure, public, pass(this) :: Comm_Compare => comm_compare_
 
-    generic, public :: Comm_Create => comm_Create_, comm_create_commgrp_, &
+    generic, public, pass(this) :: Comm_Create => comm_Create_, comm_create_commgrp_, &
       comm_Create_group_, comm_create_group_commgrp_
 # endif
 #endif
@@ -536,9 +532,9 @@ module BUD_MOD_NAME
     integer(ii_) :: Grp = MPI_Group_Null
 
     !> The associated processor number in the associated communicator
-    integer(ii_) :: P = 0
+    integer(ii_) :: rank = 0
     !> The number of processors in the associated communicator
-    integer(ii_) :: NP = 1
+    integer(ii_) :: size = 1
 
     ! Consistent data in the reference counted object
 #   include "bud_common_type_.inc"
@@ -1212,8 +1208,8 @@ module BUD_MOD_NAME
     this%D%Comm = MPI_Comm_Null
     this%D%Grp = MPI_Group_Null
 
-    this%D%P = 0
-    this%D%NP = 1
+    this%D%rank = 0
+    this%D%size = 1
 
   end subroutine delete_
 
@@ -1229,7 +1225,7 @@ module BUD_MOD_NAME
     if ( .not. is_initd(from) ) return
 
     if ( from%D%comm == MPI_Comm_Null ) then
-      call new_remote(to, from%D%P, from%D%NP)
+      call new_remote(to, from%D%rank, from%D%size)
     else
       call new(to, from%D%comm)
     end if
@@ -1256,24 +1252,24 @@ module BUD_MOD_NAME
   end function group_
 
   !> Query the current processor ID in the communicator
-  elemental function rank_(this) result(P)
+  elemental function rank_(this) result(rank)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer(ii_) :: P
+    integer(ii_) :: rank
     if ( is_initd(this) ) then
-      P = this%D%P
+      rank = this%D%rank
     else
-      P = -1
+      rank = -1
     end if
   end function rank_
 
   !> Query the number of processors in the communicator
-  elemental function size_(this) result(NP)
+  elemental function size_(this) result(size)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer(ii_) :: NP
+    integer(ii_) :: size
     if ( is_initd(this) ) then
-      NP = this%D%NP
+      size = this%D%size
     else
-      NP = 0
+      size = 0
     end if
   end function size_
 
@@ -1306,13 +1302,13 @@ module BUD_MOD_NAME
     call MPI_Comm_group(this%D%comm, this%D%Grp, this%error)
 
     ! Figure out number of processors and the rank
-    call MPI_Comm_Rank( this%D%comm, this%D%P, this%error)
-    call MPI_Comm_Size( this%D%comm, this%D%NP, this%error)
+    call MPI_Comm_Rank( this%D%comm, this%D%rank, this%error)
+    call MPI_Comm_Size( this%D%comm, this%D%size, this%error)
 
 #else
     this%D%comm = Comm
-    this%D%P = 0
-    this%D%NP = 1
+    this%D%rank = 0
+    this%D%size = 1
 
 #endif
 
@@ -1330,8 +1326,8 @@ module BUD_MOD_NAME
     this%D%comm = MPI_Comm_Null
     this%D%grp = MPI_Group_Null
 
-    this%D%P = rank
-    this%D%NP = size
+    this%D%rank = rank
+    this%D%size = size
 
   end subroutine new_remote_
 
@@ -2053,10 +2049,6 @@ module BUD_MOD_NAME
   !!
   !! Print out XML-like information regarding the data-container.
   !!
-  !! @wanted
-  !! Retrieval function of the string that represents the data.
-  !! This will enable the parent program to show it in the way it wants.
-  !!
   !! @param[in] this data type
   !! @param[in] info opt=BUD_TYPE_NAME_STR additional information printed
   !! @param[in] indent opt=1 possible indentation of printed statement
@@ -2087,12 +2079,12 @@ module BUD_MOD_NAME
     if ( this%D%Comm == MPI_Comm_Null ) then
       write(fmt, '(a,i0,a)') '(t',lindent,',4a,3(i0,a))'
       write(*,fmt) "<", trim(name), " (remote)Comm", &
-        ", P=", this%D%P, ", NP=", this%D%NP, &
+        ", P=", comm_rank(this), ", NP=", comm_size(this), &
         ", refs: ", references(this), ">"
     else
       write(fmt, '(a,i0,a)') '(t',lindent,',3a,4(i0,a))'
       write(*,fmt) "<", trim(name), " Comm=", this%D%Comm, &
-        ", P=", this%D%P, ", NP=", this%D%NP, &
+        ", P=", comm_rank(this), ", NP=", comm_size(this), &
         ", refs: ", references(this), ">"
     end if
 

@@ -66,7 +66,7 @@
     procedure, private :: new_dim_
     procedure, private :: new_copy_
 
-    procedure, private :: columnp_
+    procedure, private :: column_p_
     procedure, private :: column_rp_
 
     procedure, private :: remove_row_el_
@@ -103,13 +103,13 @@
     procedure, public :: index => index_
 
     !> See [[offset_p]]
-    procedure, public :: offset_p => offsetp_
+    procedure, public :: offset_p => offset_p_
 
     !> See [[nrow_p]]
-    procedure, public :: nrow_p => nrowp_
+    procedure, public :: nrow_p => nrow_p_
 
     !> See [[column_p]]
-    generic, public :: column_p => columnp_, column_rp_
+    generic, public :: column_p => column_p_, column_rp_
 
 
     !> See [[add_element]]
@@ -216,21 +216,21 @@
   !! element in row `ir`.
 #endif
   interface offset_p
-    module procedure offsetp_
+    module procedure offset_p_
   end interface
   public :: offset_p
 
 
   !> Retrieve a pointer to the column indices
   interface column_p
-    module procedure columnp_
+    module procedure column_p_
     module procedure column_rp_
   end interface
   public :: column_p
 
   !> Retrieve a pointer to the number of entries per row
   interface nrow_p
-    module procedure nrowp_
+    module procedure nrow_p_
   end interface
   public :: nrow_p
 
@@ -490,23 +490,23 @@
 
   !> @param[in] this sparse matrix
   !! @return a pointer to the row offsets for the sparse matrix (contiguous)
-  function offsetp_(this) result(rptr)
+  function offset_p_(this) result(rptr)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: rptr(:)
 
     rptr => this%D%rptr
 
-  end function offsetp_
+  end function offset_p_
 
   !> @param[in] this sparse matrix
   !! @return a pointer to the column indices for the sparse matrix (contiguous)
-  function columnp_(this) result(col)
+  function column_p_(this) result(col)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: col(:)
 
     col => this%D%col
 
-  end function columnp_
+  end function column_p_
 
   !> @param[in] this sparse matrix
   !> @param[in] r only retrieve the columns that reside in row `r`
@@ -522,13 +522,13 @@
 
   !> @param[in] this sparse matrix
   !! @return a pointer to the array that holds the number of entries per row
-  function nrowp_(this) result(nrow)
+  function nrow_p_(this) result(nrow)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: nrow(:)
 
     nrow => this%D%nrow
 
-  end function nrowp_
+  end function nrow_p_
 
 
   !> @param[in] this sparse matrix bud

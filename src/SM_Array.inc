@@ -1,4 +1,6 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
+  
+#define BUD_IO_OVERLOAD
 
   !> @defgroup sm-array Sparse matrix (pattern and data)
   !! @ingroup bud-intrinsic
@@ -21,7 +23,8 @@
   !! @note
   !! Do not deallocate the array-pointer.
   interface matrix_p
-    module procedure get_matrixp_
+    module procedure matrix_p_
+    module procedure matrix_ip_
   end interface
   public :: matrix_p
 
@@ -91,7 +94,7 @@
 
   !> @param[in] this sparse matrix
   !! @return a pointer to the data (contiguous)
-  function get_matrixp_(this) result(p)
+  function matrix_p_(this) result(p)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC(:)
@@ -101,7 +104,22 @@
 
     p => array_p(this%D%e2)
 
-  end function get_matrixp_
+  end function matrix_p_
+
+  !> @param[in] this sparse matrix
+  !! @return a pointer to the data (contiguous)
+  function matrix_ip_(this, i) result(p)
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
+#ifdef BUD_TYPE_VAR_PREC
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC(:)
+#else
+    BUD_TYPE_VAR, pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC(:)
+#endif
+    integer(BUD_INT_PREC), intent(in) :: i
+
+    p => array_p(this%D%e2)
+    
+  end function matrix_ip_
 
 
   !> @param[in] this sparse matrix
@@ -139,12 +157,14 @@
   !! @param[in] ic the column index of the element
   recursive subroutine add_element_(this, ir, ic, val)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    integer(BUD_TYPE_VAR_PREC), intent(in) :: ir, ic
+    integer(BUD_INT_PREC), intent(in) :: ir, ic
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in) :: val
 #else
     BUD_TYPE_VAR, intent(in) :: val
 #endif
+
+    type(BUD_COLL_1) :: sm
 
     type(BUD_TYPE_NAME) :: nthis
     integer(BUD_INT_PREC) :: i, c, ix, nr, nc, npc
@@ -158,9 +178,16 @@
     integer(BUD_INT_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: ptr_(:), ncol_(:), row_(:)
     integer :: e
 
-
-    call attach(this, nr=nr, nc=nc, &
+    if ( .not. is_initd(this) ) return
+    
+    sm = this
+#ifdef BUD_SM_CSC
+    call attach(sm, nr=nr, nc=nc, &
       cptr=ptr, ncol=ncol, row=row)
+#else
+    call attach(sm, nr=nr, nc=nc, &
+      rptr=ptr, nrow=ncol, col=col)
+#endif
 
     ! check if there is place in the sparse matrix
     ! for an entry without re-allocation
@@ -190,7 +217,7 @@
     end if
 
     ! Re-allocate the sparse matrix and copy it
-    npc = maxval(ncol) + BUD_CC2(8_,BUD_TYPE_VAR_PREC)
+    npc = maxval(ncol) + BUD_CC2(8_,BUD_INT_PREC)
     call new(nthis, nr, nc, npc=npc)
     call attach(nthis, cptr=ptr_, ncol=ncol_, row=row_)
 
@@ -223,6 +250,70 @@
 #endif
 
 
+  subroutine write_(f, this, only_array)
+
+    use BUD_CC2(BUD_MOD,_File)
+
+    BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    logical, intent(in), optional :: only_array
+    
+
+#ifdef BUD_TYPE_VAR_PREC
+    BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC(:)
+#else
+    BUD_TYPE_VAR, pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC(:)
+#endif
+
+    logical :: formatted, lonly_array
+    integer :: iu
+
+    integer(BUD_INT_PREC) :: i, nr, nc
+
+    type(BUD_COLL_1) :: sm
+    type(BUD_COLL_2) :: arr
+
+    ! If file is not opened, return immediately
+    if ( .not. is_open(f) ) return
+    if ( .not. is_initd(this) ) return
+
+    lonly_array = .false.
+    if ( present(only_array) ) lonly_array = only_array
+
+    ! First figure out if the file is an unformatted file
+    formatted = is_formatted(f)
+    iu = unit(f)
+
+    sm = this
+    arr = this
+
+    if ( .not. lonly_array ) then
+      call write(f, sm)
+    end if
+
+    ! Now write the sparse array
+    call attach(sm, nr=nr, nc=nc)
+
+#ifdef BUD_SM_CSC
+    do i = 1 , nc
+      p => matrix_p(this, i)
+    end do
+#else
+    do i = 1 , nr
+      p => matrix_p(this, i)
+    end do
+#endif
+
+  end subroutine write_
+
+  subroutine read_(f, this, sm)
+    use BUD_CC2(BUD_MOD,_File)
+
+    BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_COLL_1), intent(inout), optional :: sm
+
+  end subroutine read_
 
   ! Associated with the Array
 #undef BUD_TYPE_VAR

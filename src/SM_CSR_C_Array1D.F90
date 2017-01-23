@@ -14,6 +14,7 @@
 ! Define the number of dimensions in this Array
 #define BUD_DIM 1
 #define BUD_DIMD BUD_CC2(BUD_DIM,D)
+#define BUD_INT_PREC ii_
 
 
 #if BUD_DIM == 1
