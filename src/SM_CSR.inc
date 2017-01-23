@@ -47,10 +47,6 @@
 
 #include "bud_utils.inc"
 
-#define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
-#define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
-#define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
-
   use BUD_CC3(BUD_MOD,_,SM_common)
 
   ! This *MUST* be the first statement
@@ -77,7 +73,7 @@
     procedure, private :: new_dim_
     procedure, private :: new_copy_
 
-    procedure, private :: columnp_
+    procedure, private :: column_p_
     procedure, private :: column_rp_
 
     procedure, private :: remove_row_el_
@@ -94,9 +90,7 @@
 
     !> @}
 
-    !> @iSee BUD_TYPE_NEW
-    generic, public :: BUD_TYPE_NEW => new_dim_, new_copy_
-    !> @iSee BUD_TYPE_NEW
+    !> @iSee #new
     generic, public :: new => new_dim_, new_copy_
 
     !> @iSee #nonzeros
@@ -118,13 +112,13 @@
     procedure, public :: index => index_
 
     !> @iSee #offset_p
-    procedure, public :: offset_p => offsetp_
+    procedure, public :: offset_p => offset_p_
 
     !> @iSee #nrow_p
-    procedure, public :: nrow_p => nrowp_
+    procedure, public :: nrow_p => nrow_p_
 
     !> @iSee #column_p
-    generic, public :: column_p => columnp_, column_rp_
+    generic, public :: column_p => column_p_, column_rp_
 
 
     !> @iSee #add_element
@@ -210,13 +204,6 @@
   !! You may either create an empty sparse matrix with
   !! a fixed size, or create a sparse matrix from
   !! existing data.
-  interface BUD_TYPE_NEW
-    module procedure new_dim_
-    module procedure new_copy_
-  end interface
-  public :: BUD_TYPE_NEW
-
-  !> @iSee BUD_TYPE_NEW
   interface new
     module procedure new_dim_
     module procedure new_copy_
@@ -240,21 +227,21 @@
   !! element in row `ir`.
 #endif
   interface offset_p
-    module procedure offsetp_
+    module procedure offset_p_
   end interface
   public :: offset_p
 
 
   !> Retrieve a pointer to the column indices
   interface column_p
-    module procedure columnp_
+    module procedure column_p_
     module procedure column_rp_
   end interface
   public :: column_p
 
   !> Retrieve a pointer to the number of entries per row
   interface nrow_p
-    module procedure nrowp_
+    module procedure nrow_p_
   end interface
   public :: nrow_p
 
@@ -515,23 +502,23 @@
 
   !> @param[in] this sparse matrix
   !! @return a pointer to the row offsets for the sparse matrix (contiguous)
-  function offsetp_(this) result(rptr)
+  function offset_p_(this) result(rptr)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: rptr(:)
 
     rptr => this%D%rptr
 
-  end function offsetp_
+  end function offset_p_
 
   !> @param[in] this sparse matrix
   !! @return a pointer to the column indices for the sparse matrix (contiguous)
-  function columnp_(this) result(col)
+  function column_p_(this) result(col)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: col(:)
 
     col => this%D%col
 
-  end function columnp_
+  end function column_p_
 
   !> @param[in] this sparse matrix
   !> @param[in] r only retrieve the columns that reside in row `r`
@@ -547,13 +534,13 @@
 
   !> @param[in] this sparse matrix
   !! @return a pointer to the array that holds the number of entries per row
-  function nrowp_(this) result(nrow)
+  function nrow_p_(this) result(nrow)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: nrow(:)
 
     nrow => this%D%nrow
 
-  end function nrowp_
+  end function nrow_p_
 
 
   !> @param[in] this sparse matrix @bud
