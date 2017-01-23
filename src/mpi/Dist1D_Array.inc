@@ -1308,7 +1308,6 @@
 
   end subroutine read_
 
-#undef BUD_TYPE_NEW
 
   ! Associated with the Array
 #undef BUD_TYPE_VAR

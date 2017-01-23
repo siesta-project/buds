@@ -25,7 +25,6 @@ module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,iDist1D)
   use BUD_CC3(BUD_MOD,_,iSM_CSR0)
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iD1D_CSR0)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,Dist_CSR0)
 # define BUD_COLL_1 BUD_CC2(BUD_TYPE,iDist1D)
 # define BUD_COLL_2 BUD_CC2(BUD_TYPE,iSM_CSR0)
 # define BUD_TYPE_VAR integer
@@ -43,7 +42,6 @@ end module
 !!$  use BUD_CC3(BUD_MOD,_,lDist1D)
 !!$  use BUD_CC3(BUD_MOD,_,lSM_CSR0)
 !!$# define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,lD1D_CSR0)
-!!$# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,Dist_CSR0)
 !!$# define BUD_COLL_1 BUD_CC2(BUD_TYPE,lDist1D)
 !!$# define BUD_COLL_2 BUD_CC2(BUD_TYPE,lSM_CSR0)
 !!$# define BUD_TYPE_VAR integer

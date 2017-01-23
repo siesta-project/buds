@@ -40,7 +40,6 @@ module BUD_MOD_NAME
   !!  - _BUD_TYPE_NAME of the type
   !!  - _BUD_TYPE_NAME_, internal data pointer of the type
   !!  - _BUD_TYPE_NAME_STR, the routine name in "string" format (for IO)
-  !!  - _BUD_TYPE_NEW, the routine name for creating a new type
   !!  - _BUD_TYPE_VAR, the variable type contained in the array
   !! If you add any new dependencies be sure to undefine the variable
   !! at the bottom of this file.
@@ -611,17 +610,6 @@ module BUD_MOD_NAME
 #endif
   end interface
   public :: new_remote
-
-  !> Creating a remote communicator
-  !!
-  !! @iSee new_remote
-  interface BUD_CC2(BUD_TYPE_NEW,_remote)
-    module procedure new_remote_
-#ifdef BUD_MPI
-    module procedure new_remote_child_
-#endif
-  end interface
-  public :: BUD_CC2(BUD_TYPE_NEW,_remote)
 
 
   !> Query communicator of the distribution
@@ -2174,7 +2162,6 @@ end module
 #undef BUD_TYPE_NAME
 #undef BUD_TYPE_NAME_
 #undef BUD_TYPE_NAME_STR
-#undef BUD_TYPE_NEW
 #undef BUD_TYPE_VAR
 #undef BUD_PREC
 

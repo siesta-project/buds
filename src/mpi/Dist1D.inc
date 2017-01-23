@@ -8,10 +8,6 @@
 
   use BUD_CC3(BUD_MOD,_,Dist_common)
 
-#define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
-#define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
-#define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
-
   !> BUD_MOD_NAME documentation for various distribution types.
   !!
   !! This @bud implements a selected portion of different
@@ -37,7 +33,6 @@
   !!  - _BUD_TYPE_NAME of the type
   !!  - _BUD_TYPE_NAME_, internal data pointer of the type
   !!  - _BUD_TYPE_NAME_STR, the routine name in "string" format (for IO)
-  !!  - _BUD_TYPE_NEW, the routine name for creating a new type
   !!  - _BUD_TYPE_VAR, the variable type contained in the array
   !!  - _BUD_PREC, the precision specifier for the array
   !! If you add any new dependencies be sure to undefine the variable
@@ -216,15 +211,6 @@
   end type BUD_TYPE_NAME_
 
   !> Create a new distribution object.
-  interface BUD_TYPE_NEW
-    module procedure new_
-    module procedure new_block_cyclic_
-    module procedure new_block_or_cyclic_
-    module procedure new_user_
-  end interface
-  public :: BUD_TYPE_NEW
-
-  !> Create a new object
   interface new
     module procedure new_
     module procedure new_block_cyclic_
@@ -1321,7 +1307,6 @@
 #undef BUD_TYPE_NAME
 #undef BUD_TYPE_NAME_
 #undef BUD_TYPE_NAME_STR
-#undef BUD_TYPE_NEW
 #undef BUD_TYPE_VAR
 #undef BUD_PREC
 

@@ -65,7 +65,6 @@ module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,iSM_CSC0)
   use BUD_CC3(BUD_MOD,_,bArray1D)
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iD1D_CSC0_b1D)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,Dist_CSC0_1D)
 # define BUD_TYPE_VAR logical
 #undef BUD_TYPE_VAR_PREC
 # define BUD_COLL_1 BUD_CC2(BUD_TYPE,iDist1D)
@@ -88,7 +87,6 @@ module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,iSM_CSC0)
   use BUD_CC3(BUD_MOD,_,rArray1D)
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iD1D_CSC0_r1D)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,Dist_CSC0_1D)
 # define BUD_TYPE_VAR real
 # define BUD_TYPE_VAR_PREC rr_
 # define BUD_COLL_1 BUD_CC2(BUD_TYPE,iDist1D)
@@ -111,7 +109,6 @@ module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,iSM_CSC0)
   use BUD_CC3(BUD_MOD,_,dArray1D)
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iD1D_CSC0_d1D)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,Dist_CSC0_1D)
 # define BUD_TYPE_VAR real
 # define BUD_TYPE_VAR_PREC rd_
 # define BUD_COLL_1 BUD_CC2(BUD_TYPE,iDist1D)
@@ -134,7 +131,6 @@ module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,iSM_CSC0)
   use BUD_CC3(BUD_MOD,_,cArray1D)
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iD1D_CSC0_c1D)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,Dist_CSC0_1D)
 # define BUD_TYPE_VAR complex
 # define BUD_TYPE_VAR_PREC rr_
 # define BUD_COLL_1 BUD_CC2(BUD_TYPE,iDist1D)
@@ -157,7 +153,6 @@ module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_,iSM_CSC0)
   use BUD_CC3(BUD_MOD,_,zArray1D)
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iD1D_CSC0_z1D)
-# define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,Dist_CSC0_1D)
 # define BUD_TYPE_VAR complex
 # define BUD_TYPE_VAR_PREC rd_
 # define BUD_COLL_1 BUD_CC2(BUD_TYPE,iDist1D)

@@ -1466,7 +1466,6 @@
   end subroutine read_
 
 
-#undef BUD_TYPE_NEW
 #undef BUD_MOD_2_3
 #undef BUD_TYPE_2_3
 
