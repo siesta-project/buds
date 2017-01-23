@@ -92,7 +92,7 @@
     !> @iSee #list_p
     procedure, public :: list_p => list_p_
     !> @iSee #list_max_p
-    procedure, public :: list_max_p => max_list_p_
+    procedure, public :: list_max_p => list_max_p_
 
     !> @iSee #push
     generic, public :: push => push_value_, push_array_, push_list_
@@ -239,7 +239,7 @@
   !!
   !! This pointer will only be a sub-set pointer of the
   !! total list array if `size(this) < max_size(this)`.
-  !! @iSee #max_list_p for the full list pointer.
+  !! @iSee #list_max_p for the full list pointer.
   !!
   !! @note
   !! Do not deallocate the array-pointer.
@@ -255,7 +255,7 @@
   !! @note
   !! Do not deallocate the array-pointer.
   interface list_max_p
-    module procedure max_list_p_
+    module procedure list_max_p_
   end interface
   public :: list_max_p
 
@@ -902,7 +902,7 @@
 
   !> @param[in] this list @bud
   !! @return a pointer to the list (contiguous)
-  function max_list_p_(this) result(p)
+  function list_max_p_(this) result(p)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: p(:)
@@ -913,7 +913,7 @@
     ! return the full list values
     p => this%D%lst
 
-  end function max_list_p_
+  end function list_max_p_
 
 
   !> @param[in] this @bud container

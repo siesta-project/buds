@@ -106,6 +106,11 @@
   end function matrix_p_
 
   !> @param[in] this sparse matrix
+#ifdef BUD_SM_CSC
+  !! @param[in] i sparse row index
+#else
+  !! @param[in] i sparse column index
+#endif
   !! @return a pointer to the data (contiguous)
   function matrix_ip_(this, i) result(p)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
@@ -122,6 +127,11 @@
   end function matrix_ip_
 
   !> @param[in] this sparse matrix
+#ifdef BUD_SM_CSC
+  !! @param[in] i sparse row index
+#else
+  !! @param[in] i sparse column index
+#endif
   !! @return a pointer to the data (contiguous)
   function matrix_lp_(this, i) result(p)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this

@@ -8,11 +8,6 @@
 ! Define default variable for the communicator
 #define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,MP_Comm)
 #define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,MP_Comm)
-#define BUD_TYPE_NEW BUD_CC3(BUD_NEW,_,MP_Comm)
-
-#define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
-#define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
-#define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
 
 !> @defgroup mp Message Passing object
 !! @ingroup bud-intrinsic
@@ -574,9 +569,9 @@ module BUD_MOD_NAME
     integer(ii_) :: Grp = MPI_Group_Null
 
     !> The associated processor number in the associated communicator
-    integer(ii_) :: P = 0
+    integer(ii_) :: rank = 0
     !> The number of processors in the associated communicator
-    integer(ii_) :: NP = 1
+    integer(ii_) :: size = 1
 
     ! Consistent data in the reference counted object
 #   include "bud_common_type_.inc"
@@ -594,14 +589,6 @@ module BUD_MOD_NAME
     module procedure new_
   end interface
   public :: new
-
-  !> Create a new message passing object.
-  !!
-  !! @iSee new
-  interface BUD_TYPE_NEW
-    module procedure new_
-  end interface
-  public :: BUD_TYPE_NEW
 
 
   !> Create a new (remote) message passing object.
@@ -1272,8 +1259,8 @@ module BUD_MOD_NAME
     this%D%Comm = MPI_Comm_Null
     this%D%Grp = MPI_Group_Null
 
-    this%D%P = 0
-    this%D%NP = 1
+    this%D%rank = 0
+    this%D%size = 1
 
   end subroutine delete_
 
@@ -1291,7 +1278,7 @@ module BUD_MOD_NAME
     if ( .not. is_initd(from) ) return
 
     if ( from%D%comm == MPI_Comm_Null ) then
-      call new_remote(to, from%D%P, from%D%NP)
+      call new_remote(to, from%D%rank, from%D%size)
     else
       call new(to, from%D%comm)
     end if
@@ -1322,7 +1309,7 @@ module BUD_MOD_NAME
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_) :: P
     if ( is_initd(this) ) then
-      P = this%D%P
+      P = this%D%rank
     else
       P = -1
     end if
@@ -1332,7 +1319,7 @@ module BUD_MOD_NAME
   function Pp_(this) result(Pp)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_), pointer :: Pp
-    Pp => this%D%P
+    Pp => this%D%rank
   end function Pp_
 
   !> Query the number of processors in the communicator
@@ -1340,7 +1327,7 @@ module BUD_MOD_NAME
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_) :: NP
     if ( is_initd(this) ) then
-      NP = this%D%NP
+      NP = this%D%size
     else
       NP = 0
     end if
@@ -1350,7 +1337,7 @@ module BUD_MOD_NAME
   function NPp_(this) result(NPp)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_), pointer :: NPp
-    NPp => this%D%NP
+    NPp => this%D%size
   end function NPp_
 
   !> Basic routine for initializing a new communicator
@@ -1382,13 +1369,13 @@ module BUD_MOD_NAME
     call MPI_Comm_group(this%D%comm, this%D%Grp, this%error)
 
     ! Figure out number of processors and the rank
-    call MPI_Comm_Rank( this%D%comm, this%D%P, this%error)
-    call MPI_Comm_Size( this%D%comm, this%D%NP, this%error)
+    call MPI_Comm_Rank( this%D%comm, this%D%rank, this%error)
+    call MPI_Comm_Size( this%D%comm, this%D%size, this%error)
 
 #else
     this%D%comm = Comm
-    this%D%P = 0
-    this%D%NP = 1
+    this%D%rank = 0
+    this%D%size = 1
 
 #endif
 
@@ -1406,8 +1393,8 @@ module BUD_MOD_NAME
     this%D%comm = MPI_Comm_Null
     this%D%grp = MPI_Group_Null
 
-    this%D%P = rank
-    this%D%NP = size
+    this%D%rank = rank
+    this%D%size = size
 
   end subroutine new_remote_
 
@@ -2166,12 +2153,12 @@ module BUD_MOD_NAME
     if ( this%D%Comm == MPI_Comm_Null ) then
       write(fmt, '(a,i0,a)') '(t',lindent,',4a,3(i0,a))'
       write(*,fmt) "<", trim(name), " (remote)Comm", &
-        ", P=", this%D%P, ", NP=", this%D%NP, &
+        ", rank=", comm_rank(this), ", size=", comm_size(this), &
         ", refs: ", references(this), ">"
     else
       write(fmt, '(a,i0,a)') '(t',lindent,',3a,4(i0,a))'
       write(*,fmt) "<", trim(name), " Comm=", this%D%Comm, &
-        ", P=", this%D%P, ", NP=", this%D%NP, &
+        ", rank=", comm_rank(this), ", size=", comm_size(this), &
         ", refs: ", references(this), ">"
     end if
 
