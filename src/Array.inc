@@ -826,7 +826,7 @@
       same_size = same_size .and. &
         tshape(i) == rshape(i)
     end do
-        
+
     if ( d > BUD_DIM ) then
       do i = BUD_DIM + 1 , d
         if ( rshape(i) > 1 ) then

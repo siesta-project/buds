@@ -12,11 +12,6 @@
   !  - BUD_TYPE_VAR, the variable type contained in the array
   !  - BUD_TYPE_VAR_PREC, the precision specifier for the array
 
-
-#define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
-#define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
-#define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
-
   !> BUD_MOD_NAME documentation
   !!
   !! @details
@@ -74,10 +69,7 @@
 
     !> @}
 
-    !> @iSee BUD_NEW_TYPE
-    generic, public :: BUD_NEW_TYPE => new_dim_, new_copy_, &
-      new_copy_n_, new_range_
-    !> @iSee BUD_NEW_TYPE
+    !> @iSee #new
     generic, public :: new => new_dim_, new_copy_, &
       new_copy_n_, new_range_
 
@@ -95,12 +87,12 @@
     !> @iSee #size_max
     procedure, public :: size_max => max_size_
     !> @iSee #size_max_p
-    procedure, public :: size_max_p => max_sizep_
+    procedure, public :: size_max_p => max_size_p_
 
     !> @iSee #list_p
-    procedure, public :: list_p => listp_
+    procedure, public :: list_p => list_p_
     !> @iSee #list_max_p
-    procedure, public :: list_max_p => max_listp_
+    procedure, public :: list_max_p => max_list_p_
 
     !> @iSee #push
     generic, public :: push => push_value_, push_array_, push_list_
@@ -143,11 +135,11 @@
     !> @iSee #merge
     procedure, public :: merge => merge_
 
-    !> @iSee #set_incr_n
-    procedure, public :: set_incr_n => set_incr_n
+    !> @iSee #set_increment
+    procedure, public :: set_increment => set_increment
 
-    !> @iSee #get_incr_n
-    procedure, public :: get_incr_n => get_incr_n
+    !> @iSee #increment
+    procedure, public :: increment => increment
 
 # ifdef BUD_IS_INTEGER
     !> @iSee #index
@@ -220,15 +212,6 @@
   !! @note
   !! If the array is created from dimensions, the initial
   !! value of the array is arbitrary.
-  interface BUD_TYPE_NEW
-    module procedure new_dim_
-    module procedure new_copy_
-    module procedure new_copy_n_
-    module procedure new_range_
-  end interface
-  public :: BUD_TYPE_NEW
-
-  !> @iSee BUD_TYPE_NEW
   interface new
     module procedure new_dim_
     module procedure new_copy_
@@ -261,7 +244,7 @@
   !! @note
   !! Do not deallocate the array-pointer.
   interface list_p
-    module procedure listp_
+    module procedure list_p_
   end interface
   public :: list_p
 
@@ -272,7 +255,7 @@
   !! @note
   !! Do not deallocate the array-pointer.
   interface list_max_p
-    module procedure max_listp_
+    module procedure max_list_p_
   end interface
   public :: list_max_p
 
@@ -313,7 +296,7 @@
   !!
   !! Returns a pointer to the the allowed size of the list.
   interface size_max_p
-    module procedure max_sizep_
+    module procedure max_size_p_
   end interface
   public :: size_max_p
 
@@ -716,7 +699,7 @@
 
   !> @param[in] this @bud container
   !! @return the size of the contained list
-  function max_sizep_(this) result(d)
+  function max_size_p_(this) result(d)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
 
     integer(BUD_INT_PREC), pointer :: d
@@ -727,12 +710,12 @@
       nullify(d)
     end if
 
-  end function max_sizep_
+  end function max_size_p_
 
 
   !> @param[inout] this list
   !! @param[in] incr_n the default number of values that should be
-  subroutine set_incr_n(this, incr_n)
+  subroutine set_increment_(this, incr_n)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer(BUD_INT_PREC), intent(in) :: incr_n
 
@@ -740,11 +723,11 @@
 
     this%D%incr_n = incr_n
 
-  end subroutine set_incr_n
+  end subroutine set_increment_
 
   !> @param[in] this list
   !! @param[out] incr_n the default number of values that should be
-  subroutine get_incr_n(this, incr_n)
+  subroutine increment_(this, incr_n)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_INT_PREC), intent(out) :: incr_n
 
@@ -753,7 +736,7 @@
 
     incr_n = this%D%incr_n
 
-  end subroutine get_incr_n
+  end subroutine increment_
 
 
   !> @cond BUD_DEVELOPER
@@ -893,6 +876,8 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: C
     type(BUD_TYPE_NAME) :: tmp
 
+    ! We need to operate on a temporary list,
+    ! say if B is C
     call copy(A, tmp)
     call push(tmp, B)
     C = tmp
@@ -902,7 +887,7 @@
 
   !> @param[in] this list @bud
   !! @return a pointer to the list (contiguous)
-  function listp_(this) result(p)
+  function list_p_(this) result(p)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: p(:)
@@ -913,11 +898,11 @@
     ! only return the currently known values
     p => this%D%lst(1:this%D%n)
 
-  end function listp_
+  end function list_p_
 
   !> @param[in] this list @bud
   !! @return a pointer to the list (contiguous)
-  function max_listp_(this) result(p)
+  function max_list_p_(this) result(p)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: p(:)
@@ -928,7 +913,7 @@
     ! return the full list values
     p => this%D%lst
 
-  end function max_listp_
+  end function max_list_p_
 
 
   !> @param[in] this @bud container
