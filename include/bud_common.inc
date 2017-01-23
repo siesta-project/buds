@@ -238,28 +238,8 @@
 
   !>>@}
 
-  !> @cond ALWAYS_SKIP
-
-#if defined(BUD_ERROR)
-  ! Stand-alone routine which must be provided
-  interface
-    subroutine BUD_ERROR(str)
-      character(len=*), intent(in), optional :: str
-    end subroutine
-  end interface
-#else
-# ifndef _BUD_ERROR_H
-!#   warning "BUD_ERROR not defined! Expect sudden crashes without warnings!"
-#   define _BUD_ERROR_H
-# endif
-#endif
-
-
 contains
 
-
-  ! contains in non-modules freak doxygen out...
-  !> @endcond ALWAYS_SKIP
 
   !> @name Intrinsic @bud routines
   !! Generic routines for all @buds
@@ -295,18 +275,12 @@ contains
     ! Allocate fresh storage
     allocate(this%D, stat=error)
 
-    if ( 0 /= error ) then
-#if defined(BUD_ERROR)
-      call BUD_ERROR("Error allocating data structure")
-#endif
-      return
-    end if
+    ! Ensure the error is set
+    call set_error(this, error)
+    if ( error /= 0 ) return
 
     ! Set the initial reference count
     this%D%refs_ = 1
-
-    ! Set the initial error
-    call set_error(this, 0)
 
     ! Tag the object (always)
     call common_tag_object_(this)
@@ -348,6 +322,7 @@ contains
 
     integer :: error
 
+    call set_error(this, 0)
     if (.not. is_initd(this) ) return
 
     this%D%refs_ = this%D%refs_ - 1
@@ -362,11 +337,7 @@ contains
 
       ! Deallocate the currently referenced storage
       deallocate(this%D, stat=error)
-      if ( 0 /= error ) then
-#if defined(BUD_ERROR)
-        call BUD_ERROR("Error in deallocation")
-#endif
-      end if
+      call set_error(this, error)
 
     end if
 

@@ -5,6 +5,16 @@
 
 # include "bud_utils.inc"
 
+# if defined(BUD_MOD_NAME) && !defined(BUD_MOD_NAME_STR)
+#  define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
+# endif
+# if defined(BUD_TYPE_NAME) && !defined(BUD_TYPE_NAME_)
+#  define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
+# endif
+# if defined(BUD_TYPE_NAME) && !defined(BUD_TYPE_NAME_STR)
+#  define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
+# endif
+
   ! Force explicit declarations of variables
   implicit none
 

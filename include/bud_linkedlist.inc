@@ -13,14 +13,6 @@
   ! Include the common utilities
 #include "bud_utils.inc"
 
-#define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
-#ifndef BUD_TYPE_NAME_
-#  define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
-#endif
-#ifndef BUD_TYPE_NAME_STR
-#  define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
-#endif
-
 #include "bud_common_declarations.inc"
 
   ! We default the linked list to be a doubly
@@ -100,9 +92,7 @@
 
     !>>@}
 
-    !> @iSee BUD_NEW_TYPE
-    generic, public :: BUD_NEW_TYPE => new_, new_data_
-    !> @iSee BUD_NEW_TYPE
+    !> @iSee #new
     generic, public :: new => new_, new_data_
 
     !> @iSee #nodes
@@ -196,13 +186,6 @@
   !!
   !! One may later use #set_head to change the
   !! head of the linked list.
-  interface BUD_TYPE_NEW
-    module procedure new_
-    module procedure new_data_
-  end interface
-  public :: BUD_TYPE_NEW
-
-  !> @iSee BUD_TYPE_NEW
   interface new
     module procedure new_
     module procedure new_data_

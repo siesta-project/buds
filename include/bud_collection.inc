@@ -29,14 +29,6 @@
   ! Include the common utilities
 #include "bud_utils.inc"
 
-#define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
-#ifndef BUD_TYPE_NAME_
-#  define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
-#endif
-#ifndef BUD_TYPE_NAME_STR
-#  define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
-#endif
-
 #include "bud_common_declarations.inc"
 
   !> @cond BUD_DOC_INC
@@ -132,9 +124,7 @@
 
     !> @}
 
-    !> @iSee BUD_NEW_TYPE
-    generic, public :: BUD_NEW_TYPE => new_, new_data_
-    !> @iSee BUD_NEW_TYPE
+    !> @iSee #new
     generic, public :: new => new_, new_data_
 
     !> @iSee #element1
@@ -264,13 +254,6 @@
   !!
   !! This will call `delete` before re-initializing the
   !! data.
-  interface BUD_TYPE_NEW
-    module procedure new_
-    module procedure new_data_
-  end interface
-  public :: BUD_TYPE_NEW
-
-  !> @iSee BUD_TYPE_NEW
   interface new
     module procedure new_
     module procedure new_data_
@@ -478,6 +461,8 @@
 
   subroutine delete_(this)
     type(BUD_TYPE_NAME), intent(inout) :: this
+
+    call set_error(this, 0)
 
     call delete(this%D%e1)
     if ( 0 /= error(this%D%e1) ) &

@@ -11,14 +11,6 @@
   ! Include the common utilities
 #include "bud_utils.inc"
 
-#define BUD_MOD_NAME_STR BUD_XSTR(BUD_MOD_NAME)
-#ifndef BUD_TYPE_NAME_
-#  define BUD_TYPE_NAME_ BUD_CC2(BUD_TYPE_NAME,_)
-#endif
-#ifndef BUD_TYPE_NAME_STR
-#  define BUD_TYPE_NAME_STR BUD_XSTR(BUD_TYPE_NAME)
-#endif
-
 #include "bud_common_declarations.inc"
 
   !> @cond BUD_DOC_INC
@@ -61,9 +53,7 @@
 #   include "bud_common_type.inc"
 #if BUD_FORTRAN >= 2003
 
-    !> @iSee BUD_NEW_TYPE
-    procedure, public :: BUD_NEW_TYPE => new_
-    !> @iSee BUD_NEW_TYPE
+    !> @iSee #new
     procedure, public :: new => new_
 
     !> @iSee #push
@@ -79,9 +69,9 @@
     procedure, public :: get => get_elem_
 
     !> @iSee #element_p
-    procedure, public :: element_p => get_elemp_
+    procedure, public :: element_p => get_elem_p_
     !> @iSee #element_p
-    procedure, public :: get_p => get_elemp_
+    procedure, public :: get_p => get_elem_p_
 
     !> @iSee #size
     procedure, public :: size => size_elem_
@@ -133,7 +123,7 @@
   !!  call delete(this)
   !!  call new(this, n)
   !! \endcode
-  integer, public, parameter :: BUD_FSTACK_ALL = 0
+  !!integer, public, parameter :: BUD_FSTACK_ALL = 0
 
 
   !> Internal initialization of finite stack holding BUD_STACK_TYPE
@@ -142,12 +132,6 @@
   !! will clear the reference (@isee delete).
   !! Subsequently the type container will be allocated
   !! and the reference counted data will be 1.
-  interface BUD_TYPE_NEW
-    module procedure new_
-  end interface
-  public :: BUD_TYPE_NEW
-
-  !> @iSee BUD_TYPE_NEW
   interface new
     module procedure new_
   end interface
@@ -217,7 +201,7 @@
   !! stored elements `elem` will be null.
   !!
   interface element_p
-    module procedure get_elemp_
+    module procedure get_elem_p_
   end interface
   public :: element_p
 
@@ -301,10 +285,7 @@
     integer, intent(in) :: nel
 
     if ( nel < 1 ) then
-#ifdef BUD_ERROR
-      call BUD_ERROR("Finite stack allocated with <1 maximum elements.")
-#endif
-      call delete(this)
+      call set_error(this, -1)
       return
     end if
 
@@ -345,6 +326,7 @@
       this%D%T(el) = item
 
     else
+
       el = el + 1
       ! simply add it to the stack
       this%D%nel = el
@@ -401,6 +383,12 @@
 
     ! it is already empty...
     if ( .not. is_initd(this) ) return
+
+    if ( .not. present(top) &
+      .and. .not. present(bot) ) then
+      call set_error(this, 1)
+      return
+    end if
 
     ! number of elements
     el = size(this)
@@ -474,6 +462,12 @@
 
     if ( .not. is_initd(this) ) return
 
+    if ( .not. present(top) &
+      .and. .not. present(bot) ) then
+      call set_error(this, 1)
+      return
+    end if
+
     ! number of elements
     el = size(this)
 
@@ -535,7 +529,7 @@
   !> @param[in] this stack to retrieve pointer element from
   !! @param[in] iel @opt=`size(this)` index of element to return. May be negative to offset from top.
   !! @result pointer to the element `iel`
-  function get_elemp_(this, iel) result(p)
+  function get_elem_p_(this, iel) result(p)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer, intent(in), optional :: iel
     type(BUD_STACK_TYPE), pointer :: p
@@ -559,7 +553,7 @@
       p => this%D%T(el)
     end if
 
-  end function get_elemp_
+  end function get_elem_p_
 
 
   !> @param[inout] this stack to count element from
@@ -656,7 +650,7 @@
     ! Initialize this object
     call new(this, nel_max)
 
-    ! Now write each of them...
+    ! Now read each of them...
     do i = 1 , nel
       call read(f, cp)
       call push(this, cp)
