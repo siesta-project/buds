@@ -10,6 +10,8 @@
   !! with.
   !!
 
+# define BUD_IO_OVERLOAD
+
   ! Ensure we have the sparse matrix
 #include "SM.inc"
 
@@ -72,7 +74,6 @@
   end interface
   public :: array_p
 
-#ifdef NOT_IMPLEMENTED_YET
   !> Adds a non-zero element to the sparse matrix
   !!
   !! Add a non-zero element to the sparse matrix.
@@ -94,7 +95,6 @@
     module procedure add_element_
   end interface
   public :: add_element
-#endif
 
 #include "bud_collection.inc"
 
@@ -163,6 +163,7 @@
 #endif
 
   end function matrix_lp_
+
 #endif
 
 
@@ -195,13 +196,12 @@
   end function dimensions_
 
 
-#ifdef NOT_IMPLEMENTED_YET
   !> @param[inout] this the sparse matrix to add an element to
   !! @param[in] ir the row index of the element
   !! @param[in] ic the column index of the element
   recursive subroutine add_element_(this, ir, ic, val)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    integer(BUD_TYPE_VAR_PREC), intent(in) :: ir, ic
+    integer(BUD_INT_PREC), intent(in) :: ir, ic
 #ifdef BUD_TYPE_VAR_PREC
     BUD_TYPE_VAR(BUD_TYPE_VAR_PREC), intent(in) :: val
 #else
@@ -217,83 +217,135 @@
 #else
     BUD_TYPE_VAR, pointer BUD_FORTRAN_CONTIGUOUS :: p BUD_DIM_SPEC(:)
 #endif
-    integer(BUD_INT_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: ptr(:), ncol(:), row(:)
-    integer(BUD_INT_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: ptr_(:), ncol_(:), row_(:)
-    integer :: e
 
     if ( .not. is_initd(this) ) return
 
     sm = this
-#ifdef BUD_SM_CSC
-    call attach(sm, nr=nr, nc=nc, &
-      cptr=ptr, ncol=ncol, row=row)
-#else
-    call attach(sm, nr=nr, nc=nc, &
-      rptr=ptr, nrow=ncol, col=col)
-#endif
 
-    call attach(sm, nr=nr, nc=nc, &
-      cptr=ptr, ncol=ncol, row=row)
-
-    ! check if there is place in the sparse matrix
-    ! for an entry without re-allocation
-    if ( ptr(ic+ONE) - ptr(ic) > ncol(ic) ) then
-
-      ix = ptr(ic)+ncol(ic)BUD_SM_PTR_A
-      if ( ncol(ic) == 0 ) then
-        i = 0
-      else
-        i = row(ix - ONE)
-      end if
-      row(ix) = ir
-      ncol(ic) = ncol(ic) + ONE
-      this%D%nz = this%D%nz + ONE
-
-      if ( this%D%sorted .and. ir < i ) then
-
-        ! denote it non-sorted
-        this%D%sorted = .false.
-
-      end if
-
-      call set_error(this, 0)
+    ! We will only allow adding an element if there is no error
+    call add_element(sm, ir, ic, dry_run = .true.)
+    if ( error(sm) /= 0 ) then
+      ! there is not room for adding an element
+      ! without disrupting anything
+      call delete(sm)
+      call set_error(this, -1)
 
       return
 
     end if
 
-    ! Re-allocate the sparse matrix and copy it
-    npc = maxval(ncol) + BUD_CC2(8_,BUD_INT_PREC)
-    call new(nthis, nr, nc, npc=npc)
-    call attach(nthis, cptr=ptr_, ncol=ncol_, row=row_)
+    ! We now adding an element will not re-allocate
+    ! the sparsity pattern
+    call add_element(sm, ir, ic)
+    i = index(sm, ir, ic)
 
-    ! Copy all elements correctly
-    ix = 1
-    do c = 1 , nc
-      ncol_(c) = ncol(c)
+    p => matrix_p(this)
 
-      ix = ptr_(c) BUD_SM_PTR_A
-      ! copy this column
-      do i = ptr(c)BUD_SM_PTR_A , ptr(c) + ncol(c) BUD_SM_PTR_B
-        row_(ix) = row(i)
-        ix = ix + ONE
-      end do
+    select case ( sparse_index(this) )
+    case ( 1 )
 
-    end do
+#if BUD_DIM == 1
+      p(i) = val
+#elif BUD_DIM == 2
+      p(i,:) = val
+#elif BUD_DIM == 3
+      p(i,:,:) = val
+#endif
 
-    ! add the element to the new sparse pattern
-    call add_nonzero(nthis, ir, ic)
-    ! copy the sparse pattern to this one
-    this = nthis
+    case ( 2 )
+
+#if BUD_DIM == 2
+      p(:,i) = val
+#elif BUD_DIM == 3
+      p(:,i,:) = val
+#endif
+
+    case ( 3 )
+
+#if BUD_DIM == 3
+      p(:,:,i) = val
+#endif
+
+    end select
+
     ! clean-up
-    call delete(nthis)
-    ! specify the error message which then
-    ! is the new size per row
-    e = npc
-    call set_error(this, e)
+    call delete(sm)
 
   end subroutine add_element_
-#endif
+
+
+  !> @param[inout] f `File` bud
+  !! @param[in] this the sparse matrix bud with data
+  !! @param[in] only_array @opt whether only the sparse data should be written
+  subroutine write_(f, this, only_array)
+    use BUD_CC2(BUD_MOD,_File)
+
+    BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    logical, intent(in), optional :: only_array
+
+    type(BUD_COLL_1) :: sm
+    type(BUD_COLL_2) :: arr
+
+    logical :: lonly_array
+
+    ! If file is not opened, return immediately
+    if ( .not. is_open(f) ) return
+    if ( .not. is_initd(this) ) return
+
+    ! Write the sparse matrix
+    lonly_array = .false.
+    if ( present(only_array) ) lonly_array = only_array
+
+    sm = this
+    arr = this
+    if ( .not. is_finalized(sm) ) then
+      call delete(sm)
+      call delete(arr)
+      call set_error(this, -1)
+      return
+    end if
+
+    if ( .not. lonly_array ) then
+      call write(f, sm)
+    end if
+    call write(f, arr)
+
+    call delete(sm)
+    call delete(arr)
+
+  end subroutine write_
+
+  !> @param[inout] f `File` bud
+  !! @param[inout] this the sparse matrix bud
+  !! @param[inout] sm @opt the sparse pattern, if this is passed there will be no reading of the sparse matrix
+  subroutine read_(f, this, sm)
+    use BUD_CC2(BUD_MOD,_File)
+
+    BUD_CLASS( BUD_CC2(BUD_TYPE,File) ), intent(inout) :: f
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_COLL_1), intent(inout), optional :: sm
+
+    type(BUD_COLL_1) :: lsm
+    type(BUD_COLL_2) :: arr
+
+    ! If file is not opened, return immediately
+    if ( .not. is_open(f) ) return
+
+    if ( present(sm) ) then
+      lsm = sm
+    else
+      ! Read the sparse pattern
+      call read(f, lsm)
+    end if
+
+    call read(f, arr)
+
+    call new(this, lsm, arr)
+
+    call delete(lsm)
+
+  end subroutine read_
 
 
   ! Associated with the Array

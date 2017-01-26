@@ -95,8 +95,8 @@
     !> @iSee #nonzeros
     procedure, public :: nonzeros => nonzeros_
 
-    !> @iSee #elements
-    procedure, public :: elements => elements_
+    !> @iSee #max_nonzeros
+    procedure, public :: max_nonzeros => max_nonzeros_
 
     !> @iSee #rows
     procedure, public :: rows => rows_
@@ -143,6 +143,9 @@
 
     !> @iSee #sort
     procedure, public :: sort => sort_
+
+    !> @iSee #equivalent
+    procedure, public :: equivalent => equivalent_
 
     !> @iSee #finalize
     procedure, public :: finalize => finalize_
@@ -244,6 +247,12 @@
   end interface
   public :: nrow_p
 
+  !> Retrieve the sparse index for the row and column (-1 if non existing)
+  interface index
+    module procedure index_
+  end interface
+  public :: index
+
 
   !> Remove rows from the sparse matrix
   interface remove_row
@@ -298,6 +307,20 @@
     module procedure sort_
   end interface
   public :: sort
+
+
+  !> Checks whether two sparse matrices have the same elements
+  !!
+  !! This routine returns `.true.` if the two
+  !! sparse matrices have all the same elements in the
+  !! same order.
+  !!
+  !! In case it is the same object it returns immediately
+  !! with `.true.`.
+  interface equivalent
+    module procedure equivalent_
+  end interface
+  public :: equivalent
 
 
   !> Finalize the sparsity pattern by removing non-used elements
@@ -381,19 +404,83 @@
 
   !> @param[in] from the original `bud` which is copied to `to`
   !! @param[inout] to the output `bud` with the full copied data
-  subroutine copy_(from, to)
+  !! @param[in] dealloc @opt=.true. whether `to` should be de-allocated before
+  subroutine copy_(from, to, dealloc)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
+    logical, intent(in), optional :: dealloc
+    logical :: ldealloc
+    integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: fptr(:), nrow(:), fcol(:)
+    integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: tptr(:)
+    integer(BUD_TYPE_VAR_PREC) :: i, ir, nr
 
-    call delete(to)
+    call set_error(to, 0)
+
+    ! Check options
+    ldealloc = .true.
+    if ( present(dealloc) ) ldealloc = dealloc
+    if ( ldealloc ) call delete(to)
+
+    ! quick return if there is nothing to copy
     if ( .not. is_initd(from) ) return
 
-    call new(to, from%D%nr, from%D%nc, from%D%nz, &
-      from%D%rptr, from%D%col, from%D%nrow)
-    to%D%sorted = from%D%sorted
+    if ( is_initd(to) ) then
 
-    ! Copy the common data-content
-    call common_copy_(from, to)
+      ! Check if to has room
+      if ( rows(from) /= rows(to) .or. &
+        columns(from) /= columns(to) ) then
+
+        ! We do not have the same shape
+        call set_error(to, -1)
+        return
+
+      end if
+
+      ! They have the same dimensions
+      ! Check there is room
+      call attach(from, nr=nr, rptr=fptr, nrow=nrow, col=fcol)
+      call attach(to, rptr=tptr)
+
+      do ir = 1 , nr
+
+        if ( nrow(ir) > tptr(ir+ONE) - tptr(ir) ) then
+          call set_error(to, ir)
+          exit
+        end if
+
+      end do
+
+      ! quick return if there is not room
+      ! The error message will return the column
+      ! where there is not enough room
+      if ( error(to) /= 0 ) return
+
+      ! Now reset all elements in `to`
+      call attach(to, nrow=nrow)
+
+      ! reset everything
+      nrow(:) = 0
+
+      ! Loop all elements in from and copy them to
+      to%D%sorted = .true.
+      do ir = 1, nr
+
+        fcol => column_p(from, ir)
+
+        do i = 1, size(fcol)
+          call add_element(to, ir, fcol(i))
+        end do
+
+      end do
+
+    else
+
+      ! We make a copy by creating it
+      call new(to, from%D%nr, from%D%nc, from%D%nz, &
+        from%D%rptr, from%D%col, from%D%nrow)
+      to%D%sorted = from%D%sorted
+
+    end if
 
   end subroutine copy_
 
@@ -680,6 +767,49 @@
   end subroutine sort_
 
 
+  !> @param[inout] a first sparse matrix
+  !! @param[inout] b second sparse matrix
+  !! @return whether they have the same entries
+  function equivalent_(a, b) result(is)
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: a, b
+    logical :: is
+
+    integer(BUD_TYPE_VAR_PREC) :: i, nr
+
+    integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: arow(:), acol(:)
+    integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: brow(:), bcol(:)
+
+    is = .true.
+    if ( same(a, b) ) return
+
+    is = rows(a) == rows(b) .and. &
+      columns(a) == columns(b)
+    if ( .not. is ) return
+
+    ! get information
+    call attach(a, nr=nr, nrow=arow)
+    call attach(b, nrow=brow)
+
+    do i = 1, nr
+
+      ! Check number of elements per row
+      is = arow(i) == brow(i)
+      if ( .not. is ) return
+
+      ! check that there are elements
+      if ( arow(i) == 0 ) cycle
+
+      acol => column_p(a, i)
+      bcol => column_p(b, i)
+
+      is = all(acol == bcol)
+      if ( .not. is ) return
+
+    end do
+
+  end function equivalent_
+
+
   !> @param[inout] this sparse matrix to finalize (in-place)
   subroutine finalize_(this)
     use BUD_CC3(BUD_MOD,_,BUD_LIST_NAME)
@@ -745,16 +875,21 @@
   !> @param[inout] this the sparse matrix to add an element to
   !! @param[in] ir the row index of the element
   !! @param[in] ic the column index of the element
-  recursive subroutine add_element_(this, ir, ic)
+  !! @param[in] dry_run @opt=.false., if `.true.` will do nothing but issue error messages as though it had runned.
+  recursive subroutine add_element_(this, ir, ic, dry_run)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer(BUD_TYPE_VAR_PREC), intent(in) :: ir, ic
+    logical, intent(in), optional :: dry_run
 
+    logical :: ldry
     type(BUD_TYPE_NAME) :: nthis
     integer(BUD_TYPE_VAR_PREC) :: i, r, ix, nr, nc, npr
 
     integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: ptr(:), nrow(:), col(:)
     integer(BUD_TYPE_VAR_PREC), pointer BUD_FORTRAN_CONTIGUOUS :: ptr_(:), nrow_(:), col_(:)
-    integer :: e
+
+    ldry = .false.
+    if ( present(dry_run) ) ldry = dry_run
 
     call attach(this, nr=nr, nc=nc, &
       rptr=ptr, nrow=nrow, col=col)
@@ -763,21 +898,23 @@
     ! for an entry without re-allocation
     if ( ptr(ir+ONE) - ptr(ir) > nrow(ir) ) then
 
-      ix = ptr(ir)+nrow(ir)BUD_SM_PTR_A
+      ix = ptr(ir) BUD_SM_PTR_A +nrow(ir)
       if ( nrow(ir) == 0 ) then
         i = 0
       else
         i = col(ix - ONE)
       end if
-      col(ix) = ic
-      nrow(ir) = nrow(ir) + ONE
-      this%D%nz = this%D%nz + ONE
+      if ( .not. ldry ) then
+        col(ix) = ic
+        nrow(ir) = nrow(ir) + ONE
+        this%D%nz = this%D%nz + ONE
 
-      if ( this%D%sorted .and. ic < i ) then
+        if ( this%D%sorted .and. ic < i ) then
 
-        ! denote it non-sorted
-        this%D%sorted = .false.
+          ! denote it non-sorted
+          this%D%sorted = .false.
 
+        end if
       end if
 
       call set_error(this, 0)
@@ -787,7 +924,15 @@
     end if
 
     ! Re-allocate the sparse matrix and copy it
+    ! We add 8 elements per row.
+    ! Perhaps this should be defined by the user.
     npr = maxval(nrow) + BUD_CC2(8_,BUD_TYPE_VAR_PREC)
+    ! Quick return if user request dry-run
+    if ( ldry ) then
+      call set_error(this, npr)
+      return
+    end if
+
     call new(nthis, nr, nc, npr=npr)
     call attach(nthis, rptr=ptr_, nrow=nrow_, col=col_)
 
@@ -798,7 +943,7 @@
 
       ix = ptr_(r) BUD_SM_PTR_A
       ! copy this row
-      do i = ptr(r)BUD_SM_PTR_A , ptr(r) + nrow(r) BUD_SM_PTR_B
+      do i = ptr(r) BUD_SM_PTR_A , ptr(r) + nrow(r) BUD_SM_PTR_B
         col_(ix) = col(i)
         ix = ix + ONE
       end do
@@ -813,8 +958,7 @@
     call delete(nthis)
     ! specify the error message which then
     ! is the new size per row
-    e = npr
-    call set_error(this, e)
+    call set_error(this, npr)
 
   end subroutine add_element_
 

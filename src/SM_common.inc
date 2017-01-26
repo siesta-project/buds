@@ -36,10 +36,10 @@
   public :: columns
 
   !> Number of possible non-zero elements in the sparse matrix
-  interface elements
-    module procedure elements_
+  interface max_nonzeros
+    module procedure max_nonzeros_
   end interface
-  public :: elements
+  public :: max_nonzeros
 
 
   !> Query if the sparse matrix is sorted
@@ -58,7 +58,7 @@
   !> Dimensions of the sparse matrix
   !!
   !! This routine will return 1 of 3 possible scenarios:
-  !!  1. `size(this)` will return number of allowed non-zero possible elements
+  !!  1. `size(this)` will return number of non-zero elements
   !!  2. `size(this, 1)` will return `rows(this)`
   !!  3. `size(this, 2)` will return `columns(this)`
   interface size
@@ -103,11 +103,11 @@
 
   !> @param[in] this the sparse matrix
   !! @return number of allowed non-zero elements in the pattern
-  elemental function elements_(this) result(nt)
+  elemental function max_nonzeros_(this) result(nt)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_TYPE_VAR_PREC) :: nt
     nt = this%D%nt
-  end function elements_
+  end function max_nonzeros_
 
 
   !> @param[in] this the sparse matrix
