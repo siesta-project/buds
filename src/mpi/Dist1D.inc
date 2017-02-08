@@ -80,9 +80,9 @@
     procedure, public :: group => group_
 
     !> @iSee #comm_rank
-    procedure, public :: comm_rank => P_
+    procedure, public :: comm_rank => comm_rank_
     !> @iSee #comm_size
-    procedure, public :: comm_size => NP_
+    procedure, public :: comm_size => comm_size_
 
     !> @iSee #is_dist
     procedure, public :: is_dist => is_dist_
@@ -248,13 +248,13 @@
 
   !> Query ID for current processor in distribution
   interface comm_rank
-    module procedure P_
+    module procedure comm_rank_
   end interface
   public :: comm_rank
 
   !> Query number of processors in distribution
   interface comm_size
-    module procedure NP_
+    module procedure comm_size_
   end interface
   public :: comm_size
 
@@ -440,7 +440,6 @@
     to%D%dist = from%D%dist
     to%D%ng = from%D%ng
     to%D%BS = from%D%BS
-    call set_error(to, error(from))
 
     call alloc(from%D%nl, to%D%nl)
     call alloc(from%D%l2g, to%D%l2g)
@@ -500,26 +499,26 @@
   end subroutine comm_assign_
 
   !> Query the current processor ID in the communicator
-  elemental function P_(this) result(P)
+  elemental function comm_rank_(this) result(rank)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer(ii_) :: P
+    integer(ii_) :: rank
     if ( is_initd(this) ) then
-      P = comm_rank(this%D%comm)
+      rank = comm_rank(this%D%comm)
     else
-      P = -1
+      rank = -1
     end if
-  end function P_
+  end function comm_rank_
 
   !> Query the number of processors in the communicator
-  elemental function NP_(this) result(NP)
+  elemental function comm_size_(this) result(size)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    integer(ii_) :: NP
+    integer(ii_) :: size
     if ( is_initd(this) ) then
-      NP = comm_size(this%D%comm)
+      size = comm_size(this%D%comm)
     else
-      NP = 0
+      size = 0
     end if
-  end function NP_
+  end function comm_size_
 
 
   !> Query the block-size, `-1` if non-block-cyclic
