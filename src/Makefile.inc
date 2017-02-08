@@ -296,6 +296,7 @@ $(src_FPP_SOURCES): INCLUDES += -I$(src_DIR)
 
 
 source-src: $(src_SOURCES)
+	mv $(src_SOURCES) $(src_DIR)/
 
 clean-src:
 	-rm -f $(src_FPP_SOURCES)

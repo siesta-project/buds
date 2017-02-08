@@ -95,6 +95,7 @@ $(mpi_FPP_SOURCES): INCLUDES += -I$(src_DIR) -I$(mpi_DIR)
 
 
 source-mpi: $(mpi_SOURCES)
+	mv $(mpi_SOURCES) $(mpi_DIR)/
 
 
 clean-src-mpi:
