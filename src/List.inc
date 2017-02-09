@@ -135,10 +135,10 @@
     procedure, public :: merge => merge_
 
     !> @iSee #set_increment
-    procedure, public :: set_increment => set_increment
+    procedure, public :: set_increment => set_increment_
 
     !> @iSee #increment
-    procedure, public :: increment => increment
+    procedure, public :: increment => increment_
 
 # ifdef BUD_IS_INTEGER
     !> @iSee #index

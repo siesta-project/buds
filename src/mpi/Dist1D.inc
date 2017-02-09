@@ -68,16 +68,13 @@
       new_user_
 
     !> @iSee new_remote
-    procedure, public :: new_remote => globalize_
+    procedure, public, pass(this) :: new_remote => globalize_
 
     !> @iSee #dist_type
     procedure, public :: dist_type => dist_type_
 
     !> @iSee #communicator
     procedure, public :: communicator => comm_
-
-    !> @iSee #group
-    procedure, public :: group => group_
 
     !> @iSee #comm_rank
     procedure, public :: comm_rank => comm_rank_

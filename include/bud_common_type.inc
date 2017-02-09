@@ -12,7 +12,7 @@
   !! prohibit the query of errors on non-initialized types.
   !! However, when a type cannot be created (due to erroneous
   !! input) there should be a way to message the error message.
-  integer :: error = 0
+  integer :: error_ = 0
 
 #if BUD_FORTRAN >= 2003
   contains

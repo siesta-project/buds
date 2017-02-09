@@ -415,7 +415,7 @@ contains
     integer :: error
 
     if ( is_initd(this) ) then
-      error = this%error
+      error = this%error_
     else
       error = 0
     end if
@@ -427,21 +427,21 @@ contains
   elemental subroutine common_set_error_is_(this, error)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer(is_), intent(in) :: error
-    this%error = error
+    this%error_ = error
   end subroutine common_set_error_is_
   !> @param[inout] this reference counted @bud
   !! @param[in] error set the error to this value
   elemental subroutine common_set_error_ii_(this, error)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer(ii_), intent(in) :: error
-    this%error = error
+    this%error_ = error
   end subroutine common_set_error_ii_
   !> @param[inout] this reference counted @bud
   !! @param[in] error set the error to this value
   elemental subroutine common_set_error_il_(this, error)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer(il_), intent(in) :: error
-    this%error = error
+    this%error_ = error
   end subroutine common_set_error_il_
 
 

@@ -8,6 +8,8 @@
 
 #include "bud_utils.inc"
 
+! This bud does not allow writing
+#define BUD_NO_IO
 
 ! Define default variable for the file
 #define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,File)
