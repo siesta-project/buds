@@ -66,6 +66,26 @@ include $(TOP_DIR)/src/Makefile.inc
 include $(TOP_DIR)/src/mpi/Makefile.inc
 
 
+# Create source target for creating _only_ the sources.
+.PHONY: source
+source: source-src source-mpi
+source-mpi: source-src
+
+# Dependent on the option we can fake a VPATH to contain
+# any pre-created sources, if they exist we can simply use those
+SOURCES_DIR = sources
+ifneq ($(MPI),0)
+ SOURCES_DIR := $(SOURCES_DIR)_mpi
+endif
+ifneq ($(OO),0)
+ SOURCES_DIR := $(SOURCES_DIR)_oo
+endif
+# Ensure the creation of the sub-directory
+source-dir:
+	mkdir -p $(SOURCES_DIR)
+source-src: source-dir
+
+
 # We add all plugins that is defined in the
 # setup.make file (or on the command-line)
 ifdef PLUGINS
@@ -94,9 +114,6 @@ lib: $(LIBRARIES)
 endif
 
 
-# Create target
-.PHONY: source
-source: source-src source-mpi
 
 # Include the makefile in the test source directories:
 #    ./src/test

@@ -1,6 +1,8 @@
 mpi_DIR = $(TOP_DIR)/src/mpi
 # Append to VPATH
 VPATH := $(VPATH):$(mpi_DIR)
+VPATH := $(VPATH):$(SOURCES_DIR)/src/mpi
+
 
 MP_OBJECTS = bud_MP_Comm.o
 $(MP_OBJECTS:.o=.f90): MP_Comm_routine.inc MP_Comm_routine_interface.inc MP_Comm_routine_interface_generic.inc
@@ -95,13 +97,15 @@ $(mpi_FPP_SOURCES): INCLUDES += -I$(src_DIR) -I$(mpi_DIR)
 
 
 source-mpi: $(mpi_SOURCES)
-	mv $(mpi_SOURCES) $(mpi_DIR)/
+	mkdir -p $(SOURCES_DIR)/src/mpi
+	mv $(mpi_SOURCES) $(SOURCES_DIR)/src/mpi
 
 
 clean-src-mpi:
 	-rm -f $(mpi_FPP_SOURCES)
 	-rm -f $(mpi_OBJECTS)
 	-rm -f *.mod
+	-rm -f $(SOURCES_DIR)/src/mpi/*.f90
 
 
 clean: clean-src-mpi

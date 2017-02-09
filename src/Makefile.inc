@@ -1,6 +1,7 @@
 src_DIR = $(TOP_DIR)/src
 # Append to VPATH
 VPATH := $(VPATH):$(src_DIR)
+VPATH := $(VPATH):$(SOURCES_DIR)/src
 
 # Shorthand for compiling and deleting the
 # temporary file
@@ -296,12 +297,14 @@ $(src_FPP_SOURCES): INCLUDES += -I$(src_DIR)
 
 
 source-src: $(src_SOURCES)
-	mv $(src_SOURCES) $(src_DIR)/
+	mkdir -p $(SOURCES_DIR)/src
+	mv $(src_SOURCES) $(SOURCES_DIR)/src
 
 clean-src:
 	-rm -f $(src_FPP_SOURCES)
 	-rm -f $(src_OBJECTS)
 	-rm -f *.mod
+	-rm -f $(SOURCES_DIR)/src/*.f90
 
 
 clean: clean-src
