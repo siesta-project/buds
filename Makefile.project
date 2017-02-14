@@ -83,7 +83,7 @@ doc-ford-ffast:
 
 .PHONY: clean
 clean:
-	-rm -f libbuds.a libbuds.so
+	-rm -f $(BUDS_LIB_STATIC) $(BUDS_LIB_SHARED)
 
 
 # Local Variables:
