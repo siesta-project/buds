@@ -1,6 +1,7 @@
 
-# Define VPATH
+# Define default VPATH
 VPATH ?= $(shell pwd)
+
 
 # the default target
 .PHONY: default
@@ -37,6 +38,9 @@ INCLUDES += -I$(TOP_DIR)/include
 
 # Decide on the options for compilation
 
+# Update VPATH with include files
+VPATH := $(TOP_DIR)/include:$(VPATH)
+
 #### MPI
 MPI ?= 0
 ifneq ($(MPI),0)
@@ -66,6 +70,23 @@ include $(TOP_DIR)/src/Makefile.inc
 include $(TOP_DIR)/src/mpi/Makefile.inc
 
 
+# This handy target copies from the SOURCES_DIR all sources
+# to the current directory
+# But ONLY if the current directory is not the top of the project
+.PHONY: copy
+ifeq ($(TOP_DIR),.)
+copy:
+	@echo ""
+	@echo "make copy does not work when executed from the top BUDS directory"
+	@echo "Please create an object directory with an appropriate Makefile"
+	@echo ""
+else
+copy:
+	cp $(SOURCES_DIR)/src/*.f90 .
+	cp $(SOURCES_DIR)/src/mpi/*.f90 .
+endif
+
+
 # Create source target for creating _only_ the sources.
 .PHONY: source
 source: source-src source-mpi
@@ -73,7 +94,7 @@ source-mpi: source-src
 
 # Dependent on the option we can fake a VPATH to contain
 # any pre-created sources, if they exist we can simply use those
-SOURCES_DIR = sources
+SOURCES_DIR = $(TOP_DIR)/sources
 ifneq ($(MPI),0)
  SOURCES_DIR := $(SOURCES_DIR)_mpi
 endif

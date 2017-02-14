@@ -1,11 +1,9 @@
 src_DIR = $(TOP_DIR)/src
-# Append to VPATH
-VPATH := $(VPATH):$(src_DIR)
-VPATH := $(VPATH):$(SOURCES_DIR)/src
+# Append both this directory and iff preprocessed sources exist
+VPATH := $(VPATH):$(src_DIR):$(SOURCES_DIR)/src
 
-# Shorthand for compiling and deleting the
-# temporary file
-src_FPP = $(FPP) $(FPPFLAGS) $(INCLUDES) $(_TMP_FILE) > $@ && rm $(_TMP_FILE)
+# Shorthand for preprocessing from pipe
+src_FPP = $(FPP) $(FPPFLAGS) $(INCLUDES) -
 
 ARRAY_OBJECTS = \
 	bud_Array1D.o \
@@ -17,16 +15,13 @@ $(ARRAY_OBJECTS): bud_File.o
 src_OBJECTS += $(ARRAY_OBJECTS)
 bud_Array1D.f90: Array1D.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
-bud_Array2D.f90: _TMP_FILE=Array2D.F90
 bud_Array2D.f90: Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/Array1D/Array2D/g' $(src_DIR)/Array1D.F90 > $(_TMP_FILE)
-	$(src_FPP)
-bud_Array3D.f90: _TMP_FILE=Array3D.F90
+	sed -e 's/\(BUD_DIM\) 1/\1 2/;s/Array1D/Array2D/g' $< | $(src_FPP) > $@
 bud_Array3D.f90: Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/Array1D/Array3D/g' $(src_DIR)/Array1D.F90 > $(_TMP_FILE)
-	$(src_FPP)
-bud_Array.f90: Array.F90 bud_Array1D.o bud_Array2D.o bud_Array3D.o
+	sed -e 's/\(BUD_DIM\) 1/\1 3/;s/Array1D/Array3D/g' $< | $(src_FPP) > $@
+bud_Array.f90: Array.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
+bud_Array.o: bud_Array1D.o bud_Array2D.o bud_Array3D.o
 
 
 
@@ -38,14 +33,10 @@ $(FS_ARRAY_OBJECTS): $(ARRAY_OBJECTS)
 src_OBJECTS += $(FS_ARRAY_OBJECTS)
 bud_FS_Array1D.f90: FS_Array1D.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
-bud_FS_Array2D.f90: _TMP_FILE=FS_Array2D.F90
 bud_FS_Array2D.f90: FS_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/Array1D/Array2D/g' $(src_DIR)/FS_Array1D.F90 > $(_TMP_FILE)
-	$(src_FPP)
-bud_FS_Array3D.f90: _TMP_FILE=FS_Array3D.F90
+	sed -e 's/\(BUD_DIM\) 1/\1 2/;s/Array1D/Array2D/g' $< | $(src_FPP) > $@
 bud_FS_Array3D.f90: FS_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/Array1D/Array3D/g' $(src_DIR)/FS_Array1D.F90 > $(_TMP_FILE)
-	$(src_FPP)
+	sed -e 's/\(BUD_DIM\) 1/\1 3/;s/Array1D/Array3D/g' $< | $(src_FPP) > $@
 
 
 LL_ARRAY_OBJECTS = \
@@ -56,14 +47,10 @@ $(LL_ARRAY_OBJECTS): $(ARRAY_OBJECTS)
 src_OBJECTS += $(LL_ARRAY_OBJECTS)
 bud_LL_Array1D.f90: LL_Array1D.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
-bud_LL_Array2D.f90: _TMP_FILE=LL_Array2D.F90
 bud_LL_Array2D.f90: LL_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/Array1D/Array2D/g' $(src_DIR)/LL_Array1D.F90 > $(_TMP_FILE)
-	$(src_FPP)
-bud_LL_Array3D.f90: _TMP_FILE=LL_Array3D.F90
+	sed -e 's/\(BUD_DIM\) 1/\1 2/;s/Array1D/Array2D/g' $< | $(src_FPP) > $@
 bud_LL_Array3D.f90: LL_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/Array1D/Array3D/g' $(src_DIR)/LL_Array1D.F90 > $(_TMP_FILE)
-	$(src_FPP)
+	sed -e 's/\(BUD_DIM\) 1/\1 3/;s/Array1D/Array3D/g' $< | $(src_FPP) > $@
 
 SM_common = bud_SM_common.o
 src_OBJECTS += $(SM_common)
@@ -113,34 +100,22 @@ $(SM_ARR_R): SM_Array.inc SM_Array_type_.inc $(SM_R) $(ARRAY_OBJECTS)
 src_OBJECTS += $(SM_ARR_R)
 bud_SM_CSR_Array1D.f90: SM_CSR_Array1D.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
-bud_SM_CSR_Array2D.f90: _TMP_FILE=SM_CSR_Array2D.F90
 bud_SM_CSR_Array2D.f90: SM_CSR_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/2D/g' $(src_DIR)/SM_CSR_Array1D.F90 > $(_TMP_FILE)
-	$(src_FPP)
-bud_SM_CSR_Array3D.f90: _TMP_FILE=SM_CSR_Array3D.F90
+	sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/2D/g' $< | $(src_FPP) > $@
 bud_SM_CSR_Array3D.f90: SM_CSR_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/1D/3D/g' $(src_DIR)/SM_CSR_Array1D.F90 > $(_TMP_FILE)
-	$(src_FPP)
+	sed -e 's/\(BUD_DIM\) 1/\1 3/;s/1D/3D/g' $< | $(src_FPP) > $@
 bud_SM_CSR0_Array1D.f90: SM_CSR0_Array1D.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
-bud_SM_CSR0_Array2D.f90: _TMP_FILE=SM_CSR0_Array2D.F90
 bud_SM_CSR0_Array2D.f90: SM_CSR0_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/2D/g' $(src_DIR)/SM_CSR0_Array1D.F90 > $(_TMP_FILE)
-	$(src_FPP)
-bud_SM_CSR0_Array3D.f90: _TMP_FILE=SM_CSR0_Array3D.F90
+	sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/2D/g' $< | $(src_FPP) > $@
 bud_SM_CSR0_Array3D.f90: SM_CSR0_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/1D/3D/g' $(src_DIR)/SM_CSR0_Array1D.F90 > $(_TMP_FILE)
-	$(src_FPP)
+	sed -e 's/\(BUD_DIM\) 1/\1 3/;s/1D/3D/g' $< | $(src_FPP) > $@
 bud_SM_CSR_C_Array1D.f90: SM_CSR_C_Array1D.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
-bud_SM_CSR_C_Array2D.f90: _TMP_FILE=SM_CSR_C_Array2D.F90
 bud_SM_CSR_C_Array2D.f90: SM_CSR_C_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/2D/g' $(src_DIR)/SM_CSR_C_Array1D.F90 > $(_TMP_FILE)
-	$(src_FPP)
-bud_SM_CSR_C_Array3D.f90: _TMP_FILE=SM_CSR_C_Array3D.F90
+	sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/2D/g' $< | $(src_FPP) > $@
 bud_SM_CSR_C_Array3D.f90: SM_CSR_C_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/1D/3D/g' $(src_DIR)/SM_CSR_C_Array1D.F90 > $(_TMP_FILE)
-	$(src_FPP)
+	sed -e 's/\(BUD_DIM\) 1/\1 3/;s/1D/3D/g' $< | $(src_FPP) > $@
 
 SM_ARR_C = \
 	bud_SM_CSC_Array1D.o \
@@ -156,34 +131,22 @@ $(SM_ARR_C): SM_Array.inc SM_Array_type_.inc $(SM_C) $(ARRAY_OBJECTS)
 src_OBJECTS += $(SM_ARR_C)
 bud_SM_CSC_Array1D.f90: SM_CSC_Array1D.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
-bud_SM_CSC_Array2D.f90: _TMP_FILE=SM_CSC_Array2D.F90
 bud_SM_CSC_Array2D.f90: SM_CSC_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/2D/g' $(src_DIR)/SM_CSC_Array1D.F90 > $(_TMP_FILE)
-	$(src_FPP)
-bud_SM_CSC_Array3D.f90: _TMP_FILE=SM_CSC_Array3D.F90
+	sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/2D/g' $< | $(src_FPP) > $@
 bud_SM_CSC_Array3D.f90: SM_CSC_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/1D/3D/g' $(src_DIR)/SM_CSC_Array1D.F90 > $(_TMP_FILE)
-	$(src_FPP)
+	sed -e 's/\(BUD_DIM\) 1/\1 3/;s/1D/3D/g' $< | $(src_FPP) > $@
 bud_SM_CSC0_Array1D.f90: SM_CSC0_Array1D.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
-bud_SM_CSC0_Array2D.f90: _TMP_FILE=SM_CSC0_Array2D.F90
 bud_SM_CSC0_Array2D.f90: SM_CSC0_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/2D/g' $(src_DIR)/SM_CSC0_Array1D.F90 > $(_TMP_FILE)
-	$(src_FPP)
-bud_SM_CSC0_Array3D.f90: _TMP_FILE=SM_CSC0_Array3D.F90
+	sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/2D/g' $< | $(src_FPP) > $@
 bud_SM_CSC0_Array3D.f90: SM_CSC0_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/1D/3D/g' $(src_DIR)/SM_CSC0_Array1D.F90 > $(_TMP_FILE)
-	$(src_FPP)
+	sed -e 's/\(BUD_DIM\) 1/\1 3/;s/1D/3D/g' $< | $(src_FPP) > $@
 bud_SM_CSC_C_Array1D.f90: SM_CSC_C_Array1D.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
-bud_SM_CSC_C_Array2D.f90: _TMP_FILE=SM_CSC_C_Array2D.F90
 bud_SM_CSC_C_Array2D.f90: SM_CSC_C_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/2D/g' $(src_DIR)/SM_CSC_C_Array1D.F90 > $(_TMP_FILE)
-	$(src_FPP)
-bud_SM_CSC_C_Array3D.f90: _TMP_FILE=SM_CSC_C_Array3D.F90
+	sed -e 's/\(BUD_DIM\) 1/\1 2/;s/1D/2D/g' $< | $(src_FPP) > $@
 bud_SM_CSC_C_Array3D.f90: SM_CSC_C_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/1D/3D/g' $(src_DIR)/SM_CSC_C_Array1D.F90 > $(_TMP_FILE)
-	$(src_FPP)
+	sed -e 's/\(BUD_DIM\) 1/\1 3/;s/1D/3D/g' $< | $(src_FPP) > $@
 
 
 LIST_OBJECTS = \
@@ -234,14 +197,10 @@ $(ITEM_ARRAY_OBJECTS): $(ARRAY_OBJECTS)
 #src_OBJECTS += $(ITEM_ARRAY_OBJECTS)
 bud_Item_Array1D.f90: Item_Array1D.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
-bud_Item_Array2D.f90: _TMP_FILE=Item_Array2D.F90
 bud_Item_Array2D.f90: Item_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/Array1D/Array2D/g' $(src_DIR)/Item_Array1D.F90 > $(_TMP_FILE)
-	$(src_FPP)
-bud_Item_Array3D.f90: _TMP_FILE=Item_Array3D.F90
+	sed -e 's/\(BUD_DIM\) 1/\1 2/;s/Array1D/Array2D/g' $< | $(src_FPP) > $@
 bud_Item_Array3D.f90: Item_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/Array1D/Array3D/g' $(src_DIR)/Item_Array1D.F90 > $(_TMP_FILE)
-	$(src_FPP)
+	sed -e 's/\(BUD_DIM\) 1/\1 3/;s/Array1D/Array3D/g' $< | $(src_FPP) > $@
 
 
 C_ARRAY_OBJECTS = \
@@ -252,14 +211,10 @@ $(C_ARRAY_OBJECTS): $(ARRAY_OBJECTS)
 #src_OBJECTS += $(C_ARRAY_OBJECTS)
 bud_C2_Array1D.f90: C2_Array1D.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
-bud_C2_Array2D.f90: _TMP_FILE=C2_Array2D.F90
 bud_C2_Array2D.f90: C2_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/Array1D/Array2D/g' $(src_DIR)/C2_Array1D.F90 > $(_TMP_FILE)
-	$(src_FPP)
-bud_C2_Array3D.f90: _TMP_FILE=C2_Array3D.F90
+	sed -e 's/\(BUD_DIM\) 1/\1 2/;s/Array1D/Array2D/g' $< | $(src_FPP) > $@
 bud_C2_Array3D.f90: C2_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/Array1D/Array3D/g' $(src_DIR)/C2_Array1D.F90 > $(_TMP_FILE)
-	$(src_FPP)
+	sed -e 's/\(BUD_DIM\) 1/\1 3/;s/Array1D/Array3D/g' $< | $(src_FPP) > $@
 
 FS_C_ARRAY_OBJECTS = \
 	bud_FS_C2_Array1D.o \
@@ -269,14 +224,10 @@ $(FS_C_ARRAY_OBJECTS): $(C_ARRAY_OBJECTS)
 #src_OBJECTS += $(FS_C_ARRAY_OBJECTS)
 bud_FS_C2_Array1D.f90: FS_C2_Array1D.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
-bud_FS_C2_Array2D.f90: _TMP_FILE=FS_C2_Array2D.F90
 bud_FS_C2_Array2D.f90: FS_C2_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 2/;s/Array1D/Array2D/g' $(src_DIR)/FS_C2_Array1D.F90 > $(_TMP_FILE)
-	$(src_FPP)
-bud_FS_C2_Array3D.f90: _TMP_FILE=FS_C2_Array3D.F90
+	sed -e 's/\(BUD_DIM\) 1/\1 2/;s/Array1D/Array2D/g' $< | $(src_FPP) > $@
 bud_FS_C2_Array3D.f90: FS_C2_Array1D.F90
-	@sed -e 's/\(BUD_DIM\) 1/\1 3/;s/Array1D/Array3D/g' $(src_DIR)/FS_C2_Array1D.F90 > $(_TMP_FILE)
-	$(src_FPP)
+	sed -e 's/\(BUD_DIM\) 1/\1 3/;s/Array1D/Array3D/g' $< | $(src_FPP) > $@
 
 
 
@@ -304,7 +255,6 @@ clean-src:
 	-rm -f $(src_FPP_SOURCES)
 	-rm -f $(src_OBJECTS)
 	-rm -f *.mod
-	-rm -f $(SOURCES_DIR)/src/*.f90
 
 
 clean: clean-src

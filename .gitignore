@@ -5,3 +5,4 @@ final_doc
 *.MOD
 *.o
 *.a
+sources*
