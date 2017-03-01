@@ -7,10 +7,6 @@ VPATH ?= $(shell pwd)
 .PHONY: default
 default: lib
 
-# the all target
-.PHONY: all static shared
-all: static shared
-
 
 # SMEKASETTINGS (DO NOT DELETE)
 # DO NOT CHANGE CONTENT IN THIS BLOCK
@@ -124,16 +120,12 @@ IS_PLUGIN := 0
 # The linker is a fortran compiler
 LINK := $(FC)
 
+
+$(BUDS_LIB_STATIC): $(OBJECTS)
+$(BUDS_LIB_SHARED): $(OBJECTS)
+
 # Libraries depend on the objects
-ifneq ($(LIBRARIES),)
-$(LIBRARIES): $(OBJECTS)
-
-# Create target
-.PHONY: lib
 lib: $(LIBRARIES)
-
-endif
-
 
 
 # Include the makefile in the test source directories:
