@@ -81,6 +81,14 @@ doc-ford-ffast:
 	DOC=ford DOT=0 OPTIPNG=0 doc/make_doc.sh
 
 
+.PHONY: dist-buds
+dist-buds: source-all
+	git archive -o buds.tar HEAD
+	tar rf buds.tar sources*
+
+dist: dist-buds
+
+
 .PHONY: clean clean-source
 clean:
 	-rm -f $(BUDS_LIB_STATIC) $(BUDS_LIB_SHARED)

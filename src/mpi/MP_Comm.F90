@@ -1232,7 +1232,7 @@ module BUD_MOD_NAME
     type(BUD_TYPE_NAME), intent(inout) :: this
 
     call set_error(this, 0)
-    
+
 #ifdef BUD_MPI
     ! Currently we do not allow external memory
     ! tracking.

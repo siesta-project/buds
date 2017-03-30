@@ -250,6 +250,7 @@ $(src_FPP_SOURCES): INCLUDES += -I$(src_DIR)
 source-src: $(src_SOURCES)
 	mkdir -p $(SOURCES_DIR)/src
 	mv $(src_SOURCES) $(SOURCES_DIR)/src
+	sed -i -s -e '/[[:space:]]*!/d' $(SOURCES_DIR)/src/*.f90
 
 clean-src:
 	-rm -f $(src_FPP_SOURCES)

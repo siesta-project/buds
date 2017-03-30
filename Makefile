@@ -84,9 +84,15 @@ endif
 
 
 # Create source target for creating _only_ the sources.
+.PHONY: source-all
+source-all:
+	$(MAKE) OO=0 MPI=0 source
+	$(MAKE) OO=1 MPI=0 source
+	$(MAKE) OO=0 MPI=1 source
+	$(MAKE) OO=1 MPI=1 source
+
 .PHONY: source
 source: source-src source-mpi
-source-mpi: source-src
 
 # Dependent on the option we can fake a VPATH to contain
 # any pre-created sources, if they exist we can simply use those
