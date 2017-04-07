@@ -86,6 +86,8 @@ endif
 # Create source target for creating _only_ the sources.
 .PHONY: source-all
 source-all:
+#	Clean-sources
+	-rm -rf sources*
 	$(MAKE) OO=0 MPI=0 source
 	$(MAKE) OO=1 MPI=0 source
 	$(MAKE) OO=0 MPI=1 source

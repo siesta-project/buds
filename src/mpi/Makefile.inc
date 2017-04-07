@@ -92,7 +92,7 @@ source-mpi: source-src
 source-mpi: $(mpi_SOURCES)
 	mkdir -p $(SOURCES_DIR)/src/mpi
 	mv $(mpi_SOURCES) $(SOURCES_DIR)/src/mpi
-	sed -i -s -e '/[[:space:]]*!/d' $(SOURCES_DIR)/src/mpi/*.f90
+	sed -i -s -e '/^[[:space:]]*!/d' $(SOURCES_DIR)/src/mpi/*.f90
 
 
 clean-src-mpi:
