@@ -13,8 +13,6 @@
   ! Include the common utilities
 #include "bud_utils.inc"
 
-#include "bud_common_declarations.inc"
-
   ! We default the linked list to be a doubly
   ! linked list
 #ifndef BUD_LIST_DOUBLY
@@ -960,7 +958,7 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
     ! To read each of them individually
-    type(BUD_STACK_TYPE) :: cp
+    type(BUD_LIST_TYPE) :: cp
 
     logical :: formatted
     integer :: iu

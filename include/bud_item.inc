@@ -12,9 +12,6 @@
   ! Include the common utilities
 #include "bud_utils.inc"
 
-#include "bud_common_declarations.inc"
-
-
   !> Item wrapper for a @bud
   !!
   !! This wrapper type contains another @bud. It may

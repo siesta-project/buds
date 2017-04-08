@@ -1,5 +1,7 @@
   ! @@LICENSE@@ see Copyright notice in the top-directory
 
+#include "bud_common_declarations.inc"
+
   ! Before contains
 #include "bud_collection.inc"
   ! after contains

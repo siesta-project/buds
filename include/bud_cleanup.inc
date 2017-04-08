@@ -11,6 +11,9 @@
 #undef BUD_TYPE_NAME_
 #undef BUD_TYPE_NAME_STR
 
+  ! bud_finitestack.inc
+#undef BUD_FSTACK_TYPE
+
   ! bud_coll.inc
 #undef BUD_COLL_1
 #undef BUD_COLL_2

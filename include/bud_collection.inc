@@ -29,8 +29,6 @@
   ! Include the common utilities
 #include "bud_utils.inc"
 
-#include "bud_common_declarations.inc"
-
   !> @cond BUD_DOC_INC
 
   ! We use "collection" as "set" may be confusing as nothing is _set_.

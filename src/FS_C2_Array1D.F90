@@ -29,7 +29,7 @@
 module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_C2_,sArray1D)
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,FS_C2_,sArray1D)
-# define BUD_STACK_TYPE BUD_CC3(BUD_TYPE,C2_,sArray1D)
+# define BUD_FSTACK_TYPE BUD_CC3(BUD_TYPE,C2_,sArray1D)
 #include "bud_finitestack.inc"
 end module
 !> @}
@@ -41,7 +41,7 @@ end module
 module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_C2_,iArray1D)
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,FS_C2_,iArray1D)
-# define BUD_STACK_TYPE BUD_CC3(BUD_TYPE,C2_,iArray1D)
+# define BUD_FSTACK_TYPE BUD_CC3(BUD_TYPE,C2_,iArray1D)
 #include "bud_finitestack.inc"
 end module
 !> @}
@@ -53,7 +53,7 @@ end module
 module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_C2_,lArray1D)
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,FS_C2_,lArray1D)
-# define BUD_STACK_TYPE BUD_CC3(BUD_TYPE,C2_,lArray1D)
+# define BUD_FSTACK_TYPE BUD_CC3(BUD_TYPE,C2_,lArray1D)
 #include "bud_finitestack.inc"
 end module
 !> @}
@@ -65,7 +65,7 @@ end module
 module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_C2_,rArray1D)
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,FS_C2_,rArray1D)
-# define BUD_STACK_TYPE BUD_CC3(BUD_TYPE,C2_,rArray1D)
+# define BUD_FSTACK_TYPE BUD_CC3(BUD_TYPE,C2_,rArray1D)
 #include "bud_finitestack.inc"
 end module
 !> @}
@@ -77,7 +77,7 @@ end module
 module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_C2_,dArray1D)
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,FS_C2_,dArray1D)
-# define BUD_STACK_TYPE BUD_CC3(BUD_TYPE,C2_,dArray1D)
+# define BUD_FSTACK_TYPE BUD_CC3(BUD_TYPE,C2_,dArray1D)
 #include "bud_finitestack.inc"
 end module
 !> @}
@@ -89,7 +89,7 @@ end module
 module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_C2_,cArray1D)
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,FS_C2_,cArray1D)
-# define BUD_STACK_TYPE BUD_CC3(BUD_TYPE,C2_,cArray1D)
+# define BUD_FSTACK_TYPE BUD_CC3(BUD_TYPE,C2_,cArray1D)
 #include "bud_finitestack.inc"
 end module
 !> @}
@@ -101,7 +101,7 @@ end module
 module BUD_MOD_NAME
   use BUD_CC3(BUD_MOD,_C2_,zArray1D)
 # define BUD_TYPE_NAME BUD_CC3(BUD_TYPE,FS_C2_,zArray1D)
-# define BUD_STACK_TYPE BUD_CC3(BUD_TYPE,C2_,zArray1D)
+# define BUD_FSTACK_TYPE BUD_CC3(BUD_TYPE,C2_,zArray1D)
 #include "bud_finitestack.inc"
 end module
 !> @}

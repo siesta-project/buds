@@ -8,6 +8,7 @@
 
   use BUD_CC3(BUD_MOD,_,Dist_common)
 
+#include "bud_common_declarations.inc"
 
 #define BUD_IO_OVERLOAD
   ! Before contains

@@ -10,6 +10,8 @@
   !! with.
   !!
 
+#include "bud_common_declarations.inc"
+
 # define BUD_IO_OVERLOAD
 
   ! Ensure we have the sparse matrix

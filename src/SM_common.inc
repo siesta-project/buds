@@ -131,7 +131,7 @@
   !> @param[in] this the sparse matrix
   !! @param[in] dim @opt=0 the dimension query
   !! @return size of the sparse matrix dependent on value of `dim`: 0=non-zero elements, 1=rows, 2=columns.
-  elemental function size_(this, dim) result(size)
+  pure function size_(this, dim) result(size)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer, intent(in), optional :: dim
     integer(BUD_TYPE_VAR_PREC) :: size

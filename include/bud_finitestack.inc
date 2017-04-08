@@ -6,12 +6,10 @@
   !  - BUD_TYPE_NAME_, internal data pointer of the type
   !  - BUD_TYPE_NAME_STR, the routine name in "string" format (for IO)
   !  - BUD_TYPE_NEW, the routine name for creating a new type
-  !  - BUD_STACK_TYPE, the variable type contained in the stack
+  !  - BUD_FSTACK_TYPE, the variable type contained in the stack
 
   ! Include the common utilities
 #include "bud_utils.inc"
-
-#include "bud_common_declarations.inc"
 
   !> @cond BUD_DOC_INC
 
@@ -35,7 +33,7 @@
 
   !> Finite stack with cyclic ability
   !!
-  !! Container for a finite stack of a single @bud (BUD_STACK_TYPE).
+  !! Container for a finite stack of a single @bud (BUD_FSTACK_TYPE).
   !!
   !! This data container holds 3 variables,
   !!  1. track maximum number of elements allowed in the finite stack
@@ -101,7 +99,7 @@
     integer :: nel
 
     !> Array of elements (stack).
-    type(BUD_STACK_TYPE), pointer :: T(:) => null()
+    type(BUD_FSTACK_TYPE), pointer :: T(:) => null()
 
     ! Consistent data in the reference counted object
 #   include "bud_common_type_.inc"
@@ -126,7 +124,7 @@
   !!integer, public, parameter :: BUD_FSTACK_ALL = 0
 
 
-  !> Internal initialization of finite stack holding BUD_STACK_TYPE
+  !> Internal initialization of finite stack holding BUD_FSTACK_TYPE
   !!
   !! If called on a previously allocated data scope this
   !! will clear the reference (@isee delete).
@@ -258,8 +256,8 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: from
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: to
     integer :: i
-    type(BUD_STACK_TYPE), pointer :: p
-    type(BUD_STACK_TYPE) :: cp
+    type(BUD_FSTACK_TYPE), pointer :: p
+    type(BUD_FSTACK_TYPE) :: cp
 
     call delete(to)
     if ( .not. is_initd(from) ) return
@@ -304,7 +302,7 @@
   !! @param[in] item element added to the stack
   subroutine push_(this,item)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    type(BUD_STACK_TYPE), intent(in) :: item
+    type(BUD_FSTACK_TYPE), intent(in) :: item
 
     integer :: el, i
 
@@ -341,7 +339,7 @@
   !! @param[inout] item returned element from the top of the stack
   subroutine pop_(this, item)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    type(BUD_STACK_TYPE), intent(inout) :: item
+    type(BUD_FSTACK_TYPE), intent(inout) :: item
 
     integer :: el
 
@@ -502,7 +500,7 @@
   !! @param[in] iel @opt=`size(this)` index of element to return. May be negative to offset from the top
   subroutine get_elem_(this, elem, iel)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
-    type(BUD_STACK_TYPE), intent(inout) :: elem
+    type(BUD_FSTACK_TYPE), intent(inout) :: elem
     integer, intent(in), optional :: iel
     integer :: el
 
@@ -532,7 +530,7 @@
   function get_elem_p_(this, iel) result(p)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer, intent(in), optional :: iel
-    type(BUD_STACK_TYPE), pointer :: p
+    type(BUD_FSTACK_TYPE), pointer :: p
     integer :: el
 
     nullify(p)
@@ -558,7 +556,7 @@
 
   !> @param[inout] this stack to count element from
   !! @return number of currently stored elements
-  elemental function size_elem_(this) result (nel)
+  pure function size_elem_(this) result (nel)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer :: nel
     if ( .not. is_initd(this) ) then
@@ -571,7 +569,7 @@
 
   !> @param[inout] this stack that is queried maximum size of
   !! @return maximum number of allowed elements
-  elemental function size_max_elem_(this) result (nel_max)
+  pure function size_max_elem_(this) result (nel_max)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer :: nel_max
     if ( .not. is_initd(this) ) then
@@ -628,7 +626,7 @@
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
 
     ! To read each of them individually
-    type(BUD_STACK_TYPE) :: cp
+    type(BUD_FSTACK_TYPE) :: cp
 
     logical :: formatted
     integer :: iu
@@ -700,14 +698,6 @@
     write(*,fmt) " <stack-refs: ", references(this), ">>"
 
   end subroutine print_
-
-
-#undef BUD_MOD_NAME
-#undef BUD_TYPE_NAME
-#undef BUD_TYPE_NAME_
-#undef BUD_TYPE_NAME_STR
-#undef BUD_TYPE_NEW
-#undef BUD_STACK_TYPE
 
 
   ! project-buds -- local file settings
