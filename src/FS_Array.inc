@@ -47,6 +47,11 @@
 
   end function
 
+  ! Local pre-processor variables that
+  ! undefine the variables that are not needed anymore.
+#undef BUD_TYPE_VAR
+#undef BUD_TYPE_VAR_PREC
+
 #include "bud_cleanup.inc"
 
 

@@ -496,7 +496,7 @@
   end subroutine comm_assign_
 
   !> Query the current processor ID in the communicator
-  elemental function comm_rank_(this) result(rank)
+  function comm_rank_(this) result(rank)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_) :: rank
     if ( is_initd(this) ) then
@@ -507,7 +507,7 @@
   end function comm_rank_
 
   !> Query the number of processors in the communicator
-  elemental function comm_size_(this) result(size)
+  function comm_size_(this) result(size)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_) :: size
     if ( is_initd(this) ) then
@@ -519,7 +519,7 @@
 
 
   !> Query the block-size, `-1` if non-block-cyclic
-  elemental function blocksize_(this) result(BS)
+  function blocksize_(this) result(BS)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_PREC) :: BS
     if ( is_initd(this) ) then
@@ -530,7 +530,7 @@
   end function blocksize_
 
   !> Assert the distribution type
-  elemental function is_dist_(this, dist) result(is)
+  function is_dist_(this, dist) result(is)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer, intent(in) :: dist
     logical :: is
@@ -538,7 +538,7 @@
   end function is_dist_
 
   !> Query distribution type used
-  elemental function dist_type_(this) result(dist)
+  function dist_type_(this) result(dist)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer :: dist
     dist = this%D%dist
@@ -898,7 +898,7 @@
   end function consecutive_blocks_
 
 
-  elemental function local_to_global_(this, il, P) result(ig)
+  function local_to_global_(this, il, P) result(ig)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_PREC), intent(in) :: il
     integer(ii_), intent(in), optional :: P
@@ -956,7 +956,7 @@
   end function local_to_global_
 
 
-  elemental function global_to_local_(this, ig, P) result(il)
+  function global_to_local_(this, ig, P) result(il)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_PREC), intent(in) :: ig
     integer(ii_), intent(in), optional :: P
@@ -1048,7 +1048,7 @@
   end function global_to_local_
 
 
-  elemental function global_to_rank_(this, ig) result(P)
+  function global_to_rank_(this, ig) result(P)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_PREC), intent(in) :: ig
     integer(ii_) :: P
@@ -1202,7 +1202,7 @@
   !!
   !! This may be used to identify `fake` distributions
   !! vs. real distributions.
-  elemental function is_comm_(this) result(is)
+  function is_comm_(this) result(is)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     logical :: is
     if ( is_initd(this) ) then
@@ -1215,7 +1215,7 @@
 
 
   !> Function for retrieving the latest error messag
-  elemental function get_MPIerr_(this) result(err)
+  function get_MPIerr_(this) result(err)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(ii_) :: err
     if ( is_initd(this) ) then

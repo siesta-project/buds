@@ -95,7 +95,7 @@
 
   !> @param[in] this the sparse matrix
   !! @return number of non-zero elements in the pattern
-  elemental function nonzeros_(this) result(nnzs)
+  function nonzeros_(this) result(nnzs)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_TYPE_VAR_PREC) :: nnzs
     nnzs = this%D%nz
@@ -103,7 +103,7 @@
 
   !> @param[in] this the sparse matrix
   !! @return number of allowed non-zero elements in the pattern
-  elemental function max_nonzeros_(this) result(nt)
+  function max_nonzeros_(this) result(nt)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_TYPE_VAR_PREC) :: nt
     nt = this%D%nt
@@ -112,7 +112,7 @@
 
   !> @param[in] this the sparse matrix
   !! @return number of rows in the pattern
-  elemental function rows_(this) result(rows)
+  function rows_(this) result(rows)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_TYPE_VAR_PREC) :: rows
     rows = this%D%nr
@@ -121,7 +121,7 @@
 
   !> @param[in] this the sparse matrix
   !! @return number of columns in the pattern
-  elemental function columns_(this) result(cols)
+  function columns_(this) result(cols)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     integer(BUD_TYPE_VAR_PREC) :: cols
     cols = this%D%nc
@@ -155,7 +155,7 @@
 
   !> @param[in] this the sparse matrix
   !! @return `.true.` if the sparse matrix is sorted
-  elemental function is_sorted_(this) result(sorted)
+  function is_sorted_(this) result(sorted)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     logical :: sorted
     sorted = this%D%sorted
@@ -163,7 +163,7 @@
 
   !> @param[in] this the sparse matrix
   !! @return `.true.` if the sparse matrix is finalized
-  elemental function is_finalized_(this) result(finalized)
+  function is_finalized_(this) result(finalized)
     BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     logical :: finalized
     finalized = this%D%finalized

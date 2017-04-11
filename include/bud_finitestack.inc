@@ -51,13 +51,20 @@
 #   include "bud_common_type.inc"
 #if BUD_FORTRAN >= 2003
 
+    !> @name Private procedures
+    !> @{
+    ! Doxygen needed line
+    procedure, private :: pop_, pop_delete_
+    !> @}
+
     !> @iSee #new
     procedure, public :: new => new_
-
     !> @iSee #push
     procedure, public :: push => push_
     !> @iSee #pop
-    procedure, public :: pop => pop_
+    generic,   public :: pop => pop_, pop_delete_
+    !> @iSee #clear
+    procedure, public :: clear => clear_
     !> @iSee #retain
     procedure, public :: retain => retain_
 
@@ -165,7 +172,6 @@
   end interface
   public :: pop
 
-
   !> Retains a fixed number of elements in the stack
   !!
   !! Retains a number of elements from either the top or the
@@ -173,13 +179,18 @@
   !!
   !! If any of the counts are larger than the currently
   !! number of stored elements, nothing will happen.
-  !!
-  !! @note
-  !! Defaults to `top=fnelem(this)-1`
   interface retain
     module procedure retain_
   end interface
   public :: retain
+
+  !> Clears the stack so all contained elements are deleted
+  !!
+  !! This is similar to `call pop(this, 0)`.
+  interface clear
+    module procedure clear_
+  end interface
+  public :: clear
 
   !> Retrieve specific element from the stack
   !!
@@ -300,7 +311,7 @@
 
   !> @param[inout] this stack that gets added an element
   !! @param[in] item element added to the stack
-  subroutine push_(this,item)
+  subroutine push_(this, item)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     type(BUD_FSTACK_TYPE), intent(in) :: item
 
@@ -368,13 +379,11 @@
 
   !> @param[inout] this stack that gets removed an item
   !! @param[in] top @opt=1 number of popped elements from top.
-  !!                If 0 is supplied it will
-  !!                clear all elements.
-  !! @param[in] bot @opt=@null has precedence if `top` not supplied.
+  !! @param[in] bottom @opt=@null has precedence if `top` not supplied.
   !!                Pops `bot` elements from the bottom of the stack.
-  subroutine pop_delete_(this, top, bot)
+  subroutine pop_delete_(this, top, bottom)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    integer, intent(in), optional :: top, bot
+    integer, intent(in), optional :: top, bottom
 
     integer :: lnpop
     integer :: el, i
@@ -383,7 +392,7 @@
     if ( .not. is_initd(this) ) return
 
     if ( .not. present(top) &
-      .and. .not. present(bot) ) then
+      .and. .not. present(bottom) ) then
       call set_error(this, 1)
       return
     end if
@@ -391,15 +400,12 @@
     ! number of elements
     el = size(this)
 
-    if ( present(top) .or. .not. present(bot) ) then
+    if ( present(top) .or. .not. present(bottom) ) then
 
       ! regular top-popping
       lnpop = 1
 
       if ( present(top) ) lnpop = top
-
-      ! If 0 is passed, we delete all
-      if ( lnpop == 0 ) lnpop = el
 
       ! we should not pop anything
       if ( lnpop < 0 ) return
@@ -417,10 +423,10 @@
         lnpop = lnpop - 1
       end do
 
-    else ! bot has been supplied
+    else ! bottom has been supplied
 
       ! bottom popping
-      lnpop = bot
+      lnpop = bottom
 
       ! in case of a negative number we cannot pop anything
       if ( lnpop < 0 ) return
@@ -446,14 +452,27 @@
 
   end subroutine pop_delete_
 
+  !> @param[inout] this stack to clear all elements of
+  subroutine clear_(this)
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+
+    integer :: el
+
+    do el = size(this), 1, -1
+
+      call pop(this, el)
+
+    end do
+
+  end subroutine clear_
 
   !> @param[inout] this stack to operate on
   !! @param[in] top @opt=1 number of elements kept from the top
-  !! @param[in] bot @opt=@null number of elements kept from the bottom,
+  !! @param[in] bottom @opt=@null number of elements kept from the bottom,
   !!                only used if `top` is not supplied.
-  subroutine retain_(this, top, bot)
+  subroutine retain_(this, top, bottom)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
-    integer, intent(in), optional :: top, bot
+    integer, intent(in), optional :: top, bottom
 
     integer :: lnpop
     integer :: el
@@ -461,7 +480,7 @@
     if ( .not. is_initd(this) ) return
 
     if ( .not. present(top) &
-      .and. .not. present(bot) ) then
+      .and. .not. present(bottom) ) then
       call set_error(this, 1)
       return
     end if
@@ -469,7 +488,7 @@
     ! number of elements
     el = size(this)
 
-    if ( present(top) .or. .not. present(bot) ) then
+    if ( present(top) .or. .not. present(bottom) ) then
 
       ! regular bot-popping
       lnpop = 1
@@ -478,12 +497,12 @@
       ! we should not pop anything
       if ( lnpop < 0 ) return
 
-      call pop(this, bot=lnpop)
+      call pop(this, bottom=lnpop)
 
     else
 
       ! retain 'n' items from the bottom
-      lnpop = el - bot
+      lnpop = el - bottom
 
       ! we should not pop anything
       if ( lnpop < 0 ) return
