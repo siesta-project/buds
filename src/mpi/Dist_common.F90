@@ -21,12 +21,14 @@ module BUD_MOD_NAME
   !> Block-cyclic distribution, remainder goes to first processors in block sizes
   integer, parameter, public :: DIST_BLOCK_CYCLIC_FIRST_SPLIT = 2
   integer, parameter, public :: DIST_BLOCK_CYCLIC = DIST_BLOCK_CYCLIC_FIRST_SPLIT
+  integer, parameter, public :: DIST_SCALAPACK = DIST_BLOCK_CYCLIC_FIRST_SPLIT
 
   !> A simple block-partitioning (remainder to first process)
   !!
   !! This distribution can be used with the FFTW and PEXSI library.
   integer, parameter, public :: DIST_BLOCK_LAST_ALL = 3
   integer, parameter, public :: DIST_BLOCK = DIST_BLOCK_LAST_ALL
+  integer, parameter, public :: DIST_FFTW = DIST_BLOCK_LAST_ALL
 
   !> A simple cyclic-partitioning (remainder to first process)
   !!
