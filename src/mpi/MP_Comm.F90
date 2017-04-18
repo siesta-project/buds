@@ -69,8 +69,6 @@ module BUD_MOD_NAME
 
 #define BUD_DEFINE_PROCEDURE procedure, private, pass(this) ::
 
-#ifdef BUD_MPI
-
     ! Define all interfaces
 # define BUD_IS_LOGICAL
 # define BUD_IS_INTEGER
@@ -309,8 +307,6 @@ module BUD_MOD_NAME
 #undef BUD_IS_REAL
 #undef BUD_IS_COMPLEX
 
-#endif
-
 #undef BUD_DEFINE_PROCEDURE
 
     procedure, private :: Comm_split_
@@ -354,7 +350,6 @@ module BUD_MOD_NAME
     !> @iSee #is_success_mpi
     procedure, public :: is_success_mpi => is_MPIsuccess_
 
-#ifdef BUD_MPI
 
     ! Define all interfaces
 # define BUD_IS_LOGICAL
@@ -527,8 +522,6 @@ module BUD_MOD_NAME
 #undef BUD_IS_REAL
 #undef BUD_IS_COMPLEX
 
-#endif
-
     procedure, public :: Barrier => Barrier_
     procedure, public :: IBarrier => IBarrier_
 
@@ -555,8 +548,27 @@ module BUD_MOD_NAME
 #ifndef BUD_MPI
   !> Public MPI_SUCCESS to always be able to compare.
   integer(ii_), parameter, public :: MPI_SUCCESS = 0
-  integer(ii_), parameter :: MPI_Comm_Null = -huge(1)
-  integer(ii_), parameter :: MPI_Group_Null = -huge(1)
+  integer(ii_), parameter, public :: MPI_Comm_Null = -huge(1)
+  integer(ii_), parameter, public :: MPI_Group_Null = -huge(1)
+  integer(ii_), parameter, public :: MPI_Status_Size = 8
+
+  ! Fake all precisions
+  integer(ii_), parameter, public :: MPI_Logical = 1
+  integer(ii_), parameter, public :: MPI_Integer = 2
+  integer(ii_), parameter, public :: MPI_Integer8 = 3
+  integer(ii_), parameter, public :: MPI_Real = 10
+  integer(ii_), parameter, public :: MPI_Double_Precision = 11
+  integer(ii_), parameter, public :: MPI_Complex = 20
+  integer(ii_), parameter, public :: MPI_Double_Complex = 21
+
+  ! Fake the reduction operators
+  integer(ii_), parameter, public :: MPI_MIN = 1
+  integer(ii_), parameter, public :: MPI_MAX = 2
+  integer(ii_), parameter, public :: MPI_SUM = 3
+  integer(ii_), parameter, public :: MPI_PROD = 4
+  integer(ii_), parameter, public :: MPI_LAND = 5
+  integer(ii_), parameter, public :: MPI_LOR = 6
+  integer(ii_), parameter, public :: MPI_LXOR = 7
 #endif
 
   !> @bud container for message passing information.
@@ -611,6 +623,11 @@ module BUD_MOD_NAME
   end interface
   public :: new_remote
 
+  !> Free and delete the object
+  interface free
+    module procedure free_
+  end interface
+  public :: free
 
   !> Query communicator of the distribution
   !!
@@ -684,7 +701,6 @@ module BUD_MOD_NAME
   end interface
   public :: is_success_MPI
 
-#ifdef BUD_MPI
 
   ! Define all interfaces
 # define BUD_IS_LOGICAL
@@ -1130,7 +1146,6 @@ module BUD_MOD_NAME
 #undef BUD_IS_REAL
 #undef BUD_IS_COMPLEX
 
-#endif
 
   !> Interface for `MPI_Barrier`
   interface Barrier
@@ -1233,23 +1248,7 @@ module BUD_MOD_NAME
 
     call set_error(this, 0)
 
-#ifdef BUD_MPI
-    ! Currently we do not allow external memory
-    ! tracking.
-    if ( this%D%Comm /= MPI_Comm_Null ) then
-      ! reset everything
-      ! free the group and communicator...
-      call MPI_Group_Free(this%D%Grp, this%error_)
-      call MPI_Comm_Free(this%D%Comm, this%error_)
-    end if
-#endif
-
-    ! Ensure they are nullified
-    this%D%Comm = MPI_Comm_Null
-    this%D%Grp = MPI_Group_Null
-
-    this%D%rank = 0
-    this%D%size = 1
+    call Free(this)
 
   end subroutine delete_
 
@@ -1333,11 +1332,11 @@ module BUD_MOD_NAME
   !!
   !! @param[inout] this the @bud distribution container
   !! @param[in] Comm the communicator that we will dublicate and attach
-  !! @param[in] dup @opt=.true. whether the input communicator is dublicated.
-  subroutine new_(this, Comm, dup)
+  !! @param[in] duplicating @opt=.true. whether the input communicator is duplicated.
+  subroutine new_(this, Comm, duplicate)
     BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
     integer(ii_), intent(in) :: Comm
-    logical, intent(in), optional :: dup
+    logical, intent(in), optional :: duplicate
 #ifdef BUD_MPI
     logical :: ldup
 #endif
@@ -1345,9 +1344,21 @@ module BUD_MOD_NAME
     call initialize(this)
 
 #ifdef BUD_MPI
+
+    if ( Comm == MPI_Comm_Null ) then
+
+      ! simple case where ther are no actions
+      this%D%comm = Comm
+      this%D%rank = 0
+      this%D%size = 1
+
+      return
+
+    end if
+
     ! duplicate communicator (ensures that we can delete it again)
     ldup = .true.
-    if ( present(dup) ) ldup = dup
+    if ( present(duplicate) ) ldup = duplicate
     if ( ldup ) then
       call MPI_Comm_dup(Comm, this%D%comm, this%error_)
     else
@@ -1425,8 +1436,40 @@ module BUD_MOD_NAME
   end subroutine new_remote_child_
 #endif
 
+  !> Free the communicator and group
+  !!
+  !! @param[inout] this the object to free
+  !! @param[in] @opt=.true. whether the object should indeed be freed.
+  subroutine free_(this, free)
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    logical, intent(in), optional :: free
+    logical :: lfree
+
+    if ( .not. is_initd(this) ) return
+
+    lfree = .true.
+    if ( present(free) ) lfree = free
 
 #ifdef BUD_MPI
+    ! Currently we do not allow external memory
+    ! tracking.
+    if ( this%D%Comm /= MPI_Comm_Null .and. lfree ) then
+      ! reset everything
+      ! free the group and communicator...
+      call MPI_Group_Free(this%D%Grp, this%error_)
+      call MPI_Comm_Free(this%D%Comm, this%error_)
+    end if
+#endif
+
+    ! Ensure they are nullified
+    this%D%Comm = MPI_Comm_Null
+    this%D%Grp = MPI_Group_Null
+
+    this%D%rank = 0
+    this%D%size = 1
+
+  end subroutine free_
+
   !> @cond BUD_DEVELOPER
   ! Add all interfaces
 # define BUD_TYPE_VAR integer
@@ -1532,8 +1575,6 @@ module BUD_MOD_NAME
 # include "MP_Comm_routine.inc"
 # define BUD_DIM 4
 # include "MP_Comm_routine.inc"
-
-#endif
 
   ! Common things
   subroutine Barrier_(this)
@@ -1986,7 +2027,7 @@ module BUD_MOD_NAME
       Com, this%error_)
 
     if ( error(this) == MPI_SUCCESS ) then
-      call new(split, Com, dup = .false.)
+      call new(split, Com, duplicate = .false.)
     end if
 
   end subroutine Comm_Split_
@@ -2014,7 +2055,7 @@ module BUD_MOD_NAME
       info, Com, this%error_)
 
     if ( error(this) == MPI_SUCCESS ) then
-      call new(split, Com, dup = .false.)
+      call new(split, Com, duplicate = .false.)
     end if
 
   end subroutine Comm_Split_Type_
@@ -2047,7 +2088,7 @@ module BUD_MOD_NAME
     call MPI_Comm_Create(parent%D%comm, group, Com, parent%error_)
 
     if ( is_success_MPI(parent) ) then
-      call new(child, Com, dup = .false.)
+      call new(child, Com, duplicate = .false.)
     else
       call delete(child)
     end if
@@ -2080,7 +2121,7 @@ module BUD_MOD_NAME
     call MPI_Comm_Create_Group(parent%D%comm, group, tag, Com, parent%error_)
 
     if ( is_success_MPI(parent) ) then
-      call new(child, Com, dup = .false.)
+      call new(child, Com, duplicate = .false.)
     else
       call delete(child)
       call set_error(child, 1)
