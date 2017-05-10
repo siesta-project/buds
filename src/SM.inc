@@ -56,7 +56,7 @@
 #endif
 
 
-#ifdef BUD_SM_CSR
+#ifdef BUD_SM_CSC
 # define _CS_I ic
 # define _CS_J ir
 # define _CS_N nc
@@ -64,12 +64,12 @@
 # define _CS_PTR cptr
 # define _CS_PTR_N column
 # define _CS_PTR_S nc
-# define _CS_NUM ncol
+# define _CS_NUM n_row
 # define _CS_NUM_S nc
 # define _CS_IDX row
 # define _CS_IDX_N row
 #endif
-#ifdef BUD_SM_CSC
+#ifdef BUD_SM_CSR
 # define _CS_I ir
 # define _CS_J ic
 # define _CS_N nr
@@ -77,7 +77,7 @@
 # define _CS_PTR rptr
 # define _CS_PTR_N row
 # define _CS_PTR_S nr
-# define _CS_NUM nrow
+# define _CS_NUM n_column
 # define _CS_NUM_S nr
 # define _CS_IDX column
 # define _CS_IDX_N column
