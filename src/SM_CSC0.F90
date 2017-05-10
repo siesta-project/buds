@@ -40,6 +40,7 @@
 !!
 !! @{
 
+#define BUD_SM_CSC 0
 
 # define BUD_MOD_NAME BUD_CC3(BUD_MOD,_,iSM_CSC0)
 !> @defgroup BUD_MOD_NAME Integer (int)
@@ -50,8 +51,8 @@ module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,iSM_CSC0)
 # define BUD_TYPE_VAR integer
 # define BUD_TYPE_VAR_PREC ii_
-# define BUD_SM_CSC 1
-#include "SM_CSC.inc"
+# define BUD_SM_CS 1
+#include "SM_CS.inc"
 end module
 !> @}
 
@@ -64,8 +65,8 @@ module BUD_MOD_NAME
 # define BUD_TYPE_NAME BUD_CC2(BUD_TYPE,lSM_CSC0)
 # define BUD_TYPE_VAR integer
 # define BUD_TYPE_VAR_PREC il_
-# define BUD_SM_CSC 1
-#include "SM_CSC.inc"
+# define BUD_SM_CS 1
+#include "SM_CS.inc"
 end module
 !> @}
 

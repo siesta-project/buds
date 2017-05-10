@@ -7,6 +7,8 @@
 # sources.
 # It will warn if this is not the case
 
+source ~/.bashrc
+
 # Default parameters determining which sub-programs
 # should be used (mainly for developing documentation)
 #   whether graphviz should be used...
@@ -105,6 +107,7 @@ pushd $_SRC
     echo "include \$(TOP_DIR)/Makefile"
 } > Makefile
 make source --trace
+make copy
 # Ensure the *.inc files are also present
 cp $_main_dir/include/*.inc .
 popd

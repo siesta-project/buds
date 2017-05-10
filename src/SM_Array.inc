@@ -133,11 +133,8 @@
     integer(ii_), intent(in) :: i
 
     p => array_p(this%D%e2)
-#ifdef BUD_SM_CSR
-    p => p(this%D%e1%D%rptr(i)BUD_SM_PTR_A:this%D%e1%D%rptr(i)+this%D%e1%D%nrow(i)BUD_SM_PTR_B)
-#else
-    p => p(this%D%e1%D%cptr(i)BUD_SM_PTR_A:this%D%e1%D%cptr(i)+this%D%e1%D%ncol(i)BUD_SM_PTR_B)
-#endif
+    p => p( this%D%e1%D%_CS_PTR(i)BUD_SM_PTR_A: &
+      this%D%e1%D%_CS_PTR(i)+this%D%e1%D%_CS_NUM(i)BUD_SM_PTR_B)
 
   end function matrix_ip_
 
@@ -158,11 +155,8 @@
     integer(il_), intent(in) :: i
 
     p => array_p(this%D%e2)
-#ifdef BUD_SM_CSR
-    p => p(this%D%e1%D%rptr(i)BUD_SM_PTR_A:this%D%e1%D%rptr(i)+this%D%e1%D%nrow(i)BUD_SM_PTR_B)
-#else
-    p => p(this%D%e1%D%cptr(i)BUD_SM_PTR_A:this%D%e1%D%cptr(i)+this%D%e1%D%ncol(i)BUD_SM_PTR_B)
-#endif
+    p => p( this%D%e1%D%_CS_PTR(i)BUD_SM_PTR_A: &
+      this%D%e1%D%_CS_PTR(i)+this%D%e1%D%_CS_NUM(i)BUD_SM_PTR_B)
 
   end function matrix_lp_
 

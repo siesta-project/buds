@@ -43,6 +43,20 @@ bud_Dist1D_CSC0.f90: Dist1D_SM_CSC0.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
 
 
+DIST_SM_ARR_R = \
+	bud_Dist1D_SM_CSR0_Array1D.o \
+	bud_Dist1D_SM_CSR0_Array2D.o \
+	bud_Dist1D_SM_CSR0_Array3D.o
+$(DIST_SM_ARR_R): $(DIST_OBJECTS) $(SM_C) $(ARRAY_OBJECTS)
+$(DIST_SM_ARR_R:.o=.f90): Dist1D_SM_Array.inc Dist1D_SM_Array_type_.inc
+mpi_OBJECTS += $(DIST_SM_ARR_R)
+bud_Dist1D_SM_CSR0_Array1D.f90: Dist1D_SM_CSR0_Array1D.F90
+	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
+bud_Dist1D_SM_CSR0_Array2D.f90: Dist1D_SM_CSR0_Array1D.F90
+	sed -e 's/\(BUD_DIM\) 1/\1 2/;s/\([^Dt]\)1D/\12D/g' $< | $(src_FPP) > $@
+bud_Dist1D_SM_CSR0_Array3D.f90: Dist1D_SM_CSR0_Array1D.F90
+	sed -e 's/\(BUD_DIM\) 1/\1 3/;s/\([^Dt]\)1D/\13D/g' $< | $(src_FPP) > $@
+
 DIST_SM_ARR_C = \
 	bud_Dist1D_SM_CSC0_Array1D.o \
 	bud_Dist1D_SM_CSC0_Array2D.o \

@@ -32,8 +32,8 @@
 #endif
 
   ! Correct mod for the SM_CS[RC] == 1 case
-#ifdef BUD_SM_CSR
-# if BUD_SM_CSR == 1
+#ifdef BUD_SM_CS
+# if BUD_SM_CS == 1
 #  undef BUD_SM_MOD
 #  undef BUD_SM_PTR
 #  undef BUD_SM_PTR_A
@@ -44,20 +44,6 @@
 #  define BUD_SM_PTR_B
 # endif
 #endif
-#ifdef BUD_SM_CSC
-# if BUD_SM_CSC == 1
-#  undef BUD_SM_MOD
-#  undef BUD_SM_PTR
-#  undef BUD_SM_PTR_A
-#  undef BUD_SM_PTR_B
-#  define BUD_SM_MOD modp
-#  define BUD_SM_PTR ZERO
-#  define BUD_SM_PTR_A +ONE
-#  define BUD_SM_PTR_B
-# endif
-#endif
-
-
 
 #if BUD_SM_INTEROP_C == 0
 # define BUD_SM_IDX(a) (a)
@@ -67,6 +53,34 @@
 # define BUD_SM_IDXF(a) (a+ONE)
 #else
 # error "SM_INTEROP_C *MUST* be either 0 or 1"
+#endif
+
+
+#ifdef BUD_SM_CSR
+# define _CS_I ic
+# define _CS_J ir
+# define _CS_N nc
+# define _CS_M nr
+# define _CS_PTR cptr
+# define _CS_PTR_N column
+# define _CS_PTR_S nc
+# define _CS_NUM ncol
+# define _CS_NUM_S nc
+# define _CS_IDX row
+# define _CS_IDX_N row
+#endif
+#ifdef BUD_SM_CSC
+# define _CS_I ir
+# define _CS_J ic
+# define _CS_N nr
+# define _CS_M nc
+# define _CS_PTR rptr
+# define _CS_PTR_N row
+# define _CS_PTR_S nr
+# define _CS_NUM nrow
+# define _CS_NUM_S nr
+# define _CS_IDX column
+# define _CS_IDX_N column
 #endif
 
 

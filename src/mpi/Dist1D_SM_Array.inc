@@ -149,14 +149,8 @@
     p => array_p(this%D%e3)
 
     ! get sparse indices
-#ifdef BUD_SM_CSR
-    i1 = this%D%e2%D%rptr(i)BUD_SM_PTR_A
-    i2 = this%D%e2%D%rptr(i)+this%D%e2%D%nrow(i)BUD_SM_PTR_B
-#endif
-#ifdef BUD_SM_CSC
-    i1 = this%D%e2%D%cptr(i)BUD_SM_PTR_A
-    i2 = this%D%e2%D%cptr(i)+this%D%e2%D%ncol(i)BUD_SM_PTR_B
-#endif
+    i1 = this%D%e2%D% _CS_PTR(i)BUD_SM_PTR_A
+    i2 = this%D%e2%D% _CS_PTR(i)+this%D%e2%D% _CS_NUM(i)BUD_SM_PTR_B
 
     ! Get the sub-pointer
 #if BUD_DIM == 1
@@ -280,13 +274,8 @@
     ! First the local nodes should sum the row/columns
     ! because they may be distributed.
     if ( is_communicator(comm) ) then
-# if defined(BUD_SM_CSC)
-      call AllReduce_Sum(nc, ir, comm)
-      ir = nc
-# elif defined(BUD_SM_CSR)
-      call AllReduce_Sum(nr, ir, comm)
-      ir = nr
-# endif
+      call AllReduce_Sum(_CS_N, ir, comm)
+      _CS_N = ir
     end if
     call AllReduce_Max(nr, ir, parent)
     nr = ir
@@ -467,11 +456,7 @@
 
       nz = 0
 
-#ifdef BUD_SM_CSC
-      call attach(sm, cptr=ptr, row=ind)
-#elif defined(BUD_SM_CSR)
-      call attach(sm, rptr=ptr, col=ind)
-#endif
+      call attach(sm, ptr=ptr, indices=ind)
 
       ! First we need to know the size of the sparse
       ! matrix. So we do a loop on each rank that
@@ -572,11 +557,7 @@
       ! Check that the sparse matrix coincides
       ! with the distribution
       nullify(ptr, ind)
-#ifdef BUD_SM_CSC
-      call attach(sm, nz=nz, cptr=ptr, row=ind, ncol=nrc)
-#elif defined(BUD_SM_CSR)
-      call attach(sm, nz=nz, rptr=ptr, col=ind, ncol=nrc)
-#endif
+      call attach(sm, nz=nz, ptr=ptr, indices=ind, nentries=nrc)
 
       if ( .not. run ) return
 
@@ -605,17 +586,7 @@
         call new(out_arr, ashape(:))
         call new(out, out_dist, out_sm, out_arr)
 
-#ifdef BUD_SM_CSC
-        call attach(out_sm, cptr=optr, row=oind)
-# if BUD_SM_CSC == 1
-        call attach(out_sm, ncol=onrc)
-# endif
-#elif defined(BUD_SM_CSR)
-        call attach(out_sm, rptr=optr, col=oind)
-# if BUD_SM_CSR == 1
-        call attach(out_sm, nrow=onrc)
-# endif
-#endif
+        call attach(out_sm, ptr=optr, indices=oind, nentries=onrc)
 
         odat => array_p(out_arr)
 
@@ -724,19 +695,11 @@
       ! We need to update the number of elements
       ! per sparse row/column for the special sparse
       ! matrices.
-#if defined(BUD_SM_CSC)
       if ( is_communicator(out_comm) ) then
         do oil = 1 , out_nl
           onrc(oil) = optr(oil+1) - optr(oil)
         end do
       end if
-#elif defined(BUD_SM_CSR)
-      if ( is_communicator(out_comm) ) then
-        do oil = 1 , out_nl
-          onrc(oil) = optr(oil+1) - optr(oil)
-        end do
-      end if
-#endif
 
 
       ! Now we need to redistribute the array data
@@ -1131,17 +1094,10 @@
 
     end if
 
-#ifdef BUD_SM_CSR
     call attach(sm, nr=nr, nc=nc, nz=nz, &
-      rptr=ptr, nrow=nrc)
-    gnr = gnl
-    gnc = nc
-#else
-    call attach(sm, nr=nr, nc=nc, nz=nz, &
-      cptr=ptr, ncol=nrc)
-    gnr = nr
-    gnc = gnl
-#endif
+      ptr=ptr, nentries=nrc)
+    BUD_CC2(g,_CS_N) = gnl
+    BUD_CC2(g,_CS_M) = _CS_M
     gnrc = maxval(nrc)
     call AllReduce_Max(gnrc, ig, comm)
     gnrc = ig

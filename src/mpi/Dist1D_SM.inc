@@ -86,17 +86,10 @@
     ! the size of the distribution
     gnl = size_global(dist)
 
-#ifdef BUD_SM_CSR
     call attach(sm, nr=nr, nc=nc, nz=nz, &
-      rptr=ptr, nrow=nrc)
-    gnr = gnl
-    gnc = nc
-#else
-    call attach(sm, nr=nr, nc=nc, nz=nz, &
-      cptr=ptr, ncol=nrc)
-    gnr = nr
-    gnc = gnl
-#endif
+      ptr=ptr, nentries=nrc)
+    BUD_CC2(g,_CS_N) = gnl
+    BUD_CC2(g,_CS_M) = _CS_M
 
     ! get total number of non-zero elements
     call Reduce_Sum(nz, gnz, io_rank, comm)
@@ -178,12 +171,7 @@
 
       if ( ir == io_rank ) then
 
-#ifdef BUD_SM_CSR
-        indx => column_p(sm, il)
-#endif
-#ifdef BUD_SM_CSC
-        indx => row_p(sm, il)
-#endif
+        indx => indices_p(sm, il)
         ! Simply write it
         if ( formatted ) then
           write(iu, '(i16)')  indx(:)
@@ -205,12 +193,7 @@
       else
 
         ! send data
-#ifdef BUD_SM_CSR
-        indx => column_p(sm, il)
-#endif
-#ifdef BUD_SM_CSC
-        indx => row_p(sm, il)
-#endif
+        indx => indices_p(sm, il)
         call SSend(indx, io_rank, ig, comm)
 
       end if
@@ -309,26 +292,17 @@
 
     end if
 
-#ifdef SM_CSR
-    if ( size_global(dist) /= gnr ) then
+    if ( size_global(dist) /= BUD_CC2(g, _CS_N) ) then
       call delete(this)
+      call set_error(this, -1)
       return
     end if
-    nr = size_local(dist)
-    nc = gnc
-    nl = nr
-    gnl = gnr
-#endif
-#ifdef SM_CSC
-    if ( size_global(dist) /= gnc ) then
-      call delete(this)
-      return
-    end if
-    nr = gnr
-    nc = size_local(dist)
-    nl = nc
-    gnl = gnc
-#endif
+
+    ! Now get local sizes...
+    _CS_N = size_local(dist)
+    _CS_M = BUD_CC2(g,_CS_M)
+    nl = _CS_N
+    gnl = BUD_CC2(g,_CS_N)
 
     ! Allocate the container for the local data
     allocate(data(gnl))
@@ -365,11 +339,7 @@
     call new(this, dist, sm)
 
     ! Retrieve pointers and populate
-#ifdef BUD_SM_CSR
-    call attach(sm, rptr=ptr, nrow=nrc)
-#else
-    call attach(sm, cptr=ptr, ncol=nrc)
-#endif
+    call attach(sm, ptr=ptr, nentries=nrc)
 
     ! distribute number of elements per row/column
     do ig = 1 , gnl
@@ -402,12 +372,7 @@
       if ( ir == my_rank ) then
         il = global2local(dist, ig)
 
-#ifdef BUD_SM_CSR
-        indx => column_p(sm, il)
-#endif
-#ifdef BUD_SM_CSC
-        indx => row_p(sm, il)
-#endif
+        indx => indices_p(sm, il)
       end if
 
       if ( do_io ) then

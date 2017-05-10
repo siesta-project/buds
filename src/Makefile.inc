@@ -61,8 +61,8 @@ SM_R = \
 	bud_SM_CSR.o \
 	bud_SM_CSR0.o \
 	bud_SM_CSR_C.o
-$(SM_R:.o=.f90): SM_common.inc SM_CSR.inc
-$(SM_R): bud_List.o bud_File.o
+$(SM_R:.o=.f90): SM_common.inc SM_CS.inc
+$(SM_R): bud_List.o bud_File.o bud_SM_common.o
 src_OBJECTS += $(SM_R)
 bud_SM_CSR.f90: SM_CSR.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
@@ -75,8 +75,8 @@ SM_C = \
 	bud_SM_CSC.o \
 	bud_SM_CSC0.o \
 	bud_SM_CSC_C.o
-$(SM_C:.o=.f90): SM_common.inc SM_CSC.inc
-$(SM_C): bud_List.o bud_File.o
+$(SM_C:.o=.f90): SM_common.inc SM_CS.inc
+$(SM_C): bud_List.o bud_File.o bud_SM_common.o
 src_OBJECTS += $(SM_C)
 bud_SM_CSC.f90: SM_CSC.F90
 	$(FPP) $(FPPFLAGS) $(INCLUDES) $< > $@
