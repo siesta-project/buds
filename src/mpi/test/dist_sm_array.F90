@@ -94,7 +94,7 @@ contains
 
 
   subroutine dist_1()
-    integer, pointer :: ptr(:), ind(:), ncol(:)
+    integer, pointer :: ptr(:), ind(:), nrow(:)
     real, pointer :: arr(:)
     integer :: ic, i, idx
 
@@ -111,13 +111,13 @@ contains
        call new(arr1, N * 3)
        arr => array_p(arr1)
 
-       call attach(sm1, cptr=ptr, row=ind, ncol=ncol)
+       call attach(sm1, cptr=ptr, row=ind, n_row=nrow)
 
        ! Create the tri-diagonal thing
        ptr(1) = 0
        do ic = 1 , N
           ! Correct pointers...
-          ncol(ic) = 3
+          nrow(ic) = 3
           ptr(ic+1) = ptr(ic) + 3
 
           idx = ptr(ic) + 1 ! we know it is CSC0
@@ -180,7 +180,7 @@ contains
   end subroutine dist_1
 
   subroutine dist_1a()
-    integer, pointer :: ptr(:), ind(:), ncol(:)
+    integer, pointer :: ptr(:), ind(:), nrow(:)
     real, pointer :: arr(:)
     integer :: ic, i, idx
 
@@ -197,13 +197,13 @@ contains
        call new(arr1, N * 3)
        arr => array_p(arr1)
 
-       call attach(sm1, cptr=ptr, row=ind, ncol=ncol)
+       call attach(sm1, cptr=ptr, row=ind, n_row=nrow)
 
        ! Create the tri-diagonal thing
        ptr(1) = 0
        do ic = 1 , N
           ! Correct pointers...
-          ncol(ic) = 3
+          nrow(ic) = 3
           ptr(ic+1) = ptr(ic) + 3
 
           idx = ptr(ic) + 1 ! we know it is CSC0
@@ -269,7 +269,7 @@ contains
 
 
   subroutine dist_2()
-    integer, pointer :: ptr(:), ind(:), ncol(:)
+    integer, pointer :: ptr(:), ind(:), nrow(:)
     real, pointer :: arr(:)
     integer :: ic, i, idx
 
@@ -286,13 +286,13 @@ contains
        call new(arr1, N * 3)
        arr => array_p(arr1)
 
-       call attach(sm1, cptr=ptr, row=ind, ncol=ncol)
+       call attach(sm1, cptr=ptr, row=ind, n_row=nrow)
 
        ! Create the tri-diagonal thing
        ptr(1) = 0
        do ic = 1 , N
           ! Correct pointers...
-          ncol(ic) = 3
+          nrow(ic) = 3
           ptr(ic+1) = ptr(ic) + 3
 
           idx = ptr(ic) + 1 ! we know it is CSC0
@@ -360,7 +360,7 @@ contains
   end subroutine dist_2
 
   subroutine dist_3()
-    integer, pointer :: ptr(:), ind(:), ncol(:)
+    integer, pointer :: ptr(:), ind(:), nrow(:)
     real, pointer :: arr(:)
     integer :: ic, i, idx
 
@@ -377,13 +377,13 @@ contains
        call new(arr1, N * 3)
        arr => array_p(arr1)
 
-       call attach(sm1, cptr=ptr, row=ind, ncol=ncol)
+       call attach(sm1, cptr=ptr, row=ind, n_row=nrow)
 
        ! Create the tri-diagonal thing
        ptr(1) = 0
        do ic = 1 , N
           ! Correct pointers...
-          ncol(ic) = 3
+          nrow(ic) = 3
           ptr(ic+1) = ptr(ic) + 3
 
           idx = ptr(ic) + 1 ! we know it is CSC0
@@ -451,7 +451,7 @@ contains
   end subroutine dist_3
 
   subroutine dist_4()
-    integer, pointer :: ptr(:), ind(:), ncol(:)
+    integer, pointer :: ptr(:), ind(:), nrow(:)
     real, pointer :: arr(:)
     integer :: ic, i, idx
 
@@ -468,13 +468,13 @@ contains
        call new(arr1, N * 3)
        arr => array_p(arr1)
 
-       call attach(sm1, cptr=ptr, row=ind, ncol=ncol)
+       call attach(sm1, cptr=ptr, row=ind, n_row=nrow)
 
        ! Create the tri-diagonal thing
        ptr(1) = 0
        do ic = 1 , N
           ! Correct pointers...
-          ncol(ic) = 3
+          nrow(ic) = 3
           ptr(ic+1) = ptr(ic) + 3
 
           idx = ptr(ic) + 1 ! we know it is CSC0
