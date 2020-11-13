@@ -61,7 +61,7 @@
     else
       io_rank = -1
     end if
-    call AllReduce_Max(io_rank, iu, comm)
+    call MP_AllReduce_Max(io_rank, iu, comm)
     io_rank = iu
 
     ! Check if the file is open on one rank
@@ -92,7 +92,7 @@
     BUD_CC2(g,_CS_M) = _CS_M
 
     ! get total number of non-zero elements
-    call Reduce_Sum(nz, gnz, io_rank, comm)
+    call MP_Reduce_Sum(nz, gnz, io_rank, comm)
 
     if ( do_io ) then
 
@@ -131,13 +131,13 @@
       else if ( do_io ) then
 
         ! recieve data
-        call Recv(data(ig:ig+ic-1), ir, ig, &
+        call MP_Recv(data(ig:ig+ic-1), ir, ig, &
           comm, status)
 
       else
 
         ! send data
-        call SSend(nrc(il:il+ic-1), io_rank, ig, comm)
+        call MP_SSend(nrc(il:il+ic-1), io_rank, ig, comm)
 
       end if
 
@@ -182,8 +182,8 @@
       else if ( do_io ) then
 
         ! recieve data
-        call Recv(data, ir, ig, comm, status)
-        call Get_Count(status, BUD_MPI_PREC, ic, comm)
+        call MP_Recv(data, ir, ig, comm, status)
+        call MP_Get_Count(status, BUD_MPI_PREC, ic, comm)
         if ( formatted ) then
           write(iu, '(i16)')  data(1:ic)
         else
@@ -194,7 +194,7 @@
 
         ! send data
         indx => indices_p(sm, il)
-        call SSend(indx, io_rank, ig, comm)
+        call MP_SSend(indx, io_rank, ig, comm)
 
       end if
 
@@ -257,7 +257,7 @@
     else
       io_rank = -1
     end if
-    call AllReduce_Max(io_rank, iu, comm)
+    call MP_AllReduce_Max(io_rank, iu, comm)
     io_rank = iu
 
     ! Check if the file is open on one rank
@@ -316,7 +316,7 @@
     end if
 
     ! Now distribute data so every processor knows the size
-    call Bcast(data, io_rank, comm)
+    call MP_Bcast(data, io_rank, comm)
 
     ! Retrieve my rank ID
     my_rank = comm_rank(comm)
@@ -391,14 +391,14 @@
           end if
 
           ! Send the data
-          call SSend(idx(:data(ig)), ir, ig, comm)
+          call MP_SSend(idx(:data(ig)), ir, ig, comm)
 
         end if
 
       else if ( ir == my_rank ) then
 
         ! Recieve data from io-node
-        call Recv(indx(:data(ig)), io_rank, ig, comm, status)
+        call MP_Recv(indx(:data(ig)), io_rank, ig, comm, status)
 
       end if
 

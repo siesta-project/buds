@@ -18,12 +18,8 @@ contains
     do while ( n * 2 + len(name) + 2 < full )
       n = n + 1
     end do
-    if ( n * 2 + len(name) + 2 /= full ) then
-      write(*,'(3a)') repeat('#',30),' STARTING TEST ',repeat('#',31)
-    else
-      write(*,'(3a)') repeat('#',30),' STARTING TEST ',repeat('#',30)
-    end if
-    write(*,'(2(a,tr1),a)') repeat('#',n),name,repeat('#',n)
+    write(*,'(3a)') repeat('#',30),' STARTING TEST ',repeat('#',30)
+    write(*,'(2(a,tr1),a)') repeat('>',n),name,repeat('<',n)
   end subroutine start_test
 
   subroutine end_test(name, io)

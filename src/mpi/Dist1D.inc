@@ -241,8 +241,8 @@
   !> Overload the `assignment(=)` operator for retrieving the communicator
   interface assignment(=)
     module procedure comm_assign_
-  end interface assignment(=)
-
+  end interface
+  
   !> Query ID for current processor in distribution
   interface comm_rank
     module procedure comm_rank_
@@ -480,14 +480,9 @@
   end function comm_
 
   !> Query the associated communicator
-  !!
-  !! @devnote this function actually points the contained
-  !! data because it is is used subsequently for an assignment
-  !! which in case will ref-step the counter. If we did
-  !! not do this, each assignment would mean two ref-steps.
   subroutine comm_assign_(comm, this)
     type(BUD_TYPE_MP_COMM), intent(inout) :: comm
-    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_TYPE_NAME), intent(in) :: this
     if ( is_initd(this) ) then
       comm = this%D%comm
     else
@@ -1118,7 +1113,7 @@
       if ( comm_rank(this) == 0 ) itmp = rk
     end if
 #ifdef BUD_MPI
-    call AllReduce_Max(itmp, my_root, parent)
+    call MP_AllReduce_Max(itmp, my_root, parent)
 #endif
 
     ! Now we know the b-casting rank in parent
@@ -1134,10 +1129,10 @@
       iNG = size_global(this)
       iBS = size_block(this)
 #ifdef BUD_MPI
-      call Bcast(nranks, my_root, parent)
-      call Bcast(idist, my_root, parent)
-      call Bcast(iNG, my_root, parent)
-      call Bcast(iBS, my_root, parent)
+      call MP_Bcast(nranks, my_root, parent)
+      call MP_Bcast(idist, my_root, parent)
+      call MP_Bcast(iNG, my_root, parent)
+      call MP_Bcast(iBS, my_root, parent)
 #endif
 
       if ( dist_type(this) == DIST_USER ) then
@@ -1153,10 +1148,10 @@
       ! these will merely be part of Bcast but
       ! will not retain any data...
 #ifdef BUD_MPI
-      call Bcast(nranks, my_root, parent)
-      call Bcast(idist, my_root, parent)
-      call Bcast(iNG, my_root, parent)
-      call Bcast(iBS, my_root, parent)
+      call MP_Bcast(nranks, my_root, parent)
+      call MP_Bcast(idist, my_root, parent)
+      call MP_Bcast(iNG, my_root, parent)
+      call MP_Bcast(iBS, my_root, parent)
 #endif
       if ( idist == DIST_USER ) then
 
@@ -1169,10 +1164,10 @@
 
       ! these are the new distribution stuff
 #ifdef BUD_MPI
-      call Bcast(nranks, my_root, parent)
-      call Bcast(idist, my_root, parent)
-      call Bcast(iNG, my_root, parent)
-      call Bcast(iBS, my_root, parent)
+      call MP_Bcast(nranks, my_root, parent)
+      call MP_Bcast(idist, my_root, parent)
+      call MP_Bcast(iNG, my_root, parent)
+      call MP_Bcast(iBS, my_root, parent)
 #endif
       call new_remote(comm, 0, nranks)
 

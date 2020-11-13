@@ -347,8 +347,8 @@ module BUD_MOD_NAME
     !> @iSee #error_mpi
     procedure, public :: error_mpi => get_MPIerr_
 
-    !> @iSee #is_success_mpi
-    procedure, public :: is_success_mpi => is_MPIsuccess_
+    !> @iSee #is_mpi_success
+    procedure, public :: is_mpi_success => is_MPIsuccess_
 
 
     ! Define all interfaces
@@ -357,89 +357,89 @@ module BUD_MOD_NAME
 # define BUD_IS_REAL
 # define BUD_IS_COMPLEX
 
-#define BUD_MP_COMM_NAME Send
+#define BUD_MP_COMM_NAME MP_Send
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME BSend
+#define BUD_MP_COMM_NAME MP_BSend
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME RSend
+#define BUD_MP_COMM_NAME MP_RSend
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME SSend
+#define BUD_MP_COMM_NAME MP_SSend
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME ISend
+#define BUD_MP_COMM_NAME MP_ISend
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME IBSend
+#define BUD_MP_COMM_NAME MP_IBSend
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME IRSend
+#define BUD_MP_COMM_NAME MP_IRSend
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME ISSend
-# include "MP_Comm_routine_interface_generic.inc"
-
-#define BUD_MP_COMM_NAME Send_Init
-# include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME BSend_Init
-# include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME RSend_Init
-# include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME SSend_Init
+#define BUD_MP_COMM_NAME MP_ISSend
 # include "MP_Comm_routine_interface_generic.inc"
 
-#define BUD_MP_COMM_NAME Recv
+#define BUD_MP_COMM_NAME MP_Send_Init
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME IRecv
+#define BUD_MP_COMM_NAME MP_BSend_Init
 # include "MP_Comm_routine_interface_generic.inc"
-
-#define BUD_MP_COMM_NAME Recv_Init
+#define BUD_MP_COMM_NAME MP_RSend_Init
 # include "MP_Comm_routine_interface_generic.inc"
-
-#define BUD_MP_COMM_NAME Bcast
-# include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME IBcast
+#define BUD_MP_COMM_NAME MP_SSend_Init
 # include "MP_Comm_routine_interface_generic.inc"
 
-#define BUD_MP_COMM_NAME Gather
+#define BUD_MP_COMM_NAME MP_Recv
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME IGather
-# include "MP_Comm_routine_interface_generic.inc"
-
-#define BUD_MP_COMM_NAME AllGather
-# include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME IAllGather
+#define BUD_MP_COMM_NAME MP_IRecv
 # include "MP_Comm_routine_interface_generic.inc"
 
-#define BUD_MP_COMM_NAME Scatter
-# include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME IScatter
+#define BUD_MP_COMM_NAME MP_Recv_Init
 # include "MP_Comm_routine_interface_generic.inc"
 
-#define BUD_MP_COMM_NAME Reduce
+#define BUD_MP_COMM_NAME MP_Bcast
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME IReduce
+#define BUD_MP_COMM_NAME MP_IBcast
+# include "MP_Comm_routine_interface_generic.inc"
+
+#define BUD_MP_COMM_NAME MP_Gather
+# include "MP_Comm_routine_interface_generic.inc"
+#define BUD_MP_COMM_NAME MP_IGather
+# include "MP_Comm_routine_interface_generic.inc"
+
+#define BUD_MP_COMM_NAME MP_AllGather
+# include "MP_Comm_routine_interface_generic.inc"
+#define BUD_MP_COMM_NAME MP_IAllGather
+# include "MP_Comm_routine_interface_generic.inc"
+
+#define BUD_MP_COMM_NAME MP_Scatter
+# include "MP_Comm_routine_interface_generic.inc"
+#define BUD_MP_COMM_NAME MP_IScatter
+# include "MP_Comm_routine_interface_generic.inc"
+
+#define BUD_MP_COMM_NAME MP_Reduce
+# include "MP_Comm_routine_interface_generic.inc"
+#define BUD_MP_COMM_NAME MP_IReduce
 # include "MP_Comm_routine_interface_generic.inc"
 
 
     ! INTEGER/REAL/COMPLEX
 # undef BUD_IS_LOGICAL
 
-#define BUD_MP_COMM_NAME Reduce_Prod
+#define BUD_MP_COMM_NAME MP_Reduce_Prod
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME IReduce_Prod
+#define BUD_MP_COMM_NAME MP_IReduce_Prod
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME Reduce_Sum
+#define BUD_MP_COMM_NAME MP_Reduce_Sum
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME IReduce_Sum
+#define BUD_MP_COMM_NAME MP_IReduce_Sum
 # include "MP_Comm_routine_interface_generic.inc"
 
 
     ! INTEGER/REAL
 # undef BUD_IS_COMPLEX
 
-#define BUD_MP_COMM_NAME Reduce_Max
+#define BUD_MP_COMM_NAME MP_Reduce_Max
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME IReduce_Max
+#define BUD_MP_COMM_NAME MP_IReduce_Max
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME Reduce_Min
+#define BUD_MP_COMM_NAME MP_Reduce_Min
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME IReduce_Min
+#define BUD_MP_COMM_NAME MP_IReduce_Min
 # include "MP_Comm_routine_interface_generic.inc"
 
 
@@ -448,17 +448,17 @@ module BUD_MOD_NAME
 # undef BUD_IS_REAL
 # define BUD_IS_LOGICAL
 
-#define BUD_MP_COMM_NAME Reduce_LAND
+#define BUD_MP_COMM_NAME MP_Reduce_LAND
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME IReduce_LAND
+#define BUD_MP_COMM_NAME MP_IReduce_LAND
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME Reduce_LOR
+#define BUD_MP_COMM_NAME MP_Reduce_LOR
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME IReduce_LOR
+#define BUD_MP_COMM_NAME MP_IReduce_LOR
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME Reduce_LXOR
+#define BUD_MP_COMM_NAME MP_Reduce_LXOR
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME IReduce_LXOR
+#define BUD_MP_COMM_NAME MP_IReduce_LXOR
 # include "MP_Comm_routine_interface_generic.inc"
 
 
@@ -468,35 +468,35 @@ module BUD_MOD_NAME
 # define BUD_IS_REAL
 # define BUD_IS_COMPLEX
 
-#define BUD_MP_COMM_NAME AllReduce
+#define BUD_MP_COMM_NAME MP_AllReduce
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME IAllReduce
+#define BUD_MP_COMM_NAME MP_IAllReduce
 # include "MP_Comm_routine_interface_generic.inc"
 
 
     ! INTEGER/REAL/COMPLEX
 # undef BUD_IS_LOGICAL
 
-#define BUD_MP_COMM_NAME AllReduce_Prod
+#define BUD_MP_COMM_NAME MP_AllReduce_Prod
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME IAllReduce_Prod
+#define BUD_MP_COMM_NAME MP_IAllReduce_Prod
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME AllReduce_Sum
+#define BUD_MP_COMM_NAME MP_AllReduce_Sum
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME IAllReduce_Sum
+#define BUD_MP_COMM_NAME MP_IAllReduce_Sum
 # include "MP_Comm_routine_interface_generic.inc"
 
 
     ! INTEGER/REAL
 # undef BUD_IS_COMPLEX
 
-#define BUD_MP_COMM_NAME AllReduce_Max
+#define BUD_MP_COMM_NAME MP_AllReduce_Max
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME IAllReduce_Max
+#define BUD_MP_COMM_NAME MP_IAllReduce_Max
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME AllReduce_Min
+#define BUD_MP_COMM_NAME MP_AllReduce_Min
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME IAllReduce_Min
+#define BUD_MP_COMM_NAME MP_IAllReduce_Min
 # include "MP_Comm_routine_interface_generic.inc"
 
     ! LOGICAL
@@ -504,17 +504,17 @@ module BUD_MOD_NAME
 # undef BUD_IS_REAL
 # define BUD_IS_LOGICAL
 
-#define BUD_MP_COMM_NAME AllReduce_LAND
+#define BUD_MP_COMM_NAME MP_AllReduce_LAND
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME IAllReduce_LAND
+#define BUD_MP_COMM_NAME MP_IAllReduce_LAND
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME AllReduce_LOR
+#define BUD_MP_COMM_NAME MP_AllReduce_LOR
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME IAllReduce_LOR
+#define BUD_MP_COMM_NAME MP_IAllReduce_LOR
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME AllReduce_LXOR
+#define BUD_MP_COMM_NAME MP_AllReduce_LXOR
 # include "MP_Comm_routine_interface_generic.inc"
-#define BUD_MP_COMM_NAME IAllReduce_LXOR
+#define BUD_MP_COMM_NAME MP_IAllReduce_LXOR
 # include "MP_Comm_routine_interface_generic.inc"
 
 #undef BUD_IS_LOGICAL
@@ -522,18 +522,18 @@ module BUD_MOD_NAME
 #undef BUD_IS_REAL
 #undef BUD_IS_COMPLEX
 
-    procedure, public :: Barrier => Barrier_
-    procedure, public :: IBarrier => IBarrier_
+    procedure, public :: MP_Barrier => Barrier_
+    procedure, public :: MP_IBarrier => IBarrier_
 
-    procedure, public, pass(this) :: Get_Count => Get_Count_
+    procedure, public, pass(this) :: MP_Get_Count => Get_Count_
 
-    procedure, public, pass(this) :: Wait => Wait_
-    procedure, public, pass(this) :: WaitAll => WaitAll_
-    procedure, public, pass(this) :: WaitAny => WaitAny_
-    procedure, public, pass(this) :: Test => Test_
-    procedure, public, pass(this) :: TestAll => TestAll_
-    procedure, public, pass(this) :: TestAny => TestAny_
-    procedure, public, pass(this) :: Test_Cancelled => Test_Cancelled_
+    procedure, public, pass(this) :: MP_Wait => Wait_
+    procedure, public, pass(this) :: MP_WaitAll => WaitAll_
+    procedure, public, pass(this) :: MP_WaitAny => WaitAny_
+    procedure, public, pass(this) :: MP_Test => Test_
+    procedure, public, pass(this) :: MP_TestAll => TestAll_
+    procedure, public, pass(this) :: MP_TestAny => TestAny_
+    procedure, public, pass(this) :: MP_Test_Cancelled => Test_Cancelled_
 
 # ifdef BUD_MPI
     generic, public :: Comm_split => comm_split_, comm_split_type_
@@ -696,10 +696,10 @@ module BUD_MOD_NAME
   public :: error_MPI
 
   !> Returns `.true.` if the previous MPI call was a success.
-  interface is_success_MPI
+  interface is_MPI_success
     module procedure is_MPIsuccess_
   end interface
-  public :: is_success_MPI
+  public :: is_MPI_success
 
 
   ! Define all interfaces
@@ -710,261 +710,261 @@ module BUD_MOD_NAME
 
   ! Define interfaces
   !> Interface for `MPI_Send`
-  interface Send
+  interface MP_Send
 #define BUD_MP_COMM_NAME Send
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME Send_N
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: Send
+  public :: MP_Send
   !> Interface for `MPI_BSend`
-  interface BSend
+  interface MP_BSend
 #define BUD_MP_COMM_NAME BSend
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME BSend_N
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: BSend
+  public :: MP_BSend
   !> Interface for `MPI_RSend`
-  interface RSend
+  interface MP_RSend
 #define BUD_MP_COMM_NAME RSend
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME RSend_N
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: RSend
+  public :: MP_RSend
   !> Interface for `MPI_SSend`
-  interface SSend
+  interface MP_SSend
 #define BUD_MP_COMM_NAME SSend
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME SSend_N
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: SSend
+  public :: MP_SSend
   !> Interface for `MPI_ISend`
-  interface ISend
+  interface MP_ISend
 #define BUD_MP_COMM_NAME ISend
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME ISend_N
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: ISend
+  public :: MP_ISend
   !> Interface for `MPI_IBSend`
-  interface IBSend
+  interface MP_IBSend
 #define BUD_MP_COMM_NAME IBSend
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME IBSend_N
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: IBSend
+  public :: MP_IBSend
   !> Interface for `MPI_IRSend`
-  interface IRSend
+  interface MP_IRSend
 #define BUD_MP_COMM_NAME IRSend
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME IRSend_N
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: IRSend
+  public :: MP_IRSend
   !> Interface for `MPI_ISSend`
-  interface ISSend
+  interface MP_ISSend
 #define BUD_MP_COMM_NAME ISSend
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME ISSend_N
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: ISSend
+  public :: MP_ISSend
 
   !> Interface for `MPI_Send_Init`
-  interface Send_Init
+  interface MP_Send_Init
 #define BUD_MP_COMM_NAME Send_Init
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME Send_Init_N
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: Send_Init
+  public :: MP_Send_Init
   !> Interface for `MPI_BSend_Init`
-  interface BSend_Init
+  interface MP_BSend_Init
 #define BUD_MP_COMM_NAME BSend_Init
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME BSend_Init_N
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: BSend_Init
+  public :: MP_BSend_Init
   !> Interface for `MPI_RSend_Init`
-  interface RSend_Init
+  interface MP_RSend_Init
 #define BUD_MP_COMM_NAME RSend_Init
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME RSend_Init_N
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: RSend_Init
+  public :: MP_RSend_Init
   !> Interface for `MPI_SSend_Init`
-  interface SSend_Init
+  interface MP_SSend_Init
 #define BUD_MP_COMM_NAME SSend_Init
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME SSend_Init_N
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: SSend_Init
+  public :: MP_SSend_Init
 
   !> Interface for `MPI_Recv`
-  interface Recv
+  interface MP_Recv
 #define BUD_MP_COMM_NAME Recv
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME Recv_N
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: Recv
+  public :: MP_Recv
   !> Interface for `MPI_IRecv`
-  interface IRecv
+  interface MP_IRecv
 #define BUD_MP_COMM_NAME IRecv
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME IRecv_N
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: IRecv
+  public :: MP_IRecv
 
   !> Interface for `MPI_Recv_Init`
-  interface Recv_Init
+  interface MP_Recv_Init
 #define BUD_MP_COMM_NAME Recv_Init
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME Recv_Init_N
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: Recv_Init
+  public :: MP_Recv_Init
 
   !> Interface for `MPI_Bcast`
-  interface Bcast
+  interface MP_Bcast
 #define BUD_MP_COMM_NAME Bcast
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME Bcast_N
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: Bcast
+  public :: MP_Bcast
   !> Interface for `MPI_IBcast`
-  interface IBcast
+  interface MP_IBcast
 #define BUD_MP_COMM_NAME IBcast
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME IBcast_N
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: IBcast
+  public :: MP_IBcast
 
   !> Interface for `MPI_Gather`
-  interface Gather
+  interface MP_Gather
 #define BUD_MP_COMM_NAME Gather
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: Gather
+  public :: MP_Gather
   !> Interface for `MPI_IGather`
-  interface IGather
+  interface MP_IGather
 #define BUD_MP_COMM_NAME IGather
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: IGather
+  public :: MP_IGather
 
   !> Interface for `MPI_AllGather`
-  interface AllGather
+  interface MP_AllGather
 #define BUD_MP_COMM_NAME AllGather
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: AllGather
+  public :: MP_AllGather
   !> Interface for `MPI_IAllGather`
-  interface IAllGather
+  interface MP_IAllGather
 #define BUD_MP_COMM_NAME IAllGather
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: IAllGather
+  public :: MP_IAllGather
 
   !> Interface for `MPI_Scatter`
-  interface Scatter
+  interface MP_Scatter
 #define BUD_MP_COMM_NAME Scatter
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: Scatter
+  public :: MP_Scatter
   !> Interface for `MPI_IScatter`
-  interface IScatter
+  interface MP_IScatter
 #define BUD_MP_COMM_NAME IScatter
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: IScatter
+  public :: MP_IScatter
 
   !> Interface for `MPI_Reduce`
-  interface Reduce
+  interface MP_Reduce
 #define BUD_MP_COMM_NAME Reduce
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME Reduce_N
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: Reduce
+  public :: MP_Reduce
   !> Interface for `MPI_IReduce`
-  interface IReduce
+  interface MP_IReduce
 #define BUD_MP_COMM_NAME IReduce
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME IReduce_N
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: IReduce
+  public :: MP_IReduce
 
 
   ! INTEGER/REAL/COMPLEX
 # undef BUD_IS_LOGICAL
 
   !> Interface for `MPI_Reduce` with `op = MPI_PROD`
-  interface Reduce_Prod
+  interface MP_Reduce_Prod
 #define BUD_MP_COMM_NAME Reduce_Prod
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: Reduce_Prod
+  public :: MP_Reduce_Prod
   !> Interface for `MPI_IReduce` with `op = MPI_PROD`
-  interface IReduce_Prod
+  interface MP_IReduce_Prod
 #define BUD_MP_COMM_NAME IReduce_Prod
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: IReduce_Prod
+  public :: MP_IReduce_Prod
 
   !> Interface for `MPI_Reduce` with `op = MPI_SUM`
-  interface Reduce_Sum
+  interface MP_Reduce_Sum
 #define BUD_MP_COMM_NAME Reduce_Sum
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: Reduce_Sum
+  public :: MP_Reduce_Sum
   !> Interface for `MPI_IReduce` with `op = MPI_SUM`
-  interface IReduce_Sum
+  interface MP_IReduce_Sum
 #define BUD_MP_COMM_NAME IReduce_Sum
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: IReduce_Sum
+  public :: MP_IReduce_Sum
 
 
   ! INTEGER/REAL
 # undef BUD_IS_COMPLEX
 
   !> Interface for `MPI_Reduce` with `op = MPI_MAX`
-  interface Reduce_Max
+  interface MP_Reduce_Max
 #define BUD_MP_COMM_NAME Reduce_Max
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: Reduce_Max
+  public :: MP_Reduce_Max
   !> Interface for `MPI_IReduce` with `op = MPI_MAX`
-  interface IReduce_Max
+  interface MP_IReduce_Max
 #define BUD_MP_COMM_NAME IReduce_Max
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: IReduce_Max
+  public :: MP_IReduce_Max
 
   !> Interface for `MPI_Reduce` with `op = MPI_MIN`
-  interface Reduce_Min
+  interface MP_Reduce_Min
 #define BUD_MP_COMM_NAME Reduce_Min
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: Reduce_Min
+  public :: MP_Reduce_Min
   !> Interface for `MPI_IReduce` with `op = MPI_MIN`
-  interface IReduce_Min
+  interface MP_IReduce_Min
 #define BUD_MP_COMM_NAME IReduce_Min
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: IReduce_Min
+  public :: MP_IReduce_Min
 
 
   ! LOGICAL
@@ -973,43 +973,43 @@ module BUD_MOD_NAME
 # define BUD_IS_LOGICAL
 
   !> Interface for `MPI_Reduce` with `op = MPI_LAND`
-  interface Reduce_LAND
+  interface MP_Reduce_LAND
 #define BUD_MP_COMM_NAME Reduce_LAND
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: Reduce_LAND
+  public :: MP_Reduce_LAND
   !> Interface for `MPI_IReduce` with `op = MPI_LAND`
-  interface IReduce_LAND
+  interface MP_IReduce_LAND
 #define BUD_MP_COMM_NAME IReduce_LAND
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: IReduce_LAND
+  public :: MP_IReduce_LAND
 
   !> Interface for `MPI_Reduce` with `op = MPI_LOR`
-  interface Reduce_LOR
+  interface MP_Reduce_LOR
 #define BUD_MP_COMM_NAME Reduce_LOR
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: Reduce_LOR
+  public :: MP_Reduce_LOR
   !> Interface for `MPI_IReduce` with `op = MPI_LOR`
-  interface IReduce_LOR
+  interface MP_IReduce_LOR
 #define BUD_MP_COMM_NAME IReduce_LOR
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: IReduce_LOR
+  public :: MP_IReduce_LOR
 
   !> Interface for `MPI_Reduce` with `op = MPI_LXOR`
-  interface Reduce_LXOR
+  interface MP_Reduce_LXOR
 #define BUD_MP_COMM_NAME Reduce_LXOR
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: Reduce_LXOR
+  public :: MP_Reduce_LXOR
   !> Interface for `MPI_IReduce` with `op = MPI_LXOR`
-  interface IReduce_LXOR
+  interface MP_IReduce_LXOR
 #define BUD_MP_COMM_NAME IReduce_LXOR
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: IReduce_LXOR
+  public :: MP_IReduce_LXOR
 
 
 # undef BUD_IS_LOGICAL
@@ -1019,81 +1019,81 @@ module BUD_MOD_NAME
 # define BUD_IS_COMPLEX
 
   !> Interface for `MPI_AllReduce`
-  interface AllReduce
+  interface MP_AllReduce
 #define BUD_MP_COMM_NAME AllReduce
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME AllReduce_N
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: AllReduce
+  public :: MP_AllReduce
   !> Interface for `MPI_IAllReduce`
-  interface IAllReduce
+  interface MP_IAllReduce
 #define BUD_MP_COMM_NAME IAllReduce
 # include "MP_Comm_routine_interface.inc"
 #define BUD_MP_COMM_NAME IAllReduce_N
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: IAllReduce
+  public :: MP_IAllReduce
 
 
   ! INTEGER/REAL/COMPLEX
 # undef BUD_IS_LOGICAL
 
   !> Interface for `MPI_AllReduce` with `op = MPI_PROD`
-  interface AllReduce_Prod
+  interface MP_AllReduce_Prod
 #define BUD_MP_COMM_NAME AllReduce_Prod
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: AllReduce_Prod
+  public :: MP_AllReduce_Prod
   !> Interface for `MPI_IAllReduce` with `op = MPI_PROD`
-  interface IAllReduce_Prod
+  interface MP_IAllReduce_Prod
 #define BUD_MP_COMM_NAME IAllReduce_Prod
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: IAllReduce_Prod
+  public :: MP_IAllReduce_Prod
 
   !> Interface for `MPI_AllReduce` with `op = MPI_SUM`
-  interface AllReduce_Sum
+  interface MP_AllReduce_Sum
 #define BUD_MP_COMM_NAME AllReduce_Sum
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: AllReduce_Sum
+  public :: MP_AllReduce_Sum
   !> Interface for `MPI_IAllReduce` with `op = MPI_SUM`
-  interface IAllReduce_Sum
+  interface MP_IAllReduce_Sum
 #define BUD_MP_COMM_NAME IAllReduce_Sum
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: IAllReduce_Sum
+  public :: MP_IAllReduce_Sum
 
 
   ! INTEGER/REAL
 # undef BUD_IS_COMPLEX
 
   !> Interface for `MPI_AllReduce` with `op = MPI_MAX`
-  interface AllReduce_Max
+  interface MP_AllReduce_Max
 #define BUD_MP_COMM_NAME AllReduce_Max
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: AllReduce_Max
+  public :: MP_AllReduce_Max
   !> Interface for `MPI_IAllReduce` with `op = MPI_MAX`
-  interface IAllReduce_Max
+  interface MP_IAllReduce_Max
 #define BUD_MP_COMM_NAME IAllReduce_Max
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: IAllReduce_Max
+  public :: MP_IAllReduce_Max
 
   !> Interface for `MPI_AllReduce` with `op = MPI_MIN`
-  interface AllReduce_Min
+  interface MP_AllReduce_Min
 #define BUD_MP_COMM_NAME AllReduce_Min
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: AllReduce_Min
+  public :: MP_AllReduce_Min
   !> Interface for `MPI_IAllReduce` with `op = MPI_MIN`
-  interface IAllReduce_Min
+  interface MP_IAllReduce_Min
 #define BUD_MP_COMM_NAME IAllReduce_Min
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: IAllReduce_Min
+  public :: MP_IAllReduce_Min
 
 
   ! LOGICAL
@@ -1102,43 +1102,43 @@ module BUD_MOD_NAME
 # define BUD_IS_LOGICAL
 
   !> Interface for `MPI_AllReduce` with `op = MPI_LAND`
-  interface AllReduce_LAND
+  interface MP_AllReduce_LAND
 #define BUD_MP_COMM_NAME AllReduce_LAND
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: AllReduce_LAND
+  public :: MP_AllReduce_LAND
   !> Interface for `MPI_IAllReduce` with `op = MPI_LAND`
-  interface IAllReduce_LAND
+  interface MP_IAllReduce_LAND
 #define BUD_MP_COMM_NAME IAllReduce_LAND
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: IAllReduce_LAND
+  public :: MP_IAllReduce_LAND
 
   !> Interface for `MPI_AllReduce` with `op = MPI_LOR`
-  interface AllReduce_LOR
+  interface MP_AllReduce_LOR
 #define BUD_MP_COMM_NAME AllReduce_LOR
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: AllReduce_LOR
+  public :: MP_AllReduce_LOR
   !> Interface for `MPI_IAllReduce` with `op = MPI_LOR`
-  interface IAllReduce_LOR
+  interface MP_IAllReduce_LOR
 #define BUD_MP_COMM_NAME IAllReduce_LOR
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: IAllReduce_LOR
+  public :: MP_IAllReduce_LOR
 
   !> Interface for `MPI_AllReduce` with `op = MPI_LXOR`
-  interface AllReduce_LXOR
+  interface MP_AllReduce_LXOR
 #define BUD_MP_COMM_NAME AllReduce_LXOR
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: AllReduce_LXOR
+  public :: MP_AllReduce_LXOR
   !> Interface for `MPI_IAllReduce` with `op = MPI_LXOR`
-  interface IAllReduce_LXOR
+  interface MP_IAllReduce_LXOR
 #define BUD_MP_COMM_NAME IAllReduce_LXOR
 # include "MP_Comm_routine_interface.inc"
   end interface
-  public :: IAllReduce_LXOR
+  public :: MP_IAllReduce_LXOR
 
 
 #undef BUD_IS_LOGICAL
@@ -1148,65 +1148,65 @@ module BUD_MOD_NAME
 
 
   !> Interface for `MPI_Barrier`
-  interface Barrier
+  interface MP_Barrier
     module procedure Barrier_
   end interface
-  public :: Barrier
+  public :: MP_Barrier
   !> Interface for `MPI_IBarrier`
-  interface IBarrier
+  interface MP_IBarrier
     module procedure IBarrier_
   end interface
-  public :: IBarrier
+  public :: MP_IBarrier
 
   !> Interface for `MPI_Get_Count`
-  interface Get_Count
+  interface MP_Get_Count
     module procedure Get_Count_
   end interface
-  public :: Get_Count
+  public :: MP_Get_Count
 
   !> Interface for `MPI_Wait`
-  interface Wait
+  interface MP_Wait
     module procedure Wait_
     module procedure Wait_err_
   end interface
-  public :: Wait
+  public :: MP_Wait
   !> Interface for `MPI_WaitAll`
-  interface WaitAll
+  interface MP_WaitAll
     module procedure WaitAll_
     module procedure WaitAll_err_
   end interface
-  public :: WaitAll
+  public :: MP_WaitAll
   !> Interface for `MPI_WaitAny`
-  interface WaitAny
+  interface MP_WaitAny
     module procedure WaitAny_
     module procedure WaitAny_err_
   end interface
-  public :: WaitAny
+  public :: MP_WaitAny
 
   !> Interface for `MPI_Test`
-  interface Test
+  interface MP_Test
     module procedure Test_
     module procedure Test_err_
   end interface
-  public :: Test
+  public :: MP_Test
   !> Interface for `MPI_TestAll`
-  interface TestAll
+  interface MP_TestAll
     module procedure TestAll_
     module procedure TestAll_err_
   end interface
-  public :: TestAll
+  public :: MP_TestAll
   !> Interface for `MPI_TestAny`
-  interface TestAny
+  interface MP_TestAny
     module procedure TestAny_
     module procedure TestAny_err_
   end interface
-  public :: TestAny
+  public :: MP_TestAny
   !> Interface for `MPI_Test_Cancelled`
-  interface Test_Cancelled
+  interface MP_Test_Cancelled
     module procedure Test_Cancelled_
     module procedure Test_Cancelled_err_
   end interface
-  public :: Test_Cancelled
+  public :: MP_Test_Cancelled
 
 #ifdef BUD_MPI
   !> Interface for `MPI_Comm_Split` and `MPI_Comm_Split_Type`
@@ -1959,11 +1959,11 @@ module BUD_MOD_NAME
 
     ! Reduce the node rank
     if ( present(root) ) then
-      call AllReduce_Max(root, tmp, parent)
+      call MP_AllReduce_Max(root, tmp, parent)
       root = tmp
     end if
     if ( present(size) ) then
-      call AllReduce_Max(size, tmp, parent)
+      call MP_AllReduce_Max(size, tmp, parent)
       size = tmp
     end if
 
@@ -1998,7 +1998,7 @@ module BUD_MOD_NAME
 
     ! Reduce the node rank
     allocate(tmp(n))
-    call AllReduce_Max(ranks, tmp, parent)
+    call MP_AllReduce_Max(ranks, tmp, parent)
     ranks = tmp
     deallocate(tmp)
 
@@ -2087,7 +2087,7 @@ module BUD_MOD_NAME
 
     call MPI_Comm_Create(parent%D%comm, group, Com, parent%error_)
 
-    if ( is_success_MPI(parent) ) then
+    if ( is_MPI_success(parent) ) then
       call new(child, Com, duplicate = .false.)
     else
       call delete(child)
@@ -2120,7 +2120,7 @@ module BUD_MOD_NAME
 
     call MPI_Comm_Create_Group(parent%D%comm, group, tag, Com, parent%error_)
 
-    if ( is_success_MPI(parent) ) then
+    if ( is_MPI_success(parent) ) then
       call new(child, Com, duplicate = .false.)
     else
       call delete(child)

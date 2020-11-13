@@ -24,6 +24,11 @@
   integer(BUD_INT_PREC), parameter :: ONE = BUD_CC2(1_,BUD_INT_PREC)
   integer(BUD_INT_PREC), parameter :: ZERO = BUD_CC2(0_,BUD_INT_PREC)
 
+
+  interface new
+    module procedure new_sm_
+  end interface
+
   !> Retrieve pointer data in the sparse matrix
   !!
   !! The array-pointer will _always_ be contiguous.
@@ -100,6 +105,57 @@
 
 #include "bud_collection.inc"
 
+  !> @param[inout] this sparse matrix with array
+  !! @param[in] sm the sparse matrix to instantiate from
+#if BUD_DIM > 1
+  !! @param[in] shape the shape (`-1` refers to the sparse index)
+#endif
+  subroutine new_sm_(this, sm &
+#if BUD_DIM > 1
+    , shape &
+#endif
+    )
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_COLL_1), intent(in) :: sm
+#if BUD_DIM > 1
+    integer, intent(in) :: shape(BUD_DIM)
+#endif
+    type(BUD_COLL_2) :: arr
+#if BUD_DIM > 1
+    integer :: shap(BUD_DIM), i
+    integer :: found
+
+    found = 0
+    do i = 1 , BUD_DIM
+      if ( shape(i) < 0 ) then
+        shap(i) = max_nonzeros(sm)
+        found = i
+      else
+        shap(i) = shape(i)
+      end if
+    end do
+
+    ! The sparse index was not specified.
+    ! Tell the user that something went wrong
+    if ( found == 0 ) then
+      call delete(this)
+      call set_error(this, -1)
+      return
+    end if
+
+    call new(arr, shap)
+#else
+    call new(arr, max_nonzeros(sm))
+#endif
+
+    ! Create the array, then the new type
+    call new(this, sm, arr)
+    call delete(arr)
+#if BUD_DIM > 1
+    this%D%sm_idx = found
+#endif
+
+  end subroutine new_sm_
 
   !> @param[in] this sparse matrix
   !! @return a pointer to the data (contiguous)
@@ -366,5 +422,3 @@
   !  f90-program-indent: 2
   !  f90-do-indent: 2
   ! End:
-
-

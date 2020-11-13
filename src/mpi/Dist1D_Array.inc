@@ -188,7 +188,7 @@
     ! regarding the matrix size
     dims = dimensions(arr)
 #ifdef BUD_MPI
-    call AllReduce_Max(dims, ir, parent)
+    call MP_AllReduce_Max(dims, ir, parent)
     dims = ir
 #endif
     allocate(ashape(dims))
@@ -206,11 +206,11 @@
 
 #ifdef BUD_MPI
     ! First distribute the distributed index
-    call AllReduce_Max(dist_idx, ir, parent)
+    call MP_AllReduce_Max(dist_idx, ir, parent)
     dist_idx = ir
 
     allocate(itmp1(dims))
-    call AllReduce_Max(ashape, itmp1, parent)
+    call MP_AllReduce_Max(ashape, itmp1, parent)
     do ir = 1 , dims
       ! Do not update the distributed index
       if ( ir /= dist_idx ) then
@@ -236,7 +236,7 @@
       ! We only need to reduce on the output communicator.
       ! I.e. we want them to know the root rank in the
       ! parent communicator.
-      call AllReduce_Max(ir, my_root, out_comm)
+      call MP_AllReduce_Max(ir, my_root, out_comm)
 #else
       my_root = ir
 #endif
@@ -255,7 +255,7 @@
     ! Figure out the sizes of the input distribution
     ng = size_global(dist)
 #ifdef BUD_MPI
-    call AllReduce_Max(ng, nl, parent)
+    call MP_AllReduce_Max(ng, nl, parent)
     ng = nl
 #endif
     nl = size_local(dist)
@@ -276,7 +276,7 @@
 #ifdef BUD_MPI
       ! Reduce so that everybody knows whether this is a new
       ! distribution
-      call AllReduce_LOr(my_distr, is_distr, parent)
+      call MP_AllReduce_LOr(my_distr, is_distr, parent)
 #else
       is_distr = my_distr
 #endif
@@ -481,13 +481,13 @@
             oil = g2l(out_dist, ig)
 
 # if BUD_DIM == 1
-            call Recv(odat(oil), MPI_ANY_SOURCE, ig, &
+            call MP_Recv(odat(oil), MPI_ANY_SOURCE, ig, &
               parent, stat)
 # elif BUD_DIM == 2
-            call Recv(odat(:,oil), MPI_ANY_SOURCE, ig, &
+            call MP_Recv(odat(:,oil), MPI_ANY_SOURCE, ig, &
               parent, stat)
 # elif BUD_DIM == 3
-            call Recv(odat(:,:,oil), MPI_ANY_SOURCE, ig, &
+            call MP_Recv(odat(:,:,oil), MPI_ANY_SOURCE, ig, &
               parent, stat)
 # else
 #  error "Only up till BUD_DIM == 3 has been implemented"
@@ -500,13 +500,13 @@
             il = g2l(dist, ig)
 
 #if BUD_DIM == 1
-            call ISSend(dat(il), recv_R, ig, &
+            call MP_ISSend(dat(il), recv_R, ig, &
               parent, reqs(il))
 #elif BUD_DIM == 2
-            call ISSend(dat(:,il), recv_R, ig, &
+            call MP_ISSend(dat(:,il), recv_R, ig, &
               parent, reqs(il))
 #elif BUD_DIM == 3
-            call ISSend(dat(:,:,il), recv_R, ig, &
+            call MP_ISSend(dat(:,:,il), recv_R, ig, &
               parent, reqs(il))
 #else
 # error "Only up till BUD_DIM == 3 has been implemented"
@@ -522,7 +522,7 @@
 
 #ifdef BUD_MPI
         if ( allocated(reqs) ) &
-          call WaitAll(nl, reqs, stats, parent)
+          call MP_WaitAll(nl, reqs, stats, parent)
 #endif
 
       else if ( dist_idx == 1 ) then
@@ -557,10 +557,10 @@
              oil = g2l(out_dist, ig)
 
 #if BUD_DIM == 2
-             call Recv(odat(oil,i2), MPI_ANY_SOURCE, ig, &
+             call MP_Recv(odat(oil,i2), MPI_ANY_SOURCE, ig, &
                parent, stat)
 #elif BUD_DIM == 3
-             call Recv(odat(oil,i2,i3), MPI_ANY_SOURCE, ig, &
+             call MP_Recv(odat(oil,i2,i3), MPI_ANY_SOURCE, ig, &
                parent, stat)
 #endif
 
@@ -572,10 +572,10 @@
              il = g2l(dist, ig)
 
 #if BUD_DIM == 2
-             call ISSend(dat(il,i2), recv_R, ig, &
+             call MP_ISSend(dat(il,i2), recv_R, ig, &
                parent, reqs(il))
 #elif BUD_DIM == 3
-             call ISSend(dat(il,i2,i3), recv_R, ig, &
+             call MP_ISSend(dat(il,i2,i3), recv_R, ig, &
                parent, reqs(il))
 #endif
 
@@ -589,7 +589,7 @@
 
 #ifdef BUD_MPI
          if ( allocated(reqs) ) &
-           call WaitAll(nl, reqs, stats, parent)
+           call MP_WaitAll(nl, reqs, stats, parent)
 #endif
 
         end do ! i2
@@ -625,7 +625,7 @@
 
              oil = g2l(out_dist, ig)
 
-             call Recv(odat(:,oil,i3), MPI_ANY_SOURCE, ig, &
+             call MP_Recv(odat(:,oil,i3), MPI_ANY_SOURCE, ig, &
                parent, stat)
              ! TODO check that Get_Count == oid2-oid1+1
              ! But here we do not know the data-type
@@ -634,7 +634,7 @@
 
              il = g2l(dist, ig)
 
-             call ISSend(dat(:,il,i3), recv_R, ig, &
+             call MP_ISSend(dat(:,il,i3), recv_R, ig, &
                parent, reqs(il))
 #else
            else
@@ -646,7 +646,7 @@
 
 #ifdef BUD_MPI
          if ( allocated(reqs) ) &
-           call WaitAll(nl, reqs, stats, parent)
+           call MP_WaitAll(nl, reqs, stats, parent)
 #endif
 
        end do ! i3
@@ -658,7 +658,7 @@
       if ( allocated(reqs) ) deallocate(reqs)
 
       ! Be sure to wait for the next iteration
-      call Barrier(parent)
+      call MP_Barrier(parent)
 #endif
 
       call delete(out_comm)
@@ -731,7 +731,7 @@
     else
       io_rank = -1
     end if
-    call AllReduce_Max(io_rank, iu, comm)
+    call MP_AllReduce_Max(io_rank, iu, comm)
     io_rank = iu
 
     ! Check if the file is open on one rank
@@ -862,18 +862,18 @@
 
           else if ( do_io ) then
 
-            call Recv(rdat(i1), n, dat_rank, i1, comm, status)
+            call MP_Recv(rdat(i1), n, dat_rank, i1, comm, status)
 
           else if ( rank == dat_rank ) then
 
             l = global2local(dist, i1)
 
 # if BUD_DIM > 2
-            call SSend(dat(l,i2,i3), n, io_rank, i1, comm)
+            call MP_SSend(dat(l,i2,i3), n, io_rank, i1, comm)
 # elif BUD_DIM > 1
-            call SSend(dat(l,i2), n, io_rank, i1, comm)
+            call MP_SSend(dat(l,i2), n, io_rank, i1, comm)
 # else
-            call SSend(dat(l), n, io_rank, i1, comm)
+            call MP_SSend(dat(l), n, io_rank, i1, comm)
 # endif
 
           end if
@@ -920,16 +920,16 @@
 
         else if ( do_io ) then
 
-          call Recv(rdat(1), d1, dat_rank, i1, comm, status)
+          call MP_Recv(rdat(1), d1, dat_rank, i1, comm, status)
 
         else if ( rank == dat_rank ) then
 
           l = global2local(dist, i2)
 
 # if BUD_DIM > 2
-          call SSend(dat(1,l,i3), d1, io_rank, i1, comm)
+          call MP_SSend(dat(1,l,i3), d1, io_rank, i1, comm)
 # else
-          call SSend(dat(l,l), d1, io_rank, i1, comm)
+          call MP_SSend(dat(l,l), d1, io_rank, i1, comm)
 # endif
 
         end if
@@ -966,13 +966,13 @@
 
         else if ( do_io ) then
 
-          call Recv(rdat(1), d1, dat_rank, i1, comm, status)
+          call MP_Recv(rdat(1), d1, dat_rank, i1, comm, status)
 
         else if ( rank == dat_rank ) then
 
           l = global2local(dist, i3)
 
-          call SSend(dat(1,i2,l), d1, io_rank, i1, comm)
+          call MP_SSend(dat(1,i2,l), d1, io_rank, i1, comm)
 
         end if
 
@@ -1069,7 +1069,7 @@
     else
       io_rank = -1
     end if
-    call AllReduce_Max(io_rank, iu, comm)
+    call MP_AllReduce_Max(io_rank, iu, comm)
     io_rank = iu
 
     ! Check if the file is open on one rank
@@ -1217,18 +1217,18 @@
 
           else if ( do_io ) then
 
-            call SSend(rdat(i1), n, dat_rank, i1, comm)
+            call MP_SSend(rdat(i1), n, dat_rank, i1, comm)
 
           else if ( rank == dat_rank ) then
 
             l = global2local(dist, i1)
 
 # if BUD_DIM > 2
-            call Recv(dat(l,i2,i3), n, io_rank, i1, comm, status)
+            call MP_Recv(dat(l,i2,i3), n, io_rank, i1, comm, status)
 # elif BUD_DIM > 1
-            call Recv(dat(l,i2), n, io_rank, i1, comm, status)
+            call MP_Recv(dat(l,i2), n, io_rank, i1, comm, status)
 # else
-            call Recv(dat(l), n, io_rank, i1, comm, status)
+            call MP_Recv(dat(l), n, io_rank, i1, comm, status)
 # endif
 
           end if
@@ -1254,16 +1254,16 @@
 
         else if ( do_io ) then
 
-          call SSend(rdat(1), d1, dat_rank, i2, comm)
+          call MP_SSend(rdat(1), d1, dat_rank, i2, comm)
 
         else if ( rank == dat_rank ) then
 
           l = global2local(dist, i2)
 
 # if BUD_DIM > 2
-          call Recv(dat(1,l,i3), d1, io_rank, i2, comm, status)
+          call MP_Recv(dat(1,l,i3), d1, io_rank, i2, comm, status)
 # else
-          call Recv(dat(1,l), d1, io_rank, i2, comm, status)
+          call MP_Recv(dat(1,l), d1, io_rank, i2, comm, status)
 # endif
 
         end if
@@ -1282,13 +1282,13 @@
 
         else if ( do_io ) then
 
-          call SSend(rdat(1), d1, dat_rank, i3, comm)
+          call MP_SSend(rdat(1), d1, dat_rank, i3, comm)
 
         else if ( rank == dat_rank ) then
 
           l = global2local(dist, i3)
 
-          call Recv(dat(1,i2,l), d1, io_rank, i3, comm, status)
+          call MP_Recv(dat(1,i2,l), d1, io_rank, i3, comm, status)
 
         end if
 

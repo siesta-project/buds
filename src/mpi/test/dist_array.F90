@@ -87,7 +87,7 @@ contains
     end if
 
     if ( is_initd(world) ) &
-         call Barrier(world)
+         call MP_Barrier(world)
 
   end subroutine print_world_self
 
@@ -126,19 +126,19 @@ contains
        if ( i == rank ) &
             call print(dA1)
        call flush(6)
-       call Barrier(world)
+       call MP_Barrier(world)
     end do
     do i = 0 , nrank - 1
        if ( i == rank ) &
             call print(dA2)
        call flush(6)
-       call Barrier(world)
+       call MP_Barrier(world)
     end do
 
     call delete(dA1)
     call delete(dA2)
 
-    call Barrier(world)
+    call MP_Barrier(world)
 
   end subroutine dist_1
 
@@ -179,19 +179,19 @@ contains
        if ( i == rank ) &
             call print(dA1)
        call flush(6)
-       call Barrier(world)
+       call MP_Barrier(world)
     end do
     do i = 0 , nrank - 1
        if ( i == rank ) &
             call print(dA2)
        call flush(6)
-       call Barrier(world)
+       call MP_Barrier(world)
     end do
 
     call delete(dA1)
     call delete(dA2)
 
-    call Barrier(world)
+    call MP_Barrier(world)
 
   end subroutine dist_1a
 
@@ -235,19 +235,19 @@ contains
        if ( i == rank ) &
             call print(dA1)
        call flush(6)
-       call Barrier(world)
+       call MP_Barrier(world)
     end do
     do i = 0 , nrank - 1
        if ( i == rank ) &
             call print(dA2)
        call flush(6)
-       call Barrier(world)
+       call MP_Barrier(world)
     end do
 
     call delete(dA1)
     call delete(dA2)
 
-    call Barrier(world)
+    call MP_Barrier(world)
 
   end subroutine dist_2
 
@@ -290,19 +290,19 @@ contains
        if ( i == rank ) &
             call print(dA1)
        call flush(6)
-       call Barrier(world)
+       call MP_Barrier(world)
     end do
     do i = 0 , nrank - 1
        if ( i == rank ) &
             call print(dA2)
        call flush(6)
-       call Barrier(world)
+       call MP_Barrier(world)
     end do
 
     call delete(dA1)
     call delete(dA2)
 
-    call Barrier(world)
+    call MP_Barrier(world)
 
   end subroutine dist_3
 
@@ -345,13 +345,13 @@ contains
        if ( i == rank ) &
             call print(dA1)
        call flush(6)
-       call Barrier(world)
+       call MP_Barrier(world)
     end do
     do i = 0 , nrank - 1
        if ( i == rank ) &
             call print(dA2)
        call flush(6)
-       call Barrier(world)
+       call MP_Barrier(world)
     end do
 
     ! Now dsmA1 is on rank == 0
@@ -372,14 +372,14 @@ contains
        if ( i == rank ) &
             call print(dA3)
        call flush(6)
-       call Barrier(world)
+       call MP_Barrier(world)
     end do
 
     call delete(dA1)
     call delete(dA2)
     call delete(dA3)
 
-    call Barrier(world)
+    call MP_Barrier(world)
 
   end subroutine dist_4
 

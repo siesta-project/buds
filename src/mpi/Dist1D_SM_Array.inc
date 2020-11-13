@@ -30,6 +30,10 @@
 # error "Could not figure out which sparse matrix this is!"
 #endif
 
+  !> Create a new object only with the distribution and sparse matrix
+  interface new
+    module procedure new_dist_sm_
+  end interface
 
   !> Retrieve the 1D distribution
   interface dist1d
@@ -117,6 +121,60 @@
   public :: distribute
 
 #include "bud_collection.inc"
+
+  !> @param[inout] this sparse matrix with distribution and array
+  !! @param[in] dist the distribution function
+  !! @param[in] sm the sparse matrix to instantiate from
+#if BUD_DIM > 1
+  !! @param[in] shape the shape (`-1` refers to the sparse index)
+#endif
+  subroutine new_dist_sm_(this, dist, sm &
+#if BUD_DIM > 1
+    , shape &
+#endif
+    )
+    BUD_CLASS(BUD_TYPE_NAME), intent(inout) :: this
+    BUD_CLASS(BUD_COLL_1), intent(in) :: dist
+    BUD_CLASS(BUD_COLL_2), intent(in) :: sm
+#if BUD_DIM > 1
+    integer, intent(in) :: shape(BUD_DIM)
+#endif
+    type(BUD_COLL_3) :: arr
+#if BUD_DIM > 1
+    integer :: shap(BUD_DIM), i
+    integer :: found
+    
+    found = 0
+    do i = 1 , BUD_DIM
+      if ( shape(i) < 0 ) then
+        shap(i) = max_nonzeros(sm)
+        found = i
+      else
+        shap(i) = shape(i)
+      end if
+    end do
+
+    ! The sparse index was not specified.
+    ! Tell the user that something went wrong
+    if ( found == 0 ) then
+      call delete(this)
+      call set_error(this, -1)
+      return
+    end if
+
+    call new(arr, shap)
+#else
+    call new(arr, max_nonzeros(sm))
+#endif
+
+    ! Create the array, then the new type
+    call new(this, dist, sm, arr)
+    call delete(arr)
+#if BUD_DIM > 1
+    this%D%sm_idx = found
+#endif
+    
+  end subroutine new_dist_sm_
 
   !> @param[in] this sparse matrix
   !! @return a pointer to the data (contiguous)
@@ -274,12 +332,12 @@
     ! First the local nodes should sum the row/columns
     ! because they may be distributed.
     if ( is_communicator(comm) ) then
-      call AllReduce_Sum(_CS_N, ir, comm)
+      call MP_AllReduce_Sum(_CS_N, ir, comm)
       _CS_N = ir
     end if
-    call AllReduce_Max(nr, ir, parent)
+    call MP_AllReduce_Max(nr, ir, parent)
     nr = ir
-    call AllReduce_Max(nc, ir, parent)
+    call MP_AllReduce_Max(nc, ir, parent)
     nc = ir
 #endif
 
@@ -298,9 +356,9 @@
 #ifdef BUD_MPI
     ! Bcast this for the remaining participants.
     ! This is necessary as not all may have `this`
-    call AllReduce_Max(sm_idx, ir, parent)
+    call MP_AllReduce_Max(sm_idx, ir, parent)
     sm_idx = ir
-    call AllReduce_Max(dims, ir, parent)
+    call MP_AllReduce_Max(dims, ir, parent)
     dims = ir
 #endif
     allocate(ashape(dims))
@@ -310,10 +368,10 @@
     end do
 #ifdef BUD_MPI
     allocate(itmp1(dims))
-    call AllReduce_Max(ashape, itmp1, parent)
+    call MP_AllReduce_Max(ashape, itmp1, parent)
     ashape = itmp1
     deallocate(itmp1)
-    call AllReduce_Max(msg_size, ltmp, parent)
+    call MP_AllReduce_Max(msg_size, ltmp, parent)
     msg_size = ltmp
 #endif
 
@@ -333,7 +391,7 @@
       ! We only need to reduce on the output communicator.
       ! I.e. we want them to know the root rank in the
       ! parent communicator.
-      call AllReduce_Max(ir, my_root, out_comm)
+      call MP_AllReduce_Max(ir, my_root, out_comm)
 #else
       my_root = ir
 #endif
@@ -352,7 +410,7 @@
     ! Figure out the sizes of the input distribution
     ng = size_global(dist)
 #ifdef BUD_MPI
-    call AllReduce_Max(ng, nl, parent)
+    call MP_AllReduce_Max(ng, nl, parent)
     ng = nl
 #endif
     nl = size_local(dist)
@@ -373,7 +431,7 @@
 #ifdef BUD_MPI
       ! Reduce so that everybody knows whether this is a new
       ! distribution
-      call AllReduce_LOr(my_distr, is_distr, parent)
+      call MP_AllReduce_LOr(my_distr, is_distr, parent)
 #else
       is_distr = my_distr
 #endif
@@ -486,7 +544,7 @@
 
 #ifdef BUD_MPI
         recv_R = ranks(ir)
-        call Reduce_Sum(n, nz, recv_R, parent)
+        call MP_Reduce_Sum(n, nz, recv_R, parent)
 #else
         ! With no MPI it must be its own distribution
         nz = n
@@ -660,9 +718,9 @@
           oil = g2l(out_dist, ig)
           oid1 = optr(oil) BUD_SM_PTR_A
 
-          call Recv(oind(oid1:), MPI_ANY_SOURCE, ig, &
+          call MP_Recv(oind(oid1:), MPI_ANY_SOURCE, ig, &
             parent, stat)
-          call Get_Count(stat, MPI_INTEGER, oid2, parent)
+          call MP_Get_Count(stat, MPI_INTEGER, oid2, parent)
           optr(oil+1) = optr(oil) + oid2
 
         else if ( send_R == in_rank ) then
@@ -675,7 +733,7 @@
           id1 = ptr(il) BUD_SM_PTR_A
           id2 = id1 + nrc(il) BUD_SM_PTR_B
 
-          call ISSend(ind(id1:id2), recv_R, ig, parent, reqs(il))
+          call MP_ISSend(ind(id1:id2), recv_R, ig, parent, reqs(il))
 
 #else
         else
@@ -688,7 +746,7 @@
 #ifdef BUD_MPI
       ! Wait untill everything has been sent
       if ( allocated(reqs) ) &
-        call WaitAll(nl, reqs, stats, parent)
+        call MP_WaitAll(nl, reqs, stats, parent)
 #endif
 
 
@@ -753,13 +811,13 @@
             oid2 = oid1 + onrc(oil) BUD_SM_PTR_B
 
 # if BUD_DIM == 1
-            call Recv(odat(oid1:oid2), MPI_ANY_SOURCE, ig, &
+            call MP_Recv(odat(oid1:oid2), MPI_ANY_SOURCE, ig, &
               parent, stat)
 # elif BUD_DIM == 2
-            call Recv(odat(:,oid1:oid2), MPI_ANY_SOURCE, ig, &
+            call MP_Recv(odat(:,oid1:oid2), MPI_ANY_SOURCE, ig, &
               parent, stat)
 # elif BUD_DIM == 3
-            call Recv(odat(:,:,oid1:oid2), MPI_ANY_SOURCE, ig, &
+            call MP_Recv(odat(:,:,oid1:oid2), MPI_ANY_SOURCE, ig, &
               parent, stat)
 # else
 #  error "Only up till BUD_DIM == 3 has been implemented"
@@ -774,13 +832,13 @@
             id2 = id1 + nrc(il) BUD_SM_PTR_B
 
 #if BUD_DIM == 1
-            call ISSend(dat(id1:id2), recv_R, ig, &
+            call MP_ISSend(dat(id1:id2), recv_R, ig, &
               parent, reqs(il))
 #elif BUD_DIM == 2
-            call ISSend(dat(:,id1:id2), recv_R, ig, &
+            call MP_ISSend(dat(:,id1:id2), recv_R, ig, &
               parent, reqs(il))
 #elif BUD_DIM == 3
-            call ISSend(dat(:,:,id1:id2), recv_R, ig, &
+            call MP_ISSend(dat(:,:,id1:id2), recv_R, ig, &
               parent, reqs(il))
 #else
 # error "Only up till BUD_DIM == 3 has been implemented"
@@ -796,7 +854,7 @@
 
 #ifdef BUD_MPI
         if ( allocated(reqs) ) &
-          call WaitAll(nl, reqs, stats, parent)
+          call MP_WaitAll(nl, reqs, stats, parent)
 #endif
 
       else if ( sm_idx == 1 ) then
@@ -839,10 +897,10 @@
              oid2 = oid1 + onrc(il) BUD_SM_PTR_B
 
 # if BUD_DIM == 2
-             call Recv(odat(oid1:oid2,i2), MPI_ANY_SOURCE, ig, &
+             call MP_Recv(odat(oid1:oid2,i2), MPI_ANY_SOURCE, ig, &
                parent, stat)
 # elif BUD_DIM == 3
-             call Recv(odat(oid1:oid2,i2,i3), MPI_ANY_SOURCE, ig, &
+             call MP_Recv(odat(oid1:oid2,i2,i3), MPI_ANY_SOURCE, ig, &
                parent, stat)
 # endif
 
@@ -856,10 +914,10 @@
              id2 = id1 + nrc(il) BUD_SM_PTR_B
 
 #if BUD_DIM == 2
-             call ISSend(dat(id1:id2,i2), recv_R, ig, &
+             call MP_ISSend(dat(id1:id2,i2), recv_R, ig, &
                parent, reqs(il))
 #elif BUD_DIM == 3
-             call ISSend(dat(id1:id2,i2,i3), recv_R, ig, &
+             call MP_ISSend(dat(id1:id2,i2,i3), recv_R, ig, &
                parent, reqs(il))
 #endif
 
@@ -873,7 +931,7 @@
 
 #ifdef BUD_MPI
          if ( allocated(reqs) ) &
-           call WaitAll(nl, reqs, stats, parent)
+           call MP_WaitAll(nl, reqs, stats, parent)
 #endif
 
         end do ! i2
@@ -917,7 +975,7 @@
              oid1 = optr(oil) BUD_SM_PTR_A
              oid2 = oid1 + onrc(il) BUD_SM_PTR_B
 
-             call Recv(odat(:,oid1:oid2,i3), MPI_ANY_SOURCE, ig, &
+             call MP_Recv(odat(:,oid1:oid2,i3), MPI_ANY_SOURCE, ig, &
                parent, stat)
              ! TODO check that Get_Count == oid2-oid1+1
              ! But here we do not know the data-type
@@ -928,7 +986,7 @@
              id1 = ptr(il) BUD_SM_PTR_A
              id2 = id1 + nrc(il) BUD_SM_PTR_B
 
-             call ISSend(dat(:,id1:id2,i3), recv_R, ig, &
+             call MP_ISSend(dat(:,id1:id2,i3), recv_R, ig, &
                parent, reqs(il))
 #  else
            else
@@ -940,7 +998,7 @@
 
 #  ifdef BUD_MPI
          if ( allocated(reqs) ) &
-           call WaitAll(nl, reqs, stats, parent)
+           call MP_WaitAll(nl, reqs, stats, parent)
 #  endif
 
        end do ! i3
@@ -952,7 +1010,7 @@
       if ( allocated(reqs) ) deallocate(reqs)
 
       ! Be sure to wait for the next iteration
-      call Barrier(parent)
+      call MP_Barrier(parent)
 #endif
 
       call delete(out_comm)
@@ -1031,7 +1089,7 @@
     else
       io_rank = -1
     end if
-    call AllReduce_Max(io_rank, iu, comm)
+    call MP_AllReduce_Max(io_rank, iu, comm)
     io_rank = iu
 
     ! Check if the file is open on one rank
@@ -1096,10 +1154,10 @@
 
     call attach(sm, nr=nr, nc=nc, nz=nz, &
       ptr=ptr, nentries=nrc)
-    BUD_CC2(g,_CS_N) = gnl
+    BUD_CC2(g,_CS_N) = _CS_N
     BUD_CC2(g,_CS_M) = _CS_M
     gnrc = maxval(nrc)
-    call AllReduce_Max(gnrc, ig, comm)
+    call MP_AllReduce_Max(gnrc, ig, comm)
     gnrc = ig
     if ( sm_idx > 1 ) then
       ! Rescale the number of send elements
@@ -1139,7 +1197,7 @@
         else if ( do_io ) then
 
           ! recieve data
-          call Recv(rdat(1), gnrc, ir, ig, comm, status)
+          call MP_Recv(rdat(1), gnrc, ir, ig, comm, status)
           if ( formatted ) then
 #ifdef BUD_IS_INTEGER
             write(iu, '(i16)') rdat
@@ -1154,7 +1212,7 @@
 
           ! send data
           dat => matrix_p(this, il)
-          call SSend(dat BUD_DIM_SPEC(1), gnrc, io_rank, ig, comm)
+          call MP_SSend(dat BUD_DIM_SPEC(1), gnrc, io_rank, ig, comm)
 
         end if
 
@@ -1205,7 +1263,7 @@
             else if ( do_io ) then
 
               ! recieve data
-              call Recv(rdat(1), gnrc, ir, ig, comm, status)
+              call MP_Recv(rdat(1), gnrc, ir, ig, comm, status)
               if ( formatted ) then
 #ifdef BUD_IS_INTEGER
                 write(iu, '(i16)') rdat
@@ -1221,9 +1279,9 @@
               ! send data
               dat => matrix_p(this, il)
 #if BUD_DIM == 2
-              call SSend(dat(1,i2), gnrc, io_rank, ig, comm)
+              call MP_SSend(dat(1,i2), gnrc, io_rank, ig, comm)
 #elif BUD_DIM == 3
-              call SSend(dat(1,i2,i3), gnrc, io_rank, ig, comm)
+              call MP_SSend(dat(1,i2,i3), gnrc, io_rank, ig, comm)
 #endif
             end if
 
@@ -1265,7 +1323,7 @@
           else if ( do_io ) then
 
             ! recieve data
-            call Recv(rdat(1), gnrc, ir, ig, comm, status)
+            call MP_Recv(rdat(1), gnrc, ir, ig, comm, status)
             if ( formatted ) then
 #ifdef BUD_IS_INTEGER
               write(iu, '(i16)') rdat
@@ -1280,7 +1338,7 @@
 
             ! send data
             dat => matrix_p(this, il)
-            call SSend(dat(1,1,i3), gnrc, io_rank, ig, comm)
+            call MP_SSend(dat(1,1,i3), gnrc, io_rank, ig, comm)
 
           end if
 
@@ -1362,7 +1420,7 @@
     else
       io_rank = -1
     end if
-    call AllReduce_Max(io_rank, iu, comm)
+    call MP_AllReduce_Max(io_rank, iu, comm)
     io_rank = iu
 
     ! Check if the file is open on one rank
@@ -1410,12 +1468,12 @@
 
     end if
 
-    call Bcast(dims, io_rank, comm)
-    call Bcast(sm_idx, io_rank, comm)
+    call MP_Bcast(dims, io_rank, comm)
+    call MP_Bcast(sm_idx, io_rank, comm)
     if ( .not. do_io ) then
       allocate(ashape(dims))
     end if
-    call Bcast(ashape, io_rank, comm)
+    call MP_Bcast(ashape, io_rank, comm)
 
     ! Now we have the size of the arrays
 #endif
