@@ -3,20 +3,22 @@ _SMEKA_smeka = 1
 # Smeka version
 SMEKA_VERSION = ace855f
 
-.PHONY: smeka-show-smeka-version
-.NOTPARALLEL: smeka-show-smeka-version
-smeka-show-smeka-version:
-	@echo ""
-	@echo "SMEKA-version = $(SMEKA_VERSION)"
-	@echo ""
-show: smeka-show-smeka-version
-
 
 # Reset the suffixes
 .SUFFIXES:
 
 # OS settings
 include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.os
+
+# We need ECHO
+.PHONY: smeka-show-smeka-version
+.NOTPARALLEL: smeka-show-smeka-version
+smeka-show-smeka-version:
+	@$(ECHO) ""
+	@$(ECHO) "SMEKA-version = $(SMEKA_VERSION)"
+	@$(ECHO) ""
+show: smeka-show-smeka-version
+
 
 # Default variables
 include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.default
@@ -26,6 +28,9 @@ include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.default
 # includes
 include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.common
 
+
+# Add compiler specific options
+include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.compiler
 
 # Include project specific options
 # These will be pre-initialized before any user
@@ -43,9 +48,6 @@ include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.setup
 include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.directory
 
 
-# Add compiler specific options
-include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.compiler
-
 # Add preprocessor definitions
 include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.pp
 
@@ -54,6 +56,9 @@ include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.library
 
 # Add the installation makefile
 include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.install
+
+# Add the pkg-config makefile
+include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.pkgconfig
 
 # Add the documentation makefile
 include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.doc
