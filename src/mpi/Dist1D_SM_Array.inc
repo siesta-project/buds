@@ -143,7 +143,7 @@
 #if BUD_DIM > 1
     integer :: shap(BUD_DIM), i
     integer :: found
-    
+
     found = 0
     do i = 1 , BUD_DIM
       if ( shape(i) < 0 ) then
@@ -173,7 +173,7 @@
 #if BUD_DIM > 1
     this%D%sm_idx = found
 #endif
-    
+
   end subroutine new_dist_sm_
 
   !> @param[in] this sparse matrix

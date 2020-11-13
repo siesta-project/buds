@@ -242,7 +242,7 @@
   interface assignment(=)
     module procedure comm_assign_
   end interface
-  
+
   !> Query ID for current processor in distribution
   interface comm_rank
     module procedure comm_rank_
